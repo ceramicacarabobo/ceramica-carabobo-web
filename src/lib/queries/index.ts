@@ -85,7 +85,10 @@ export const HOME = /* groq */ `
       nombre,
       ciudad,
       credito,
-      "diseno": producto->nombre,
+      "diseno": select(
+        defined(producto->materia) => producto->nombre + " · " + producto->materia,
+        producto->nombre
+      ),
       "disenoSlug": producto->slug.current,
       formato,
       "foto": foto${IMAGEN}
@@ -99,7 +102,9 @@ export const HOME = /* groq */ `
     "etiqueta": profesionales.etiqueta,
     "titulo": profesionales.titulo,
     "texto": profesionales.texto,
-    "imagen": profesionales.imagen${IMAGEN}
+    "imagen": profesionales.imagen${IMAGEN},
+    "videoUrl": profesionales.video.asset->url,
+    "videoEtiqueta": profesionales.videoEtiqueta
   },
   "encuentranos": {
     "etiqueta": encuentranos.etiqueta,
@@ -155,6 +160,7 @@ export const AJUSTES = /* groq */ `
   telefono,
   correo,
   whatsapp,
+  "redes": coalesce(redes[]{nombre, url}, []),
   anioFundacion
 }
 `

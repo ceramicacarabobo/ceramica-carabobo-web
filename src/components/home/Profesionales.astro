@@ -3,13 +3,21 @@
  * Sección "03 · Profesionales" de la home: split 50/50 imagen + texto.
  *
  * El prototipo (`design/publicar/index.html`, bloque "PROFESIONALES (split
- * 50/50)") arma la mitad izquierda como un video de instalación (con botón de
- * play) y la derecha con título, bajada y enlaces a Instagram/YouTube/TikTok.
- * Ninguno de esos dos elementos está en el contrato de datos —
- * `Home['profesionales']` solo trae `etiqueta/titulo/texto/imagen`, sin URL de
- * video ni de redes— así que se omiten en vez de inventar destinos que no
- * salen del CMS (CLAUDE.md: "textos de marca nunca hardcodeados"). Queda una
- * imagen fija a la izquierda y el bloque editorial a la derecha.
+ * 50/50)") arma la mitad izquierda como un tile de video de instalación —
+ * foto de portada, velo, botón de play de 72px y etiqueta "Video · 3:47"— y la
+ * derecha con título, bajada y el bloque "Conecta con nuestras redes" con
+ * Instagram, YouTube y TikTok como botones outline vinotinto.
+ *
+ * Los dos elementos existían en el diseño pero no en el contrato de datos, así
+ * que se les dio lugar en el CMS en vez de hardcodearlos (CLAUDE.md: "textos de
+ * marca nunca hardcodeados"):
+ *   - el video y su etiqueta viven en `home.profesionales` (son de la sección);
+ *   - las redes viven en `ajustes.redes` (son dato de sitio, no de sección), y
+ *     por eso esta sección las pide al adaptador en vez de recibirlas por prop:
+ *     `index.astro` compone secciones, no reparte ajustes globales.
+ * Lo único hardcodeado es el dibujo del icono de cada red y el rótulo del
+ * bloque, que son diseño, no contenido — igual que los rótulos "Ciudad" o
+ * "Formato" de la ficha de Proyectos.
  *
  * Proporciones del prototipo: la mitad de imagen no lleva ratio propio, es un
  * bloque de `min-height: clamp(280px,42vw,520px)` con la foto a `cover`
@@ -27,13 +35,15 @@
  * que sí lo lleva. Sin eso el texto se quedaba sin padding ni centrado.
  *
  * Contenido defensivo: sin título ni texto no hay nada que editorializar y la
- * sección entera se oculta (regla del encargo). Sin foto, el bloque editorial
- * ocupa el ancho completo en vez de dejar media caja vacía.
+ * sección entera se oculta. Sin foto, el bloque editorial ocupa el ancho
+ * completo en vez de dejar media caja vacía. Sin video no hay play ni
+ * etiqueta: queda la foto sola, sin enlace. Sin redes cargadas, el bloque
+ * "Conecta con nuestras redes" no aparece.
  */
 import Imagen from '~/components/base/Imagen.astro'
 import Reveal from '~/components/base/Reveal.astro'
 import Seccion from '~/components/base/Seccion.astro'
-import type {Home} from '~/lib/data'
+import {getAjustes, type Home} from '~/lib/data'
 
 interface Props {
   profesionales: Home['profesionales']
@@ -41,8 +51,34 @@ interface Props {
 
 const {profesionales} = Astro.props
 
+/**
+ * Iconos de las redes de la lista cerrada (`sanity/lib/listas.ts`). Los tres
+ * del diseño están copiados del prototipo; Facebook y LinkedIn siguen el mismo
+ * trazo (24×24, stroke 2, sin relleno) para que no desentonen si el cliente
+ * los carga.
+ */
+const ICONOS: Record<string, string> = {
+  Instagram:
+    '<rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>',
+  YouTube:
+    '<path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49 49 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49 49 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path>',
+  TikTok: '<circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path>',
+  Facebook: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>',
+  LinkedIn:
+    '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle>',
+}
+
+const ajustes = await getAjustes()
+const redes = ajustes.redes.filter((red) => red.nombre && red.url)
+
 const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
 const hayImagen = Boolean(profesionales.imagen)
+const hayVideo = Boolean(profesionales.videoUrl)
+const hayRedes = redes.length > 0
+
+const claseMarco = ['profesionales__marco', hayVideo && 'profesionales__marco--video']
+  .filter(Boolean)
+  .join(' ')
 ---
 
 {
@@ -56,12 +92,30 @@ const hayImagen = Boolean(profesionales.imagen)
     >
       <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
         {profesionales.imagen && (
-          <Reveal como="div" class="profesionales__marco">
+          <Reveal
+            como={hayVideo ? 'a' : 'div'}
+            class={claseMarco}
+            href={hayVideo ? profesionales.videoUrl : undefined}
+            aria-label={hayVideo ? 'Ver el video de instalación' : undefined}
+          >
             <Imagen
               imagen={profesionales.imagen}
               sizes="(min-width: 760px) 50vw, 100vw"
               class="profesionales__foto"
             />
+            {hayVideo && (
+              <>
+                <span class="profesionales__velo" />
+                <span class="profesionales__play" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M8 5.14v14l11-7-11-7z" />
+                  </svg>
+                </span>
+                {profesionales.videoEtiqueta && (
+                  <span class="profesionales__videoetiqueta">{profesionales.videoEtiqueta}</span>
+                )}
+              </>
+            )}
           </Reveal>
         )}
         <Reveal como="div" indice={hayImagen ? 1 : 0} class="profesionales__texto">
@@ -76,6 +130,39 @@ const hayImagen = Boolean(profesionales.imagen)
             </h2>
           )}
           {profesionales.texto && <p class="profesionales__bajada">{profesionales.texto}</p>}
+          {hayRedes && (
+            <div class="profesionales__redes">
+              <p class="profesionales__redes-rotulo">Conecta con nuestras redes</p>
+              <ul class="profesionales__redes-lista">
+                {redes.map((red) => (
+                  <li>
+                    <a
+                      class="profesionales__red"
+                      href={red.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {ICONOS[red.nombre] && (
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          set:html={ICONOS[red.nombre]}
+                        />
+                      )}
+                      {red.nombre}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </Reveal>
       </div>
     </Seccion>
@@ -97,12 +184,49 @@ const hayImagen = Boolean(profesionales.imagen)
     overflow: hidden;
   }
 
+  .profesionales :global(.profesionales__marco--video) {
+    display: block;
+    text-decoration: none;
+  }
+
   .profesionales :global(.profesionales__foto.imagen) {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     aspect-ratio: auto;
+  }
+
+  .profesionales__velo {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim-base);
+  }
+
+  /* Botón de play del prototipo: cuadrado de 72px con hairline on-dark. */
+  .profesionales__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-width) solid var(--color-border-on-dark-strong);
+    color: var(--color-text-on-dark);
+  }
+
+  .profesionales__videoetiqueta {
+    position: absolute;
+    left: clamp(20px, 3vw, 40px);
+    right: clamp(20px, 3vw, 40px);
+    bottom: clamp(20px, 3vw, 40px);
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .profesionales :global(.profesionales__texto) {
@@ -139,6 +263,53 @@ const hayImagen = Boolean(profesionales.imagen)
     font: var(--text-body-15);
     color: var(--color-text-secondary);
     text-wrap: pretty;
+  }
+
+  /* Bloque de redes: rótulo + botones outline, gaps 14/12 del prototipo. */
+  .profesionales__redes {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .profesionales__redes-rotulo {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .profesionales__redes-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .profesionales__red {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-5);
+    border: var(--border-width) solid var(--color-action-secondary-border);
+    color: var(--color-action-secondary-text);
+    background: transparent;
+    text-decoration: none;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    transition:
+      background-color var(--dur-respuesta) var(--ease-respuesta),
+      color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .profesionales__red:hover {
+    background: var(--color-brand-700);
+    color: var(--color-neutral-0);
   }
 
   @media (min-width: 760px) {

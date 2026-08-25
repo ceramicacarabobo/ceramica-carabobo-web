@@ -82,7 +82,16 @@ export interface Home {
     obras: {nombre: string; ciudad?: string; credito?: string; diseno?: string; disenoSlug?: string; formato?: string; foto?: Imagen}[]
   }
   historia: {titulo?: string; hitos: {anio: number; titulo: string; texto?: string; imagen?: Imagen}[]}
-  profesionales: {etiqueta?: string; titulo?: string; texto?: string; imagen?: Imagen}
+  profesionales: {
+    etiqueta?: string
+    titulo?: string
+    texto?: string
+    imagen?: Imagen
+    /** Video de instalación del tile izquierdo. Sin él no hay play ni etiqueta. */
+    videoUrl?: string
+    /** Texto corto sobre la imagen, ej. "Video · 3:47". */
+    videoEtiqueta?: string
+  }
   encuentranos: {etiqueta?: string; titulo?: string; texto?: string}
 }
 
@@ -108,6 +117,12 @@ export interface DondeComprar {
   cierre?: string
 }
 
+/** Perfil de red social del cliente. `nombre` sale de la lista cerrada del CMS. */
+export interface Red {
+  nombre: string
+  url: string
+}
+
 export interface Ajustes {
   titulo: string
   descripcion?: string
@@ -117,5 +132,6 @@ export interface Ajustes {
   telefono?: string
   correo?: string
   whatsapp?: string
+  redes: Red[]
   anioFundacion?: number
 }

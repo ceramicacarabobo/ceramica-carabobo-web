@@ -33,6 +33,13 @@ export const USOS = ['Interiores', 'Alto tránsito'] as const
 export const PEI = ['I', 'II', 'III', 'IV', 'V'] as const
 
 /**
+ * Redes sociales del cliente. Lista cerrada porque cada nombre tiene su icono
+ * dibujado en el código del sitio: un valor fuera de la lista saldría sin icono.
+ * Orden del diseño en la home: Instagram, YouTube, TikTok.
+ */
+export const REDES = ['Instagram', 'YouTube', 'TikTok', 'Facebook', 'LinkedIn'] as const
+
+/**
  * Estados de Venezuela, con los nombres del GeoJSON del sitio
  * (design/publicar/data/venezuela.geojson · NAME_1) para que el mapa case.
  * Alias históricos: Vargas → La Guaira, Distrito Federal → Distrito Capital.

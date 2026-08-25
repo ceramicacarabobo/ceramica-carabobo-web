@@ -24,8 +24,17 @@ const HOME_VACIA: Home = {
 const AJUSTES_POR_DEFECTO: Ajustes = {
   titulo: 'Cerámica Carabobo',
   descripcion: 'Fabricantes venezolanos de gres porcelánico y cerámica.',
+  redes: [],
   anioFundacion: 1956,
 }
+
+/**
+ * Autosuficiencia (plan maestro §3.3): los videos se sirven desde el propio
+ * sitio, no desde el CDN de Sanity. El manifiesto lo genera
+ * `scripts/descargar-medios.mjs` en el build; si un archivo no está en él, se
+ * deja la URL original para no romper la página.
+ */
+const videoLocal = (url?: string) => (url ? ((medios as Record<string, string>)[url] ?? url) : undefined)
 
 export const getProductos = () => consultar<Producto[]>(Q.PRODUCTOS, {}, [])
 
@@ -37,10 +46,11 @@ export const getMaterias = () => consultar<Materia[]>(Q.MATERIAS, {}, [])
 
 export const getHome = async () => {
   const home = await consultar<Home>(Q.HOME, {}, HOME_VACIA)
-  // Autosuficiencia: el video se sirve desde el propio sitio, no desde el CDN
-  // de Sanity. El manifiesto lo genera `scripts/descargar-medios.mjs` en el build.
-  const local = (medios as Record<string, string>)[home.hero.videoUrl ?? '']
-  return local ? {...home, hero: {...home.hero, videoUrl: local}} : home
+  return {
+    ...home,
+    hero: {...home.hero, videoUrl: videoLocal(home.hero.videoUrl)},
+    profesionales: {...home.profesionales, videoUrl: videoLocal(home.profesionales.videoUrl)},
+  }
 }
 
 export const getContacto = () =>

@@ -25,6 +25,24 @@
   --ease-respuesta: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ---------------------------------------------------------------------------
+   Corrección auditada de interlineado.
+
+   Las cuatro páginas del diseño no declaran `line-height` en overlines, labels
+   de navegación ni valores de dato: queda `normal` (14px a 12px de tamaño). Los
+   tokens sí lo declaran (1.35 / 1.5), y esos ~2px por fila se acumulaban en cada
+   ficha y cabecera del sitio — medido contra el prototipo en marcha.
+
+   `Tokens v0` §10 fija la regla para este caso: "un token es verdad solo si
+   alguna página lo aplica; auditar por VALOR y no por nombre". Manda la página.
+   Se redefine acá y no en tokens.css, que es copia literal del documento.
+   --------------------------------------------------------------------------- */
+:root {
+  --text-overline: 500 0.75rem/normal var(--font-heading);
+  --text-nav: 500 0.75rem/normal var(--font-heading);
+  --text-caption-lg: 400 0.8125rem/normal var(--font-body);
+}
+
 *,
 *::before,
 *::after {

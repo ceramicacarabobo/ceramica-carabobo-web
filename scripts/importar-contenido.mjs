@@ -7,6 +7,9 @@
  * actualizar esos documentos primero):
  *   1. materia ×6 (claim + fotoTextura + fotoAmbiente cuando el handoff los trae)
  *   2. producto: los de Serie Venezuela con foto real (~29, según design/publicar/LEEME.md)
+ *      más los diseños que citan las obras del home (Serie Regular), para que
+ *      la fila "Diseño" de la ficha de Proyectos tenga a quién apuntar
+ *      (sus fotos son de ejemplo: quedan marcadas esEjemplo)
  *   3. home (singleton): hero, ambientes, cita, proyectos, historia, profesionales, encuentranos
  *   4. ajustes (singleton): metadatos y datos de contacto globales
  *
@@ -218,9 +221,14 @@ async function construirProducto(p) {
   if (mtsCaja != null) doc.mtsCaja = mtsCaja
 
   if (p.fotos && p.fotos.length > 0) {
+    // El schema exige que la primera foto sea la macro de la baldosa. El
+    // catálogo respeta ese orden en Serie Venezuela pero no siempre en Regular
+    // (Teca trae el ambiente primero), así que se ordena acá en vez de dejar
+    // el documento en falta en el Studio.
+    const fotos = [...p.fotos].sort((a, b) => (a.tipo === 'macro' ? -1 : 0) - (b.tipo === 'macro' ? -1 : 0))
     doc.fotos = []
-    for (let i = 0; i < p.fotos.length; i++) {
-      const foto = p.fotos[i]
+    for (let i = 0; i < fotos.length; i++) {
+      const foto = fotos[i]
       const img = await imagen(foto.src, foto.alt, {tipo: foto.tipo, esEjemplo: Boolean(foto.ejemplo)})
       doc.fotos.push({...img, _type: 'fotoProducto', _key: keyDe(`${p.slug}-foto-${i}`)})
     }
@@ -308,26 +316,31 @@ async function construirFicha(productosPorSlug, item) {
 // PROYECTOS (index.html:538-545): el campo "credito" del prototipo guarda en
 // realidad la ciudad de la obra (comentario del propio archivo: "sin crédito
 // de arquitecto — el dato no lo tenemos"), por eso se mapea a `ciudad`, no a
-// `credito`. El nombre de diseño no tiene producto propio en el alcance de
-// este script (son Serie Regular, fuera de lo que se importa), así que va
-// como texto dentro de `formato` junto con la especificación, en vez de
-// perderse o de forzar una referencia inválida.
+// `credito`. Sus dos diseños son de Serie Regular: se importan aparte (ver
+// PRODUCTOS_OBRA) y la obra los enlaza por referencia, que es lo que llena la
+// fila "Diseño" de la ficha. En `formato` queda solo la especificación, tal
+// como la separa el prototipo.
 const OBRAS = [
   {
     nombre: 'Living de hotel',
     ciudad: 'Valencia',
-    formato: 'Carrara Brillante · Mármol · 60×60 cm · Brillante · Liso',
+    diseno: 'carrara-brillante',
+    formato: '60×60 cm · Brillante · Liso',
     img: 'assets/catalogo/ejemplo-living.jpg',
     alt: 'Living de hotel con piso de porcelanato símil mármol pulido',
   },
   {
     nombre: 'Restaurante',
     ciudad: 'Caracas',
-    formato: 'Teca · Madera · 25×120 cm · Mate · Liso',
+    diseno: 'teca',
+    formato: '25×120 cm · Mate · Liso',
     img: 'assets/catalogo/ejemplo-restaurante.jpg',
     alt: 'Salón de restaurante con piso de porcelanato símil madera',
   },
 ]
+
+/** Diseños que citan las obras: fuera de Serie Venezuela, pero necesarios. */
+const PRODUCTOS_OBRA = OBRAS.map((obra) => obra.diseno)
 
 async function construirObra(item) {
   return {
@@ -335,6 +348,7 @@ async function construirObra(item) {
     _key: keyDe(`obra-${item.nombre}`),
     nombre: item.nombre,
     ciudad: item.ciudad,
+    producto: refProducto(item.diseno),
     formato: item.formato,
     foto: await imagen(item.img, item.alt),
   }
@@ -463,9 +477,20 @@ async function main() {
 
   const catalogo = JSON.parse(fs.readFileSync(CATALOGO_PATH, 'utf8'))
   const productosVenezuela = catalogo.productos.filter((p) => p.serie === 'Venezuela')
-  const productosPorSlug = Object.fromEntries(productosVenezuela.map((p) => [p.slug, p]))
+  // Los diseños de las obras del home son Serie Regular: entran igual, porque
+  // sin ellos la fila "Diseño" de la ficha de Proyectos queda sin dato.
+  const productosObra = PRODUCTOS_OBRA.map((slug) => {
+    const p = catalogo.productos.find((item) => item.slug === slug)
+    if (!p) throw new Error(`El catálogo no trae el diseño "${slug}" que cita una obra del home.`)
+    return p
+  })
+  const productosAImportar = [...productosVenezuela, ...productosObra]
+  const productosPorSlug = Object.fromEntries(productosAImportar.map((p) => [p.slug, p]))
 
-  console.log(`Catálogo: ${catalogo.productos.length} productos totales, ${productosVenezuela.length} de Serie Venezuela.`)
+  console.log(
+    `Catálogo: ${catalogo.productos.length} productos totales, ${productosVenezuela.length} de Serie Venezuela` +
+      ` + ${productosObra.length} diseños de obra (${PRODUCTOS_OBRA.join(', ')}).`,
+  )
 
   // 1. Materias
   const materiasCreadas = []
@@ -477,7 +502,7 @@ async function main() {
 
   // 2. Productos
   const productosCreados = []
-  for (const p of productosVenezuela) {
+  for (const p of productosAImportar) {
     const doc = await construirProducto(p)
     await client.createOrReplace(doc)
     productosCreados.push(doc.slug.current)

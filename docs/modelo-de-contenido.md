@@ -55,7 +55,7 @@ Alimenta: página Dónde comprar (mapa D3 + índice + tarjetas), sección Encué
 - **Cita**: texto destacado.
 - **Proyectos**: obras {nombre, ciudad, referencia a producto/diseño, specs, foto}. Mínimo **2 obras**. (Hoy: 2 placeholders.)
 - **Historia**: hitos {año, título, texto, imagen}. Mínimo **3 hitos**. (Hoy: 5 placeholders; solo 1956 es dato del cliente.)
-- **Profesionales**: textos + imagen.
+- **Profesionales**: textos + imagen + **video de instalación** (archivo + etiqueta corta, ej. "Video · 3:47"). Sin video no se dibujan ni el play ni la etiqueta. Los botones de redes de esta sección salen de `ajustes.redes`, no de aquí: son dato de sitio.
 - **Encuéntranos**: solo textos del encabezado — los datos salen de `distribuidor`.
 - Fijo (no editable): telón de entrada, header/megamenú (estructura), footer (estructura), animaciones, orden de secciones.
 
@@ -66,7 +66,7 @@ Hero (imagen + textos), horario, correo, sedes[] {nombre, dirección, teléfono,
 Hero (imagen + textos), número de **WhatsApp central** (hoy placeholder `584140000000` — pendiente del cliente), textos de estados vacíos y del cierre.
 
 ### 2.4 `ajustes` (sitio)
-Título, descripción, imagen OG por defecto, teléfono/correo/WhatsApp globales, texto de política de privacidad (el formulario la enlaza), año de fundación (1956 — confirmado por cliente).
+Título, descripción, imagen OG por defecto, teléfono/correo/WhatsApp globales, **`redes[]`** {nombre (lista cerrada: Instagram, YouTube, TikTok, Facebook, LinkedIn), url} — dato de marca, lo consume la sección Profesionales del home y podrá consumirlo el pie sin duplicar carga; **hoy vacío, pendiente del cliente** —, texto de política de privacidad (el formulario la enlaza), año de fundación (1956 — confirmado por cliente).
 
 ## 3. Contrato de implementación (del handoff — resumen operativo)
 

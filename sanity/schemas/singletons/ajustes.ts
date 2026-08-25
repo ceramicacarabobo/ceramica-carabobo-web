@@ -40,6 +40,15 @@ export default defineType({
     defineField({name: 'correo', title: 'Correo', type: 'string', validation: (rule) => rule.email()}),
     defineField({name: 'whatsapp', title: 'WhatsApp', type: 'string'}),
     defineField({
+      name: 'redes',
+      title: 'Redes sociales',
+      type: 'array',
+      of: [{type: 'red'}],
+      description:
+        'Dato de marca, no de una sección: la home los muestra en "Profesionales". Sin ninguna cargada, ese bloque no aparece. Orden del diseño: Instagram, YouTube, TikTok.',
+      validation: (rule) => rule.unique(),
+    }),
+    defineField({
       name: 'anioFundacion',
       title: 'Año de fundación',
       type: 'number',
