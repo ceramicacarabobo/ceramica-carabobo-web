@@ -60,8 +60,15 @@ Panel de Cloudflare → *Compute (Workers)* → `qa` → *Settings → Build* �
 *Connect to Git* → autorizar GitHub → elegir `freddyc26/ceramica-carabobo-web`, rama `main`.
 Es un permiso OAuth entre Cloudflare y GitHub: no existe por API.
 
-Configuración del disparador de `main` (ya ajustada por API el 2026-08-25):
-build `npm run build`, deploy `npx wrangler deploy -c dist/client/wrangler.json`, raíz `/`.
+Configuración de los disparadores (ajustada por API; el valor por defecto de Cloudflare no
+sirve porque no encuentra el `wrangler.json` que genera Astro):
+
+| Disparador | Build | Deploy |
+|---|---|---|
+| rama `main` | `npm run build` | `npx wrangler deploy -c dist/client/wrangler.json` |
+| otras ramas | `npm run build` | `npx wrangler versions upload -c dist/client/wrangler.json` |
+
+Si algún día se vuelve a conectar el repositorio, hay que rehacer este ajuste.
 
 **No hacen falta variables en el panel.** Workers Builds detecta Node 22.22.0 desde el `.nvmrc`
 del repositorio, y la configuración pública (projectId, dataset, URLs) vive versionada en
