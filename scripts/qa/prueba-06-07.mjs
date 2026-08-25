@@ -106,7 +106,13 @@ let idElegido = ''
   await fichaAbierta(pagina)
   const despues = await pagina.evaluate(() => history.length)
 
-  anotar(despues === antes + 1, 'abrir la ficha deja entrada propia en el historial', `history.length ${antes} → ${despues}`)
+  // La marca en `history.state`, no `history.length`: cerrar la hoja de filtros
+  // usa `history.back()`, que deja una entrada HACIA ADELANTE. El `pushState` de
+  // la ficha la sobrescribe en vez de sumar una, asi que la longitud no se mueve
+  // aunque la entrada propia si exista. Que exista lo prueba la 06 mas abajo:
+  // "atras" cierra la ficha y no sale del catalogo.
+  const marca = await pagina.evaluate(() => !!(history.state && history.state.capaCatalogo))
+  anotar(marca, 'abrir la ficha deja entrada propia en el historial', `history.state.capaCatalogo, history.length ${antes} → ${despues}`)
   anotar(
     (await pagina.evaluate(() => location.hash)).includes(`diseno=${encodeURIComponent(id)}`),
     'la dirección nombra el diseño abierto',
