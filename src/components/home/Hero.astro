@@ -33,27 +33,29 @@ const hayCarrusel = estados.length > 1
 <section class="hero" data-hero>
   <div class="hero__medios">
     {
+      /* El póster es el respaldo y va DEBAJO: se ve mientras el video carga, con
+         Save-Data o si el navegador bloquea la reproducción automática. Cuando el
+         video arranca de verdad, el póster se funde y deja ver el movimiento. */
+      hero.poster && (
+        <div class="hero__poster" data-capa={hayVideo ? '0' : undefined} data-activa={hayVideo ? '' : undefined}>
+          <Imagen imagen={hero.poster} ratio="16 / 9" sizes="100vw" prioridad class="hero__medio" />
+        </div>
+      )
+    }
+
+    {
       hayVideo && (
         <video
           class="hero__video"
           data-hero-video
           data-src={hero.videoUrl}
-          poster={hero.poster ? undefined : undefined}
           muted
           loop
           playsinline
-          preload="none"
+          preload="metadata"
           aria-label={hero.poster?.alt || 'Ambiente con revestimiento cerámico'}
           data-capa="0"
         />
-      )
-    }
-
-    {
-      hero.poster && (
-        <div class="hero__poster" data-capa={hayVideo ? '0' : undefined} data-activa={hayVideo ? '' : undefined}>
-          <Imagen imagen={hero.poster} ratio="16 / 9" sizes="100vw" prioridad class="hero__medio" />
-        </div>
       )
     }
 
@@ -136,6 +138,12 @@ const hayCarrusel = estados.length > 1
   .hero__poster[data-activa],
   .hero__capa[data-activa] {
     opacity: 1;
+  }
+
+  /* Con el video en marcha el póster sobra: se funde y no queda una imagen
+     fija tapando el movimiento. */
+  .hero[data-video-en-marcha] .hero__poster[data-activa] {
+    opacity: 0;
   }
 
   .hero__medios :global(.hero__medio) {
@@ -395,10 +403,15 @@ const hayCarrusel = estados.length > 1
     if (video && !ahorroDatos) {
       const fuente = video.dataset.src
       if (fuente) {
+        // El póster solo se retira cuando el video está pintando fotogramas de
+        // verdad; si no, se vería un hueco negro mientras carga.
+        video.addEventListener('playing', () => hero.setAttribute('data-video-en-marcha', ''), {once: true})
+        video.addEventListener('error', () => hero.removeAttribute('data-video-en-marcha'))
         video.src = fuente
         video.load()
         video.play().catch(() => {
-          /* Si el navegador bloquea el autoplay, queda el poster: no es un error. */
+          /* Si el navegador bloquea la reproducción automática, queda el póster:
+             no es un error, es la degradación prevista. */
         })
       }
     }
@@ -413,6 +426,12 @@ const hayCarrusel = estados.length > 1
         capa.toggleAttribute('data-activa', suya)
       })
       indicadores.forEach((boton, i) => boton.setAttribute('aria-current', i === indice ? 'true' : 'false'))
+      // El video solo corre en su propia capa: fuera de ella se pausa para no
+      // gastar batería ni datos de fondo.
+      if (video) {
+        if (indice === 0) video.play().catch(() => {})
+        else video.pause()
+      }
       // En móvil el rótulo muestra el nombre del estado activo.
       if (rotulo && window.matchMedia('(max-width: 759px)').matches) {
         rotulo.textContent = indicadores[indice]?.getAttribute('aria-label') ?? 'Estás viendo'
