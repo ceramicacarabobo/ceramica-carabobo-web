@@ -39,7 +39,9 @@ Estado del dato (LEEME): materia declarada por cliente solo en 26; 71 deducidas;
 
 ### 1.2 `distribuidor` — ~24 documentos (hoy 100% placeholder)
 
-`nombre`, `estado` (select: lista cerrada de los estados de Venezuela, con alias Vargas→La Guaira y Distrito Federal→Distrito Capital), `ciudad`, `direccion`, `telefono`, `whatsapp`, `correo`, `horario`, `ubicacion` (geopoint).
+`nombre`, `estado` (select: lista cerrada de los estados de Venezuela, con alias Vargas→La Guaira y Distrito Federal→Distrito Capital), `ciudad`, `direccion`, `telefono`, `whatsapp`, `correo`, `horario`, `ubicacion` (geopoint), `esEjemplo` (bool).
+
+**Cargados el 2026-08-25**: los 24 del prototipo (`design/publicar/donde-comprar.html`, constante `DIST`) — 20 estados, 23 ciudades, exactamente el agregado que el home declara. **Los 24 quedan con `esEjemplo: true`**: el LEEME del handoff avisa que solo el reparto por estado tiene criterio, y que nombres, direcciones y teléfonos son inventados (los correos son `@placeholder.com`). El Studio lo muestra en el listado; el sitio no lo dibuja. Reemplazarlos sigue siendo condición de lanzamiento público.
 
 Alimenta: página Dónde comprar (mapa D3 + índice + tarjetas), sección Encuéntranos del home (**conteos derivados por código, nunca escritos a mano** — regla del prototipo), y JSON-LD LocalBusiness por punto de venta (bloqueante SEO).
 
@@ -56,7 +58,7 @@ Alimenta: página Dónde comprar (mapa D3 + índice + tarjetas), sección Encué
 - **Proyectos**: obras {nombre, ciudad, referencia a producto/diseño, specs, foto}. Mínimo **2 obras**. (Hoy: 2 placeholders.)
 - **Historia**: hitos {año, título, texto, imagen}. Mínimo **3 hitos**. (Hoy: 5 placeholders; solo 1956 es dato del cliente.)
 - **Profesionales**: textos + imagen + **video de instalación** (archivo + etiqueta corta, ej. "Video · 3:47"). Sin video no se dibujan ni el play ni la etiqueta. Los botones de redes de esta sección salen de `ajustes.redes`, no de aquí: son dato de sitio.
-- **Encuéntranos**: solo textos del encabezado — los datos salen de `distribuidor`.
+- **Encuéntranos**: textos del encabezado + `foto` (el ambiente que corona el panel derecho) + `estadosDestacados` (los estados que el home lista, en orden — el prototipo lista 6 de 20 y el resto vive en Dónde comprar; vacío = todos). Los **datos y conteos** salen de `distribuidor` y se derivan por código, nunca se escriben.
 - Fijo (no editable): telón de entrada, header/megamenú (estructura), footer (estructura), animaciones, orden de secciones.
 
 ### 2.2 `contacto`

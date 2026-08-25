@@ -50,6 +50,8 @@ sale vacía y no hay nada que comparar.
 | 8 | Global | Faltan dos efectos del prototipo: la **máscara de imagen** (`clip-path: inset(0 0 14% 0)` → `inset(0)`, 480ms ease-out) y el **filete que se dibuja** (`background-size: 0 1px` → `100% 1px`, 480ms ease-out con 120ms de retraso). |
 | 9 | Profesionales | Faltaban el **tile de video** (play de 72px + etiqueta "Video · 3:47") y el bloque **"Conecta con nuestras redes"**. No eran de maquetación: no había campo en el CMS. Resuelto agregando `home.profesionales.video`/`videoEtiqueta` y `ajustes.redes[]`. **Cerrado el 2026-08-25**: el cliente entregó las tres redes y el video, ya cargados (ver §Video de instalación). |
 | 10 | Proyectos | Las obras tenían `producto` vacío: sus diseños (Carrara Brillante, Teca) son Serie Regular y la carga solo traía Serie Venezuela. La fila "Diseño" se ocultaba y la ficha quedaba 40px baja en móvil. Resuelto: los dos productos se importan y las obras los referencian; `formato` queda solo con la especificación, como en el prototipo. |
+| 12 | Encuéntranos | La sección salía **sin foto de panel y sin distribuidores**: el modelo no tenía campo de imagen ahí y la colección estaba vacía. Resuelto agregando `home.encuentranos.foto` y `home.encuentranos.estadosDestacados`, y cargando los 24 distribuidores del prototipo. **Cerrado el 2026-08-25** — ver §Encuéntranos. |
+| 13 | Encuéntranos | El CTA del panel se estiraba a lo ancho: `.panel__cta { align-self }` apuntaba al `<a>` que dibuja `Boton`, que no lleva el scope de la sección (misma falla que el hallazgo 2). Resuelto con `:global()`. |
 | 11 | Global | **`line-height` de los tokens vs. el prototipo.** El prototipo no declara `line-height` en overlines ni en valores de ficha (queda `normal`); los tokens sí: `--text-overline` 1.35 (16.2px vs 14px reales) y `--text-caption-lg` 1.5 (19.5px vs 18px). Es la causa de todo el residuo que queda: +13px en Proyectos a 390 (1.2%) y +4px a 1440, y el corrimiento de 2px del bloque editorial de Profesionales. Afecta a todo el sitio, así que **es decisión de tokens, no de una sección**: o el prototipo se aparta de `Tokens v0` §09 y manda el token, o manda el prototipo y hay que anotar la desviación. Sin resolver esto no se baja del 1% en móvil. |
 
 ## Hallazgos de fondo (2026-08-25)
@@ -144,6 +146,7 @@ que los breakpoints en JS: no se replica.
 | Ambientes | 0,70% | pestañas deslizables en vez de dos líneas — divergencia decidida |
 | Proyectos | 2px de alto | 2px de alto |
 | Profesionales | **1,11%** | **3px de alto** (antes: 1,19% y 151px) |
+| Encuéntranos | **32px de alto** (antes: 680px / 58,0%) | **21px de alto** (antes: 1016px / 77,4%) |
 
 ### Interlineado: manda la página, no el token
 
@@ -153,6 +156,34 @@ y cabecera del sitio. `Tokens v0` §10 fija la regla: *"un token es verdad solo 
 aplica; auditar por VALOR y no por nombre"*. Se corrigió redefiniendo `--text-overline`,
 `--text-nav` y `--text-caption-lg` en `src/theme/base.css`, sin tocar `tokens.css`.
 Efecto medido: el hero pasó de 0,88% a **0,00%** en móvil, y de 0,36% a 0,21% en escritorio.
+
+### Encuéntranos: la sección estaba vacía, no mal maquetada (2026-08-25)
+
+El 58% de diferencia a 1440 y el 77% a 390 eran **falta de contenido**, no de maquetación: sin
+distribuidores no se dibujaba ni el índice ni el panel, y la foto del panel no existía en el modelo.
+Se cargaron los 24 puntos de la red del prototipo (`design/publicar/donde-comprar.html`, constante
+`DIST`) y se agregaron dos campos a `home.encuentranos`: `foto` y `estadosDestacados`.
+
+**Por qué `estadosDestacados`.** El home del prototipo NO lista la red entera: lista **seis** estados
+(constante `REGIONES`) y remata con el CTA a Dónde comprar, que sí los trae los veinte. Cuáles son
+esos seis no se deriva de los conteos —el prototipo deja fuera a Miranda, que empata en puntos con
+los tres primeros—, así que es decisión editorial y vive en el CMS. Los **números** siguen
+derivándose de los distribuidores (`contarPorEstado`), como manda la regla: el panel resume la red
+completa (24 · 20 estados · 23 ciudades) aunque el índice muestre seis.
+
+Con eso, el contenido queda a **4px a 1440 y 3px a 390** (medido sobre `.encuentranos__grid` contra
+la grilla del prototipo). Ese residuo es el CTA del panel: el prototipo lo declara de 48px y nuestro
+`Boton` usa `--control-height-md` (44px), el valor que fija `Primitivas v1` para el botón
+(*"Work Sans 600 · 15px · min-height 44px"*). El mismo botón también difiere en tipografía —el
+prototipo lo escribe en versalitas de 13px/500, la primitiva en 15px/600 sin versalitas—: manda la
+primitiva, como en Profesionales.
+
+**El resto de la diferencia (32px a 1440, 21px a 390) es el ritmo de sección, no la sección.** El
+prototipo le da a Encuéntranos un padding propio (`clamp(40px,4.5vw,72px)` arriba y
+`clamp(80px,9vw,140px)` abajo → 64,8 + 129,6 a 1440) en vez del que usan Proyectos y Profesionales
+(8vw). `Responsividad v0` §02 fija el ritmo entre secciones en **104 → 120px** en escritorio y 64px
+en móvil, y nuestro `--space-section` (115,2px a 1440) cumple; los 64,8px del prototipo no. Como en
+el alto del hero, **gana la spec**: no se replica.
 
 ### Divergencias decididas (no se cierran a cero, a propósito)
 
@@ -164,3 +195,62 @@ En móvil el prototipo contradice a su propia `Responsividad v0` en tres puntos.
    deslizables horizontalmente.
 3. **Hero**: el prototipo corre a 78dvh por un ajuste de su entorno; la tabla de grilla pide
    100dvh en escritorio.
+
+## Checklist de aceptación — automatizado (2026-08-25)
+
+`scripts/qa/aceptacion.mjs` corre con Playwright las **7 pruebas del checklist que no dependen
+del catálogo ni del mapa**. Un solo comando, informe legible, código 1 si algo falla:
+
+```bash
+node scripts/qa/aceptacion.mjs                       # levanta dist/client con las reglas de Cloudflare
+NUESTRO=https://…       node scripts/qa/aceptacion.mjs   # contra el desplegado
+RAIZ_ESTATICA=/ruta     node scripts/qa/aceptacion.mjs   # contra una copia del build
+SOLO=04,12              node scripts/qa/aceptacion.mjs   # solo esas pruebas
+```
+
+Sin `NUESTRO` levanta un servidor propio que replica el `wrangler.jsonc`
+(`not_found_handling: "404-page"` y `html_handling: "drop-trailing-slash"`): con
+`python3 -m http.server` la prueba 02 mediría el 404 de Python, que no es el que va a producción.
+
+| # | Prueba | Resultado | Número medido |
+|---|---|---|---|
+| 02 | 404 del sitio, no del servidor | ✅ | HTTP 404 con encabezado, explicación y botón al catálogo |
+| 03 | Primera pantalla del inicio | medida | 3G lenta: LCP 7,51 s · 237 KB hasta el LCP — sin frenos: LCP 0,32 s |
+| 04 | Sin destello blanco ni remonte del encabezado | ✅ | mismo nodo de `<header>` · 15 fotogramas, blanco máx 0,4% |
+| 08 | Las imágenes no hacen saltar el contenido | ✅ | CLS 0,0000 |
+| 09 | Con movimiento reducido nada se anima | ✅ | 0 declaraciones > 1 ms · 0 animaciones vivas · sin telón |
+| 11 | 44px de área tocable · barra del sistema | ✅ | 0 controles bajo 44px · 2 barras fijas, 0 sin safe-area |
+| 12 | Recorrido con teclado y paneles | ✅ | 29 paradas, 0 sin foco visible · paneles abren y cierran |
+
+Las pruebas **01, 05, 06, 07 y 10** quedan para las fases del catálogo y del mapa.
+
+**La 03 se mide, no se juzga.** El enunciado ("menos de tres segundos en datos móviles") depende
+de la red real del visitante y del CDN, no del build: dar un veredicto desde localhost sería
+inventarlo. Lo que sí controlamos es el peso, y se reporta separado — **237 KB hasta el LCP** (la
+primera pantalla de verdad) contra 1159 KB hasta el evento `load`, que incluye las imágenes
+diferidas que Chrome adelanta por su cuenta cuando la red es lenta.
+
+### Defectos que encontró, y cómo se arreglaron
+
+| # | Dónde | Defecto | Arreglo |
+|---|---|---|---|
+| 12 | Cáscara | **`transition:persist` no hacía nada.** Puesto sobre `<Header/>` y `<Footer/>` en el layout, el compilador lo convierte en una *prop* del componente; si el componente no la reenvía a un elemento, se pierde en silencio. Medido: el `<header>` era un nodo NUEVO en cada navegación. | La directiva se declara en el elemento raíz de cada componente de la cáscara (`transition:persist="cabecera" / "menu-movil" / "pie"`). |
+| 13 | Cabecera | Con la cabecera ya persistiendo, lo que depende de la página quedaba congelado: `data-sobre-hero` de la página anterior y `aria-current="page"` en el enlace equivocado. | `sincronizar()` en `astro:after-swap`: lee `#contenido[data-sobre-hero]` (el `<main>` sí se cambia) y recalcula `aria-current`. |
+| 14 | Cabecera | El script se volvía a enganchar en cada `astro:page-load` sobre el MISMO nodo persistido: a partir de la segunda página cada clic disparaba el manejador dos veces y el megamenú abría y cerraba en el mismo gesto. | Guarda de idempotencia (`data-enganchada`); en las siguientes páginas solo se resincroniza. |
+| 15 | Ambientes | El área tocable de las pestañas era de 24px en móvil. La zona ampliada existe (`.ambientes__tab::after`, 44px), pero `overflow-x: auto` obliga a `overflow-y: auto` y la **recortaba** — ya estaba corregido para ≥760px, no para móvil, que es donde importa. | `padding-block: 10px` en la tira con margen negativo que lo descuenta: 44px de banda tocable y ni un píxel de cambio en la maqueta. |
+| 16 | Menú móvil | Hoja a pantalla completa sin trampa de foco: tabular llevaba el foco al contenido de atrás, que no se ve. | `role="dialog" aria-modal="true"` y ciclado del foco dentro de la hoja mientras está abierta. |
+
+**Cómo se comprueba cada cosa, y por qué así** (está comentado en el script):
+
+- **04** no se da por bueno mirando el marcado: se guarda la referencia al nodo `<header>` antes de
+  navegar y se verifica que después es el **mismo objeto**; y la transición se graba con el
+  screencast de CDP —fotogramas reales del compositor— buscando uno de ≥97% blanco puro. El fondo
+  del sitio es `#F5F3F0`, así que nunca se confunde con la página.
+- **11** no mide la caja del elemento sino **lo que recibe el dedo**: lanza puntos a ±21px del
+  centro y pregunta al navegador qué elemento hay ahí. Así reconoce las áreas ampliadas con
+  pseudoelemento (pestañas de Ambientes) y detecta cuando un `overflow` las recorta. La barra del
+  sistema no se puede emular en Chrome de escritorio (`env()` resuelve a 0), así que se audita la
+  fuente: se buscan las reglas que declaran `env(safe-area-inset-*)` y se comprueba que alcanzan a
+  cada barra fija o pegajosa.
+- **09** mira las duraciones calculadas de elementos **y pseudoelementos**, la lista real de
+  `document.getAnimations()`, y que el telón no aparezca ni deje el contenido invisible.

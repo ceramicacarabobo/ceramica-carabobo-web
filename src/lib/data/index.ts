@@ -122,10 +122,24 @@ export const getAjustes = async () => {
 /**
  * Conteo de distribuidores por estado — DERIVADO, nunca escrito a mano
  * (regla del prototipo para la sección Encuéntranos).
+ *
+ * `destacados` recorta y ORDENA el resultado: es la selección editorial del
+ * home (el prototipo lista seis estados, no los veinte de la red) y respeta el
+ * orden en que viene del CMS. Un estado sin puntos de venta se cae solo, para
+ * que una selección vieja no muestre un "0 puntos". Sin `destacados` devuelve
+ * la red entera ordenada por cantidad.
  */
-export function contarPorEstado(distribuidores: Distribuidor[]): {estado: string; total: number}[] {
+export function contarPorEstado(
+  distribuidores: Distribuidor[],
+  destacados?: string[],
+): {estado: string; total: number}[] {
   const conteo = new Map<string, number>()
   for (const d of distribuidores) conteo.set(d.estado, (conteo.get(d.estado) ?? 0) + 1)
+  if (destacados && destacados.length > 0) {
+    return destacados
+      .filter((estado, i) => conteo.has(estado) && destacados.indexOf(estado) === i)
+      .map((estado) => ({estado, total: conteo.get(estado) as number}))
+  }
   return [...conteo.entries()]
     .map(([estado, total]) => ({estado, total}))
     .sort((a, b) => b.total - a.total || a.estado.localeCompare(b.estado, 'es'))

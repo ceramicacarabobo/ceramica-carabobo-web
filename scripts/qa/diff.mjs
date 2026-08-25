@@ -48,6 +48,14 @@ async function capturar(url, selector, salida) {
       await new Promise((r) => setTimeout(r, 220))
     }
   })
+  // El recorrido deja el scroll donde terminó (cerca del pie). Si el elemento
+  // a capturar queda justo debajo de una cabecera sticky (páginas más cortas
+  // que el recorrido, p. ej. la 404), `scrollIntoViewIfNeeded` de más abajo
+  // lo alinea al ras contra esa cabecera y la tapa en la captura. Se vuelve
+  // arriba antes de buscarlo: para secciones más abajo en la página no cambia
+  // nada (igual hace falta bajar), y evita ese solape para las que están cerca
+  // del tope.
+  await pagina.evaluate(() => window.scrollTo(0, 0))
   const elemento = pagina.locator(selector).first()
   if (!(await elemento.count())) {
     await navegador.close()

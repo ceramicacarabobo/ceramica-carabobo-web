@@ -113,7 +113,18 @@ export interface Home {
     /** Video del tile izquierdo. Sin él no hay play ni etiqueta: queda la foto sola. */
     video?: Video
   }
-  encuentranos: {etiqueta?: string; titulo?: string; texto?: string}
+  encuentranos: {
+    etiqueta?: string
+    titulo?: string
+    texto?: string
+    /** Ambiente del panel derecho. Sin ella el panel se compone solo con los datos. */
+    foto?: Imagen
+    /**
+     * Estados que se listan en el home, en orden. Decisión editorial (el
+     * prototipo lista seis de veinte); vacío = todos los que tengan puntos.
+     */
+    estadosDestacados?: string[]
+  }
 }
 
 export interface Sede {

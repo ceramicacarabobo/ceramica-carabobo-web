@@ -89,13 +89,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
 
     <a class="skip-link" href="#contenido">Ir al contenido</a>
 
-    <Header sobreHero={sobreHero} materias={materias} transition:persist />
+    <!-- `transition:persist` NO se pone acá: sobre un componente Astro llega como
+         prop y se pierde si el componente no la reenvía. Header y Footer la declaran
+         en su propio elemento raíz. -->
+    <Header sobreHero={sobreHero} materias={materias} />
 
-    <main id="contenido">
+    <!-- La cabecera persiste entre páginas; este atributo es el que le dice, después
+         del cambio, si la página nueva abre con hero a sangre. -->
+    <main id="contenido" data-sobre-hero={sobreHero ? '' : undefined}>
       <slot />
     </main>
 
-    <Footer ajustes={ajustes} transition:persist />
+    <Footer ajustes={ajustes} />
 
     <VisualEditing enabled={visualEditingHabilitado} />
   </body>

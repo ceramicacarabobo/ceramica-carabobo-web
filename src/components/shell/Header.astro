@@ -8,7 +8,12 @@
  *    completa con los enlaces anclados AL PIE (lo que se toca es la lista, no el disparador).
  *
  * El megamenú de Catálogo existe solo en desktop; en móvil Catálogo es un enlace directo.
- * Persiste entre navegaciones (transition:persist en el layout).
+ * Persiste entre navegaciones: `transition:persist` va en el propio <header> (y en
+ * el menú móvil). Ponerlo en el layout, sobre la etiqueta <Header/>, NO funciona:
+ * el compilador lo convierte en una prop del componente y, si el componente no la
+ * reenvía a un elemento, se pierde en silencio — que es lo que pasaba, medido con
+ * `scripts/qa/aceptacion.mjs` (prueba 04). Como el nodo sobrevive al cambio de
+ * página, lo que dependa de la página se resincroniza en `astro:after-swap`.
  */
 import Lockup from './Lockup.astro'
 import Imagen from '~/components/base/Imagen.astro'
@@ -37,7 +42,7 @@ const enlacesMovil = [...enlaces, {href: '/donde-comprar', texto: 'Dónde compra
 const hayMegamenu = materias.length >= 4
 ---
 
-<header class="cabecera" data-cabecera data-sobre-hero={sobreHero ? '' : undefined}>
+<header class="cabecera" data-cabecera data-sobre-hero={sobreHero ? '' : undefined} transition:persist="cabecera">
   <div class="cabecera__banda">
     <a class="cabecera__marca" href="/" aria-label="Cerámica Carabobo — inicio">
       <Lockup variante="horizontal" />
@@ -123,7 +128,16 @@ const hayMegamenu = materias.length >= 4
   }
 </header>
 
-<div class="menu-movil" id="menu-movil" data-menu-movil hidden>
+<div
+  class="menu-movil"
+  id="menu-movil"
+  data-menu-movil
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menú principal"
+  transition:persist="menu-movil"
+>
   <div class="menu-movil__cabecera">
     <a class="menu-movil__marca" href="/" aria-label="Cerámica Carabobo — inicio">
       <Lockup variante="apilada" />
@@ -519,9 +533,43 @@ const hayMegamenu = materias.length >= 4
 <script>
   const CERRADO = 'false'
 
+  /**
+   * La cabecera persiste entre páginas, así que los atributos que dependen de la
+   * página NO se actualizan solos: el nodo que queda es el de la página anterior.
+   * Se recalculan acá, después de cada cambio de página.
+   *  - `data-sobre-hero` se lee del <main> de la página nueva (el <main> sí se cambia).
+   *  - `aria-current="page"` se recalcula sobre los enlaces de nav y del menú móvil.
+   */
+  function sincronizar() {
+    const cabecera = document.querySelector<HTMLElement>('[data-cabecera]')
+    if (!cabecera) return
+
+    const sobreHero = !!document.querySelector('#contenido[data-sobre-hero]')
+    cabecera.toggleAttribute('data-sobre-hero', sobreHero)
+
+    const ruta = location.pathname.replace(/\/$/, '') || '/'
+    document
+      .querySelectorAll<HTMLAnchorElement>('.nav__enlace[href], [data-menu-movil] nav a[href]')
+      .forEach((enlace) => {
+        const destino = (enlace.getAttribute('href') || '').replace(/\/$/, '') || '/'
+        if (destino === ruta) enlace.setAttribute('aria-current', 'page')
+        else enlace.removeAttribute('aria-current')
+      })
+  }
+
   function iniciar() {
     const cabecera = document.querySelector<HTMLElement>('[data-cabecera]')
     if (!cabecera) return
+
+    // La cabecera es la MISMA de la página anterior (transition:persist), y sus
+    // manejadores siguen enganchados. Volver a engancharlos haría que cada clic
+    // disparara el manejador dos veces: el panel abriría y cerraría en el mismo
+    // gesto. Se engancha una sola vez y después solo se resincroniza.
+    if (cabecera.dataset.enganchada !== undefined) {
+      sincronizar()
+      return
+    }
+    cabecera.dataset.enganchada = ''
 
     const megamenu = cabecera.querySelector<HTMLElement>('[data-megamenu]')
     const disparadorMega = cabecera.querySelector<HTMLButtonElement>('[data-abre-megamenu]')
@@ -574,10 +622,37 @@ const hayMegamenu = materias.length >= 4
       if (menuMovil && !menuMovil.hidden) abrirMenuMovil(false)
     })
 
+    // El menú móvil ocupa la pantalla entera: mientras está abierto, tabular no
+    // puede llevar el foco al contenido de atrás, que no se ve. Se cicla dentro.
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key !== 'Tab' || !menuMovil || menuMovil.hidden) return
+      const focales = menuMovil.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+      if (focales.length === 0) return
+      const primero = focales[0]
+      const ultimo = focales[focales.length - 1]
+      const activo = document.activeElement
+      if (!menuMovil.contains(activo)) {
+        evento.preventDefault()
+        primero.focus()
+      } else if (!evento.shiftKey && activo === ultimo) {
+        evento.preventDefault()
+        primero.focus()
+      } else if (evento.shiftKey && activo === primero) {
+        evento.preventDefault()
+        ultimo.focus()
+      }
+    })
+
     // Clic fuera cierra el megamenú.
     document.addEventListener('click', (evento) => {
       if (!megamenu || megamenu.hidden) return
       if (!cabecera.contains(evento.target as Node)) cerrarMega()
+    })
+
+    // Tras cambiar de página el scroll vuelve arriba sin que se dispare el evento.
+    document.addEventListener('astro:after-swap', () => {
+      alScrollear()
+      sincronizar()
     })
 
     // Al navegar, todo se cierra: la cáscara persiste pero el estado no.
@@ -592,5 +667,6 @@ const hayMegamenu = materias.length >= 4
   }
 
   iniciar()
+  sincronizar()
   document.addEventListener('astro:page-load', iniciar)
 </script>

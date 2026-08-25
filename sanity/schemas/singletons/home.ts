@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {ESTADOS, opciones} from '../../lib/listas'
 
 /**
  * Home — singleton. Composición y orden de secciones son FIJOS (código);
@@ -188,11 +189,40 @@ export default defineType({
       title: 'Encuéntranos',
       type: 'object',
       group: 'encuentranos',
-      description: 'Solo los textos: los datos y los conteos salen de los distribuidores.',
+      description:
+        'Los textos y la foto del panel: los datos y los conteos salen de los distribuidores, nunca se escriben acá.',
       fields: [
         defineField({name: 'etiqueta', title: 'Etiqueta', type: 'string'}),
         defineField({name: 'titulo', title: 'Título', type: 'string'}),
         defineField({name: 'texto', title: 'Texto', type: 'text', rows: 2}),
+        defineField({
+          name: 'foto',
+          title: 'Foto del panel',
+          type: 'image',
+          options: {hotspot: true},
+          description:
+            'Ambiente que corona el panel de la derecha. Sin foto el panel se compone igual, solo con los datos de la red.',
+          fields: [defineField({name: 'alt', title: 'Texto alternativo', type: 'string'})],
+        }),
+        // El índice del home NO es la red completa: el prototipo lista seis
+        // estados y remata con el CTA a Dónde comprar, que sí los trae todos
+        // (index.html, constante REGIONES). Cuáles son esos seis es una
+        // decisión editorial —no se deriva de los conteos—, así que vive en el
+        // CMS. Los números siguen derivándose de los distribuidores.
+        defineField({
+          name: 'estadosDestacados',
+          title: 'Estados que se listan en el home',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: {list: opciones(ESTADOS)},
+          description:
+            'En este orden. Vacío = se listan todos los estados con distribuidores (el home queda muy largo).',
+          validation: (rule) =>
+            rule
+              .max(8)
+              .warning('Más de 8 estados alargan el home; el listado completo vive en Dónde comprar.')
+              .unique(),
+        }),
       ],
     }),
   ],

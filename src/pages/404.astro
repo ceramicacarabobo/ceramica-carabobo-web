@@ -1,48 +1,112 @@
 ---
 /**
  * 404 del sitio. El 404 del servidor apunta acá desde wrangler
- * (`assets.not_found_handling: "404-page"`), requisito nº11 del handoff.
+ * (`assets.not_found_handling: "404-page"`, requisito nº11 del handoff).
+ *
+ * Texto y estructura son FIJOS (código): `modelo-de-contenido.md` §4 lista
+ * "404" explícitamente en el mapa "Fijo (código)", junto con el layout y las
+ * animaciones — no hay campo de CMS que reemplace este copy.
  */
 import Base from '~/layouts/Base.astro'
+import Boton from '~/components/base/Boton.astro'
+import Reveal from '~/components/base/Reveal.astro'
 ---
 
 <Base titulo="Página no encontrada" noIndex>
-  <section class="error contenedor">
-    <p class="overline error__codigo">Error 404</p>
-    <h1 class="error__titulo">Esta dirección no existe.</h1>
-    <p class="error__texto">Puede que el enlace esté mal escrito o que la página haya cambiado de sitio.</p>
-    <p class="error__acciones">
-      <a href="/">Volver al inicio</a>
-    </p>
-  </section>
+  <div class="error">
+    <Reveal como="p" class="overline error__codigo">Error 404</Reveal>
+    <Reveal como="h1" indice={1} class="error__titulo">Esta página no existe.</Reveal>
+    <Reveal como="p" indice={2} class="error__texto">
+      Puede que el enlace esté viejo o que hayamos movido el contenido. El catálogo completo sigue en su lugar.
+    </Reveal>
+    <Reveal indice={3}>
+      <Boton href="/catalogo" class="error__cta">
+        Ver el catálogo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </Boton>
+    </Reveal>
+    <span class="error__filete" aria-hidden="true"></span>
+  </div>
 </Base>
 
 <style>
+  /*
+   * El prototipo centra la 404 verticalmente entre cabecera y pie: wrapper
+   * flex-column a 100dvh y <main> con flex:1 + align-items:center (el bloque
+   * de texto conserva su alto natural, el hueco sobrante lo reparte el padre).
+   * La cáscara compartida no lo hace por defecto (las demás páginas fluyen con
+   * su propio alto), así que esta página activa ese modo en su propio bundle.
+   */
+  :global(body) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  :global(#contenido) {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
   .error {
-    padding-block: var(--space-section);
-    max-width: 44ch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(18px, 2.4vw, 28px);
+    padding-block: clamp(64px, 10vw, 140px);
+    padding-inline: var(--space-gutter-page);
+    max-width: var(--size-content-max);
+    width: 100%;
     margin-inline: auto;
   }
 
   .error__codigo {
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-4);
-  }
-
-  .error__titulo {
-    font: var(--text-heading-xl);
-  }
-
-  .error__texto {
-    margin-top: var(--space-6);
-    font: var(--text-body-lg);
     color: var(--color-text-secondary);
   }
 
-  .error__acciones {
-    margin-top: var(--space-8);
-    font: var(--text-ui-sm);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-uppercase-md);
+  .error__titulo {
+    margin: 0;
+    max-width: 20ch;
+    font: var(--text-display);
+    letter-spacing: var(--tracking-display-light);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .error__texto {
+    margin: 0;
+    max-width: 44ch;
+    font: var(--text-body-15);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /*
+   * `Boton` no reenvía atributos extra a su etiqueta raíz (a diferencia de
+   * `Reveal`/`Seccion`), así que una clase pasada desde afuera no lleva el
+   * scope de esta página — regla ya documentada para el mismo caso en
+   * `Encuentranos.astro` (`.panel__cta`): hay que apuntar con `:global()`.
+   * Además, `.boton[data-astro-cid-…]` tiene la MISMA especificidad (una
+   * clase + un atributo) que un `:global(.error__cta)` suelto (una clase):
+   * empatan y gana el orden de aparición, que no controlamos. Se sube a
+   * tres clases (`.error .boton.error__cta`) para no depender de eso.
+   * --control-height-lg es el alto de "CTA de cierre / acción destacada"
+   * que el prototipo usa acá (48px, contra los 44 del botón por defecto).
+   */
+  :global(.error .boton.error__cta) {
+    margin-top: var(--space-1);
+    min-height: var(--control-height-lg);
+  }
+
+  .error__filete {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--color-action-primary);
+    margin-top: clamp(8px, 1.4vw, 16px);
   }
 </style>

@@ -5,6 +5,9 @@
  * Active = hover (brand-900) + translateY(1px) — decisión G1 del handoff.
  */
 interface Props {
+  /** Cualquier otro atributo (incluido el scope de estilos del padre) se reenvía.
+      Sin esto, el CSS que una sección escribe para su botón no le llega. */
+  [clave: string]: unknown
   variante?: 'primary' | 'secondary' | 'ghost' | 'inverse'
   href?: string
   tipo?: 'button' | 'submit'
@@ -12,7 +15,7 @@ interface Props {
   class?: string
 }
 
-const {variante = 'primary', href, tipo = 'button', ancho = false, class: clase} = Astro.props
+const {variante = 'primary', href, tipo = 'button', ancho = false, class: clase, ...resto} = Astro.props
 const Etiqueta = href ? 'a' : 'button'
 ---
 
@@ -20,6 +23,7 @@ const Etiqueta = href ? 'a' : 'button'
   class:list={['boton', `boton--${variante}`, ancho && 'boton--ancho', clase]}
   href={href}
   type={href ? undefined : tipo}
+  {...resto}
 >
   <slot />
 </Etiqueta>

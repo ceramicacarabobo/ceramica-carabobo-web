@@ -175,7 +175,15 @@ const pestanas = ambientes.pestanas
   .ambientes__tabs {
     display: flex;
     gap: clamp(24px, 3vw, 44px);
-    margin-top: clamp(8px, 1vw, 16px);
+    /* Área tocable de 44px sin mover la maqueta (checklist de aceptación nº11).
+       La fila del diseño mide 24px y la zona ampliada vive en `.ambientes__tab::after`,
+       pero en móvil `overflow-x: auto` obliga a `overflow-y: auto` y RECORTABA esa zona
+       —medido con hit-test en `scripts/qa/aceptacion.mjs`—, así que el dedo solo
+       alcanzaba 24px. La tira se alarga 10px arriba y abajo con padding y se descuenta
+       con margen negativo: el alto que ocupa en el flujo es exactamente el de antes. */
+    padding-block: 10px;
+    margin-top: calc(clamp(8px, 1vw, 16px) - 10px);
+    margin-bottom: -10px;
     /* Pestañas scrolleables horizontalmente (Responsividad v0 §03): en desktop
        no hace falta porque entran todas, en móvil reemplaza el wrap. */
     overflow-x: auto;

@@ -22,13 +22,23 @@
  * prototipo) en el mismo breakpoint móvil de 760px que usan Proyectos y
  * Profesionales.
  *
+ * El índice NO es la red completa: el prototipo lista seis estados y remata con
+ * el CTA a Dónde comprar, que sí los trae todos. Cuáles son esos seis no se
+ * deriva de los conteos (el prototipo deja fuera a Miranda, que empata en
+ * puntos con los tres primeros): es una decisión editorial y por eso vive en el
+ * CMS, en `encuentranos.estadosDestacados`. Los NÚMEROS siguen derivándose.
+ *
+ * El panel del prototipo se corona con una foto de ambiente
+ * (`encuentranos.foto`), sobre la caja de datos.
+ *
  * Contenido defensivo: sin etiqueta/título/texto y sin distribuidores no hay
  * nada que mostrar y la sección desaparece. Con textos pero sin distribuidores
  * (regla del encargo), se muestra solo el encabezado — ningún número
- * inventado. El panel de foto del prototipo se omitió: `Home['encuentranos']`
- * no trae imagen y esta sección no tiene un campo de foto propio en el CMS.
+ * inventado. Sin foto, el panel se compone igual: la caja de datos tiene alto
+ * mínimo propio (212px, el del prototipo), así que no queda un hueco.
  */
 import Boton from '~/components/base/Boton.astro'
+import Imagen from '~/components/base/Imagen.astro'
 import Reveal from '~/components/base/Reveal.astro'
 import Seccion from '~/components/base/Seccion.astro'
 import {contarPorEstado} from '~/lib/data'
@@ -45,7 +55,8 @@ const hayTextos = Boolean(encuentranos.etiqueta || encuentranos.titulo || encuen
 const hayRed = distribuidores.length > 0
 const mostrarSeccion = hayTextos || hayRed
 
-const porEstado = contarPorEstado(distribuidores)
+// Índice: la selección editorial del CMS (o toda la red, si está vacía).
+const porEstado = contarPorEstado(distribuidores, encuentranos.estadosDestacados)
 
 const ciudadesDeEstado = (estado: string) =>
   [...new Set(distribuidores.filter((d) => d.estado === estado).map((d) => d.ciudad))].join(' · ')
@@ -57,8 +68,10 @@ const filas = porEstado.map((f, indice) => ({
   ciudades: ciudadesDeEstado(f.estado),
 }))
 
+// El panel resume la RED ENTERA, no la selección del índice: es el agregado
+// nacional del prototipo ("24 distribuidores · 20 estados · 23 ciudades").
 const totalPuntos = distribuidores.length
-const totalEstados = porEstado.length
+const totalEstados = new Set(distribuidores.map((d) => d.estado)).size
 const totalCiudades = new Set(distribuidores.map((d) => d.ciudad)).size
 
 // "Red nacional" es un rótulo de UI (como "Estado" o "Ciudad" en las fichas),
@@ -121,27 +134,37 @@ const panelCtaBase = 'Dónde comprar'
           </ul>
 
           <Reveal como="div" indice={1} class="encuentranos__panel-envoltorio">
-            <div class="panel" data-panel aria-live="polite">
-              <p class="panel__etiqueta" data-panel-etiqueta>
-                {panelEtiquetaBase}
-              </p>
-              <p class="panel__titulo" data-panel-titulo>
-                {panelTituloBase}
-              </p>
-              <div class="panel__dato">
-                <span class="panel__numero" data-panel-dato>
-                  {panelDatoBase}
-                </span>
-                <span class="panel__unidad" data-panel-unidad>
-                  {panelUnidadBase}
-                </span>
+            <div class="panel">
+              {encuentranos.foto && (
+                <Imagen
+                  imagen={encuentranos.foto}
+                  class="panel__foto"
+                  sizes="(min-width: 760px) 45vw, 100vw"
+                  ancho={1200}
+                />
+              )}
+              <div class="panel__cuerpo" data-panel aria-live="polite">
+                <p class="panel__etiqueta" data-panel-etiqueta>
+                  {panelEtiquetaBase}
+                </p>
+                <p class="panel__titulo" data-panel-titulo>
+                  {panelTituloBase}
+                </p>
+                <div class="panel__dato">
+                  <span class="panel__numero" data-panel-dato>
+                    {panelDatoBase}
+                  </span>
+                  <span class="panel__unidad" data-panel-unidad>
+                    {panelUnidadBase}
+                  </span>
+                </div>
+                <p class="panel__ciudades" data-panel-ciudades>
+                  {panelCiudadesBase}
+                </p>
+                <Boton href="/donde-comprar" class="panel__cta">
+                  <span data-panel-cta>{panelCtaBase}</span>
+                </Boton>
               </div>
-              <p class="panel__ciudades" data-panel-ciudades>
-                {panelCiudadesBase}
-              </p>
-              <Boton href="/donde-comprar" class="panel__cta">
-                <span data-panel-cta>{panelCtaBase}</span>
-              </Boton>
             </div>
           </Reveal>
         </div>
@@ -274,6 +297,21 @@ const panelCtaBase = 'Dónde comprar'
   .panel {
     background: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  /* Alto fijo, como en el prototipo: la foto corona el panel y la caja de
+     datos queda debajo. El wrapper de imagen reserva proporción, que acá
+     estorba (el recorte manda), así que se apaga el aspect-ratio. */
+  .encuentranos :global(.panel__foto.imagen) {
+    aspect-ratio: auto;
+    height: clamp(400px, 50vh, 600px);
+  }
+
+  .panel__cuerpo {
+    /* 212px es el mínimo del prototipo: sostiene la caja aunque no haya foto
+       y evita que el bloque de datos salte al cambiar de estado. */
+    min-height: 212px;
+    box-sizing: border-box;
     padding: clamp(24px, 2.6vw, 32px);
     display: flex;
     flex-direction: column;
@@ -326,7 +364,13 @@ const panelCtaBase = 'Dónde comprar'
     color: var(--color-text-secondary);
   }
 
-  .panel__cta {
+  /*
+   * `:global` porque el destino es el <a> que dibuja `Boton`, y ese elemento
+   * no lleva el scope de esta sección: sin esto la regla no hacía match y el
+   * botón se estiraba a lo ancho del panel (mismo modo de falla que el
+   * hallazgo 2 de docs/fase-2-qa-fidelidad.md).
+   */
+  .encuentranos :global(.panel__cta) {
     margin-top: auto;
     align-self: flex-start;
   }

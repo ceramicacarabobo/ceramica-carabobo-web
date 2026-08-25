@@ -44,12 +44,31 @@ export default defineType({
       type: 'geopoint',
       description: 'Opcional: sin coordenadas el punto se lista pero no se marca en el mapa.',
     }),
+    // Marca de dato de referencia, como `esEjemplo` en las fotos de producto.
+    // El handoff avisa (design/publicar/LEEME.md) que en su red solo el reparto
+    // por estado tiene criterio: nombres, direcciones y teléfonos son
+    // inventados. No se dibuja en el sitio; es un aviso para quien edita, y
+    // reemplazar estos puntos es condición de lanzamiento público
+    // (docs/modelo-de-contenido.md, anexo de decisiones cerradas).
+    defineField({
+      name: 'esEjemplo',
+      title: 'Dato de ejemplo (pendiente de validar)',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'Marcado = nombre, dirección y teléfono son de relleno, no del cliente. Quitar la marca al cargar el dato real.',
+    }),
   ],
   orderings: [
     {name: 'estadoCiudad', title: 'Estado y ciudad', by: [{field: 'estado', direction: 'asc'}, {field: 'ciudad', direction: 'asc'}]},
   ],
   preview: {
-    select: {title: 'nombre', ciudad: 'ciudad', estado: 'estado'},
-    prepare: ({title, ciudad, estado}) => ({title, subtitle: [ciudad, estado].filter(Boolean).join(', ')}),
+    select: {title: 'nombre', ciudad: 'ciudad', estado: 'estado', esEjemplo: 'esEjemplo'},
+    prepare: ({title, ciudad, estado, esEjemplo}) => ({
+      title,
+      subtitle: [[ciudad, estado].filter(Boolean).join(', '), esEjemplo ? 'ejemplo — pendiente de validar' : null]
+        .filter(Boolean)
+        .join(' · '),
+    }),
   },
 })

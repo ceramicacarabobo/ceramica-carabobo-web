@@ -12,6 +12,7 @@
  *      (sus fotos son de ejemplo: quedan marcadas esEjemplo)
  *   3. home (singleton): hero, ambientes, cita, proyectos, historia, profesionales, encuentranos
  *   4. ajustes (singleton): metadatos, datos de contacto globales y redes
+ *   5. distribuidor ×24 (la red del prototipo, marcada como dato de ejemplo)
  *
  * Además del bundle de diseño, el bloque VIDEO_PROFESIONALES trae el dato que
  * entregó el cliente sobre el video de instalación alojado en su canal. Su
@@ -28,7 +29,15 @@
  * registran en scripts/.assets-subidos.json (ruta local -> assetId) para no
  * volver a subir binarios en corridas repetidas.
  *
- * No toca distribuidor, contacto ni dondeComprar: son de otra fase.
+ * AVISO SOBRE LOS DISTRIBUIDORES: design/publicar/LEEME.md es explícito — de esa
+ * red "los nombres de estado y el reparto son nuestros; direcciones y teléfonos
+ * son inventados". Se cargan igual (el sitio se entrega con contenido de
+ * referencia y el cliente lo reemplaza), pero los 24 quedan con
+ * `esEjemplo: true`, que el Studio muestra en el listado, y sus correos siguen
+ * siendo @placeholder.com. Reemplazarlos es condición de lanzamiento público
+ * (docs/modelo-de-contenido.md, anexo de decisiones cerradas).
+ *
+ * No toca contacto ni dondeComprar: son de otra fase.
  */
 
 import {createClient} from '@sanity/client'
@@ -289,6 +298,18 @@ async function construirProducto(p) {
 //    sección tomados del marcado de la misma página.
 // ---------------------------------------------------------------------------
 
+// index.html:556-563 (constante REGIONES): los seis estados que el home lista,
+// en el orden del diseño. Cuáles son es decisión editorial —el prototipo deja
+// fuera a Miranda, que empata en puntos con los tres primeros—, así que el dato
+// vive en el CMS y no se deriva.
+const ESTADOS_DESTACADOS = ['Distrito Capital', 'Carabobo', 'Zulia', 'Lara', 'Bolívar', 'Nueva Esparta']
+
+// index.html:411: la foto de ambiente que corona el panel de Encuéntranos.
+const FOTO_ENCUENTRANOS = {
+  src: 'assets/catalogo/ambientes/adicora-beige-2.webp',
+  alt: 'Ambiente con porcelanato de la red de distribuidores',
+}
+
 // HERO (índice.html:460-465): el estado 0 es el video ambiental (va en
 // hero.video/hero.poster); los otros tres son las capas del carrusel.
 const HERO_CAPAS = [
@@ -476,6 +497,8 @@ async function construirHome(productosPorSlug) {
     'Instalación de porcelanato de gran formato en obra',
   )
 
+  const fotoEncuentranos = await imagen(FOTO_ENCUENTRANOS.src, FOTO_ENCUENTRANOS.alt)
+
   const portadaVideo = await imagenRemota(
     [
       `https://i.ytimg.com/vi/${VIDEO_PROFESIONALES.id}/maxresdefault.jpg`,
@@ -534,12 +557,86 @@ async function construirHome(productosPorSlug) {
       videoTitulo: VIDEO_PROFESIONALES.titulo,
       videoEtiqueta: VIDEO_PROFESIONALES.etiqueta,
     },
-    // index.html:43150-43163 ("04 · Encuéntranos")
+    // index.html:394-424 ("04 · Encuéntranos")
     encuentranos: {
       etiqueta: 'Encuéntranos',
       titulo: 'En todo el país.',
       texto: 'No vendemos en línea: el material está a la vista en la red.',
+      // La foto que corona el panel derecho en el prototipo (index.html:411).
+      foto: fotoEncuentranos,
+      // index.html:556-563, constante REGIONES: el home lista SEIS estados en
+      // ese orden, no los veinte de la red — el listado completo es la página
+      // Dónde comprar, a la que apunta el CTA del panel. Los conteos no se
+      // copian: se derivan de los distribuidores.
+      estadosDestacados: ESTADOS_DESTACADOS,
     },
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 5. Distribuidor — la red del prototipo, transcrita de la constante DIST de
+//    design/publicar/donde-comprar.html:279-304 (24 filas, 20 estados, 23
+//    ciudades: coincide exactamente con el agregado RED del home,
+//    design/publicar/index.html:568).
+//
+//    DATO DE EJEMPLO. Del LEEME del handoff: lo único con criterio es el
+//    reparto por estado; nombres de comercio, direcciones y teléfonos son
+//    inventados. No se agrega, quita ni completa nada: se carga lo que el
+//    diseño trae, tal cual, con la marca `esEjemplo` puesta.
+// ---------------------------------------------------------------------------
+const DISTRIBUIDORES = [
+  {nombre: 'Cerámicas del Centro', estado: 'Carabobo', ciudad: 'Valencia', direccion: 'Av. Bolívar Norte, C.C. Camoruco, local 12', telefono: '+58 241 555 0142', whatsapp: '584141234567', correo: 'valencia@placeholder.com', horario: 'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat: 10.162, lng: -68.0077},
+  {nombre: 'Depósito Puerto Cabello', estado: 'Carabobo', ciudad: 'Puerto Cabello', direccion: 'Zona industrial, galpón 4, calle Sucre', telefono: '+58 242 555 0198', whatsapp: '584141234568', correo: 'pcabello@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 10.4731, lng: -68.0125},
+  {nombre: 'Materiales Caracas C.A.', estado: 'Distrito Capital', ciudad: 'Caracas', direccion: 'Av. Andrés Bello, Edif. Norte, PB', telefono: '+58 212 555 0110', whatsapp: '584141234569', correo: 'caracas@placeholder.com', horario: 'Lun–Vie 8:30–17:30 · Sáb 9:00–14:00', lat: 10.4806, lng: -66.9036},
+  {nombre: 'Casa del Porcelanato', estado: 'Distrito Capital', ciudad: 'Caracas', direccion: 'Av. Libertador, nivel plaza, local 8', telefono: '+58 212 555 0171', whatsapp: '584141234570', correo: 'libertador@placeholder.com', horario: 'Lun–Sáb 9:00–18:00', lat: 10.495, lng: -66.86},
+  {nombre: 'Distribuidora Miranda', estado: 'Miranda', ciudad: 'Guarenas', direccion: 'Carretera Nacional, sector Trapichito', telefono: '+58 212 555 0233', whatsapp: '584141234571', correo: 'miranda@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 10.4736, lng: -66.6136},
+  {nombre: 'Acabados Baruta', estado: 'Miranda', ciudad: 'Baruta', direccion: 'Calle Real de Baruta, quinta 22', telefono: '+58 212 555 0244', whatsapp: '584141234572', correo: 'baruta@placeholder.com', horario: 'Lun–Vie 9:00–18:00', lat: 10.4333, lng: -66.8667},
+  {nombre: 'Cerámicas Aragua', estado: 'Aragua', ciudad: 'Maracay', direccion: 'Av. Las Delicias, C.C. Paseo, local 5', telefono: '+58 243 555 0127', whatsapp: '584141234573', correo: 'maracay@placeholder.com', horario: 'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat: 10.2469, lng: -67.5958},
+  {nombre: 'Zulia Revestimientos', estado: 'Zulia', ciudad: 'Maracaibo', direccion: 'Av. 15 Las Delicias con calle 72', telefono: '+58 261 555 0166', whatsapp: '584141234574', correo: 'maracaibo@placeholder.com', horario: 'Lun–Vie 8:00–17:30 · Sáb 9:00–13:00', lat: 10.6427, lng: -71.6125},
+  {nombre: 'Depósito Cabimas', estado: 'Zulia', ciudad: 'Cabimas', direccion: 'Carretera Lara–Zulia, km 4', telefono: '+58 264 555 0188', whatsapp: '584141234575', correo: 'cabimas@placeholder.com', horario: 'Lun–Vie 8:00–16:00', lat: 10.39, lng: -71.4467},
+  {nombre: 'Lara Materiales', estado: 'Lara', ciudad: 'Barquisimeto', direccion: 'Av. Vargas con Av. Los Leones, local 3', telefono: '+58 251 555 0119', whatsapp: '584141234576', correo: 'barquisimeto@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 10.0678, lng: -69.3467},
+  {nombre: 'Oriente Cerámicas', estado: 'Anzoátegui', ciudad: 'Puerto La Cruz', direccion: 'Av. Municipal, sector Guaraguao', telefono: '+58 281 555 0154', whatsapp: '584141234577', correo: 'plc@placeholder.com', horario: 'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat: 10.2167, lng: -64.6167},
+  {nombre: 'Guayana Acabados', estado: 'Bolívar', ciudad: 'Puerto Ordaz', direccion: 'Av. Guayana, Alta Vista Sur, galpón 2', telefono: '+58 286 555 0135', whatsapp: '584141234578', correo: 'guayana@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 8.2967, lng: -62.71},
+  {nombre: 'Andes Porcelanato', estado: 'Táchira', ciudad: 'San Cristóbal', direccion: 'Av. 19 de Abril, sector Barrio Obrero', telefono: '+58 276 555 0143', whatsapp: '584141234579', correo: 'tachira@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 7.7669, lng: -72.225},
+  {nombre: 'Mérida Cerámicas', estado: 'Mérida', ciudad: 'Mérida', direccion: 'Av. Andrés Bello, sector La Parroquia', telefono: '+58 274 555 0129', whatsapp: '584141234580', correo: 'merida@placeholder.com', horario: 'Lun–Vie 8:30–17:00', lat: 8.5897, lng: -71.1561},
+  {nombre: 'Margarita Deco', estado: 'Nueva Esparta', ciudad: 'Porlamar', direccion: 'Av. Juan Bautista Arismendi, local 7', telefono: '+58 295 555 0177', whatsapp: '584141234581', correo: 'margarita@placeholder.com', horario: 'Lun–Sáb 9:00–18:00', lat: 10.9577, lng: -63.8699},
+  {nombre: 'Monagas Materiales', estado: 'Monagas', ciudad: 'Maturín', direccion: 'Av. Raúl Leoni, sector Los Guaritos', telefono: '+58 291 555 0161', whatsapp: '584141234582', correo: 'maturin@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 9.7457, lng: -63.1832},
+  {nombre: 'Falcón Revestimientos', estado: 'Falcón', ciudad: 'Punto Fijo', direccion: 'Av. Colombia con calle Girardot', telefono: '+58 269 555 0148', whatsapp: '584141234583', correo: 'puntofijo@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 11.6947, lng: -70.1997},
+  {nombre: 'Sucre Acabados', estado: 'Sucre', ciudad: 'Cumaná', direccion: 'Av. Perimetral, sector Caigüire', telefono: '+58 293 555 0192', whatsapp: '584141234584', correo: 'cumana@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 10.4544, lng: -64.1767},
+  {nombre: 'Llanos Cerámicas', estado: 'Portuguesa', ciudad: 'Acarigua', direccion: 'Av. Libertador, zona industrial', telefono: '+58 255 555 0157', whatsapp: '584141234585', correo: 'acarigua@placeholder.com', horario: 'Lun–Vie 8:00–17:00', lat: 9.5597, lng: -69.2019},
+  {nombre: 'Barinas Materiales', estado: 'Barinas', ciudad: 'Barinas', direccion: 'Av. 23 de Enero, sector Alto Barinas', telefono: '+58 273 555 0125', whatsapp: '584141234586', correo: 'barinas@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 8.6226, lng: -70.2075},
+  {nombre: 'Trujillo Deco', estado: 'Trujillo', ciudad: 'Valera', direccion: 'Av. Bolívar con calle 12, local 4', telefono: '+58 271 555 0138', whatsapp: '584141234587', correo: 'valera@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 9.3167, lng: -70.6039},
+  {nombre: 'Yaracuy Cerámicas', estado: 'Yaracuy', ciudad: 'San Felipe', direccion: 'Av. La Fuente, sector centro', telefono: '+58 254 555 0173', whatsapp: '584141234588', correo: 'yaracuy@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 10.3399, lng: -68.7422},
+  {nombre: 'Guárico Materiales', estado: 'Guárico', ciudad: 'San Juan de los Morros', direccion: 'Av. Rómulo Gallegos, galpón 1', telefono: '+58 246 555 0111', whatsapp: '584141234589', correo: 'guarico@placeholder.com', horario: 'Lun–Vie 8:00–16:00', lat: 9.9036, lng: -67.3547},
+  {nombre: 'La Guaira Acabados', estado: 'La Guaira', ciudad: 'Catia La Mar', direccion: 'Av. Principal, sector Playa Grande', telefono: '+58 212 555 0206', whatsapp: '584141234590', correo: 'laguaira@placeholder.com', horario: 'Lun–Vie 8:00–16:30', lat: 10.6, lng: -67.0167},
+]
+
+/** Id determinista y legible a partir del nombre del comercio (los 24 son únicos). */
+function idDistribuidor(nombre) {
+  const slug = nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return `distribuidor-${slug}`
+}
+
+function construirDistribuidor(d) {
+  return {
+    _id: idDistribuidor(d.nombre),
+    _type: 'distribuidor',
+    nombre: d.nombre,
+    estado: d.estado,
+    ciudad: d.ciudad,
+    direccion: d.direccion,
+    telefono: d.telefono,
+    whatsapp: d.whatsapp,
+    correo: d.correo,
+    horario: d.horario,
+    ubicacion: {_type: 'geopoint', lat: d.lat, lng: d.lng},
+    // La marca que ve quien edita en el Studio: este punto no es dato del cliente.
+    esEjemplo: true,
   }
 }
 
@@ -610,6 +707,11 @@ async function main() {
   const ajustesDoc = construirAjustes()
   await client.createOrReplace(ajustesDoc)
 
+  // 5. Distribuidores
+  for (const d of DISTRIBUIDORES) {
+    await client.createOrReplace(construirDistribuidor(d))
+  }
+
   console.log('\n=== Resumen de la importación ===')
   console.log(`Assets subidos a Sanity: ${contador.assetsSubidos}`)
   console.log(`Assets reutilizados (ya estaban en scripts/.assets-subidos.json): ${contador.assetsReutilizados}`)
@@ -619,6 +721,13 @@ async function main() {
   console.log(`  profesionales: video de YouTube ${VIDEO_PROFESIONALES.id} + portada propia, etiqueta "${VIDEO_PROFESIONALES.etiqueta}"`)
   console.log('ajustes: actualizado (_id "ajustes")')
   console.log(`  redes (${REDES_CLIENTE.length}): ${REDES_CLIENTE.map((r) => r.nombre).join(', ')}`)
+  const estadosRed = new Set(DISTRIBUIDORES.map((d) => d.estado))
+  const ciudadesRed = new Set(DISTRIBUIDORES.map((d) => d.ciudad))
+  console.log(
+    `distribuidor (${DISTRIBUIDORES.length}): ${estadosRed.size} estados · ${ciudadesRed.size} ciudades` +
+      ` — TODOS marcados esEjemplo: nombres, direcciones y teléfonos son inventados (design/publicar/LEEME.md).`,
+  )
+  console.log(`  el home lista ${ESTADOS_DESTACADOS.length}: ${ESTADOS_DESTACADOS.join(', ')}`)
 }
 
 main().catch((err) => {

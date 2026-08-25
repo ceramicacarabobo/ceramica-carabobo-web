@@ -114,7 +114,9 @@ export const HOME = /* groq */ `
   "encuentranos": {
     "etiqueta": encuentranos.etiqueta,
     "titulo": encuentranos.titulo,
-    "texto": encuentranos.texto
+    "texto": encuentranos.texto,
+    "foto": encuentranos.foto${IMAGEN},
+    "estadosDestacados": coalesce(encuentranos.estadosDestacados, [])
   }
 }
 `
