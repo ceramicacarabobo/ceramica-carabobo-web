@@ -5,7 +5,9 @@ import react from '@astrojs/react'
 import sanity from '@sanity/astro'
 import {loadEnv} from 'vite'
 
-const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '')
+// Se lee en modo `production` por defecto: así el build de Cloudflare toma
+// `.env.production` (configuración pública versionada) aunque no venga NODE_ENV.
+const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '')
 
 const projectId = env.PUBLIC_SANITY_PROJECT_ID || 'placeholder'
 const dataset = env.PUBLIC_SANITY_DATASET || 'production'
