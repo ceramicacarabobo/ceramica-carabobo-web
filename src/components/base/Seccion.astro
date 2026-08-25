@@ -4,6 +4,11 @@
  * Grilla de `design/Responsividad v0` §02 — gutter 20 → 32 → 40-72px,
  * ritmo entre secciones 64 → 88 → 104-120px, contenido con tope de 1600px.
  * Los valores salen de los tokens `--space-gutter-page` y `--space-section`.
+ *
+ * El ritmo va SOLO ARRIBA, como en el prototipo: el aire entre dos secciones lo
+ * pone el padding superior de la siguiente. Poniéndolo también abajo, cada junta
+ * quedaba con el doble de aire (medido: ~115px de más por sección).
+ * `cierre` agrega el padding inferior para la última sección antes del pie.
  */
 interface Props {
   /** Etiqueta del landmark. */
@@ -12,21 +17,31 @@ interface Props {
   fondo?: 'base' | 'raised' | 'sunken' | 'inverse' | 'brand' | 'ninguno'
   /** El contenido llega al borde de la pantalla (imágenes a sangre). */
   sangrado?: boolean
+  /** Última sección antes del pie: también lleva ritmo abajo. */
+  cierre?: boolean
   id?: string
   class?: string
   'aria-labelledby'?: string
 }
 
-const {como: Etiqueta = 'section', fondo = 'ninguno', sangrado = false, id, class: clase, ...resto} = Astro.props
+const {como: Etiqueta = 'section', fondo = 'ninguno', sangrado = false, cierre = false, id, class: clase, ...resto} = Astro.props
 ---
 
-<Etiqueta id={id} class:list={['seccion', `seccion--${fondo}`, sangrado && 'seccion--sangrado', clase]} {...resto}>
+<Etiqueta
+  id={id}
+  class:list={['seccion', `seccion--${fondo}`, sangrado && 'seccion--sangrado', cierre && 'seccion--cierre', clase]}
+  {...resto}
+>
   <slot />
 </Etiqueta>
 
 <style>
   .seccion {
-    padding-block: var(--space-section);
+    padding-top: var(--space-section);
+  }
+
+  .seccion--cierre {
+    padding-bottom: var(--space-section);
   }
 
   .seccion:not(.seccion--sangrado) {
