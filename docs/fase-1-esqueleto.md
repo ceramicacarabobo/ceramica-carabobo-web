@@ -60,9 +60,14 @@ Panel de Cloudflare → *Compute (Workers)* → `ceramica-carabobo-web` → *Set
 *Connect to Git* → autorizar GitHub → elegir `freddyc26/ceramica-carabobo-web`, rama `main`.
 Es un permiso OAuth entre Cloudflare y GitHub: no existe por API.
 
-Comando de build: `npm run build` · Directorio: raíz · Variable de build obligatoria:
-**`NODE_VERSION=22.22.0`**, más `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`,
-`PUBLIC_SANITY_PREVIEW_URL` y `SITE_URL`.
+Configuración del disparador de `main` (ya ajustada por API el 2026-08-25):
+build `npm run build`, deploy `npx wrangler deploy -c dist/client/wrangler.json`, raíz `/`.
+
+**No hacen falta variables en el panel.** Workers Builds detecta Node 22.22.0 desde el `.nvmrc`
+del repositorio, y la configuración pública (projectId, dataset, URLs) vive versionada en
+`.env.production`. Los secretos nunca se versionan.
+
+Verificado el 2026-08-25: push a `main` → build `ac423b2f` → deploy correcto.
 
 ### 2.2 Deploy hook + webhook de Sanity
 
