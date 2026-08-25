@@ -1,6 +1,6 @@
 # Plan maestro del proyecto — Cerámica Carabobo Web
 
-*Actualizado: 2026-08-24 (3ª ed.: Fase 1 ejecutada) · Estado: **Fase 0 cerrada · Fase 1 (esqueleto) construida, pendiente el tramo que depende de cuentas** — ver [fase-1-esqueleto.md](./fase-1-esqueleto.md)*
+*Actualizado: 2026-08-25 (4ª ed.: Fase 1 en línea) · Estado: **Fases 0 y 1 cerradas · QA en línea con publicación automática** — ver [fase-1-esqueleto.md](./fase-1-esqueleto.md)*
 *Documento de entrada para las sesiones de ejecución. Contexto histórico: [propuesta-arquitectura.md](./propuesta-arquitectura.md) (propuesta Payload, superada) y [contraste-propuestas.md](./contraste-propuestas.md) (análisis que llevó a la decisión).*
 
 ---
@@ -75,7 +75,7 @@ Este proyecto es el primero de varios similares. **No se construye plataforma ge
 | Fase | Contenido | Entregable verificable |
 |---|---|---|
 | **0. Modelo de contenido** ✅ | Inventario de tipos y bloques desde el handoff → schemas Sanity con validaciones. ANTES de tocar diseño | Documento de modelo aprobado + schemas |
-| **1. Esqueleto** ⏳ | Astro + Sanity Studio en `/admin` + deploy Cloudflare + webhook publicación + preview/visual editing | QA en línea: home mínima + admin funcional con click-to-edit — *código listo; faltan cuentas, deploy y webhook (ver fase-1-esqueleto.md §2)* |
+| **1. Esqueleto** ✅ | Astro + Sanity Studio en `/admin` + deploy Cloudflare + webhook publicación + preview/visual editing | QA en línea: home mínima + admin funcional — *en línea en https://qa.ceramica-carabobo.workers.dev; publicar en Sanity reconstruye el sitio solo* |
 | **2. Diseño a componentes** | Tokens al theme; cada sección del handoff → bloque Astro conectado a schema (nada hardcodeado) | Admin compone una página nueva con bloques reales |
 | **3. Catálogo** | Producto + atributos en Sanity; listado con filtros client-side; fichas estáticas; imágenes en build; (Pagefind si se pide) | Admin crea/edita/despublica producto, filtrable en el sitio |
 | **4. Multiidioma** | i18n rutas + traducción de contenido en Studio + hreflang/sitemap | Sitio en todos los idiomas, traducible desde el admin |

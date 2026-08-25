@@ -20,10 +20,11 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - El checklist de aceptación (12 pruebas, en `design/Requisitos tecnicos v0.dc.html`) es el criterio de cierre de QA.
 - `design/NOTAS-SESION-DISENO.md` es la bitácora de la sesión de diseño — contexto histórico, no instrucciones.
 
-## Estado (2026-08-24)
+## Estado (2026-08-25)
 
 - Fase 0 (modelo de contenido) ✅. Bundle de diseño completo en `design/` (107 archivos, texto + fotos + video) ✅.
-- **Fase 1 (esqueleto) construida** — Astro 7 + Studio de Sanity en `/admin` + schemas + capa de datos + cáscara compartida + config de Cloudflare. Lo que falta de la fase depende de cuentas (crear proyecto de Sanity, deploy, webhook): pasos en `docs/fase-1-esqueleto.md` §2.
+- **Fase 1 (esqueleto) cerrada** — QA en línea: https://qa.ceramica-carabobo.workers.dev (preview en https://preview.ceramica-carabobo.workers.dev). Sanity `egpui9al`; publicar reconstruye el sitio solo (webhook → Workers Builds). Datos del entorno en `docs/fase-1-esqueleto.md` §1.bis.
+- Pendientes menores de la fase: verificar click-to-edit en el navegador y poner contraseña al QA con Cloudflare Access antes de compartirlo con el cliente.
 - **Siguiente: Fase 2 (diseño a componentes).**
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.

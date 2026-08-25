@@ -81,15 +81,20 @@ a `qa` y `preview` (Cloudflare no renombra: se desplegaron con el nombre nuevo y
 viejos). Consecuencia: la conexión con GitHub, que colgaba del worker anterior, hay que rehacerla
 sobre `qa`.
 
-### 2.2 Deploy hook + webhook de Sanity
+### 2.2 Deploy hook + webhook de Sanity — HECHO
 
-Con el repositorio conectado, Workers Builds permite crear *deploy hooks* (disponibles desde
-abril de 2026, con deduplicación de eventos en ráfaga). El webhook de Sanity llama esa URL al
-publicar:
+*Deploy hook* creado en Workers Builds (rama `main`) y webhook de Sanity apuntando a esa URL
+(`gbJTXgX7yTpjeWL4`, visible en `sanity.io/manage → API → Webhooks`):
 
-- Trigger: `Create`, `Update`, `Delete`.
+- Dispara en `create`, `update`, `delete`.
 - Filtro: `_type in ["producto","distribuidor","materia","home","contacto","dondeComprar","ajustes"]`.
-- Método: `POST`, sin proyección.
+- Proyección `{_id, _type}`, método `POST`, `includeDrafts: false` — escribir sin publicar no gasta builds.
+
+**Ciclo verificado el 2026-08-25**: publicar un documento → build `5364cac2` con origen
+`deploy_hook` → sitio actualizado. Del lado del editor, publicar y esperar 2–4 minutos.
+
+El esquema del webhook no es obvio: los eventos y el filtro van anidados en `rule`
+(`{"type":"document","rule":{"on":[…],"filter":"…","projection":"…"},"apiVersion":"v2021-03-25"}`).
 
 ### 2.3 Contraseña del QA
 
@@ -127,9 +132,11 @@ público con los placeholders que marca el LEEME del handoff.
 - [x] Sin CDN externo en el HTML construido.
 - [x] Sitio en línea en Cloudflare con el 404 propio y rutas limpias.
 - [x] `/admin` desplegado y apuntando al proyecto `egpui9al`.
-- [ ] Iniciar sesión en `/admin` desde el navegador y guardar un documento (verificación humana).
-- [ ] Click-to-edit desde el Presentation Tool sobre el worker de preview.
-- [ ] Publicar dispara build y el cambio aparece en QA (requiere §2.1–2.2).
+- [x] Iniciar sesión en `/admin`, crear y publicar un documento (verificado con un distribuidor).
+- [x] Push a `main` dispara build y despliegue automáticos.
+- [x] Publicar en Sanity dispara build y el cambio aparece en el sitio.
+- [ ] Click-to-edit desde el Presentation Tool sobre el worker de preview (verificación humana).
+- [ ] Contraseña del QA con Cloudflare Access (§2.3), antes de compartir la URL con el cliente.
 
 ## 5. Siguiente
 
