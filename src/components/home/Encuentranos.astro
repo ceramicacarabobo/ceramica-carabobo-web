@@ -277,8 +277,11 @@ const panelCtaBase = 'Dónde comprar'
 
   .panel__etiqueta {
     margin: 0;
-    font: var(--text-overline);
-    letter-spacing: var(--tracking-uppercase-lg);
+    /* 0.6875rem/0.18em: el prototipo usa una variante más chica y apretada
+       que el overline de sección (--text-overline es 0.75rem/0.16em), sin
+       token que la represente. */
+    font: 500 0.6875rem/1.35 var(--font-heading);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-text-secondary);
   }
@@ -310,7 +313,9 @@ const panelCtaBase = 'Dónde comprar'
 
   .panel__ciudades {
     margin: 0;
-    font: var(--text-overline);
+    /* Mismo tamaño chico que panel__etiqueta (0.6875rem); acá sí coincide con
+       tracking-uppercase-lg (0.16em). */
+    font: 500 0.6875rem/1.35 var(--font-heading);
     letter-spacing: var(--tracking-uppercase-lg);
     text-transform: uppercase;
     color: var(--color-text-secondary);

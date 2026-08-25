@@ -34,78 +34,87 @@ const pestanas = ambientes.pestanas
 {
   pestanas.length > 0 && (
     <Seccion como="section" id="ambientes" class="ambientes" sangrado aria-labelledby={ambientes.titulo ? 'ambientes-titulo' : undefined}>
-      <Reveal como="div" class="ambientes__cabecera">
-        <div class="ambientes__intro">
-          {ambientes.etiqueta && (
-            <p class="ambientes__eyebrow">
-              <span class="ambientes__numero">01</span> · {ambientes.etiqueta}
-            </p>
-          )}
-          {ambientes.titulo && (
-            <h2 id="ambientes-titulo" class="ambientes__titulo">
-              {ambientes.titulo}
-            </h2>
-          )}
-          <div class="ambientes__tabs" role="tablist" aria-orientation="horizontal" aria-label={ambientes.etiqueta || ambientes.titulo || 'Ambientes'}>
-            {pestanas.map((pestana, indice) => (
-              <button
-                type="button"
-                role="tab"
-                id={`ambientes-tab-${indice}`}
-                aria-controls={`ambientes-panel-${indice}`}
-                aria-selected={indice === 0 ? 'true' : 'false'}
-                tabindex={indice === 0 ? 0 : -1}
-                class="ambientes__tab"
-                data-amb-tab
-              >
-                {pestana.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div class="ambientes__flechas">
-          <button type="button" class="ambientes__flecha" aria-label="Anterior" data-amb-prev>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M19 12H5" />
-              <path d="m12 19-7-7 7-7" />
-            </svg>
-          </button>
-          <button type="button" class="ambientes__flecha" aria-label="Siguiente" data-amb-next>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </Reveal>
-
-      <Reveal como="div" indice={1} class="ambientes__pistas">
-        {pestanas.map((pestana, indice) => (
-          <div
-            class="ambientes__panel"
-            id={`ambientes-panel-${indice}`}
-            role="tabpanel"
-            aria-labelledby={`ambientes-tab-${indice}`}
-            hidden={indice !== 0}
-            data-amb-panel
-          >
-            <div class="ambientes__track" data-amb-track>
-              {pestana.fichas.map((ficha) => (
-                <div class="ambientes__ficha">
-                  <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
-                  <span class="ambientes__velo" aria-hidden="true" />
-                  {(ficha.nombre || ficha.spec) && (
-                    <span class="ambientes__datos">
-                      {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
-                      {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
-                    </span>
-                  )}
-                </div>
+      <Reveal como="div">
+        {/* El gutter y el layout de la cabecera van en este div, no en la clase
+            del Reveal: Astro aplica el scope de CSS del componente que define
+            el elemento, y el elemento raíz de Reveal pertenece a Reveal.astro,
+            no a este archivo — una clase puesta ahí nunca calzaría con esta
+            hoja de estilos. */}
+        <div class="ambientes__cabecera">
+          <div class="ambientes__intro">
+            {ambientes.etiqueta && (
+              <p class="ambientes__eyebrow">
+                <span class="ambientes__numero">01</span> · {ambientes.etiqueta}
+              </p>
+            )}
+            {ambientes.titulo && (
+              <h2 id="ambientes-titulo" class="ambientes__titulo">
+                {ambientes.titulo}
+              </h2>
+            )}
+            <div class="ambientes__tabs" role="tablist" aria-orientation="horizontal" aria-label={ambientes.etiqueta || ambientes.titulo || 'Ambientes'}>
+              {pestanas.map((pestana, indice) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`ambientes-tab-${indice}`}
+                  aria-controls={`ambientes-panel-${indice}`}
+                  aria-selected={indice === 0 ? 'true' : 'false'}
+                  tabindex={indice === 0 ? 0 : -1}
+                  class="ambientes__tab"
+                  data-amb-tab
+                >
+                  {pestana.label}
+                </button>
               ))}
             </div>
           </div>
-        ))}
+
+          <div class="ambientes__flechas">
+            <button type="button" class="ambientes__flecha" aria-label="Anterior" data-amb-prev>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 12H5" />
+                <path d="m12 19-7-7 7-7" />
+              </svg>
+            </button>
+            <button type="button" class="ambientes__flecha" aria-label="Siguiente" data-amb-next>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal como="div" indice={1}>
+        <div class="ambientes__pistas">
+          {pestanas.map((pestana, indice) => (
+            <div
+              class="ambientes__panel"
+              id={`ambientes-panel-${indice}`}
+              role="tabpanel"
+              aria-labelledby={`ambientes-tab-${indice}`}
+              hidden={indice !== 0}
+              data-amb-panel
+            >
+              <div class="ambientes__track" data-amb-track>
+                {pestana.fichas.map((ficha) => (
+                  <div class="ambientes__ficha">
+                    <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
+                    <span class="ambientes__velo" aria-hidden="true" />
+                    {(ficha.nombre || ficha.spec) && (
+                      <span class="ambientes__datos">
+                        {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
+                        {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </Reveal>
     </Seccion>
   )

@@ -1,11 +1,16 @@
 ---
 /**
  * Aparición al entrar en pantalla: opacity 0→1 + translateY(--reveal-offset),
- * una sola vez, con `--dur-reveal`. Solo opacity y transform (Tokens v0 §07).
+ * una sola vez. Solo opacity y transform (Tokens v0 §07).
+ *
+ * Valores tomados del prototipo (`calibrarReveals` y `syncReveals`), que es la
+ * referencia: duración 480ms con `--ease-out`, umbral cuando el elemento entró
+ * de verdad en pantalla (top < 86% del alto de ventana) y cascada de 60 + i×70ms.
  * Con `prefers-reduced-motion` el contenido nace visible y no se anima nada.
- * Cascada: el elemento i de un grupo espera i × 70ms en la home.
  */
 interface Props {
+  /** Cualquier otro atributo (incluido el scope de estilos del padre) se reenvía. */
+  [clave: string]: unknown
   /** Posición dentro del grupo, para la cascada. */
   indice?: number
   /** Paso de la cascada; 70ms en home, 60ms en páginas internas. */
@@ -14,13 +19,18 @@ interface Props {
   class?: string
 }
 
-const {indice = 0, paso = 70, como = 'div', class: clase} = Astro.props
+const {indice = 0, paso = 70, como = 'div', class: clase, ...resto} = Astro.props
 
 // Etiqueta dinámica: Astro no puede tipar los atributos de un tag variable.
 const Etiqueta = como as 'div'
 ---
 
-<Etiqueta class:list={['reveal', clase]} data-reveal style={`--reveal-delay: ${indice * paso}ms`}>
+<Etiqueta
+  class:list={['reveal', clase]}
+  data-reveal
+  style={`--reveal-delay: ${indice === 0 ? 0 : 60 + indice * paso}ms`}
+  {...resto}
+>
   <slot />
 </Etiqueta>
 
@@ -29,8 +39,8 @@ const Etiqueta = como as 'div'
     opacity: 0;
     transform: translateY(var(--reveal-offset));
     transition:
-      opacity var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms),
-      transform var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms);
+      opacity var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms),
+      transform var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms);
   }
 
   .reveal[data-visible] {
@@ -67,7 +77,7 @@ const Etiqueta = como as 'div'
           observador.unobserve(entrada.target)
         }
       },
-      {rootMargin: '0px 0px -10% 0px', threshold: 0.05},
+      {rootMargin: '0px 0px -14% 0px', threshold: 0},
     )
 
     elementos.forEach((el) => observador.observe(el))

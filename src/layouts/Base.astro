@@ -9,8 +9,13 @@
 import {ClientRouter} from 'astro:transitions'
 import {VisualEditing} from '@sanity/astro/visual-editing'
 
-import '@fontsource-variable/work-sans'
-import '@fontsource-variable/open-sans'
+// Exactamente los pesos que declara el diseño (Work Sans 300/500/600 + Open Sans 400),
+// con el nombre de familia que usan los tokens. Las variables de @fontsource-variable
+// se llaman "Work Sans Variable" y hacían que el sitio cayera a Arial.
+import '@fontsource/work-sans/300.css'
+import '@fontsource/work-sans/500.css'
+import '@fontsource/work-sans/600.css'
+import '@fontsource/open-sans/400.css'
 import '~/theme/tokens.css'
 import '~/theme/base.css'
 

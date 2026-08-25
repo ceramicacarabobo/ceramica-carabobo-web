@@ -19,8 +19,14 @@ const {cita} = Astro.props
 {
   cita && (
     <Seccion como="section" aria-label={cita}>
-      <Reveal como="div" class="cita">
-        <p class="cita__texto">{cita}</p>
+      <Reveal como="div">
+        {/* La clase de layout va en este div, no en la del Reveal: el elemento
+            raíz de Reveal pertenece a Reveal.astro y su propio scope de CSS,
+            así que una clase de este archivo puesta ahí nunca calzaría con
+            esta hoja de estilos (mismo caso que Ambientes.astro). */}
+        <div class="cita">
+          <p class="cita__texto">{cita}</p>
+        </div>
       </Reveal>
     </Seccion>
   )

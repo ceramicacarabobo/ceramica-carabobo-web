@@ -24,11 +24,15 @@ interface Props {
 const {sobreHero = false, materias = []} = Astro.props
 
 const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/'
+// La nav lleva Catálogo y Contacto; "Dónde comprar" es el CTA de la derecha,
+// no un enlace más (así está en el prototipo).
 const enlaces = [
   {href: '/catalogo', texto: 'Catálogo', conPanel: true},
   {href: '/contacto', texto: 'Contacto', conPanel: false},
-  {href: '/donde-comprar', texto: 'Dónde comprar', conPanel: false},
 ]
+
+// El menú móvil sí lista las tres páginas: ahí no hay CTA aparte.
+const enlacesMovil = [...enlaces, {href: '/donde-comprar', texto: 'Dónde comprar', conPanel: false}]
 
 const hayMegamenu = materias.length >= 4
 ---
@@ -135,7 +139,7 @@ const hayMegamenu = materias.length >= 4
   <nav class="menu-movil__nav" aria-label="Principal">
     <ul>
       {
-        enlaces.map(({href, texto}) => (
+        enlacesMovil.map(({href, texto}) => (
           <li>
             <a href={href} aria-current={rutaActual === href ? 'page' : undefined}>
               {texto}
@@ -168,9 +172,14 @@ const hayMegamenu = materias.length >= 4
     background: var(--color-surface-base);
     color: var(--color-text-primary);
     border-bottom: var(--border-width) solid var(--color-border-hairline);
-    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
   }
 
+  /* Alto de banda: 63px la banda compacta (la que baja al scrollear) y 84px
+     cuando la cabecera va transparente sobre el hero. Valores del prototipo. */
   .cabecera__banda {
     display: flex;
     align-items: center;
@@ -286,6 +295,10 @@ const hayMegamenu = materias.length >= 4
   /* ---------- Estado sobre el hero (solo desktop) ---------- */
 
   @media (min-width: 1024px) {
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .cabecera__banda {
+      min-height: 84px;
+    }
+
     .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) {
       position: fixed;
       inset-inline: 0;

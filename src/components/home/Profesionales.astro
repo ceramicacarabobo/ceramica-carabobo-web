@@ -11,12 +11,24 @@
  * salen del CMS (CLAUDE.md: "textos de marca nunca hardcodeados"). Queda una
  * imagen fija a la izquierda y el bloque editorial a la derecha.
  *
+ * Proporciones del prototipo: la mitad de imagen no lleva ratio propio, es un
+ * bloque de `min-height: clamp(280px,42vw,520px)` con la foto a `cover`
+ * llenándolo; así ambas mitades miden lo mismo aunque el texto crezca. El
+ * bloque editorial va centrado en vertical con `padding: clamp(32px,5vw,80px)`
+ * y `gap: clamp(20px,2.2vw,28px)`.
+ *
  * Reflow: replica el switch a una columna bajo 760px que usa `proSplitCols`
  * en el prototipo (mobile 1fr, desktop 1fr 1fr) — el mismo breakpoint que
  * Proyectos y Encuéntranos, no el de 1024.
  *
+ * Ojo con el scope de Astro: `Reveal` no reenvía el atributo de scope del
+ * padre a su raíz, así que lo que estiliza sus elementos (`.profesionales__marco`,
+ * `.profesionales__texto`) va con `:global()` colgando de `.profesionales`,
+ * que sí lo lleva. Sin eso el texto se quedaba sin padding ni centrado.
+ *
  * Contenido defensivo: sin título ni texto no hay nada que editorializar y la
- * sección entera se oculta (regla del encargo).
+ * sección entera se oculta (regla del encargo). Sin foto, el bloque editorial
+ * ocupa el ancho completo en vez de dejar media caja vacía.
  */
 import Imagen from '~/components/base/Imagen.astro'
 import Reveal from '~/components/base/Reveal.astro'
@@ -30,6 +42,7 @@ interface Props {
 const {profesionales} = Astro.props
 
 const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
+const hayImagen = Boolean(profesionales.imagen)
 ---
 
 {
@@ -41,18 +54,17 @@ const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
       fondo="base"
       aria-labelledby={profesionales.titulo ? 'profesionales-titulo' : undefined}
     >
-      <div class="profesionales__grid">
-        <Reveal como="div" class="profesionales__marco">
-          {profesionales.imagen && (
+      <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
+        {profesionales.imagen && (
+          <Reveal como="div" class="profesionales__marco">
             <Imagen
               imagen={profesionales.imagen}
-              ratio="var(--ratio-feature)"
               sizes="(min-width: 760px) 50vw, 100vw"
               class="profesionales__foto"
             />
-          )}
-        </Reveal>
-        <Reveal como="div" indice={1} class="profesionales__texto">
+          </Reveal>
+        )}
+        <Reveal como="div" indice={hayImagen ? 1 : 0} class="profesionales__texto">
           {profesionales.etiqueta && (
             <p class="profesionales__eyebrow">
               <span class="profesionales__numero">03</span> · {profesionales.etiqueta}
@@ -77,20 +89,29 @@ const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
     background: var(--color-surface-sunken);
   }
 
-  .profesionales__marco {
+  /* Caja de medio del prototipo: alto propio mínimo y la foto llenándolo. */
+  .profesionales :global(.profesionales__marco) {
+    position: relative;
+    min-height: clamp(280px, 42vw, 520px);
     min-width: 0;
+    overflow: hidden;
   }
 
-  .profesionales__marco :global(.profesionales__foto) {
+  .profesionales :global(.profesionales__foto.imagen) {
+    position: absolute;
+    inset: 0;
     width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
   }
 
-  .profesionales__texto {
+  .profesionales :global(.profesionales__texto) {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: clamp(20px, 2.2vw, 28px);
     padding: clamp(32px, 5vw, 80px);
+    min-width: 0;
   }
 
   .profesionales__eyebrow {
@@ -123,6 +144,10 @@ const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
   @media (min-width: 760px) {
     .profesionales__grid {
       grid-template-columns: 1fr 1fr;
+    }
+
+    .profesionales__grid--sin-imagen {
+      grid-template-columns: 1fr;
     }
   }
 </style>

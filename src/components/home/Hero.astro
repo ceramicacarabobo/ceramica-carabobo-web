@@ -104,6 +104,8 @@ const hayCarrusel = estados.length > 1
 <style>
   .hero {
     position: relative;
+    /* Alto por rango (Responsividad v0 §02): móvil 78dvh (mín. 480), tablet 88dvh,
+       desktop 100dvh (mín. 560). */
     height: 78dvh;
     min-height: 480px;
     background: var(--color-surface-inverse);
@@ -313,8 +315,15 @@ const hayCarrusel = estados.length > 1
     }
   }
 
+  @media (min-width: 760px) {
+    .hero {
+      height: 88dvh;
+    }
+  }
+
   @media (min-width: 1024px) {
     .hero {
+      height: 100dvh;
       min-height: 560px;
     }
 

@@ -13,7 +13,14 @@
  * `proHeadCols`/`p.cols` del prototipo, que conmutan en el breakpoint móvil
  * de 760px, no en 1024): bajo 760px, cabecera y ficha se apilan a una
  * columna; desde 760px la cabecera reparte eyebrow/título e intro en dos
- * columnas y cada obra pasa a imagen+datos, alternando qué lado lleva la foto.
+ * columnas (`1fr 44ch`) y cada obra pasa a imagen+datos (`1.6fr 1fr`),
+ * alternando qué lado lleva la foto.
+ *
+ * Ojo con el scope de Astro: `Reveal` no reenvía el atributo de scope del
+ * padre a su raíz, así que las reglas que caen sobre un elemento producido
+ * por `Reveal` (`.proyectos__cabecera`, `.proyectos__obra`) van con
+ * `:global()` colgando de `.proyectos`, que sí lleva el scope. Sin esto las
+ * grillas no se aplicaban y la sección se veía apilada a ancho completo.
  *
  * Contenido defensivo: con menos de 2 obras no hay "proyectos" (plural) que
  * mostrar y la sección entera desaparece (modelo-de-contenido.md §1: mínimo
@@ -116,7 +123,9 @@ const obras = proyectos.obras.map((obra, indice) => {
 }
 
 <style>
-  .proyectos__cabecera {
+  /* Cabecera: una columna en móvil, título · bajada de 44ch desde 760px
+     (`proHeadCols` del prototipo), alineadas por la línea base inferior. */
+  .proyectos :global(.proyectos__cabecera) {
     display: grid;
     grid-template-columns: 1fr;
     align-items: end;
@@ -149,9 +158,10 @@ const obras = proyectos.obras.map((obra, indice) => {
     color: var(--color-text-primary);
   }
 
+  /* Sin tope propio: en móvil ocupa el ancho y en desktop la columna de 44ch
+     es la que mide, igual que en el prototipo. */
   .proyectos__bajada {
     margin: 0;
-    max-width: 44ch;
     font: var(--text-body-15);
     color: var(--color-text-muted);
     text-wrap: pretty;
@@ -163,7 +173,7 @@ const obras = proyectos.obras.map((obra, indice) => {
     gap: clamp(40px, 5vw, 72px);
   }
 
-  .proyectos__obra {
+  .proyectos :global(.proyectos__obra) {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: 'imagen' 'datos';
@@ -173,13 +183,14 @@ const obras = proyectos.obras.map((obra, indice) => {
     border-top: var(--border-width) solid var(--color-border-hairline);
   }
 
-  .proyectos__obra--sin-foto {
+  .proyectos :global(.proyectos__obra--sin-foto) {
     grid-template-areas: 'datos';
   }
 
   .proyectos__marco {
     grid-area: imagen;
     background: var(--color-surface-sunken);
+    overflow: hidden;
   }
 
   .proyectos__marco :global(.proyectos__foto) {
@@ -214,9 +225,10 @@ const obras = proyectos.obras.map((obra, indice) => {
     gap: var(--space-2);
   }
 
+  /* Etiqueta de 84px fija + valor, como los `<div>` de specs del prototipo. */
   .proyectos__fila {
     display: grid;
-    grid-template-columns: minmax(64px, 84px) 1fr;
+    grid-template-columns: 84px 1fr;
     gap: var(--space-4);
     padding-bottom: var(--space-2);
     border-bottom: var(--border-width) solid var(--color-surface-sunken);
@@ -237,22 +249,21 @@ const obras = proyectos.obras.map((obra, indice) => {
   }
 
   @media (min-width: 760px) {
-    .proyectos__cabecera {
+    .proyectos :global(.proyectos__cabecera) {
       grid-template-columns: 1fr 44ch;
     }
 
-    .proyectos__obra {
+    .proyectos :global(.proyectos__obra) {
       grid-template-columns: 1.6fr 1fr;
       grid-template-areas: 'imagen datos';
     }
 
-    .proyectos__obra--par {
+    .proyectos :global(.proyectos__obra--par) {
       grid-template-columns: 1fr 1.6fr;
       grid-template-areas: 'datos imagen';
     }
 
-    .proyectos__obra--sin-foto,
-    .proyectos__obra--par.proyectos__obra--sin-foto {
+    .proyectos :global(.proyectos__obra--sin-foto) {
       grid-template-columns: 1fr;
       grid-template-areas: 'datos';
     }
