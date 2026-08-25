@@ -13,7 +13,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "deploy": "npm run build && wrangler deploy -c dist/client/wrangler.json",
-    "deploy:preview": "npm run build:preview && wrangler deploy -c dist/server/wrangler.json --name ceramica-carabobo-preview",
+    "deploy:preview": "npm run build:preview && wrangler deploy -c dist/server/wrangler.json --name preview",
     "sanity:export": "sanity dataset export production backups/dataset.tar.gz"
   },
   "dependencies": {

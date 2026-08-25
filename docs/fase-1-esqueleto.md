@@ -32,8 +32,8 @@ Verificado en local: `npm run build` (6 páginas, 0 errores), `npm run check` (0
 | Organización de Sanity | `ozx400x1m` — "Ceramica Carabobo" |
 | Proyecto de Sanity | **`egpui9al`**, dataset `production` (público) |
 | Cuenta de Cloudflare | `ad857af1656d828f42c5bc88253e8cd4` |
-| Worker de producción | `ceramica-carabobo-web` → https://ceramica-carabobo-web.ceramica-carabobo-web.workers.dev |
-| Worker de preview | `ceramica-carabobo-preview` → https://ceramica-carabobo-preview.ceramica-carabobo-web.workers.dev |
+| Worker del sitio (QA) | `qa` → https://qa.ceramica-carabobo.workers.dev |
+| Worker de preview | `preview` → https://preview.ceramica-carabobo.workers.dev |
 | Orígenes CORS con credenciales | `localhost:4321`, worker de producción, worker de preview |
 | Token de lectura | etiqueta `preview-visual-editing`, rol *viewer* (guardado solo en `.env`) |
 
@@ -56,7 +56,7 @@ Queda un paso manual y dos que dependen de él:
 
 ### 2.1 Conectar el repositorio con Workers Builds (requiere un clic tuyo)
 
-Panel de Cloudflare → *Compute (Workers)* → `ceramica-carabobo-web` → *Settings → Build* →
+Panel de Cloudflare → *Compute (Workers)* → `qa` → *Settings → Build* →
 *Connect to Git* → autorizar GitHub → elegir `freddyc26/ceramica-carabobo-web`, rama `main`.
 Es un permiso OAuth entre Cloudflare y GitHub: no existe por API.
 
@@ -68,6 +68,11 @@ del repositorio, y la configuración pública (projectId, dataset, URLs) vive ve
 `.env.production`. Los secretos nunca se versionan.
 
 Verificado el 2026-08-25: push a `main` → build `ac423b2f` → deploy correcto.
+
+**Renombrado del 2026-08-25:** el subdominio de la cuenta pasó a `ceramica-carabobo` y los workers
+a `qa` y `preview` (Cloudflare no renombra: se desplegaron con el nombre nuevo y se borraron los
+viejos). Consecuencia: la conexión con GitHub, que colgaba del worker anterior, hay que rehacerla
+sobre `qa`.
 
 ### 2.2 Deploy hook + webhook de Sanity
 
