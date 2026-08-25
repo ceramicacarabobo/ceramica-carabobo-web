@@ -23,6 +23,10 @@ design/publicar/assets/catalogo/
 # ya subido. No aporta nada fuera de esta máquina.
 scripts/.assets-subidos.json
 
+# Portadas descargadas de origen remoto (miniatura del video de YouTube). Se
+# suben a Sanity y de ahí salen: la caché local solo evita bajarlas dos veces.
+scripts/.medios-descargados/
+
 # Medios descargados de Sanity en el build (video del hero, archivos).
 # No se versionan: los regenera `npm run prebuild` desde el CMS.
 public/medios/

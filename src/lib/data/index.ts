@@ -7,12 +7,12 @@
 import * as Q from '../queries'
 import {consultar} from './cliente'
 import medios from '../medios.json'
-import type {Ajustes, Contacto, Distribuidor, DondeComprar, Home, Materia, Producto} from './types'
+import type {Ajustes, Contacto, Distribuidor, DondeComprar, Home, Imagen, Materia, Producto, Video} from './types'
 
 export type * from './types'
 export {sanityConfigurado, visualEditingHabilitado} from './cliente'
 
-const HOME_VACIA: Home = {
+const HOME_VACIA: HomeCruda = {
   hero: {capas: []},
   ambientes: {pestanas: []},
   proyectos: {obras: []},
@@ -36,6 +36,62 @@ const AJUSTES_POR_DEFECTO: Ajustes = {
  */
 const videoLocal = (url?: string) => (url ? ((medios as Record<string, string>)[url] ?? url) : undefined)
 
+/** Lo que devuelve el CMS para un video, antes de normalizar. */
+interface VideoCrudo {
+  archivoUrl?: string | null
+  youtubeUrl?: string | null
+  portada?: Imagen | null
+  titulo?: string | null
+  etiqueta?: string | null
+}
+
+/**
+ * Id de un video de YouTube a partir de cualquiera de sus direcciones:
+ * `watch?v=ID`, `youtu.be/ID`, `/embed/ID` y `/shorts/ID`, con o sin parámetros.
+ * Vive aquí y no en el componente: los componentes reciben datos listos
+ * (patrón adaptador, §3.1 del plan maestro).
+ */
+export function idDeYoutube(url?: string | null): string | undefined {
+  if (!url) return undefined
+  try {
+    const {hostname, pathname, searchParams} = new URL(url)
+    if (!/(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/.test(hostname)) return undefined
+    const candidato =
+      hostname.endsWith('youtu.be')
+        ? pathname.slice(1)
+        : (searchParams.get('v') ?? pathname.replace(/^\/(embed|shorts|v|live)\//, ''))
+    const id = candidato.split('/')[0]
+    return /^[\w-]{11}$/.test(id) ? id : undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Video del CMS → tipo propio. Regla de precedencia (la misma del schema):
+ * con los dos cargados GANA EL ARCHIVO, porque lo servimos nosotros y no mete a
+ * un tercero en la página; YouTube es la alternativa y se dibuja como fachada.
+ * Sin ninguno de los dos no hay video: la sección lo trata como foto sola.
+ */
+function normalizarVideo(crudo?: VideoCrudo | null): Video | undefined {
+  if (!crudo) return undefined
+  const comunes = {
+    portada: crudo.portada ?? undefined,
+    titulo: crudo.titulo ?? undefined,
+    etiqueta: crudo.etiqueta ?? undefined,
+  }
+  const url = videoLocal(crudo.archivoUrl ?? undefined)
+  if (url) return {tipo: 'archivo', url, ...comunes}
+  const youtubeId = idDeYoutube(crudo.youtubeUrl)
+  if (youtubeId) return {tipo: 'youtube', youtubeId, ...comunes}
+  return undefined
+}
+
+/** La home tal como llega del CMS: el video todavía sin normalizar. */
+type HomeCruda = Omit<Home, 'profesionales'> & {
+  profesionales: Omit<Home['profesionales'], 'video'> & {video?: VideoCrudo | null}
+}
+
 export const getProductos = () => consultar<Producto[]>(Q.PRODUCTOS, {}, [])
 
 export const getProducto = (slug: string) => consultar<Producto | null>(Q.PRODUCTO_POR_SLUG, {slug}, null)
@@ -44,12 +100,12 @@ export const getDistribuidores = () => consultar<Distribuidor[]>(Q.DISTRIBUIDORE
 
 export const getMaterias = () => consultar<Materia[]>(Q.MATERIAS, {}, [])
 
-export const getHome = async () => {
-  const home = await consultar<Home>(Q.HOME, {}, HOME_VACIA)
+export const getHome = async (): Promise<Home> => {
+  const home = await consultar<HomeCruda>(Q.HOME, {}, HOME_VACIA)
   return {
     ...home,
     hero: {...home.hero, videoUrl: videoLocal(home.hero.videoUrl)},
-    profesionales: {...home.profesionales, videoUrl: videoLocal(home.profesionales.videoUrl)},
+    profesionales: {...home.profesionales, video: normalizarVideo(home.profesionales.video)},
   }
 }
 

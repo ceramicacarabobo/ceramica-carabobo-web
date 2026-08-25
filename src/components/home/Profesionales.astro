@@ -19,6 +19,22 @@
  * bloque, que son diseño, no contenido — igual que los rótulos "Ciudad" o
  * "Formato" de la ficha de Proyectos.
  *
+ * FACHADA DE VIDEO (autosuficiencia, plan maestro §3.3). El video de
+ * instalación vive hoy en el canal de YouTube, y un embed normal descarga
+ * scripts de terceros con solo abrir la página: prohibido. Así que el tile es
+ * una fachada — portada nuestra (subida a Sanity y procesada en el build) + el
+ * botón de play del diseño — y el iframe de `youtube-nocookie.com` se crea
+ * SOLO al pulsar. Mientras nadie pulse, la home no hace ni una petición a
+ * terceros. Si algún día cargan el mp4 propio, el adaptador entrega
+ * `video.tipo === 'archivo'` y la misma fachada abre un `<video>` local: el
+ * componente no cambia.
+ *
+ * Accesibilidad: la fachada es un `<button>` real (no un `<a href="#">`), con
+ * `aria-label` que nombra el video por su título y anillo de foco on-dark
+ * (brand-300, como manda el comentario de `--color-border-focus`). El play y
+ * la etiqueta son decorativos para el lector de pantalla: lo que se anuncia es
+ * el botón.
+ *
  * Proporciones del prototipo: la mitad de imagen no lleva ratio propio, es un
  * bloque de `min-height: clamp(280px,42vw,520px)` con la foto a `cover`
  * llenándolo; así ambas mitades miden lo mismo aunque el texto crezca. El
@@ -35,10 +51,10 @@
  * que sí lo lleva. Sin eso el texto se quedaba sin padding ni centrado.
  *
  * Contenido defensivo: sin título ni texto no hay nada que editorializar y la
- * sección entera se oculta. Sin foto, el bloque editorial ocupa el ancho
- * completo en vez de dejar media caja vacía. Sin video no hay play ni
- * etiqueta: queda la foto sola, sin enlace. Sin redes cargadas, el bloque
- * "Conecta con nuestras redes" no aparece.
+ * sección entera se oculta. Sin foto de sección ni portada de video, el bloque
+ * editorial ocupa el ancho completo en vez de dejar media caja vacía. Sin
+ * video no hay play ni etiqueta: queda la foto sola. Sin redes cargadas, el
+ * bloque "Conecta con nuestras redes" no aparece.
  */
 import Imagen from '~/components/base/Imagen.astro'
 import Reveal from '~/components/base/Reveal.astro'
@@ -71,14 +87,19 @@ const ICONOS: Record<string, string> = {
 const ajustes = await getAjustes()
 const redes = ajustes.redes.filter((red) => red.nombre && red.url)
 
+const video = profesionales.video
+// La portada del video manda sobre la foto de la sección: es el fotograma de
+// lo que se va a reproducir. Sin portada propia, la foto de sección hace de tal.
+const portada = video?.portada ?? profesionales.imagen
+
 const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
-const hayImagen = Boolean(profesionales.imagen)
-const hayVideo = Boolean(profesionales.videoUrl)
+const hayImagen = Boolean(portada)
 const hayRedes = redes.length > 0
 
-const claseMarco = ['profesionales__marco', hayVideo && 'profesionales__marco--video']
-  .filter(Boolean)
-  .join(' ')
+/** El botón se anuncia por el título real del video cuando el CMS lo trae. */
+const etiquetaBoton = video?.titulo
+  ? `Reproducir el video: ${video.titulo}`
+  : 'Reproducir el video de instalación'
 ---
 
 {
@@ -91,30 +112,27 @@ const claseMarco = ['profesionales__marco', hayVideo && 'profesionales__marco--v
       aria-labelledby={profesionales.titulo ? 'profesionales-titulo' : undefined}
     >
       <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
-        {profesionales.imagen && (
-          <Reveal
-            como={hayVideo ? 'a' : 'div'}
-            class={claseMarco}
-            href={hayVideo ? profesionales.videoUrl : undefined}
-            aria-label={hayVideo ? 'Ver el video de instalación' : undefined}
-          >
-            <Imagen
-              imagen={profesionales.imagen}
-              sizes="(min-width: 760px) 50vw, 100vw"
-              class="profesionales__foto"
-            />
-            {hayVideo && (
-              <>
+        {portada && (
+          <Reveal como="div" class="profesionales__marco">
+            <Imagen imagen={portada} sizes="(min-width: 760px) 50vw, 100vw" class="profesionales__foto" />
+            {video && (
+              <button
+                type="button"
+                class="profesionales__fachada"
+                aria-label={etiquetaBoton}
+                data-video-tipo={video.tipo}
+                data-video-id={video.youtubeId}
+                data-video-url={video.url}
+                data-video-titulo={video.titulo ?? 'Video de instalación'}
+              >
                 <span class="profesionales__velo" />
                 <span class="profesionales__play" aria-hidden="true">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                     <path d="M8 5.14v14l11-7-11-7z" />
                   </svg>
                 </span>
-                {profesionales.videoEtiqueta && (
-                  <span class="profesionales__videoetiqueta">{profesionales.videoEtiqueta}</span>
-                )}
-              </>
+                {video.etiqueta && <span class="profesionales__videoetiqueta">{video.etiqueta}</span>}
+              </button>
             )}
           </Reveal>
         )}
@@ -184,9 +202,40 @@ const claseMarco = ['profesionales__marco', hayVideo && 'profesionales__marco--v
     overflow: hidden;
   }
 
-  .profesionales :global(.profesionales__marco--video) {
+  /*
+   * La fachada cubre el tile entero: mismo área de clic que el `<a>` del
+   * prototipo, pero como botón real. Sin fondo ni borde propios, para que la
+   * caja quede idéntica a la del diseño.
+   */
+  .profesionales__fachada {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
     display: block;
-    text-decoration: none;
+  }
+
+  /* Anillo de foco on-dark (tokens.css §--color-border-focus: "on-dark:
+     brand-300"), hacia adentro porque el marco recorta lo que se sale. */
+  .profesionales__fachada:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-brand-300);
+    outline-offset: calc(-1 * (var(--focus-ring-width) + var(--focus-ring-offset)));
+  }
+
+  /* Reproductor: ocupa el tile completo una vez que el visitante pulsa. */
+  .profesionales :global(.profesionales__reproductor) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: var(--color-neutral-800);
   }
 
   .profesionales :global(.profesionales__foto.imagen) {
@@ -322,3 +371,64 @@ const claseMarco = ['profesionales__marco', hayVideo && 'profesionales__marco--v
     }
   }
 </style>
+
+<script>
+  /**
+   * Fachada de video: hasta que alguien pulsa, en la página no hay ni un byte
+   * de terceros. Al pulsar se crea el reproductor dentro del mismo marco.
+   *
+   *   tipo "youtube" → iframe de youtube-nocookie.com (dominio sin cookies de
+   *                    seguimiento previo), con autoplay para que el clic que
+   *                    abrió el reproductor sea también el que lo arranca.
+   *   tipo "archivo" → <video> local con controles: nunca sale del sitio.
+   *
+   * Se delega en el documento y se vuelve a enganchar en `astro:page-load`
+   * porque con View Transitions el marcado se reemplaza sin recargar.
+   */
+  const abrir = (boton: HTMLElement) => {
+    const marco = boton.closest<HTMLElement>('.profesionales__marco')
+    if (!marco) return
+    const titulo = boton.dataset.videoTitulo || 'Video'
+    let reproductor: HTMLElement
+
+    if (boton.dataset.videoTipo === 'youtube') {
+      const id = boton.dataset.videoId
+      if (!id) return
+      const iframe = document.createElement('iframe')
+      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&modestbranding=1&playsinline=1`
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen'
+      iframe.allowFullscreen = true
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin'
+      reproductor = iframe
+    } else {
+      const url = boton.dataset.videoUrl
+      if (!url) return
+      const video = document.createElement('video')
+      video.src = url
+      video.controls = true
+      video.autoplay = true
+      video.playsInline = true
+      reproductor = video
+    }
+
+    reproductor.className = 'profesionales__reproductor'
+    reproductor.title = titulo
+    marco.querySelector('.profesionales__foto')?.remove()
+    boton.remove()
+    marco.append(reproductor)
+    reproductor.focus?.()
+  }
+
+  const enganchar = () => {
+    const marco = document.querySelector('.profesionales__marco')
+    if (!marco || marco.hasAttribute('data-fachada-lista')) return
+    marco.setAttribute('data-fachada-lista', '')
+    marco.addEventListener('click', (evento) => {
+      const boton = (evento.target as HTMLElement | null)?.closest<HTMLElement>('.profesionales__fachada')
+      if (boton) abrir(boton)
+    })
+  }
+
+  enganchar()
+  document.addEventListener('astro:page-load', enganchar)
+</script>

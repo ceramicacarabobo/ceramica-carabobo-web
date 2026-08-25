@@ -103,8 +103,13 @@ export const HOME = /* groq */ `
     "titulo": profesionales.titulo,
     "texto": profesionales.texto,
     "imagen": profesionales.imagen${IMAGEN},
-    "videoUrl": profesionales.video.asset->url,
-    "videoEtiqueta": profesionales.videoEtiqueta
+    "video": {
+      "archivoUrl": profesionales.video.asset->url,
+      "youtubeUrl": profesionales.videoYoutube,
+      "portada": profesionales.videoPortada${IMAGEN},
+      "titulo": profesionales.videoTitulo,
+      "etiqueta": profesionales.videoEtiqueta
+    }
   },
   "encuentranos": {
     "etiqueta": encuentranos.etiqueta,

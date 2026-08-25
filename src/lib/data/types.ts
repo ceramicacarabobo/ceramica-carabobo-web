@@ -56,6 +56,29 @@ export interface Materia {
   fotoAmbiente?: Imagen
 }
 
+/**
+ * Video de una sección, ya resuelto por el adaptador. El componente no sabe de
+ * dónde salió: recibe `tipo` y, según él, `url` o `youtubeId` listos para usar.
+ *
+ * Precedencia (misma regla que el schema): con archivo propio y URL de YouTube
+ * cargados a la vez gana el archivo, porque se sirve desde nuestro dominio y no
+ * mete a un tercero en la página.
+ */
+export interface Video {
+  /** 'archivo' = mp4 servido por nosotros; 'youtube' = fachada + iframe al pulsar. */
+  tipo: 'archivo' | 'youtube'
+  /** Solo en 'archivo': la URL local del mp4. */
+  url?: string
+  /** Solo en 'youtube': el id extraído de la URL (el componente no parsea nada). */
+  youtubeId?: string
+  /** Imagen fija del tile. Siempre nuestra: nunca la miniatura remota de YouTube. */
+  portada?: Imagen
+  /** Título real del video: nombra el botón de play y titula el reproductor. */
+  titulo?: string
+  /** Texto corto sobre la imagen, ej. "Video · 1:36". */
+  etiqueta?: string
+}
+
 export interface HeroCapa {
   etiqueta?: string
   imagen?: Imagen
@@ -87,10 +110,8 @@ export interface Home {
     titulo?: string
     texto?: string
     imagen?: Imagen
-    /** Video de instalación del tile izquierdo. Sin él no hay play ni etiqueta. */
-    videoUrl?: string
-    /** Texto corto sobre la imagen, ej. "Video · 3:47". */
-    videoEtiqueta?: string
+    /** Video del tile izquierdo. Sin él no hay play ni etiqueta: queda la foto sola. */
+    video?: Video
   }
   encuentranos: {etiqueta?: string; titulo?: string; texto?: string}
 }

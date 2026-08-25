@@ -11,7 +11,13 @@
  *      la fila "Diseño" de la ficha de Proyectos tenga a quién apuntar
  *      (sus fotos son de ejemplo: quedan marcadas esEjemplo)
  *   3. home (singleton): hero, ambientes, cita, proyectos, historia, profesionales, encuentranos
- *   4. ajustes (singleton): metadatos y datos de contacto globales
+ *   4. ajustes (singleton): metadatos, datos de contacto globales y redes
+ *
+ * Además del bundle de diseño, el bloque VIDEO_PROFESIONALES trae el dato que
+ * entregó el cliente sobre el video de instalación alojado en su canal. Su
+ * portada se descarga UNA VEZ de YouTube a `scripts/.medios-descargados/` y de
+ * ahí sube a Sanity: en el sitio se sirve procesada por nosotros, nunca
+ * enlazada a i.ytimg.com (autosuficiencia, plan maestro §3.3).
  *
  * Fuente de los datos: design/publicar/data/catalogo.json (productos) y las
  * constantes HERO, MATERIAS, IMGS_AMB, ESPACIOS, PROYECTOS, HITOS del <script>
@@ -35,6 +41,7 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const DESIGN = path.join(ROOT, 'design', 'publicar')
 const CATALOGO_PATH = path.join(DESIGN, 'data', 'catalogo.json')
 const MAPA_ASSETS_PATH = path.join(ROOT, 'scripts', '.assets-subidos.json')
+const DESCARGAS = path.join(ROOT, 'scripts', '.medios-descargados')
 
 // ---------------------------------------------------------------------------
 // Variables de entorno: se leen de .env a mano (no hay dotenv en el proyecto)
@@ -116,6 +123,46 @@ async function subirAsset(tipo, rutaAbsoluta, filename) {
 async function imagen(rutaRelativa, alt, camposExtra = {}) {
   const rutaAbsoluta = path.join(DESIGN, rutaRelativa)
   const assetId = await subirAsset('image', rutaAbsoluta, path.basename(rutaRelativa))
+  return {
+    _type: 'image',
+    asset: {_type: 'reference', _ref: assetId},
+    ...(alt ? {alt} : {}),
+    ...camposExtra,
+  }
+}
+
+/**
+ * Imagen de Sanity a partir de una URL remota. Se descarga a
+ * `scripts/.medios-descargados/` (caché local, no versionada) y se sube como
+ * cualquier otro asset: a partir de ahí el dato es nuestro y el sitio no
+ * depende del origen. `alternativas` permite intentar varias direcciones —
+ * maxresdefault no existe para todos los videos de YouTube, hqdefault sí.
+ */
+async function imagenRemota(alternativas, nombreArchivo, alt, camposExtra = {}) {
+  const destino = path.join(DESCARGAS, nombreArchivo)
+  if (!fs.existsSync(destino)) {
+    fs.mkdirSync(DESCARGAS, {recursive: true})
+    let ultimoError = null
+    for (const url of alternativas) {
+      try {
+        const respuesta = await fetch(url)
+        if (!respuesta.ok) {
+          ultimoError = new Error(`${respuesta.status} en ${url}`)
+          continue
+        }
+        fs.writeFileSync(destino, Buffer.from(await respuesta.arrayBuffer()))
+        console.log(`Portada descargada de ${url}`)
+        ultimoError = null
+        break
+      } catch (err) {
+        ultimoError = err
+      }
+    }
+    if (ultimoError || !fs.existsSync(destino)) {
+      throw new Error(`No se pudo descargar la portada (${nombreArchivo}): ${ultimoError?.message ?? 'sin respuesta'}`)
+    }
+  }
+  const assetId = await subirAsset('image', destino, nombreArchivo)
   return {
     _type: 'image',
     asset: {_type: 'reference', _ref: assetId},
@@ -377,6 +424,33 @@ async function construirHito(item) {
   }
 }
 
+/**
+ * Video de instalación entregado por el cliente (2026-08-25). Vive en su canal
+ * de YouTube, así que el sitio lo dibuja como fachada: portada nuestra y el
+ * reproductor ajeno solo si el visitante pulsa (ver Profesionales.astro).
+ *
+ * Título y canal, verificados contra el propio YouTube (oEmbed). Duración
+ * 1:36, leída de la ficha del video en el canal ("1 minute, 36 seconds"):
+ * el "3:47" del prototipo era un valor de relleno del diseño.
+ */
+const VIDEO_PROFESIONALES = {
+  url: 'https://www.youtube.com/watch?v=MkAEfk4V65w',
+  id: 'MkAEfk4V65w',
+  titulo: 'Cómo instalar revestimiento 60x120 | Cerámica de gran formato',
+  etiqueta: 'Video · 1:36',
+  portadaAlt: 'Instalación de revestimiento cerámico de 60×120 en pared',
+}
+
+/**
+ * Redes del cliente (2026-08-25). En el prototipo los tres botones apuntaban a
+ * "#contacto": eran placeholders. El orden es el del diseño.
+ */
+const REDES_CLIENTE = [
+  {nombre: 'Instagram', url: 'https://www.instagram.com/ceramicacarabobo/'},
+  {nombre: 'YouTube', url: 'https://www.youtube.com/@ceramicacarabobove'},
+  {nombre: 'TikTok', url: 'https://www.tiktok.com/@ceramicacarabobo.ve'},
+]
+
 async function construirHome(productosPorSlug) {
   const video = await archivo('uploads/hero-ambiente-loop.mp4')
   const poster = await imagen('uploads/hero-poster.jpg', 'Video de ambiente con revestimiento cerámico')
@@ -400,6 +474,15 @@ async function construirHome(productosPorSlug) {
   const imagenProfesionales = await imagen(
     'assets/catalogo/ejemplo-restaurante.jpg',
     'Instalación de porcelanato de gran formato en obra',
+  )
+
+  const portadaVideo = await imagenRemota(
+    [
+      `https://i.ytimg.com/vi/${VIDEO_PROFESIONALES.id}/maxresdefault.jpg`,
+      `https://i.ytimg.com/vi/${VIDEO_PROFESIONALES.id}/hqdefault.jpg`,
+    ],
+    `youtube-${VIDEO_PROFESIONALES.id}.jpg`,
+    VIDEO_PROFESIONALES.portadaAlt,
   )
 
   return {
@@ -434,12 +517,22 @@ async function construirHome(productosPorSlug) {
       titulo: 'Historia',
       hitos,
     },
-    // index.html:39070-40100 ("03 · Profesionales")
+    // index.html:39070-40100 ("03 · Profesionales"). El título y el texto del
+    // prototipo eran genéricos ("Aprende a instalar los formatos grandes." +
+    // guías, fichas y muestras): ahora la sección muestra un video concreto,
+    // así que hablan de lo que ese video enseña.
     profesionales: {
       etiqueta: 'Profesionales',
-      titulo: 'Aprende a instalar los formatos grandes.',
-      texto: 'Guías de instalación, fichas técnicas y muestras a obra para arquitectos, instaladores y constructoras.',
+      // Largo calibrado contra el prototipo: el título ocupa 3 líneas a 390 y
+      // 2 a 1440, y el texto 3 y 2, exactamente como el bloque del diseño. Así
+      // el cambio de copy no mueve la caja de la sección.
+      titulo: 'Cómo se instala el revestimiento 60×120.',
+      texto: 'Preparación de la pared, adhesivo, corte y junta, en el orden en que se hacen en obra.',
       imagen: imagenProfesionales,
+      videoYoutube: VIDEO_PROFESIONALES.url,
+      videoPortada: portadaVideo,
+      videoTitulo: VIDEO_PROFESIONALES.titulo,
+      videoEtiqueta: VIDEO_PROFESIONALES.etiqueta,
     },
     // index.html:43150-43163 ("04 · Encuéntranos")
     encuentranos: {
@@ -465,6 +558,7 @@ function construirAjustes() {
     direccion: 'Zona Industrial Municipal Norte\nValencia, Carabobo — Venezuela',
     telefono: '+58 241 838 00 00',
     correo: 'ventas@ceramicacarabobo.com',
+    redes: REDES_CLIENTE.map((red) => ({_type: 'red', _key: keyDe(`red-${red.nombre}`), ...red})),
     anioFundacion: 1956,
   }
 }
@@ -522,7 +616,9 @@ async function main() {
   console.log(`materia (${materiasCreadas.length}): ${materiasCreadas.join(', ')}`)
   console.log(`producto (${productosCreados.length}): ${productosCreados.join(', ')}`)
   console.log('home: actualizado (_id "home")')
+  console.log(`  profesionales: video de YouTube ${VIDEO_PROFESIONALES.id} + portada propia, etiqueta "${VIDEO_PROFESIONALES.etiqueta}"`)
   console.log('ajustes: actualizado (_id "ajustes")')
+  console.log(`  redes (${REDES_CLIENTE.length}): ${REDES_CLIENTE.map((r) => r.nombre).join(', ')}`)
 }
 
 main().catch((err) => {

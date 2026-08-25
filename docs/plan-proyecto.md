@@ -131,3 +131,18 @@ que introduce la ejecución (registrados acá como manda §9):
 6. **Fase 4 (multiidioma) eliminada** del plan de fases, en línea con la decisión de §8: el sitio
    es monolingüe es-VE. Las fases posteriores conservan su numeración original para no romper
    referencias.
+
+## 11. Registro de ejecución — Fase 2 (2026-08-25)
+
+1. **Fachada para el video de YouTube.** El cliente entregó el video de instalación alojado en su
+   canal (`MkAEfk4V65w`), no como archivo. Un embed normal descargaría scripts de terceros con solo
+   abrir la home, lo que choca con la condición §3.3 (autosuficiencia). Decisión: el tile de
+   Profesionales es una **fachada** — portada propia, subida a Sanity y procesada en el build, más
+   el botón de play del diseño — y el `<iframe>` de `youtube-nocookie.com` se crea **solo cuando el
+   visitante pulsa**. Mientras nadie pulse, la página no hace ni una petición fuera de nuestro
+   origen; verificado con `scripts/qa/red.mjs` (0 peticiones ajenas antes del clic).
+   La miniatura de `i.ytimg.com` **no se enlaza**: se descargó una vez y vive en el CMS.
+2. **Precedencia archivo propio > YouTube.** `home.profesionales` acepta las dos formas de cargar
+   el video. Si están las dos, gana el `.mp4` propio, porque lo servimos nosotros y no mete a un
+   tercero en la página. El adaptador resuelve cuál aplica y entrega `video.tipo`; el componente no
+   parsea URLs ni conoce YouTube más allá de ese valor.

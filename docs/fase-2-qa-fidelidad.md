@@ -23,6 +23,11 @@ node scripts/qa/medir.mjs '[data-screen-label="Hero"] h1' '.hero__titular' 1440 
 
 # Mirar solo nuestras secciones (sin comparar)
 DESTINO=/ruta node scripts/qa/mirar.mjs
+
+# Autosuficiencia: registrar TODO el tráfico al cargar la home y confirmar que
+# no sale ni una petición fuera de nuestro origen (después pulsa la fachada de
+# video para comprobar que ahí sí carga YouTube). Sale con código 1 si falla.
+node scripts/qa/red.mjs
 ```
 
 `PLANO=1` apaga las imágenes: mide **solo composición y tipografía**. Sin eso, una foto distinta o
@@ -43,7 +48,7 @@ sale vacía y no hay nada que comparar.
 | 6 | Proyectos | Las obras se apilan a ancho completo; el prototipo usa grilla (`proyGridCols` / `proSplitCols`). |
 | 7 | Global | Movimiento: duración y curva no coincidían. El valor real del prototipo para apariciones es **480ms con `cubic-bezier(0.2,0,0,1)`**, umbral cuando el elemento entró (top < 86% del alto de ventana) y cascada **60 + i×70ms**. Corregido en `Reveal.astro`. |
 | 8 | Global | Faltan dos efectos del prototipo: la **máscara de imagen** (`clip-path: inset(0 0 14% 0)` → `inset(0)`, 480ms ease-out) y el **filete que se dibuja** (`background-size: 0 1px` → `100% 1px`, 480ms ease-out con 120ms de retraso). |
-| 9 | Profesionales | Faltaban el **tile de video** (play de 72px + etiqueta "Video · 3:47") y el bloque **"Conecta con nuestras redes"**. No eran de maquetación: no había campo en el CMS. Resuelto agregando `home.profesionales.video`/`videoEtiqueta` y `ajustes.redes[]`. **Los datos siguen pendientes del cliente**, así que el bloque no se dibuja todavía (ver §Contenido pendiente). |
+| 9 | Profesionales | Faltaban el **tile de video** (play de 72px + etiqueta "Video · 3:47") y el bloque **"Conecta con nuestras redes"**. No eran de maquetación: no había campo en el CMS. Resuelto agregando `home.profesionales.video`/`videoEtiqueta` y `ajustes.redes[]`. **Cerrado el 2026-08-25**: el cliente entregó las tres redes y el video, ya cargados (ver §Video de instalación). |
 | 10 | Proyectos | Las obras tenían `producto` vacío: sus diseños (Carrara Brillante, Teca) son Serie Regular y la carga solo traía Serie Venezuela. La fila "Diseño" se ocultaba y la ficha quedaba 40px baja en móvil. Resuelto: los dos productos se importan y las obras los referencian; `formato` queda solo con la especificación, como en el prototipo. |
 | 11 | Global | **`line-height` de los tokens vs. el prototipo.** El prototipo no declara `line-height` en overlines ni en valores de ficha (queda `normal`); los tokens sí: `--text-overline` 1.35 (16.2px vs 14px reales) y `--text-caption-lg` 1.5 (19.5px vs 18px). Es la causa de todo el residuo que queda: +13px en Proyectos a 390 (1.2%) y +4px a 1440, y el corrimiento de 2px del bloque editorial de Profesionales. Afecta a todo el sitio, así que **es decisión de tokens, no de una sección**: o el prototipo se aparta de `Tokens v0` §09 y manda el token, o manda el prototipo y hay que anotar la desviación. Sin resolver esto no se baja del 1% en móvil. |
 
@@ -83,22 +88,43 @@ una acción del usuario, donde arrancar inmediato es lo correcto. Estos valores 
 `--desplazamiento-entrada`, `--dur-respuesta` y `--ease-respuesta` — no en `tokens.css`, que es
 copia literal del documento de diseño.
 
-## Contenido pendiente del cliente (bloquea fidelidad, no código)
+## Video de instalación y redes — cargados el 2026-08-25
 
-`design/NOTAS-SESION-DISENO.md:56` ya lo dejaba anotado: en el prototipo **los tres botones de
-redes y el tile de video de Profesionales apuntan todos a `#contacto`** — son placeholders. El
-handoff no trae ninguna URL real ni el archivo del video de instalación (el único `.mp4` del bundle
-es el loop del hero). Los campos están creados y vacíos:
+`design/NOTAS-SESION-DISENO.md:56` lo dejaba anotado: en el prototipo los tres botones de redes y el
+tile de video de Profesionales apuntan todos a `#contacto` — eran placeholders, y el handoff no traía
+ninguna URL real ni el archivo del video. El cliente entregó los datos y ya están en el CMS.
 
-| Campo del CMS | Qué falta | Efecto mientras falte |
-|---|---|---|
-| `ajustes.redes[]` | URL de Instagram, YouTube y TikTok | El bloque "Conecta con nuestras redes" no se dibuja: la sección queda 150px más baja que el diseño a 390px |
-| `home.profesionales.video` | El archivo del video de instalación | Sin play ni etiqueta: la mitad izquierda queda como foto fija, sin enlace |
-| `home.profesionales.videoEtiqueta` | La duración real (el diseño dice "Video · 3:47") | — |
+| Campo del CMS | Dato cargado |
+|---|---|
+| `ajustes.redes[]` | Instagram, YouTube y TikTok del cliente (orden del diseño) |
+| `home.profesionales.videoYoutube` | `https://www.youtube.com/watch?v=MkAEfk4V65w` |
+| `home.profesionales.videoPortada` | `maxresdefault` del video, descargada una vez y subida a Sanity |
+| `home.profesionales.videoTitulo` | "Cómo instalar revestimiento 60x120 \| Cerámica de gran formato" |
+| `home.profesionales.videoEtiqueta` | "Video · 1:36" — la duración real; el "3:47" del diseño era relleno |
 
-Verificado con una carga provisional (redes de ejemplo + el mp4 del hero, borrada después): con los
-datos puestos, Profesionales cierra la caja a 390 (800×800, idéntica al prototipo) y baja de 1.19% a
-**0.86%** a 1440. Es decir, **el marcado ya está bien; lo que falta es el dato.**
+**El video vive en YouTube, así que el tile es una fachada** (decisión registrada en
+`plan-proyecto.md` §11): portada nuestra + botón de play del diseño, y el `<iframe>` de
+`youtube-nocookie.com` se crea solo al pulsar. Medido con `scripts/qa/red.mjs`: **0 peticiones fuera
+de nuestro origen** al cargar la home; tras el clic aparecen las de `youtube-nocookie.com` y
+compañía, que es lo esperado. La fachada es un `<button>` real, con `aria-label` que nombra el video
+por su título y anillo de foco on-dark (brand-300, 2px, hacia adentro porque el marco recorta).
+
+**Los textos de la sección cambiaron con el dato.** El prototipo decía "Aprende a instalar los
+formatos grandes." y un texto genérico sobre guías, fichas y muestras; ahora la sección muestra un
+video concreto sobre revestimiento de 60×120, así que el título y la bajada hablan de eso. El largo
+está calibrado contra el prototipo: título de 3 líneas a 390 y 2 a 1440, bajada de 3 y 2 — las
+mismas que el diseño, para que el cambio de copy no mueva la caja.
+
+### Los 3–4px que quedan a 390 son del prototipo, no nuestros
+
+Con los datos puestos, la sección pasó de 151px de diferencia a **3px** (796 contra 800) a 390 y de 1,19% a **1,11%**
+a 1440. El residuo de alto está localizado: los botones de red del prototipo miden **46px** y los
+nuestros **44px**. El prototipo los declara con `min-height:44px` y borde de 1px, pero esos anchors
+con estilo en línea renderizan en `content-box` (no hay reset de `box-sizing` que los alcance), así
+que suman los dos bordes. `Tokens v0` fija la altura de control en 44 y nosotros usamos
+`--control-height-md`: manda el token. A 390 los botones envuelven en dos filas → 4px, que es
+prácticamente todo lo que separa las dos cajas. Es un **artefacto de herramienta**, del mismo tipo
+que los breakpoints en JS: no se replica.
 
 ## Reglas del arreglo
 
@@ -117,7 +143,7 @@ datos puestos, Profesionales cierra la caja a 390 (800×800, idéntica al protot
 | Historia | 0,13% | sin pin en móvil — divergencia decidida |
 | Ambientes | 0,70% | pestañas deslizables en vez de dos líneas — divergencia decidida |
 | Proyectos | 2px de alto | 2px de alto |
-| Profesionales | 1,19% | falta el dato de redes y video |
+| Profesionales | **1,11%** | **3px de alto** (antes: 1,19% y 151px) |
 
 ### Interlineado: manda la página, no el token
 
@@ -138,10 +164,3 @@ En móvil el prototipo contradice a su propia `Responsividad v0` en tres puntos.
    deslizables horizontalmente.
 3. **Hero**: el prototipo corre a 78dvh por un ajuste de su entorno; la tabla de grilla pide
    100dvh en escritorio.
-
-## Contenido pendiente del cliente (bloquea cerrar la fidelidad)
-
-1. **URL de Instagram, YouTube y TikTok** → `ajustes.redes[]`. En el prototipo los tres botones
-   apuntan a `#contacto`: no hay dato real. Sin esto, Profesionales queda 150px más corta en móvil.
-2. **El video de instalación** → `home.profesionales.video`, y su duración real para la etiqueta
-   (el diseño dice "Video · 3:47", que es inventado).

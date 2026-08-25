@@ -124,21 +124,60 @@ export default defineType({
           title: 'Imagen',
           type: 'image',
           options: {hotspot: true},
-          description: 'La mitad izquierda de la sección. Si hay video cargado, hace de portada del tile.',
+          description: 'La mitad izquierda de la sección. Con video cargado y sin portada propia, hace de portada del tile.',
+          fields: [defineField({name: 'alt', title: 'Texto alternativo', type: 'string'})],
+        }),
+        // --- Video del tile izquierdo -------------------------------------
+        // Hay dos maneras de cargarlo y REGLA DE PRECEDENCIA: si están las dos,
+        // GANA EL ARCHIVO. El mp4 propio se sirve desde nuestro dominio
+        // (autosuficiencia, plan maestro §3.3) y no involucra a terceros; el de
+        // YouTube, aun con fachada, termina cargando el reproductor ajeno
+        // cuando el visitante pulsa. El de YouTube es el camino disponible hoy;
+        // el día que suban el mp4 propio, ese pasa a mandar sin tocar código.
+        defineField({
+          name: 'video',
+          title: 'Video de instalación (archivo propio)',
+          type: 'file',
+          options: {accept: 'video/mp4'},
+          description:
+            'Opción preferida: se sirve desde nuestro propio sitio. Si está cargado, manda sobre la URL de YouTube.',
+        }),
+        defineField({
+          name: 'videoYoutube',
+          title: 'Video de instalación (YouTube)',
+          type: 'url',
+          description:
+            'Alternativa cuando el video vive en el canal, ej. https://www.youtube.com/watch?v=… El sitio muestra la portada de abajo y solo carga el reproductor de YouTube cuando el visitante pulsa el play.',
+          validation: (rule) =>
+            rule
+              .uri({scheme: ['http', 'https']})
+              .custom((valor) =>
+                !valor || /(?:youtube\.com|youtu\.be)/.test(valor)
+                  ? true
+                  : 'Tiene que ser una dirección de YouTube (youtube.com o youtu.be).',
+              ),
+        }),
+        defineField({
+          name: 'videoPortada',
+          title: 'Portada del video',
+          type: 'image',
+          options: {hotspot: true},
+          description:
+            'La imagen fija del tile mientras nadie pulsa el play. Se sirve desde nuestro sitio: nunca se enlaza la miniatura de YouTube. Sin portada se usa la imagen de la sección.',
           fields: [defineField({name: 'alt', title: 'Texto alternativo', type: 'string'})],
         }),
         defineField({
-          name: 'video',
-          title: 'Video de instalación',
-          type: 'file',
-          options: {accept: 'video/mp4'},
-          description: 'Sin video no se muestran ni el botón de play ni la etiqueta: queda solo la imagen.',
+          name: 'videoTitulo',
+          title: 'Título del video',
+          type: 'string',
+          description:
+            'El título real del video. No se dibuja en pantalla: nombra el botón de play para quien usa lector de pantalla y titula el reproductor.',
         }),
         defineField({
           name: 'videoEtiqueta',
           title: 'Etiqueta del video',
           type: 'string',
-          description: 'Texto corto sobre la imagen, ej. "Video · 3:47".',
+          description: 'Texto corto sobre la imagen, ej. "Video · 1:36". Sin duración cierta, mejor solo "Video".',
           validation: (rule) => rule.max(32).warning('Más de 32 caracteres se parte en dos líneas sobre la imagen.'),
         }),
       ],
