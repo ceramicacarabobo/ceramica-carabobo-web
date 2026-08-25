@@ -25,7 +25,9 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - Fase 0 (modelo de contenido) ✅. Bundle de diseño completo en `design/` (107 archivos, texto + fotos + video) ✅.
 - **Fase 1 (esqueleto) cerrada** — QA en línea: https://qa.ceramica-carabobo.workers.dev (preview en https://preview.ceramica-carabobo.workers.dev). Sanity `egpui9al`; publicar reconstruye el sitio solo (webhook → Workers Builds). Datos del entorno en `docs/fase-1-esqueleto.md` §1.bis.
 - Pendientes menores de la fase: verificar click-to-edit en el navegador y poner contraseña al QA con Cloudflare Access antes de compartirlo con el cliente.
-- **Siguiente: Fase 2 (diseño a componentes).**
+- **Fase 2 (diseño a componentes) cerrada** — home completa y 404 al píxel contra el prototipo, QA de aceptación automatizado en `scripts/qa/aceptacion.mjs` (6 pruebas en verde). Herramientas de fidelidad y decisiones en `docs/fase-2-qa-fidelidad.md`.
+- **En curso: Fase 3 (catálogo)** — ver `docs/fase-3-catalogo.md`.
+- **El prototipo del diseño se ejecuta**: `cd design/publicar && python3 -m http.server 4500`. Es la referencia de fidelidad; se compara con `scripts/qa/diff.mjs` y `scripts/qa/medir.mjs`.
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.
 
