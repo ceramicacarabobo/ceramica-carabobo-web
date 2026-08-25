@@ -7,7 +7,7 @@ y el sitio lo muestra filtrable.*
 
 | # | Bloque | Estado |
 |---|---|---|
-| 3.1 | Los 126 productos cargados en Sanity con sus fotos y marcas de ejemplo | en curso |
+| 3.1 | Los 126 productos cargados en Sanity con sus fotos y marcas de ejemplo | ✅ |
 | 3.2 | Página de catálogo: grilla de 24 en 24, cinco filtros combinables, orden y estados vacíos | pendiente |
 | 3.3 | Contrato de URL e historial (filtros sin ensuciar historial, ficha con entrada propia, atrás cierra lo de encima) | pendiente |
 | 3.4 | Ficha de producto: overlay en el catálogo y página propia indexable por producto | pendiente |
@@ -39,4 +39,20 @@ y el sitio lo muestra filtrable.*
 
 ## Decisiones de esta fase
 
-*(se registran acá a medida que aparecen)*
+1. **Direcciones de producto con formato cuando el nombre se repite** (2026-08-25). El archivo del
+   cliente trae 126 filas pero solo 113 nombres distintos: 13 diseños existen en 60×60 y en 60×120
+   (Duna, Mallorca, Santorini, Enigma White…). Como la unidad decidida es "una fila = un producto =
+   una página propia", cada fila necesita su propia dirección: el primero conserva la dirección
+   simple y el segundo lleva el formato (`/catalogo/duna` y `/catalogo/duna-60x120`).
+   Si el cliente decidiera agrupar por diseño —consulta todavía abierta— esto se revierte.
+2. **La macro deja de ser obligatoria cuando no existe** (2026-08-25). El schema exigía que la
+   primera foto fuera la macro de la baldosa. Nueve productos del catálogo real solo tienen foto de
+   ambiente: es un hueco de material del cliente, no un error de carga. Ahora el Studio avisa
+   ("Falta la macro de la baldosa") en vez de bloquear, y sigue siendo error poner un ambiente
+   delante de una macro que sí existe.
+
+## Estado del dato cargado (2026-08-25)
+
+126 productos · 97 con materia y **29 sin materia** · 97 con fotos y **29 sin ninguna foto** ·
+**132 fotos marcadas como ejemplo**. Coincide exactamente con el archivo del cliente y con lo que
+declara `design/publicar/LEEME.md`.

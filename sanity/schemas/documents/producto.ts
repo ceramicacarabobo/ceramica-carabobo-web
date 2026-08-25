@@ -144,11 +144,23 @@ export default defineType({
       group: 'fotos',
       of: [{type: 'fotoProducto'}],
       description: 'Hasta 4. La primera debe ser la macro de la baldosa; el resto, ambientes.',
-      validation: (rule) =>
-        rule.max(4).custom((fotos?: {tipo?: string}[]) => {
+      validation: (rule) => [
+        rule.max(4),
+        // Si hay macro, va primera. Si el producto no tiene ninguna macro —hay 9
+        // así en el catálogo del cliente, solo con foto de ambiente— es un hueco
+        // de material, no un error de carga: se avisa, no se bloquea.
+        rule.custom((fotos?: {tipo?: string}[]) => {
           if (!fotos || fotos.length === 0) return true
-          return fotos[0]?.tipo === 'macro' ? true : 'La primera foto tiene que ser la macro de la baldosa.'
+          if (!fotos.some((foto) => foto?.tipo === 'macro')) return true
+          return fotos[0]?.tipo === 'macro' ? true : 'Si hay una macro de la baldosa, tiene que ir primera.'
         }),
+        rule
+          .custom((fotos?: {tipo?: string}[]) => {
+            if (!fotos || fotos.length === 0) return true
+            return fotos.some((foto) => foto?.tipo === 'macro') ? true : 'Falta la macro de la baldosa.'
+          })
+          .warning(),
+      ],
     }),
   ],
   orderings: [

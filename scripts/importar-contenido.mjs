@@ -6,10 +6,11 @@
  * Alcance (ver docs/modelo-de-contenido.md y CLAUDE.md — no ampliar sin
  * actualizar esos documentos primero):
  *   1. materia ×6 (claim + fotoTextura + fotoAmbiente cuando el handoff los trae)
- *   2. producto: los de Serie Venezuela con foto real (~29, según design/publicar/LEEME.md)
- *      más los diseños que citan las obras del home (Serie Regular), para que
- *      la fila "Diseño" de la ficha de Proyectos tenga a quién apuntar
- *      (sus fotos son de ejemplo: quedan marcadas esEjemplo)
+ *   2. producto: los 126 de design/publicar/data/catalogo.json (Fase 3). Solo
+ *      31 tienen foto real (los 29 de Serie Venezuela + Ciprés Gris/Moka); el
+ *      resto llega sin materia (29, no se inventa valor) y/o con foto ajena
+ *      marcada `esEjemplo` (66 productos) o sin foto (29) — todo tal como lo
+ *      trae el JSON, ver design/publicar/LEEME.md.
  *   3. home (singleton): hero, ambientes, cita, proyectos, historia, profesionales, encuentranos
  *   4. ajustes (singleton): metadatos, datos de contacto globales y redes
  *   5. distribuidor ×24 (la red del prototipo, marcada como dato de ejemplo)
@@ -238,7 +239,7 @@ async function construirMateria(spec, productosPorSlug) {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Producto — Serie Venezuela con foto real, desde catalogo.json.
+// 2. Producto — los 126 de catalogo.json (Fase 3).
 // ---------------------------------------------------------------------------
 
 // El campo materiaOrigen del catálogo trae textos descriptivos más largos que
@@ -253,12 +254,35 @@ const MATERIA_ORIGEN_MAP = {
   pendiente: 'pendiente',
 }
 
-async function construirProducto(p) {
+/**
+ * El catálogo trae 126 filas pero solo 113 `slug` distintos: 13 diseños
+ * aparecen dos veces, uno en 60×60 y otro en 60×120 (mismo nombre, misma
+ * materia, distinto formato — y a veces distinta textura/brillo/uso: son
+ * SKUs reales, no un duplicado de captura). Es la brecha "SKU vs diseño" que
+ * docs/modelo-de-contenido.md §5 deja abierta con el cliente; mientras el
+ * modelo siga siendo "una fila = un producto = una URL propia" (estado
+ * vigente, no se reabre acá), cada fila necesita un slug único o la segunda
+ * pisa el `_id` de la primera vía createOrReplace y una de las dos desaparece.
+ * Se desambigua con el formato, que es justo el eje en que difieren las 13
+ * parejas. Devuelve un Map producto -> slug final a usar en _id y slug.current.
+ */
+function calcularSlugsFinales(productos) {
+  const apariciones = new Map()
+  for (const p of productos) apariciones.set(p.slug, (apariciones.get(p.slug) ?? 0) + 1)
+  const final = new Map()
+  for (const p of productos) {
+    const slug = apariciones.get(p.slug) > 1 ? `${p.slug}-${p.formato.replace('×', 'x')}` : p.slug
+    final.set(p, slug)
+  }
+  return final
+}
+
+async function construirProducto(p, slugFinal = p.slug) {
   const doc = {
-    _id: `producto-${p.slug}`,
+    _id: `producto-${slugFinal}`,
     _type: 'producto',
     nombre: p.nombre,
-    slug: {_type: 'slug', current: p.slug},
+    slug: {_type: 'slug', current: slugFinal},
     serie: p.serie,
     formato: p.formato,
     uso: p.uso,
@@ -667,20 +691,21 @@ async function main() {
   console.log(`Sanity: proyecto ${PROJECT_ID}, dataset ${DATASET}\n`)
 
   const catalogo = JSON.parse(fs.readFileSync(CATALOGO_PATH, 'utf8'))
-  const productosVenezuela = catalogo.productos.filter((p) => p.serie === 'Venezuela')
-  // Los diseños de las obras del home son Serie Regular: entran igual, porque
-  // sin ellos la fila "Diseño" de la ficha de Proyectos queda sin dato.
-  const productosObra = PRODUCTOS_OBRA.map((slug) => {
-    const p = catalogo.productos.find((item) => item.slug === slug)
-    if (!p) throw new Error(`El catálogo no trae el diseño "${slug}" que cita una obra del home.`)
-    return p
-  })
-  const productosAImportar = [...productosVenezuela, ...productosObra]
+  // Fase 3: se cargan los 126 productos del catálogo (antes solo entraban los
+  // 29 de Serie Venezuela + los 2 diseños citados por las obras del home).
+  // productosPorSlug sigue armado sobre el universo completo: las funciones
+  // del home (HERO_CAPAS, ESPACIOS, OBRAS) buscan por slug ahí adentro.
+  const productosAImportar = catalogo.productos
   const productosPorSlug = Object.fromEntries(productosAImportar.map((p) => [p.slug, p]))
+  const productosVenezuela = productosAImportar.filter((p) => p.serie === 'Venezuela')
+  const productosRegular = productosAImportar.filter((p) => p.serie === 'Regular')
+  for (const slug of PRODUCTOS_OBRA) {
+    if (!productosPorSlug[slug]) throw new Error(`El catálogo no trae el diseño "${slug}" que cita una obra del home.`)
+  }
 
   console.log(
-    `Catálogo: ${catalogo.productos.length} productos totales, ${productosVenezuela.length} de Serie Venezuela` +
-      ` + ${productosObra.length} diseños de obra (${PRODUCTOS_OBRA.join(', ')}).`,
+    `Catálogo: ${productosAImportar.length} productos a importar` +
+      ` (${productosVenezuela.length} Serie Venezuela + ${productosRegular.length} Serie Regular).`,
   )
 
   // 1. Materias
@@ -692,11 +717,23 @@ async function main() {
   }
 
   // 2. Productos
+  const slugFinalPorProducto = calcularSlugsFinales(productosAImportar)
   const productosCreados = []
   for (const p of productosAImportar) {
-    const doc = await construirProducto(p)
+    const doc = await construirProducto(p, slugFinalPorProducto.get(p))
     await client.createOrReplace(doc)
     productosCreados.push(doc.slug.current)
+  }
+  // Limpieza: los `_id` base (sin desambiguar) de las 13 parejas con slug
+  // repetido pudieron quedar creados por corridas de este script anteriores
+  // a que calcularSlugsFinales existiera (createOrReplace pisaba una fila con
+  // la otra). Ninguna fila usa hoy ese _id pelado, así que borrarlo es seguro
+  // e idempotente (borrar un id inexistente no falla).
+  const basesColisionadas = new Set(
+    [...slugFinalPorProducto.entries()].filter(([p, final]) => final !== p.slug).map(([p]) => p.slug),
+  )
+  if (basesColisionadas.size > 0) {
+    await client.delete({query: '*[_id in $ids]', params: {ids: [...basesColisionadas].map((s) => `producto-${s}`)}})
   }
 
   // 3. Home
@@ -716,7 +753,13 @@ async function main() {
   console.log(`Assets subidos a Sanity: ${contador.assetsSubidos}`)
   console.log(`Assets reutilizados (ya estaban en scripts/.assets-subidos.json): ${contador.assetsReutilizados}`)
   console.log(`materia (${materiasCreadas.length}): ${materiasCreadas.join(', ')}`)
-  console.log(`producto (${productosCreados.length}): ${productosCreados.join(', ')}`)
+  const conMateria = productosAImportar.filter((p) => p.materia).length
+  const conFotos = productosAImportar.filter((p) => p.fotos && p.fotos.length > 0).length
+  const fotosEjemplo = productosAImportar.reduce((n, p) => n + p.fotos.filter((f) => f.ejemplo).length, 0)
+  console.log(
+    `producto (${productosCreados.length}): ${conMateria} con materia · ${productosAImportar.length - conMateria} sin materia · ` +
+      `${conFotos} con fotos · ${productosAImportar.length - conFotos} sin fotos · ${fotosEjemplo} fotos marcadas esEjemplo`,
+  )
   console.log('home: actualizado (_id "home")')
   console.log(`  profesionales: video de YouTube ${VIDEO_PROFESIONALES.id} + portada propia, etiqueta "${VIDEO_PROFESIONALES.etiqueta}"`)
   console.log('ajustes: actualizado (_id "ajustes")')
