@@ -92,6 +92,10 @@ const video = profesionales.video
 // lo que se va a reproducir. Sin portada propia, la foto de sección hace de tal.
 const portada = video?.portada ?? profesionales.imagen
 
+// La portada del video es un fotograma 16:9 y no llena la caja sin recortarse;
+// una foto propia sí. Se distingue para encuadrar cada una como corresponde.
+const esPortadaDeVideo = Boolean(video?.portada)
+
 const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
 const hayImagen = Boolean(portada)
 const hayRedes = redes.length > 0
@@ -113,7 +117,7 @@ const etiquetaBoton = video?.titulo
     >
       <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
         {portada && (
-          <Reveal como="div" class="profesionales__marco">
+          <Reveal como="div" class="profesionales__marco" data-portada={esPortadaDeVideo ? 'video' : undefined}>
             <Imagen imagen={portada} sizes="(min-width: 760px) 50vw, 100vw" class="profesionales__foto" />
             {video && (
               <button
@@ -200,6 +204,31 @@ const etiquetaBoton = video?.titulo
     min-height: clamp(280px, 42vw, 520px);
     min-width: 0;
     overflow: hidden;
+  }
+
+  /*
+   * Portada de video: los fotogramas son 16:9 y esta caja es más alta (1,25), así
+   * que llenarla recortaba por los lados y se comía el título y el logo del video.
+   * Se muestra el fotograma completo, centrado, sobre el fondo oscuro: es el
+   * encuadre que espera cualquiera que reconozca un reproductor.
+   * Una foto vertical cargada desde el CMS sigue llenando la caja como en el diseño.
+   */
+  .profesionales :global(.profesionales__marco[data-portada='video']) {
+    background: var(--color-surface-inverse-deep);
+  }
+
+  .profesionales :global(.profesionales__marco[data-portada='video'] .profesionales__foto) {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    /* El wrapper de imagen trae superficie propia para reservar la proporción;
+       acá estorba: taparía el fondo oscuro de las bandas. */
+    background: transparent;
+  }
+
+  .profesionales :global(.profesionales__marco[data-portada='video'] .profesionales__foto img) {
+    object-fit: contain;
   }
 
   /*
