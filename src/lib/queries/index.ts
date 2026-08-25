@@ -121,6 +121,22 @@ export const HOME = /* groq */ `
 }
 `
 
+export const CATALOGO = /* groq */ `
+*[_type == "catalogo"][0] {
+  "hero": {
+    "eyebrow": hero.eyebrow,
+    "titular": hero.titular,
+    "bajada": hero.bajada,
+    "imagen": hero.imagen${IMAGEN}
+  },
+  "cierre": {
+    "etiqueta": cierre.etiqueta,
+    "titulo": cierre.titulo,
+    "texto": cierre.texto
+  }
+}
+`
+
 export const CONTACTO = /* groq */ `
 *[_type == "contacto"][0] {
   "hero": {

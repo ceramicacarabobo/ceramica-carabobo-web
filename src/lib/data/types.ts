@@ -127,6 +127,16 @@ export interface Home {
   }
 }
 
+/**
+ * Textos propios de la página de Catálogo. La grilla y los filtros NO salen de
+ * acá: se derivan de los productos. Sin `cierre.titulo` no se dibuja la banda
+ * de cierre (contenido defensivo, §3.8 del contrato de implementación).
+ */
+export interface PaginaCatalogo {
+  hero: {eyebrow?: string; titular?: string; bajada?: string; imagen?: Imagen}
+  cierre: {etiqueta?: string; titulo?: string; texto?: string}
+}
+
 export interface Sede {
   nombre: string
   direccion: string

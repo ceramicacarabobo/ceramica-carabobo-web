@@ -104,6 +104,14 @@ textarea {
   color: inherit;
 }
 
+/* El navegador le pone `padding: 1px 6px` a los botones y sobrevive a
+   `padding-block`: ensanchaba 12px cada control declarado solo por su alto
+   (medido en las pestañas de serie del catálogo). Se neutraliza acá y cada
+   componente declara el suyo. */
+button {
+  padding: 0;
+}
+
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: var(--focus-ring-offset);

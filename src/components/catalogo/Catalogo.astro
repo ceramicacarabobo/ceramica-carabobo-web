@@ -1,0 +1,1398 @@
+---
+/**
+ * Buscador del catálogo — bloques 3.2 y 3.3 de la fase 3.
+ *
+ * Cómo funciona, en una línea: la grilla se renderiza ENTERA en el build (con
+ * las fotos ya procesadas) y el navegador se limita a ordenar, mostrar y
+ * esconder tarjetas sobre un JSON embebido con los cinco ejes. Cero peticiones a
+ * Sanity en runtime y ningún servicio externo de búsqueda.
+ *
+ * Por qué así y no dibujando las tarjetas con JavaScript: las fotos tienen que
+ * pasar por el build (`cdn.sanity.io` nunca en producción) y el catálogo tiene
+ * que verse sin JavaScript. El JSON embebido lleva SOLO lo que filtran y ordenan
+ * los controles —id, nombre, serie y los cinco ejes—, no el producto entero.
+ *
+ * Reflow (`Responsividad v0` §03), decidido siempre con media queries y nunca
+ * con un breakpoint en JavaScript:
+ *   < 760px   2 columnas, gutter 12px · sin barra lateral: hoja de filtros
+ *   760–1023  3 columnas fijas · sigue la hoja (con 220px de barra no caben dos
+ *             columnas de 300px: la propia tabla manda pasar al patrón móvil)
+ *   ≥ 1024px  auto-fill minmax(300px,1fr) · barra lateral pegajosa de 260px
+ */
+import Boton from '~/components/base/Boton.astro'
+import type {Producto} from '~/lib/data'
+import Tarjeta from './Tarjeta.astro'
+import {
+  EJES,
+  ORDENES,
+  ORDEN_INICIAL,
+  POR_BLOQUE,
+  SERIE_TODAS,
+  conteoDeOpcion,
+  ejeConDato,
+  resolver,
+  seleccionVacia,
+} from './filtrar'
+import type {ProductoFiltrable} from './filtrar'
+
+interface Props {
+  productos: Producto[]
+}
+
+const {productos} = Astro.props as Props
+
+/** Lo único que viaja al navegador. El resto del producto se queda en el HTML. */
+const datos: ProductoFiltrable[] = productos.map((p) => ({
+  id: p.id,
+  nombre: p.nombre,
+  serie: p.serie,
+  ...(p.materia ? {materia: p.materia} : {}),
+  formato: p.formato,
+  ...(p.uso ? {uso: p.uso} : {}),
+  ...(p.textura ? {textura: p.textura} : {}),
+  brillo: p.brillo,
+}))
+
+// Estado inicial: todas las series, sin filtros, orden por materia. Es el mismo
+// que reconstruye el script cuando la dirección no dice otra cosa, así que la
+// grilla no salta al cargar.
+const inicial = seleccionVacia()
+const {universo, resultado} = resolver(datos, SERIE_TODAS, inicial, ORDEN_INICIAL)
+const porId = new Map(productos.map((p) => [p.id, p]))
+const ordenados = resultado.map((p) => porId.get(p.id) as Producto)
+
+const grupos = EJES.map((eje) => ({
+  key: eje.key,
+  label: eje.label,
+  visible: ejeConDato(universo, eje.key),
+  opciones: eje.opciones.map((valor) => {
+    const n = conteoDeOpcion(universo, inicial, eje.key, valor)
+    return {valor, n, vacio: n === 0}
+  }),
+}))
+
+const series = [SERIE_TODAS, 'Regular', 'Venezuela'].map((serie) => ({
+  serie,
+  total: serie === SERIE_TODAS ? datos.length : datos.filter((p) => p.serie === serie).length,
+}))
+
+const quedan = Math.max(0, resultado.length - POR_BLOQUE)
+const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`
+
+// `</script>` dentro de un dato rompería la etiqueta; escapar `<` alcanza.
+const datosJSON = JSON.stringify(datos).replace(/</g, '\\u003c')
+
+const iconoFiltrar = [
+  'M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3',
+  'M14 2v4M8 10v4M16 18v4',
+]
+---
+
+<section class="catalogo" data-catalogo aria-label="Catálogo de diseños">
+  <script type="application/json" id="catalogo-datos" is:inline set:html={datosJSON} />
+
+  {/* Entrada por serie. No es una faceta: es navegación, y recorta el universo
+      ANTES de que las facetas cuenten sus opciones. */}
+  <div class="series">
+    <div class="series__caja">
+      <span class="overline series__label">Entra por serie</span>
+      <div class="series__lista" role="group" aria-label="Serie">
+        {
+          series.map(({serie, total}) => (
+            <button
+              type="button"
+              class="serie"
+              data-serie={serie}
+              aria-pressed={serie === SERIE_TODAS ? 'true' : 'false'}
+            >
+              {serie} ({total})
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="finder">
+    <div class="finder__grid">
+      <aside class="facetas" aria-label="Filtros del catálogo">
+        {
+          grupos.map((grupo) => (
+            <div class="faceta" data-faceta={grupo.key} hidden={!grupo.visible || undefined}>
+              <p class="overline faceta__label">{grupo.label}</p>
+              {grupo.opciones.map((opcion) => (
+                <label class="opcion" data-opcion={`${grupo.key}|${opcion.valor}`}>
+                  <input
+                    type="checkbox"
+                    class="opcion__caja"
+                    data-eje={grupo.key}
+                    data-valor={opcion.valor}
+                    disabled={opcion.vacio || undefined}
+                  />
+                  <span class="opcion__texto">{opcion.valor}</span>
+                  <span class="opcion__n" data-conteo={`${grupo.key}|${opcion.valor}`}>
+                    {opcion.n}
+                  </span>
+                </label>
+              ))}
+            </div>
+          ))
+        }
+
+        <button type="button" class="limpiar" data-limpiar hidden>
+          Limpiar filtros
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+
+        {/* El prototipo pone acá también "Catálogo general PDF", pero ese enlace
+            no navega a ninguna parte (es un marcador del diseño) y no hay
+            archivo en el CMS: no se publica un enlace muerto. */}
+        <div class="facetas__enlaces">
+          <a class="facetas__enlace" href="/donde-comprar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Distribuidores
+          </a>
+        </div>
+      </aside>
+
+      <div class="resultados">
+        {/* Acción principal de la página en teléfono. La barra al pulgar de más
+            abajo repite ESTE botón cuando se va de cuadro. */}
+        <button type="button" class="filtrar" data-abre-filtros aria-expanded="false" aria-controls="hoja-filtros">
+          <span class="filtrar__etiqueta">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              {iconoFiltrar.map((d) => <path d={d} />)}
+            </svg>
+            Filtrar
+          </span>
+          <span class="filtrar__n" data-conteo-filtros>Todos</span>
+        </button>
+
+        <div class="barra">
+          <p class="barra__contador" aria-live="polite" data-contador>{plural(resultado.length, 'producto', 'productos')}</p>
+          <label class="barra__orden">
+            Ordenar
+            <select data-orden aria-label="Ordenar el catálogo">
+              {ORDENES.map((o) => <option value={o.valor} selected={o.valor === ORDEN_INICIAL}>{o.label}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <div class="grilla" data-grilla>
+          {
+            ordenados.map((producto, i) => (
+              <Tarjeta producto={producto} oculto={i >= POR_BLOQUE} prioridad={i < 4} />
+            ))
+          }
+        </div>
+
+        <div class="grilla__mas" data-caja-mas hidden={quedan === 0 || undefined}>
+          <Boton variante="secondary" class="mas" data-ver-mas>
+            Ver {POR_BLOQUE} más — quedan <span data-quedan>{quedan}</span>
+          </Boton>
+        </div>
+
+        {/* Estado vacío: se dice qué pasó y se ofrece la salida. Sin disculpas
+            ni signos de admiración (regla de escritura del handoff). */}
+        <div class="vacio" data-vacio hidden>
+          <p class="vacio__titulo">No hay productos con esta combinación</p>
+          <Boton variante="secondary" class="vacio__accion" data-limpiar>Limpiar filtros</Boton>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Acción al pulgar: la acción principal no puede irse de pantalla al bajar por
+    la grilla. Aparece cuando el botón de arriba sale de cuadro y se retira al
+    llegar al pie o cuando hay una hoja abierta — las hojas son dueñas del pie. */}
+<div class="pulgar" data-pulgar hidden>
+  <button type="button" class="filtrar filtrar--pulgar" data-abre-filtros aria-controls="hoja-filtros">
+    <span class="filtrar__etiqueta">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        {iconoFiltrar.map((d) => <path d={d} />)}
+      </svg>
+      Filtrar
+    </span>
+    <span class="filtrar__n" data-conteo-filtros>Todos</span>
+  </button>
+</div>
+
+{/* Hoja de filtros a pantalla completa (G30): facetas en acordeón, "Limpiar" y
+    "Ver n productos" al pie. Existe solo bajo 1024px — es la que reemplaza a la
+    barra lateral, que nunca comparte ancho con la grilla. */}
+<div class="hoja" id="hoja-filtros" data-hoja-filtros hidden role="dialog" aria-modal="true" aria-label="Filtrar el catálogo">
+  <span class="hoja__asa" data-asa aria-hidden="true"><span class="hoja__asa-linea"></span></span>
+  <div class="hoja__barra" data-asa>
+    <span class="hoja__titulo">Filtrar</span>
+    <button type="button" class="hoja__cerrar" data-cierra-filtros aria-label="Cerrar filtros">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="hoja__cuerpo">
+    {
+      grupos.map((grupo, i) => (
+        <div class="grupo" data-grupo-caja={grupo.key} hidden={!grupo.visible || undefined}>
+          <button
+            type="button"
+            class="grupo__cabeza"
+            data-grupo={grupo.key}
+            aria-expanded={i === 0 ? 'true' : 'false'}
+            aria-controls={`grupo-${grupo.key}`}
+          >
+            <span class="grupo__titulo">
+              <span class="grupo__label">{grupo.label}</span>
+              <span class="grupo__resumen" data-resumen={grupo.key}>Todos</span>
+            </span>
+            <svg class="grupo__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="grupo__cuerpo" id={`grupo-${grupo.key}`} hidden={i !== 0 || undefined}>
+            {grupo.opciones.map((opcion) => (
+              <label class="opcionh" data-opcion={`${grupo.key}|${opcion.valor}`}>
+                <input
+                  type="checkbox"
+                  class="opcionh__caja"
+                  data-eje={grupo.key}
+                  data-valor={opcion.valor}
+                  disabled={opcion.vacio || undefined}
+                />
+                <span class="opcionh__texto">{opcion.valor}</span>
+                <span class="opcionh__n" data-conteo={`${grupo.key}|${opcion.valor}`}>
+                  {opcion.n}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="hoja__pie">
+    <Boton variante="secondary" class="hoja__limpiar" data-limpiar>Limpiar</Boton>
+    <Boton variante="primary" class="hoja__ver" data-cierra-filtros data-ver-resultados>
+      Ver {plural(resultado.length, 'producto', 'productos')}
+    </Boton>
+  </div>
+</div>
+
+<style>
+  /* ── Entrada por serie ─────────────────────────────────────────────────── */
+  .series {
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .series__caja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(20px, 3vw, 40px);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding-inline: var(--space-gutter-page);
+    min-width: 0;
+  }
+
+  .series__label {
+    flex: none;
+    padding-block: var(--space-5);
+    color: var(--color-text-secondary);
+  }
+
+  .series__lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(16px, 2.4vw, 32px);
+  }
+
+  /* 14px con tracking corto: es la escala de "nombre de serie" del catálogo,
+     un paso por encima del overline de la etiqueta. */
+  .serie {
+    flex: none;
+    /* En las dos direcciones: el `padding: 1px 6px` que el navegador le pone a
+       todo <button> ensancharía la pestaña 12px. */
+    padding: var(--space-5) 0;
+    background: transparent;
+    border: 0;
+    border-bottom: var(--border-width) solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    font: 500 0.875rem/normal var(--font-heading);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition:
+      color var(--dur-respuesta) var(--ease-respuesta),
+      border-color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .serie:hover {
+    color: var(--color-text-primary);
+  }
+
+  .serie[aria-pressed='true'] {
+    color: var(--color-brand-700);
+    border-bottom-color: var(--color-brand-700);
+  }
+
+  /* ── Armazón ───────────────────────────────────────────────────────────── */
+  .finder {
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: clamp(28px, 3.5vw, 48px) var(--space-gutter-page) clamp(72px, 8vw, 112px);
+  }
+
+  .finder__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 64px);
+    align-items: start;
+  }
+
+  .resultados {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 2.4vw, 32px);
+    min-width: 0;
+  }
+
+  /* ── Barra lateral de facetas (solo escritorio) ────────────────────────── */
+  .facetas {
+    display: none;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 32px);
+    /* La banda compacta de la cabecera mide 63px; la lateral se pega debajo. */
+    position: sticky;
+    top: calc(63px + var(--space-6));
+    max-height: calc(100dvh - 63px - var(--space-12));
+    overflow-y: auto;
+  }
+
+  .faceta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .faceta[hidden] {
+    display: none;
+  }
+
+  .faceta__label {
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+    color: var(--color-text-secondary);
+  }
+
+  .opcion {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 24px;
+    cursor: pointer;
+  }
+
+  .opcion:has(:disabled) {
+    cursor: default;
+  }
+
+  .opcion__caja {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--color-brand-700);
+    cursor: inherit;
+  }
+
+  .opcion__texto {
+    font: var(--text-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .opcion:has(:checked) .opcion__texto {
+    color: var(--color-text-primary);
+  }
+
+  .opcion__n {
+    margin-left: auto;
+    font: 500 0.75rem/normal var(--font-heading);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  /* Una opción en cero se muestra APAGADA, no se oculta: el cero informa que el
+     valor existe en el catálogo pero no en lo que estás viendo, y esconderla
+     haría saltar el alto del acordeón cada vez que se filtra. */
+  .opcion:has(:disabled) .opcion__texto,
+  .opcion:has(:disabled) .opcion__n {
+    color: var(--color-neutral-300);
+  }
+
+  .limpiar {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: flex-start;
+    min-height: var(--control-height-sm);
+    padding: 0 var(--space-4);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-label);
+    transition:
+      border-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out);
+  }
+
+  .limpiar[hidden] {
+    display: none;
+  }
+
+  .limpiar:hover {
+    border-color: var(--color-brand-700);
+    color: var(--color-brand-700);
+  }
+
+  .facetas__enlaces {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: clamp(8px, 1.5vw, 16px);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .facetas__enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-secondary);
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-xs);
+    text-transform: uppercase;
+    transition: color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .facetas__enlace:hover {
+    color: var(--color-brand-700);
+  }
+
+  /* ── Botón de filtrar (teléfono y tablet) ──────────────────────────────── */
+  .filtrar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: var(--control-height-lg);
+    padding: 0 var(--space-4);
+    background: transparent;
+    border: var(--border-width) solid var(--color-text-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+  }
+
+  .filtrar__etiqueta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filtrar__n {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .filtrar__n[data-activos] {
+    color: var(--color-brand-700);
+  }
+
+  /* ── Barra de contador y orden ─────────────────────────────────────────── */
+  .barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: clamp(12px, 1.6vw, 20px);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .barra__contador {
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .barra__orden {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font: 400 0.8125rem/normal var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  .barra__orden select {
+    min-height: var(--control-height-sm);
+    padding-inline: var(--space-3);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font: 400 0.8125rem/normal var(--font-body);
+    cursor: pointer;
+  }
+
+  /* ── Grilla ────────────────────────────────────────────────────────────── */
+  .grilla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5) var(--space-3);
+  }
+
+  .grilla[hidden] {
+    display: none;
+  }
+
+  .grilla__mas {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(8px, 1.5vw, 16px);
+  }
+
+  .grilla__mas[hidden] {
+    display: none;
+  }
+
+  /* "Ver más" y las acciones de la hoja son ACCIÓN DESTACADA: `Tokens v0` les
+     reserva --control-height-lg (48px), no la altura de control por defecto.
+     El propio prototipo hace la misma distinción — su "Limpiar filtros" del
+     estado vacío sí mide 44px. */
+  .grilla__mas :global(.mas) {
+    min-height: var(--control-height-lg);
+    padding-inline: var(--space-8);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Estado vacío ──────────────────────────────────────────────────────── */
+  .vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    text-align: center;
+    padding: clamp(56px, 8vw, 104px) clamp(20px, 4vw, 40px);
+    background: var(--color-surface-sunken);
+  }
+
+  .vacio[hidden] {
+    display: none;
+  }
+
+  .vacio__titulo {
+    font: var(--text-title-md);
+    color: var(--color-text-primary);
+  }
+
+  .vacio :global(.vacio__accion) {
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  /* ── Acción al pulgar ──────────────────────────────────────────────────── */
+  .pulgar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-scrim);
+    padding: var(--space-3) var(--space-5) calc(var(--space-3) + env(safe-area-inset-bottom));
+    background: var(--color-surface-base);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+    animation: pulgar-entra var(--dur-base) var(--ease-out) both;
+  }
+
+  .pulgar[hidden] {
+    display: none;
+  }
+
+  .filtrar--pulgar {
+    background: var(--color-neutral-0);
+  }
+
+  @keyframes pulgar-entra {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Hoja de filtros ───────────────────────────────────────────────────── */
+  .hoja {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface-base);
+    animation: hoja-entra var(--dur-base) var(--ease-out) both;
+    touch-action: pan-y;
+  }
+
+  .hoja[hidden] {
+    display: none;
+  }
+
+  @keyframes hoja-entra {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hoja__asa {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    background: var(--color-neutral-0);
+    cursor: grab;
+  }
+
+  .hoja__asa-linea {
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: var(--radius-sm);
+    background: var(--color-border-hairline);
+  }
+
+  .hoja__barra {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 0 var(--space-2) var(--space-2) var(--space-5);
+    background: var(--color-neutral-0);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .hoja__titulo {
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .hoja__cerrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-text-primary);
+  }
+
+  .hoja__cuerpo {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grupo {
+    background: var(--color-neutral-0);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .grupo[hidden] {
+    display: none;
+  }
+
+  .grupo__cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 56px;
+    padding: 0 var(--space-5);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .grupo__titulo {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .grupo__label {
+    font: 500 0.9375rem/normal var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .grupo__resumen {
+    font: 400 0.8125rem/normal var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  .grupo__resumen[data-activo] {
+    color: var(--color-brand-700);
+  }
+
+  .grupo__chevron {
+    flex: none;
+    color: var(--color-text-secondary);
+    transition: transform var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .grupo__cabeza[aria-expanded='true'] .grupo__chevron {
+    transform: rotate(180deg);
+  }
+
+  .grupo__cuerpo {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--space-5) var(--space-3);
+  }
+
+  .grupo__cuerpo[hidden] {
+    display: none;
+  }
+
+  .opcionh {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: var(--control-height-md);
+    border-top: var(--border-width) solid var(--color-surface-sunken);
+    cursor: pointer;
+  }
+
+  .opcionh:has(:disabled) {
+    cursor: default;
+  }
+
+  .opcionh__caja {
+    width: var(--control-box);
+    height: var(--control-box);
+    margin: 0;
+    accent-color: var(--color-brand-700);
+    cursor: inherit;
+  }
+
+  .opcionh__texto {
+    font: 400 0.9375rem/1.5 var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  .opcionh:has(:checked) .opcionh__texto {
+    color: var(--color-text-primary);
+  }
+
+  .opcionh__n {
+    margin-left: auto;
+    font: 500 0.8125rem/normal var(--font-heading);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  .opcionh:has(:disabled) .opcionh__texto,
+  .opcionh:has(:disabled) .opcionh__n {
+    color: var(--color-neutral-300);
+  }
+
+  .hoja__pie {
+    flex: none;
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5) calc(var(--space-3) + env(safe-area-inset-bottom));
+    background: var(--color-neutral-0);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .hoja__pie :global(.hoja__limpiar) {
+    flex: none;
+    min-height: var(--control-height-lg);
+    letter-spacing: var(--tracking-uppercase-xs);
+    font-size: 0.8125rem;
+  }
+
+  .hoja__pie :global(.hoja__ver) {
+    flex: 1;
+    min-height: var(--control-height-lg);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Tablet: 3 columnas fijas, la hoja sigue mandando ──────────────────── */
+  @media (min-width: 760px) {
+    .grilla {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(24px, 3vw, 44px) clamp(20px, 2.4vw, 32px);
+    }
+  }
+
+  /* ── Escritorio: barra lateral pegajosa + grilla fluida ────────────────── */
+  @media (min-width: 1024px) {
+    .finder__grid {
+      grid-template-columns: minmax(220px, 260px) 1fr;
+    }
+
+    .facetas {
+      display: flex;
+    }
+
+    .filtrar,
+    .pulgar,
+    .hoja {
+      display: none;
+    }
+
+    .grilla {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulgar,
+    .hoja {
+      animation: none;
+    }
+  }
+</style>
+
+<noscript>
+  <style is:inline>
+    /* Sin JavaScript no hay "ver más" ni filtros: el catálogo se muestra
+       completo, que es la degradación honesta. */
+    .grilla > a[hidden] {
+      display: flex !important;
+    }
+    .grilla__mas,
+    .filtrar {
+      display: none;
+    }
+  </style>
+</noscript>
+
+
+<script>
+  import {
+    EJES,
+    POR_BLOQUE,
+    SERIE_TODAS,
+    conteoDeOpcion,
+    ejeConDato,
+    resolver,
+    seleccionVacia,
+    totalSeleccionado,
+  } from './filtrar'
+  import type {Eje, Orden, ProductoFiltrable} from './filtrar'
+  import {cerrarPorHistorial, estadoDeHash, estadoInicial, sincronizarURL} from './direccion'
+  import type {Capa, EstadoCatalogo} from './direccion'
+
+  const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`
+
+  /**
+   * Lo que el catálogo vivo expone a los oyentes globales.
+   *
+   * Los listeners de `document` y `window` se registran UNA sola vez, al cargar
+   * el módulo, y consultan esta referencia: con la cáscara persistiendo entre
+   * páginas, volver a engancharlos en cada `astro:page-load` los duplicaría y
+   * cada tecla dispararía el manejador dos veces (es el defecto 14 de la fase 2,
+   * el que hacía abrir y cerrar el megamenú en el mismo gesto).
+   */
+  let vivo: {hoja: HTMLElement; hayCapa(): boolean; cerrar(): void; desdeURL(): void} | null = null
+
+  function iniciar() {
+    const seccion = document.querySelector<HTMLElement>('[data-catalogo]')
+    if (!seccion) return
+    if (seccion.dataset.enganchada !== undefined) return
+    const crudo = document.getElementById('catalogo-datos')?.textContent
+    if (!crudo) return
+    seccion.dataset.enganchada = ''
+    // Alias no nulo: el resto del módulo trabaja sobre él (TS pierde el estrechamiento dentro de los cierres).
+    const raiz = seccion
+
+    const datos: ProductoFiltrable[] = JSON.parse(crudo)
+    const grilla = raiz.querySelector<HTMLElement>('[data-grilla]')!
+    const cajaMas = raiz.querySelector<HTMLElement>('[data-caja-mas]')!
+    const quedanTexto = raiz.querySelector<HTMLElement>('[data-quedan]')!
+    const vacio = raiz.querySelector<HTMLElement>('[data-vacio]')!
+    const contador = raiz.querySelector<HTMLElement>('[data-contador]')!
+    const orden = raiz.querySelector<HTMLSelectElement>('[data-orden]')!
+    const hoja = document.querySelector<HTMLElement>('[data-hoja-filtros]')!
+    const pulgar = document.querySelector<HTMLElement>('[data-pulgar]')!
+    const botonEnLinea = raiz.querySelector<HTMLButtonElement>('.filtrar[data-abre-filtros]')!
+    const verResultados = document.querySelector<HTMLElement>('[data-ver-resultados]')
+
+    const tarjetas = new Map<string, HTMLElement>()
+    grilla.querySelectorAll<HTMLElement>('[data-card]').forEach((el) => tarjetas.set(el.dataset.card!, el))
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const oyentes: ((detalle: {ficha: string | null; capa: Capa}) => void)[] = []
+
+    let st: EstadoCatalogo = estadoInicial()
+    let visibles = POR_BLOQUE
+    let ultimoHash = location.hash || ''
+
+    // ── Fundido de entrada de las fotos ────────────────────────────────────
+    // Se arma solo con el script vivo, y se marca `data-lista` también en las
+    // que ya venían de caché: sin eso el evento `load` no llega y quedan en 0.
+    grilla.dataset.fundido = ''
+    grilla.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+      const listo = () => img.setAttribute('data-lista', '')
+      if (img.complete && img.naturalWidth) listo()
+      else {
+        img.addEventListener('load', listo, {once: true})
+        img.addEventListener('error', listo, {once: true})
+      }
+    })
+
+    // ── Reacomodo animado (FLIP) ───────────────────────────────────────────
+    // Solo opacity y transform. Se mide antes de mutar y se compara después: lo
+    // que no se movió no se anima, y lo que está lejos de la pantalla tampoco.
+    function medir() {
+      const antes = new Map<string, DOMRect>()
+      if (reduce.matches) return antes
+      tarjetas.forEach((el, id) => {
+        if (!el.hidden) antes.set(id, el.getBoundingClientRect())
+      })
+      return antes
+    }
+
+    let limpiezaFlip = 0
+
+    function reacomodar(antes: Map<string, DOMRect>) {
+      if (reduce.matches || antes.size === 0) return
+      const alto = window.innerHeight
+      const lejos = (r?: DOMRect) => !r || r.bottom < -alto || r.top > alto * 2
+      const enPantalla = [...tarjetas.values()].filter((el) => !el.hidden)
+      // Umbral de "trayecto largo": más de fila y media. Arriba de eso el
+      // desplazamiento se lee como que la tarjeta vuela, así que se funde en su sitio.
+      const filaAprox = (enPantalla[0]?.getBoundingClientRect().height || 320) * 1.5
+      let i = 0
+      for (const el of enPantalla) {
+        const a = antes.get(el.dataset.card!)
+        const d = el.getBoundingClientRect()
+        if (lejos(d) && lejos(a)) {
+          el.style.transition = 'none'
+          el.style.transform = 'none'
+          el.style.opacity = '1'
+          continue
+        }
+        const demora = `${Math.min(i * 22, 176)}ms`
+        i += 1
+        const dx = a ? a.left - d.left : 0
+        const dy = a ? a.top - d.top : 0
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (!a || dist > filaAprox) {
+          // Entra en su lugar nuevo, sin desplazarse: vale para las que vuelven
+          // al resultado y para las que cambiaron de fila de un extremo al otro.
+          el.style.transition = 'none'
+          el.style.opacity = '0'
+          el.style.transform = a ? 'none' : 'translateY(10px)'
+          requestAnimationFrame(() => {
+            el.style.transition = `opacity var(--dur-reveal) var(--ease-out) ${demora}, transform var(--dur-reveal) var(--ease-out) ${demora}`
+            el.style.opacity = '1'
+            el.style.transform = 'none'
+          })
+          continue
+        }
+        if (!dx && !dy) continue
+        // Trayecto corto: se asienta. La duración crece con la distancia para que
+        // la velocidad quede pareja — es lo que evita el latigazo.
+        const dur = Math.round(Math.min(240 + dist * 0.45, 420))
+        el.style.transition = 'none'
+        el.style.transform = `translate(${dx}px, ${dy}px)`
+        el.style.willChange = 'transform'
+        requestAnimationFrame(() => {
+          el.style.transition = `transform ${dur}ms var(--ease-respuesta) ${demora}`
+          el.style.transform = 'none'
+        })
+      }
+      clearTimeout(limpiezaFlip)
+      limpiezaFlip = window.setTimeout(() => {
+        tarjetas.forEach((el) => {
+          el.style.willChange = 'auto'
+          el.style.transition = ''
+          el.style.opacity = ''
+          el.style.transform = ''
+        })
+      }, 800)
+    }
+
+    // ── Pintado ────────────────────────────────────────────────────────────
+    function pintar(animar = true) {
+      const antes = animar ? medir() : new Map<string, DOMRect>()
+      const {universo, resultado} = resolver(datos, st.serie, st.f, st.orden)
+
+      // Orden y bloque de 24: se reordena el DOM de verdad (no con `order`), para
+      // que el recorrido con teclado siga al orden visual.
+      resultado.forEach((p, i) => {
+        const el = tarjetas.get(p.id)
+        if (!el) return
+        grilla.appendChild(el)
+        el.hidden = i >= visibles
+      })
+      const dentro = new Set(resultado.map((p) => p.id))
+      tarjetas.forEach((el, id) => {
+        if (!dentro.has(id)) el.hidden = true
+      })
+
+      // Conteos y disponibilidad por opción — derivados, nunca escritos a mano.
+      for (const eje of EJES) {
+        const hayDato = ejeConDato(universo, eje.key)
+        document
+          .querySelectorAll<HTMLElement>(`[data-faceta="${eje.key}"], [data-grupo-caja="${eje.key}"]`)
+          .forEach((caja) => (caja.hidden = !hayDato))
+        const elegidas = st.f[eje.key]
+        for (const valor of eje.opciones) {
+          const n = conteoDeOpcion(universo, st.f, eje.key, valor)
+          const activo = elegidas.includes(valor)
+          document
+            .querySelectorAll<HTMLElement>(`[data-conteo="${eje.key}|${valor}"]`)
+            .forEach((el) => (el.textContent = String(n)))
+          document
+            .querySelectorAll<HTMLInputElement>(`input[data-eje="${eje.key}"][data-valor="${valor}"]`)
+            .forEach((input) => {
+              input.checked = activo
+              // Una opción en cero se APAGA, no se esconde: el cero informa, y
+              // esconderla haría saltar el alto del acordeón al filtrar.
+              input.disabled = n === 0 && !activo
+            })
+        }
+        const resumen = elegidas.length ? elegidas.join(', ') : 'Todos'
+        document.querySelectorAll<HTMLElement>(`[data-resumen="${eje.key}"]`).forEach((el) => {
+          el.textContent = resumen
+          el.toggleAttribute('data-activo', elegidas.length > 0)
+        })
+      }
+
+      raiz.querySelectorAll<HTMLButtonElement>('[data-serie]').forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.serie === st.serie ? 'true' : 'false')
+      })
+
+      contador.textContent =
+        resultado.length === universo.length
+          ? plural(universo.length, 'producto', 'productos')
+          : `${resultado.length} de ${plural(universo.length, 'producto', 'productos')}`
+      const quedan = Math.max(0, resultado.length - visibles)
+      quedanTexto.textContent = String(quedan)
+      cajaMas.hidden = quedan === 0
+      grilla.hidden = resultado.length === 0
+      vacio.hidden = resultado.length > 0
+
+      const activos = totalSeleccionado(st.f)
+      document.querySelectorAll<HTMLElement>('[data-conteo-filtros]').forEach((el) => {
+        el.textContent = activos > 0 ? plural(activos, 'activo', 'activos') : 'Todos'
+        el.toggleAttribute('data-activos', activos > 0)
+      })
+      raiz.querySelectorAll<HTMLElement>('.limpiar[data-limpiar]').forEach((el) => (el.hidden = activos === 0))
+      if (verResultados) verResultados.textContent = `Ver ${plural(resultado.length, 'producto', 'productos')}`
+
+      if (orden.value !== st.orden) orden.value = st.orden
+
+      if (animar) requestAnimationFrame(() => requestAnimationFrame(() => reacomodar(antes)))
+    }
+
+    // ── Cambios de estado ──────────────────────────────────────────────────
+    /** Todo cambio de filtro vuelve al primer bloque: filtrar es empezar de nuevo. */
+    function cambiar(mutar: () => void) {
+      mutar()
+      visibles = POR_BLOQUE
+      pintar()
+      sincronizarURL(st)
+      ultimoHash = location.hash || ''
+    }
+
+    // Los oyentes de los controles van EN los controles: mueren con la página,
+    // así que volver al catálogo no los duplica.
+    document.querySelectorAll<HTMLInputElement>('input[data-eje]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const eje = input.dataset.eje as Eje
+        const valor = input.dataset.valor as string
+        cambiar(() => {
+          const lista = st.f[eje]
+          const i = lista.indexOf(valor)
+          if (i > -1) lista.splice(i, 1)
+          else lista.push(valor)
+        })
+      })
+    })
+
+    raiz.querySelectorAll<HTMLButtonElement>('[data-serie]').forEach((boton) => {
+      boton.addEventListener('click', () => cambiar(() => (st.serie = boton.dataset.serie || SERIE_TODAS)))
+    })
+
+    orden.addEventListener('change', () => cambiar(() => (st.orden = orden.value as Orden)))
+
+    document.querySelectorAll<HTMLElement>('[data-limpiar]').forEach((boton) => {
+      boton.addEventListener('click', () => cambiar(() => (st.f = seleccionVacia())))
+    })
+
+    raiz.querySelector<HTMLElement>('[data-ver-mas]')?.addEventListener('click', () => {
+      visibles += POR_BLOQUE
+      pintar()
+    })
+
+    // ── Acordeón de la hoja ────────────────────────────────────────────────
+    hoja.querySelectorAll<HTMLButtonElement>('[data-grupo]').forEach((cabeza) => {
+      cabeza.addEventListener('click', () => {
+        const abierto = cabeza.getAttribute('aria-expanded') === 'true'
+        cabeza.setAttribute('aria-expanded', abierto ? 'false' : 'true')
+        const cuerpo = document.getElementById(cabeza.getAttribute('aria-controls') || '')
+        if (cuerpo) cuerpo.hidden = abierto
+      })
+    })
+
+    // ── Capas: hoja de filtros y ficha (el enganche del bloque 3.4) ────────
+    let foco: HTMLElement | null = null
+
+    function aplicarCapa() {
+      const abierta = st.capa === 'filtros'
+      if (abierta && hoja.hidden) foco = document.activeElement as HTMLElement
+      hoja.hidden = !abierta
+      botonEnLinea.setAttribute('aria-expanded', abierta ? 'true' : 'false')
+      document.documentElement.style.overflow = abierta || st.ficha ? 'hidden' : ''
+      if (abierta) hoja.querySelector<HTMLElement>('[data-cierra-filtros]')?.focus()
+      else if (foco) {
+        foco.focus()
+        foco = null
+      }
+      aplicarPulgar()
+      const detalle = {ficha: st.ficha, capa: st.capa}
+      document.dispatchEvent(new CustomEvent('catalogo:capa', {detail: detalle}))
+      oyentes.forEach((cb) => cb(detalle))
+    }
+
+    function abrirFiltros() {
+      if (st.capa === 'filtros') return
+      st.capa = 'filtros'
+      sincronizarURL(st)
+      ultimoHash = location.hash || ''
+      aplicarCapa()
+    }
+
+    function cerrar() {
+      if (!st.capa && !st.ficha) return
+      // Si la capa dejó entrada propia, cerrar es volver atrás: el gesto del
+      // sistema y el aspa hacen exactamente lo mismo.
+      if (cerrarPorHistorial()) return
+      st.capa = null
+      st.ficha = null
+      sincronizarURL(st)
+      ultimoHash = location.hash || ''
+      aplicarCapa()
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-abre-filtros]').forEach((b) => b.addEventListener('click', abrirFiltros))
+    document.querySelectorAll<HTMLElement>('[data-cierra-filtros]').forEach((b) => b.addEventListener('click', cerrar))
+
+    // Arrastrar hacia abajo cierra la hoja (`Responsividad v0` §03, "Cierre de las
+    // hojas"): cerrar deja de exigir llegar al aspa, arriba. El área de arrastre es
+    // el asa y la barra de título, nunca el cuerpo — ahí manda el scroll — ni un
+    // botón. Umbral 96px o gesto rápido; si no llega, vuelve a su lugar.
+    {
+      let y0: number | null = null
+      let dy = 0
+      let t0 = 0
+      const dur = () => (reduce.matches ? 1 : 220)
+      hoja.addEventListener('pointerdown', (evento) => {
+        const objetivo = evento.target as HTMLElement
+        if (!objetivo?.closest('[data-asa]') || objetivo.closest('button, a')) return
+        y0 = evento.clientY
+        dy = 0
+        t0 = Date.now()
+        hoja.style.transition = 'none'
+        try {
+          hoja.setPointerCapture(evento.pointerId)
+        } catch {
+          /* el navegador puede negarse: el arrastre sigue funcionando sin captura */
+        }
+      })
+      hoja.addEventListener('pointermove', (evento) => {
+        if (y0 === null) return
+        dy = Math.max(0, evento.clientY - y0)
+        hoja.style.transform = `translateY(${dy}px)`
+      })
+      const soltar = () => {
+        if (y0 === null) return
+        const rapido = dy > 28 && Date.now() - t0 < 260
+        y0 = null
+        hoja.style.transition = `transform ${dur()}ms var(--ease-out)`
+        if (dy > 96 || rapido) {
+          hoja.style.transform = 'translateY(100%)'
+          window.setTimeout(() => {
+            hoja.style.transition = ''
+            hoja.style.transform = ''
+            cerrar()
+          }, dur())
+          return
+        }
+        hoja.style.transform = 'none'
+      }
+      hoja.addEventListener('pointerup', soltar)
+      hoja.addEventListener('pointercancel', soltar)
+    }
+
+    // ── Acción al pulgar ───────────────────────────────────────────────────
+    let fueraDeCuadro = false
+    let enElPie = false
+
+    function aplicarPulgar() {
+      pulgar.hidden = !(fueraDeCuadro && !enElPie && !st.capa && !st.ficha)
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entradas) => {
+        fueraDeCuadro = !entradas[0].isIntersecting
+        aplicarPulgar()
+      }).observe(botonEnLinea)
+
+      const pie = document.querySelector('footer')
+      if (pie) {
+        new IntersectionObserver((entradas) => {
+          enElPie = entradas[0].isIntersecting
+          aplicarPulgar()
+        }).observe(pie)
+      }
+    }
+
+    // ── Dirección e historial ──────────────────────────────────────────────
+    function desdeURL() {
+      const hash = location.hash || ''
+      if (hash === ultimoHash) return
+      ultimoHash = hash
+      const nuevo = estadoDeHash(hash)
+      // Atrás CIERRA lo que esté encima; no deshace el filtro. Como los filtros
+      // sólo se escriben con replaceState, el historial nunca guarda un paso de
+      // filtro: reconstruir el estado entero desde ese hash vaciaría la
+      // selección al cerrar la hoja en teléfono.
+      if (!nuevo.capa && !nuevo.ficha && (st.capa || st.ficha)) {
+        st.capa = null
+        st.ficha = null
+        aplicarCapa()
+        sincronizarURL(st)
+        ultimoHash = location.hash || ''
+        return
+      }
+      st = nuevo
+      visibles = POR_BLOQUE
+      pintar()
+      aplicarCapa()
+    }
+
+    // ── API pública para el bloque 3.4 (ficha de producto) ─────────────────
+    window.catalogo = {
+      productos: datos,
+      estado: () => ({...st, f: {...st.f}}),
+      abrirFicha(id: string) {
+        if (st.ficha === id) return
+        st.ficha = id
+        st.capa = null
+        sincronizarURL(st)
+        ultimoHash = location.hash || ''
+        aplicarCapa()
+      },
+      cerrar,
+      alCambiarCapa(cb) {
+        oyentes.push(cb)
+        return () => {
+          const i = oyentes.indexOf(cb)
+          if (i > -1) oyentes.splice(i, 1)
+        }
+      },
+    }
+
+    vivo = {hoja, hayCapa: () => !!(st.capa || st.ficha), cerrar, desdeURL}
+
+    // Primer pintado: si la dirección ya traía filtros (enlace compartido, o el
+    // `#materia-…` que arma el megamenú de la cáscara) se aplican y se normaliza
+    // la dirección con replaceState; si no, el HTML del build ya está bien.
+    if (location.hash) {
+      st = estadoDeHash(location.hash)
+      pintar(false)
+      aplicarCapa()
+      sincronizarURL(st)
+      ultimoHash = location.hash || ''
+    }
+  }
+
+  // Estos cuatro oyentes viven en `document`/`window`, que sobreviven al cambio
+  // de página: se registran una sola vez y consultan el catálogo vivo.
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape' && vivo?.hayCapa()) vivo.cerrar()
+  })
+
+  document.addEventListener('keydown', (evento) => {
+    // La hoja ocupa la pantalla entera: tabular no puede llevar el foco al
+    // contenido de atrás, que no se ve.
+    if (evento.key !== 'Tab' || !vivo || vivo.hoja.hidden) return
+    const focales = [...vivo.hoja.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled])')]
+    if (!focales.length) return
+    const primero = focales[0]
+    const ultimo = focales[focales.length - 1]
+    const activo = document.activeElement
+    if (!vivo.hoja.contains(activo)) {
+      evento.preventDefault()
+      primero.focus()
+    } else if (!evento.shiftKey && activo === ultimo) {
+      evento.preventDefault()
+      primero.focus()
+    } else if (evento.shiftKey && activo === primero) {
+      evento.preventDefault()
+      ultimo.focus()
+    }
+  })
+
+  window.addEventListener('popstate', () => vivo?.desdeURL())
+  window.addEventListener('hashchange', () => vivo?.desdeURL())
+
+  document.addEventListener('astro:before-swap', () => {
+    vivo = null
+    document.documentElement.style.overflow = ''
+  })
+
+  iniciar()
+  document.addEventListener('astro:page-load', iniciar)
+</script>

@@ -1,0 +1,129 @@
+---
+/**
+ * Hero de la página de Catálogo: ruta, antetítulo, h1 y bajada sobre foto.
+ *
+ * Contenido defensivo: el antetítulo, la bajada y la foto salen del CMS y, si no
+ * están, no se dibujan. El h1 SÍ tiene respaldo — "Catálogo" es el nombre de la
+ * página en la navegación (estructura fija, la misma palabra que ya escribe la
+ * cabecera), y la página necesita exactamente un h1 (§6 del contrato, SEO).
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import type {PaginaCatalogo} from '~/lib/data'
+
+interface Props {
+  hero: PaginaCatalogo['hero']
+  /** Nombre de la página en la navegación: respaldo del titular. */
+  nombrePagina: string
+}
+
+const {hero, nombrePagina} = Astro.props
+---
+
+<section class="hero-cat">
+  {hero.imagen && <Imagen class="hero-cat__foto" imagen={hero.imagen} prioridad sizes="100vw" />}
+  <span class="hero-cat__velo" aria-hidden="true"></span>
+
+  <div class="hero-cat__caja">
+    <nav class="ruta" aria-label="Ruta">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span>{nombrePagina}</span>
+    </nav>
+
+    <div class="hero-cat__fila">
+      <div class="hero-cat__texto">
+        {hero.eyebrow && <p class="overline hero-cat__eyebrow">{hero.eyebrow}</p>}
+        <h1 class="hero-cat__titular">{hero.titular || nombrePagina}</h1>
+      </div>
+      {hero.bajada && <p class="hero-cat__bajada">{hero.bajada}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-cat {
+    position: relative;
+    width: 100%;
+    min-height: max(400px, 46dvh);
+    overflow: hidden;
+    background: var(--color-surface-inverse);
+  }
+
+  .hero-cat :global(.hero-cat__foto) {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .hero-cat__velo {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim-hero);
+  }
+
+  .hero-cat__caja {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: clamp(16px, 2vw, 24px);
+    min-height: max(400px, 46dvh);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: clamp(88px, 11vw, 140px) var(--space-gutter-page) clamp(32px, 4vw, 56px);
+  }
+
+  .ruta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font: 400 0.8125rem/1.5 var(--font-body);
+    color: var(--color-text-on-dark-secondary);
+  }
+
+  .ruta a {
+    color: var(--color-text-on-dark);
+    border-bottom: var(--border-width) solid var(--color-border-on-dark);
+  }
+
+  .hero-cat__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 48px);
+  }
+
+  .hero-cat__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 26ch;
+  }
+
+  .hero-cat__eyebrow {
+    color: var(--color-text-on-dark-secondary);
+  }
+
+  .hero-cat__titular {
+    font: 300 clamp(2.75rem, 1.9rem + 3.6vw, 5rem) / 1.06 var(--font-heading);
+    letter-spacing: var(--tracking-display-light);
+    color: var(--color-text-on-dark);
+    text-wrap: pretty;
+  }
+
+  .hero-cat__bajada {
+    max-width: 38ch;
+    font: 400 clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem) / 1.6 var(--font-body);
+    color: var(--color-text-on-dark);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 760px) {
+    .hero-cat,
+    .hero-cat__caja {
+      min-height: max(440px, 58dvh);
+    }
+  }
+</style>

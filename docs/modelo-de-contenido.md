@@ -61,13 +61,22 @@ Alimenta: página Dónde comprar (mapa D3 + índice + tarjetas), sección Encué
 - **Encuéntranos**: textos del encabezado + `foto` (el ambiente que corona el panel derecho) + `estadosDestacados` (los estados que el home lista, en orden — el prototipo lista 6 de 20 y el resto vive en Dónde comprar; vacío = todos). Los **datos y conteos** salen de `distribuidor` y se derivan por código, nunca se escriben.
 - Fijo (no editable): telón de entrada, header/megamenú (estructura), footer (estructura), animaciones, orden de secciones.
 
-### 2.2 `contacto`
+### 2.2 `catalogo`
+Hero (antetítulo, titular, bajada, imagen) y banda de cierre (antetítulo, título, texto).
+**Agregado en la fase 3 (bloque 3.2)**: el catálogo era la única página del diseño con copy propio
+sin lugar en el modelo, y la regla es dura — si un texto no está en el CMS, no se muestra. La
+grilla, los filtros y sus conteos NO viven acá: se derivan de `producto`. Sin `hero.titular` el h1
+cae al nombre de la página en la navegación ("Catálogo"), que es estructura; sin `cierre.titulo` la
+banda de cierre no se dibuja. **Hoy vacío**: los textos del prototipo están transcritos en
+`docs/fase-3-catalogo.md` §Decisiones, pendientes de carga.
+
+### 2.3 `contacto`
 Hero (imagen + textos), horario, correo, sedes[] {nombre, dirección, teléfono, geopoint} (hoy 2: Valencia y Guacara — **coordenadas aproximadas, pendientes**), textos del bloque de formulario. Datos reales confirmados por LEEME (salvo coordenadas).
 
-### 2.3 `dondeComprar`
+### 2.4 `dondeComprar`
 Hero (imagen + textos), número de **WhatsApp central** (hoy placeholder `584140000000` — pendiente del cliente), textos de estados vacíos y del cierre.
 
-### 2.4 `ajustes` (sitio)
+### 2.5 `ajustes` (sitio)
 Título, descripción, imagen OG por defecto, teléfono/correo/WhatsApp globales, **`redes[]`** {nombre (lista cerrada: Instagram, YouTube, TikTok, Facebook, LinkedIn), url} — dato de marca, lo consume la sección Profesionales del home y podrá consumirlo el pie sin duplicar carga; **hoy vacío, pendiente del cliente** —, texto de política de privacidad (el formulario la enlaza), año de fundación (1956 — confirmado por cliente).
 
 ## 3. Contrato de implementación (del handoff — resumen operativo)

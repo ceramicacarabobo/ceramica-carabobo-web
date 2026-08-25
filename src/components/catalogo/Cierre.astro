@@ -1,0 +1,81 @@
+---
+/**
+ * Banda de cierre del catálogo: el siguiente paso después de mirar diseños.
+ * Sin título en el CMS la banda no se dibuja (sección bajo su mínimo se oculta
+ * entera). El destino, en cambio, es estructura: Dónde comprar siempre existe.
+ */
+import Boton from '~/components/base/Boton.astro'
+import type {PaginaCatalogo} from '~/lib/data'
+
+interface Props {
+  cierre: PaginaCatalogo['cierre']
+}
+
+const {cierre} = Astro.props
+---
+
+{
+  cierre.titulo && (
+    <section class="cierre" aria-labelledby="cierre-catalogo">
+      <div class="cierre__caja">
+        <div class="cierre__texto">
+          {cierre.etiqueta && <p class="overline cierre__eyebrow">{cierre.etiqueta}</p>}
+          <h2 class="cierre__titulo" id="cierre-catalogo">
+            {cierre.titulo}
+          </h2>
+          {cierre.texto && <p class="cierre__bajada">{cierre.texto}</p>}
+        </div>
+        <Boton class="cierre__cta" href="/donde-comprar">
+          Dónde comprar
+        </Boton>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .cierre {
+    background: var(--color-surface-sunken);
+  }
+
+  .cierre__caja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(28px, 4vw, 64px);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: clamp(56px, 7vw, 104px) var(--space-gutter-page);
+  }
+
+  .cierre__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 34ch;
+  }
+
+  .cierre__eyebrow {
+    color: var(--color-text-secondary);
+  }
+
+  .cierre__titulo {
+    font: var(--text-heading-xl);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .cierre__bajada {
+    font: var(--text-body-15);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .cierre :global(.cierre__cta) {
+    padding-inline: var(--space-8);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+  }
+</style>

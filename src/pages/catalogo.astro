@@ -1,8 +1,30 @@
 ---
+/**
+ * Catálogo — bloques 3.2 y 3.3 de la fase 3.
+ *
+ * La página es delgada a propósito: trae los datos por el adaptador y compone
+ * hero, buscador y cierre. Toda la lógica de filtros, orden, bloques de 24 y
+ * contrato de dirección vive en `~/components/catalogo/`.
+ *
+ * La ficha de producto (bloque 3.4) NO se dibuja acá: el catálogo deja el
+ * enganche listo —cada tarjeta enlaza a `/catalogo/<slug>` y `window.catalogo`
+ * expone `abrirFicha(id)`— documentado en `components/catalogo/direccion.ts`.
+ */
 import Base from '~/layouts/Base.astro'
-import EnConstruccion from '~/components/EnConstruccion.astro'
+import Catalogo from '~/components/catalogo/Catalogo.astro'
+import Cierre from '~/components/catalogo/Cierre.astro'
+import HeroCatalogo from '~/components/catalogo/HeroCatalogo.astro'
+import {getPaginaCatalogo, getProductos} from '~/lib/data'
+
+const [pagina, productos] = await Promise.all([getPaginaCatalogo(), getProductos()])
+
+// "Catálogo" es el nombre de la página en la navegación: estructura fija, no
+// copy de marca. El titular editorial, si lo hay, lo pone el CMS.
+const NOMBRE = 'Catálogo'
 ---
 
-<Base titulo="Catálogo" noIndex>
-  <EnConstruccion titulo="Catálogo" fase="Pendiente · Fase 3" />
+<Base titulo={pagina.hero.titular || NOMBRE} descripcion={pagina.hero.bajada} sobreHero>
+  <HeroCatalogo hero={pagina.hero} nombrePagina={NOMBRE} />
+  <Catalogo productos={productos} />
+  <Cierre cierre={pagina.cierre} />
 </Base>

@@ -1,0 +1,226 @@
+---
+/**
+ * Card de diseño — variante `media` de `Primitivas v1` §03 (imagen sin
+ * contenedor + caption debajo sobre el fondo de página, hover = escala y
+ * atenuación de la imagen). Es la que aplica el catálogo.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Card de diseño"): imagen 4/5, nombre y
+ * como máximo 2 líneas de spec, specs SIEMPRE debajo de la imagen y nunca
+ * encima, y toda la card es el área tocable — el enlace envuelve todo. En móvil
+ * no hay hover: el estado activo es el toque.
+ *
+ * El `<picture>` se arma acá y no con `~/components/base/Imagen.astro` por una
+ * razón de peso: ese componente pide cinco anchos (hasta 2400px) porque está
+ * pensado para imágenes a sangre, y una card de grilla nunca pasa de ~330px de
+ * ancho (660 en pantalla 2×). Pedirle 2400px a 126 productos multiplicaría el
+ * build y los bytes servidos sin ganar un pixel de nitidez. Mismos formatos y
+ * calidades que la primitiva (AVIF 60 · WebP 78 · JPG 52 de respaldo).
+ */
+import {getImage} from 'astro:assets'
+import type {GetImageResult} from 'astro'
+import type {Producto} from '~/lib/data'
+import {dimensiones, posicionFocal, urlOrigen} from '~/lib/imagenes'
+
+interface Props {
+  producto: Producto
+  /** Los que están más allá del primer bloque de 24 nacen ocultos. */
+  oculto?: boolean
+  /** Primer bloque visible: la foto se pide sin `lazy` en las dos primeras filas. */
+  prioridad?: boolean
+}
+
+const {producto, oculto = false, prioridad = false} = Astro.props
+
+const ANCHOS = [400, 800]
+const SIZES = '(min-width: 1024px) 340px, (min-width: 760px) 30vw, 45vw'
+
+// La foto de la card es la primera declarada. Los avisos de "foto de ejemplo"
+// son cosa del preview del admin, nunca de producción (regla del handoff).
+const foto = producto.fotos[0]
+const dims = foto ? dimensiones(foto) : null
+
+let avif: GetImageResult | undefined
+let webp: GetImageResult | undefined
+let jpg: GetImageResult | undefined
+
+if (foto) {
+  const base = {
+    src: urlOrigen(foto, ANCHOS[ANCHOS.length - 1]),
+    width: dims?.ancho ?? 800,
+    height: dims?.alto ?? 1000,
+    widths: ANCHOS,
+    sizes: SIZES,
+  }
+  ;[avif, webp, jpg] = await Promise.all([
+    getImage({...base, format: 'avif', quality: 60}),
+    getImage({...base, format: 'webp', quality: 78}),
+    getImage({...base, format: 'jpg', quality: 52}),
+  ])
+}
+
+const srcset = (r: GetImageResult) => (r.srcSet.values.length > 0 ? r.srcSet.attribute : r.src)
+
+// Las dos líneas de spec del diseño: formato y "Serie · brillo · textura".
+const lineaFormato = `${producto.formato} cm`
+const lineaSpec = [`Serie ${producto.serie}`, ...producto.brillo, ...(producto.textura ? [producto.textura] : [])].join(' · ')
+const alt = foto?.alt || `${producto.nombre} ${producto.formato}`
+---
+
+<a
+  class="tarjeta"
+  href={`/catalogo/${producto.slug}`}
+  data-card={producto.id}
+  data-abre-ficha={producto.id}
+  aria-label={`${producto.nombre} ${producto.formato} cm`}
+  hidden={oculto || undefined}
+>
+  <span class="tarjeta__marco" style={foto ? `--focal: ${posicionFocal(foto)}` : undefined}>
+    {
+      foto && avif && webp && jpg ? (
+        <picture>
+          <source srcset={srcset(avif)} sizes={SIZES} type="image/avif" />
+          <source srcset={srcset(webp)} sizes={SIZES} type="image/webp" />
+          <img
+            class="tarjeta__img"
+            src={jpg.src}
+            srcset={jpg.srcSet.values.length > 0 ? jpg.srcSet.attribute : undefined}
+            sizes={SIZES}
+            alt={alt}
+            width={jpg.attributes.width}
+            height={jpg.attributes.height}
+            loading={prioridad ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </picture>
+      ) : (
+        /* Sin foto no se inventa una: el marco queda en la superficie hundida
+           con el isotipo apenas insinuado, que es lo que dibuja el prototipo. */
+        <span class="tarjeta__sinfoto" aria-hidden="true" />
+      )
+    }
+  </span>
+
+  <span class="tarjeta__texto">
+    <span class="tarjeta__cabecera">
+      <span class="tarjeta__nombre">{producto.nombre}</span>
+      {producto.materia && <span class="tarjeta__efecto">{producto.materia}</span>}
+    </span>
+    <span class="tarjeta__specs">
+      <span>{lineaFormato}</span>
+      <span>{lineaSpec}</span>
+    </span>
+  </span>
+</a>
+
+<style>
+  .tarjeta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tarjeta[hidden] {
+    display: none;
+  }
+
+  /* El anillo de foco queda en el DEFAULT (brand-700). El prototipo lo pinta
+     blanco "porque cae sobre foto", pero con `outline-offset: 2px` cae fuera de
+     la tarjeta, sobre el fondo de página (#F5F3F0): en blanco no se vería, y en
+     las 29 tarjetas sin foto tampoco. Manda el contraste. */
+
+  .tarjeta__marco {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-portrait);
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+  }
+
+  .tarjeta__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focal, 50% 50%);
+  }
+
+  .tarjeta__sinfoto {
+    position: absolute;
+    inset: 0;
+    background: var(--color-brand-900);
+    opacity: 0.14;
+    -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / 32px 35px;
+    mask: url('/assets/logo-iso.svg') no-repeat center / 32px 35px;
+  }
+
+  /* Solo opacity y transform, y solo donde de verdad hay puntero fino: en
+     teléfono el estado activo es el toque (Responsividad v0 §03). */
+  @media (hover: hover) and (pointer: fine) {
+    .tarjeta__img {
+      transition:
+        transform var(--dur-respuesta) var(--ease-respuesta),
+        opacity var(--dur-respuesta) var(--ease-respuesta);
+    }
+
+    .tarjeta:hover .tarjeta__img {
+      transform: scale(var(--hover-image-scale));
+      opacity: var(--hover-image-dim);
+    }
+  }
+
+  .tarjeta__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .tarjeta__cabecera {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .tarjeta__nombre {
+    font: 500 1.0625rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-primary);
+  }
+
+  .tarjeta__efecto {
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .tarjeta__specs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font: 400 0.8125rem/1.5 var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  /* Fundido de entrada de la foto. Solo se arma cuando el script está vivo
+     (`[data-fundido]` lo pone él): sin JavaScript las fotos se ven de una. */
+  :global([data-fundido]) .tarjeta__img {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-editorial);
+  }
+
+  :global([data-fundido]) .tarjeta__img[data-lista] {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global([data-fundido]) .tarjeta__img {
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>

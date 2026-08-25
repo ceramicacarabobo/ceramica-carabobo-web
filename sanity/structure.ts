@@ -3,6 +3,7 @@ import {SINGLETONS} from './schemas'
 
 const TITULOS: Record<string, string> = {
   home: 'Home',
+  catalogo: 'Catálogo',
   contacto: 'Contacto',
   dondeComprar: 'Dónde comprar',
   ajustes: 'Ajustes del sitio',

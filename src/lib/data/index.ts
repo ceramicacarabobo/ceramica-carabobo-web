@@ -7,7 +7,7 @@
 import * as Q from '../queries'
 import {consultar} from './cliente'
 import medios from '../medios.json'
-import type {Ajustes, Contacto, Distribuidor, DondeComprar, Home, Imagen, Materia, Producto, Video} from './types'
+import type {Ajustes, Contacto, Distribuidor, DondeComprar, Home, Imagen, Materia, PaginaCatalogo, Producto, Video} from './types'
 
 export type * from './types'
 export {sanityConfigurado, visualEditingHabilitado} from './cliente'
@@ -108,6 +108,11 @@ export const getHome = async (): Promise<Home> => {
     profesionales: {...home.profesionales, video: normalizarVideo(home.profesionales.video)},
   }
 }
+
+/** Textos de la página de Catálogo. Sin documento cargado, todo vacío: el hero
+ * se queda con la ruta y el nombre de la página, y la banda de cierre no se dibuja. */
+export const getPaginaCatalogo = () =>
+  consultar<PaginaCatalogo>(Q.CATALOGO, {}, {hero: {}, cierre: {}})
 
 export const getContacto = () =>
   consultar<Contacto>(Q.CONTACTO, {}, {hero: {}, sedes: [], formulario: {}})

@@ -5,6 +5,7 @@ import distribuidor from './documents/distribuidor'
 import materia from './documents/materia'
 
 import home from './singletons/home'
+import catalogo from './singletons/catalogo'
 import contacto from './singletons/contacto'
 import dondeComprar from './singletons/dondeComprar'
 import ajustes from './singletons/ajustes'
@@ -18,7 +19,7 @@ import hito from './objects/hito'
 import sede from './objects/sede'
 
 /** Documentos únicos: se editan desde su propia entrada del menú, no se crean ni borran. */
-export const SINGLETONS = ['home', 'contacto', 'dondeComprar', 'ajustes'] as const
+export const SINGLETONS = ['home', 'catalogo', 'contacto', 'dondeComprar', 'ajustes'] as const
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Colecciones
@@ -27,6 +28,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   materia,
   // Páginas (singletons)
   home,
+  catalogo,
   contacto,
   dondeComprar,
   ajustes,
