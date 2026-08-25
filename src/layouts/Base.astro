@@ -16,16 +16,18 @@ import '~/theme/base.css'
 
 import Header from '~/components/shell/Header.astro'
 import Footer from '~/components/shell/Footer.astro'
-import {getAjustes, visualEditingHabilitado} from '~/lib/data'
+import {getAjustes, getMaterias, getProductos, visualEditingHabilitado} from '~/lib/data'
 
 interface Props {
   titulo: string
   descripcion?: string
   imagenOG?: string
   noIndex?: boolean
+  /** La página abre con hero a sangre: la cabecera va transparente encima. */
+  sobreHero?: boolean
 }
 
-const {titulo, descripcion, imagenOG, noIndex = false} = Astro.props
+const {titulo, descripcion, imagenOG, noIndex = false, sobreHero = false} = Astro.props
 
 // QA y preview nunca deben indexarse: el sitio todavía muestra datos de ejemplo
 // (distribuidores inventados, fotos ajenas, hitos sin validar). Solo el despliegue
@@ -33,7 +35,19 @@ const {titulo, descripcion, imagenOG, noIndex = false} = Astro.props
 const esProduccion = import.meta.env.PUBLIC_ENTORNO === 'produccion'
 const sinIndexar = noIndex || !esProduccion
 
-const ajustes = await getAjustes()
+const [ajustes, materiasCms, productos] = await Promise.all([getAjustes(), getMaterias(), getProductos()])
+
+// El conteo de diseños por materia SE DERIVA del catálogo — nunca se escribe a mano
+// (regla del prototipo). Solo entran al megamenú las materias con foto y con productos.
+const materias = materiasCms
+  .map((materia) => ({
+    ...materia,
+    total: productos.filter((producto) => producto.materia === materia.nombre).length,
+  }))
+  .filter((materia) => materia.total > 0 && materia.fotoTextura)
+  .sort((a, b) => b.total - a.total)
+  .slice(0, 6)
+
 const tituloPagina = titulo === ajustes.titulo ? titulo : `${titulo} — ${ajustes.titulo}`
 const meta = descripcion ?? ajustes.descripcion
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
@@ -66,7 +80,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
 
-    <Header transition:persist />
+    <Header sobreHero={sobreHero} materias={materias} transition:persist />
 
     <main id="contenido">
       <slot />

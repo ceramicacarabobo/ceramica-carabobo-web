@@ -1,8 +1,11 @@
 ---
 /**
- * Cáscara compartida — pie. Persiste entre navegaciones.
- * Estructura fija; los datos vienen de Ajustes del sitio (CMS).
+ * Pie del sitio. Reflow de `Responsividad v0` §03:
+ * desktop 3 columnas (storytelling + 2 de enlaces), tablet 2, móvil 1 en el
+ * mismo orden, con 44px de separación entre enlaces.
+ * Estructura fija; todos los textos y datos vienen del CMS.
  */
+import Lockup from './Lockup.astro'
 import type {Ajustes} from '~/lib/data'
 
 interface Props {
@@ -11,10 +14,19 @@ interface Props {
 
 const {ajustes} = Astro.props
 const anio = new Date().getFullYear()
+
+const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
 ---
 
 <footer class="pie">
-  <div class="contenedor pie__interior">
+  <div class="pie__interior">
+    <div class="pie__marca">
+      <a class="pie__lockup" href="/" aria-label="Cerámica Carabobo — inicio">
+        <Lockup variante="apilada" />
+      </a>
+      {ajustes.textoPie && <p class="pie__texto">{ajustes.textoPie}</p>}
+    </div>
+
     <nav class="pie__bloque" aria-label="Pie de página">
       <h2 class="overline pie__titulo">Navegación</h2>
       <ul class="pie__lista">
@@ -27,30 +39,51 @@ const anio = new Date().getFullYear()
     <div class="pie__bloque">
       <h2 class="overline pie__titulo">Contacto</h2>
       <ul class="pie__lista">
-        {ajustes.telefono && <li><a class="pie__enlace" href={`tel:${ajustes.telefono.replace(/\s/g, '')}`}>{ajustes.telefono}</a></li>}
-        {ajustes.correo && <li><a class="pie__enlace" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>}
+        {ajustes.direccion && <li class="pie__dato">{ajustes.direccion}</li>}
+        {telefonoEnlace && (
+          <li><a class="pie__enlace" href={`tel:${telefonoEnlace}`}>{ajustes.telefono}</a></li>
+        )}
+        {ajustes.correo && (
+          <li><a class="pie__enlace" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>
+        )}
       </ul>
     </div>
   </div>
 
-  <p class="contenedor pie__legal">
-    © {anio} Cerámica Carabobo, C.A. Todos los derechos reservados.
+  <p class="pie__legal">
+    © {anio} {ajustes.titulo}. Todos los derechos reservados.
   </p>
 </footer>
 
 <style>
   .pie {
-    margin-top: var(--space-section);
     background: var(--color-surface-inverse);
     color: var(--color-text-on-dark);
-    padding-block: var(--space-16) var(--space-8);
-    padding-bottom: max(var(--space-8), env(safe-area-inset-bottom));
+    padding: var(--space-section) var(--space-gutter-page) var(--space-10);
+    padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
+  }
+
+  .pie__interior,
+  .pie__legal {
+    max-width: var(--size-content-max);
+    margin-inline: auto;
   }
 
   .pie__interior {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--space-12);
+  }
+
+  .pie__lockup {
+    display: inline-flex;
+    color: var(--color-neutral-0);
+  }
+
+  .pie__texto {
+    margin-top: var(--space-6);
+    max-width: 52ch;
+    font: var(--text-body-15);
+    color: var(--color-text-on-dark-secondary);
   }
 
   .pie__titulo {
@@ -60,12 +93,19 @@ const anio = new Date().getFullYear()
 
   .pie__lista {
     display: grid;
-    gap: var(--space-2);
   }
 
-  .pie__enlace {
+  .pie__enlace,
+  .pie__dato {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--color-text-on-dark);
     font: var(--text-body-base);
+  }
+
+  .pie__dato {
+    color: var(--color-text-on-dark-secondary);
   }
 
   .pie__enlace:hover {
@@ -73,8 +113,31 @@ const anio = new Date().getFullYear()
   }
 
   .pie__legal {
-    margin-top: var(--space-12);
+    margin-top: var(--space-16);
+    padding-top: var(--space-6);
+    border-top: var(--border-width) solid var(--color-border-on-dark);
     color: var(--color-text-on-dark-secondary);
     font: var(--text-caption);
+  }
+
+  @media (min-width: 760px) {
+    .pie__interior {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .pie__marca {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pie__interior {
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--space-16);
+    }
+
+    .pie__marca {
+      grid-column: auto;
+    }
   }
 </style>

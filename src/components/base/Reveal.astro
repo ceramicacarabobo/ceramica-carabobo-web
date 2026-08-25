@@ -1,0 +1,78 @@
+---
+/**
+ * Aparición al entrar en pantalla: opacity 0→1 + translateY(--reveal-offset),
+ * una sola vez, con `--dur-reveal`. Solo opacity y transform (Tokens v0 §07).
+ * Con `prefers-reduced-motion` el contenido nace visible y no se anima nada.
+ * Cascada: el elemento i de un grupo espera i × 70ms en la home.
+ */
+interface Props {
+  /** Posición dentro del grupo, para la cascada. */
+  indice?: number
+  /** Paso de la cascada; 70ms en home, 60ms en páginas internas. */
+  paso?: number
+  como?: string
+  class?: string
+}
+
+const {indice = 0, paso = 70, como = 'div', class: clase} = Astro.props
+
+// Etiqueta dinámica: Astro no puede tipar los atributos de un tag variable.
+const Etiqueta = como as 'div'
+---
+
+<Etiqueta class:list={['reveal', clase]} data-reveal style={`--reveal-delay: ${indice * paso}ms`}>
+  <slot />
+</Etiqueta>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-offset));
+    transition:
+      opacity var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms),
+      transform var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-visible] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Sin JS (o con movimiento reducido) el contenido tiene que verse igual. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const activar = () => {
+    const elementos = document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-visible])')
+    if (elementos.length === 0) return
+
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducido || !('IntersectionObserver' in window)) {
+      elementos.forEach((el) => el.setAttribute('data-visible', ''))
+      return
+    }
+
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue
+          entrada.target.setAttribute('data-visible', '')
+          observador.unobserve(entrada.target)
+        }
+      },
+      {rootMargin: '0px 0px -10% 0px', threshold: 0.05},
+    )
+
+    elementos.forEach((el) => observador.observe(el))
+  }
+
+  activar()
+  document.addEventListener('astro:page-load', activar)
+</script>

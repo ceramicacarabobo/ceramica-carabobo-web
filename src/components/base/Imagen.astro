@@ -1,0 +1,61 @@
+---
+/**
+ * Wrapper propio de imagen (condición §3.1 del plan: los componentes no conocen
+ * Sanity). Reserva la proporción para que no haya salto de layout, respeta el
+ * punto focal y deja que astro:assets procese el archivo en el build.
+ */
+import {Image} from 'astro:assets'
+import type {Imagen as TipoImagen} from '~/lib/data'
+import {dimensiones, posicionFocal, urlOrigen} from '~/lib/imagenes'
+
+interface Props {
+  imagen?: TipoImagen
+  /** Proporción reservada, ej. "4 / 3". Por defecto, la del archivo. */
+  ratio?: string
+  /** Atributo sizes para el srcset. */
+  sizes?: string
+  /** Primera pantalla: sin lazy y con prioridad de carga. */
+  prioridad?: boolean
+  class?: string
+  ancho?: number
+}
+
+const {imagen, ratio, sizes = '100vw', prioridad = false, class: clase, ancho = 2400} = Astro.props
+
+const dims = imagen ? dimensiones(imagen) : null
+const proporcion = ratio ?? (dims ? `${dims.ancho} / ${dims.alto}` : '3 / 2')
+---
+
+{
+  imagen && (
+    <figure class:list={['imagen', clase]} style={`--ratio: ${proporcion}; --focal: ${posicionFocal(imagen)}`}>
+      <Image
+        src={urlOrigen(imagen, ancho)}
+        alt={imagen.alt}
+        width={dims?.ancho ?? ancho}
+        height={dims?.alto ?? Math.round(ancho * 0.66)}
+        widths={[480, 760, 1024, 1600, 2400]}
+        sizes={sizes}
+        loading={prioridad ? 'eager' : 'lazy'}
+        fetchpriority={prioridad ? 'high' : 'auto'}
+        decoding={prioridad ? 'sync' : 'async'}
+      />
+    </figure>
+  )
+}
+
+<style>
+  .imagen {
+    margin: 0;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+  }
+
+  .imagen :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focal);
+  }
+</style>

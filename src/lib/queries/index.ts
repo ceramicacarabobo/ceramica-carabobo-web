@@ -148,6 +148,8 @@ export const AJUSTES = /* groq */ `
   titulo,
   descripcion,
   "imagenOG": imagenOG${IMAGEN},
+  textoPie,
+  direccion,
   telefono,
   correo,
   whatsapp,

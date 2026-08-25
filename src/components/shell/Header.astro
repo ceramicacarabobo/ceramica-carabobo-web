@@ -1,108 +1,218 @@
 ---
 /**
- * Cáscara compartida — cabecera.
- * Persiste entre navegaciones (transition:persist en el layout): no se
- * remonta ni parpadea. La versión completa (megamenú, header sobre hero,
- * menú móvil anclado al pie) llega en la Fase 2.
+ * Cabecera del sitio. Tres estados, según `design/Responsividad v0` §03:
+ *
+ *  - Desktop sobre el hero: transparente, lockup blanco, nav clara, CTA outline.
+ *  - Desktop al scrollear: banda sólida fija que baja (translateY -105% → 0).
+ *  - Móvil: siempre sólida, solo lockup + hamburguesa de 44px; el menú es a pantalla
+ *    completa con los enlaces anclados AL PIE (lo que se toca es la lista, no el disparador).
+ *
+ * El megamenú de Catálogo existe solo en desktop; en móvil Catálogo es un enlace directo.
+ * Persiste entre navegaciones (transition:persist en el layout).
  */
-const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/'
+import Lockup from './Lockup.astro'
+import Imagen from '~/components/base/Imagen.astro'
+import type {Materia} from '~/lib/data'
 
+interface Props {
+  /** La página tiene hero a sangre: la cabecera arranca transparente encima. */
+  sobreHero?: boolean
+  /** Materias del megamenú, con su conteo derivado del catálogo. */
+  materias?: (Materia & {total: number})[]
+}
+
+const {sobreHero = false, materias = []} = Astro.props
+
+const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/'
 const enlaces = [
-  {href: '/catalogo', texto: 'Catálogo'},
-  {href: '/contacto', texto: 'Contacto'},
-  {href: '/donde-comprar', texto: 'Dónde comprar'},
+  {href: '/catalogo', texto: 'Catálogo', conPanel: true},
+  {href: '/contacto', texto: 'Contacto', conPanel: false},
+  {href: '/donde-comprar', texto: 'Dónde comprar', conPanel: false},
 ]
+
+const hayMegamenu = materias.length >= 4
 ---
 
-<header class="cabecera">
-  <div class="cabecera__interior contenedor">
-    <a class="lockup" href="/" aria-label="Cerámica Carabobo — inicio">
-      <span class="lockup__iso" aria-hidden="true"></span>
-      <span class="lockup__wordmark" aria-hidden="true"></span>
+<header class="cabecera" data-cabecera data-sobre-hero={sobreHero ? '' : undefined}>
+  <div class="cabecera__banda">
+    <a class="cabecera__marca" href="/" aria-label="Cerámica Carabobo — inicio">
+      <Lockup variante="horizontal" />
     </a>
 
     <nav class="nav" aria-label="Principal">
       <ul class="nav__lista">
         {
-          enlaces.map(({href, texto}) => (
-            <li>
-              <a
-                class="nav__enlace"
-                href={href}
-                aria-current={rutaActual === href ? 'page' : undefined}
-              >
-                {texto}
-              </a>
+          enlaces.map(({href, texto, conPanel}) => (
+            <li class="nav__item">
+              {conPanel && hayMegamenu ? (
+                <button
+                  class="nav__enlace nav__enlace--boton"
+                  type="button"
+                  data-abre-megamenu
+                  aria-expanded="false"
+                  aria-controls="megamenu-catalogo"
+                >
+                  {texto}
+                  <svg class="nav__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              ) : (
+                <a class="nav__enlace" href={href} aria-current={rutaActual === href ? 'page' : undefined}>
+                  {texto}
+                </a>
+              )}
             </li>
           ))
         }
       </ul>
     </nav>
+
+    <a class="cta-outline" href="/donde-comprar" data-navcta>Dónde comprar</a>
+
+    <button class="hamburguesa" type="button" data-abre-menu aria-expanded="false" aria-controls="menu-movil">
+      <span class="hamburguesa__lineas" aria-hidden="true"></span>
+      <span class="visualmente-oculto">Abrir menú</span>
+    </button>
   </div>
+
+  {
+    hayMegamenu && (
+      <div class="megamenu" id="megamenu-catalogo" data-megamenu hidden>
+        <div class="megamenu__interior">
+          <div class="megamenu__indice">
+            <p class="overline megamenu__titulo">Catálogo</p>
+            <ul class="megamenu__enlaces">
+              <li>
+                <a href="/catalogo">Todos los diseños</a>
+              </li>
+              <li>
+                <a href="/catalogo#uso">Por uso</a>
+              </li>
+              <li>
+                <a href="/catalogo#formato">Formatos</a>
+              </li>
+              <li>
+                <a href="/catalogo#brillo">Acabados</a>
+              </li>
+            </ul>
+          </div>
+
+          <ul class="megamenu__materias">
+            {materias.map((materia) => (
+              <li>
+                <a class="materia" href={`/catalogo#materia-${materia.nombre.toLowerCase()}`}>
+                  <span class="materia__foto">
+                    <Imagen imagen={materia.fotoTextura} ratio="1 / 1" sizes="200px" ancho={400} />
+                  </span>
+                  <span class="materia__nombre">{materia.nombre}</span>
+                  <span class="materia__detalle">
+                    {materia.total} {materia.total === 1 ? 'producto' : 'productos'}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
 </header>
 
+<div class="menu-movil" id="menu-movil" data-menu-movil hidden>
+  <div class="menu-movil__cabecera">
+    <a class="menu-movil__marca" href="/" aria-label="Cerámica Carabobo — inicio">
+      <Lockup variante="apilada" />
+    </a>
+    <button class="menu-movil__cerrar" type="button" data-cierra-menu>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span class="visualmente-oculto">Cerrar menú</span>
+    </button>
+  </div>
+
+  <nav class="menu-movil__nav" aria-label="Principal">
+    <ul>
+      {
+        enlaces.map(({href, texto}) => (
+          <li>
+            <a href={href} aria-current={rutaActual === href ? 'page' : undefined}>
+              {texto}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
 <style>
+  .visualmente-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ---------- Banda ---------- */
+
   .cabecera {
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
     background: var(--color-surface-base);
+    color: var(--color-text-primary);
     border-bottom: var(--border-width) solid var(--color-border-hairline);
-    box-shadow: var(--elevation-1);
-    padding-block: var(--space-3);
-    padding-top: max(var(--space-3), env(safe-area-inset-top));
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
 
-  .cabecera__interior {
+  .cabecera__banda {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-6);
+    min-height: 63px;
+    padding-inline: var(--space-gutter-page);
+    padding-top: env(safe-area-inset-top);
   }
 
-  /* Lockup horizontal: iso 36×38 + wordmark 86×27, gap 12 (Tokens v0). */
-  .lockup {
-    display: flex;
+  .cabecera__marca {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
     min-height: var(--control-height-md);
+    color: var(--color-brand-900);
   }
 
-  .lockup__iso,
-  .lockup__wordmark {
-    display: block;
-    background: var(--color-brand-900);
-  }
-
-  .lockup__iso {
-    width: 36px;
-    height: 38px;
-    -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / contain;
-    mask: url('/assets/logo-iso.svg') no-repeat center / contain;
-  }
-
-  .lockup__wordmark {
-    width: 86px;
-    height: 27px;
-    -webkit-mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
-    mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+  .nav {
+    display: none;
+    margin-left: auto;
   }
 
   .nav__lista {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-8);
   }
 
   .nav__enlace {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-1);
     min-height: var(--control-height-md);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-bottom: var(--border-width) solid transparent;
     font: var(--text-nav);
     letter-spacing: var(--tracking-uppercase-lg);
     text-transform: uppercase;
-    color: var(--color-text-primary);
-    transition: color var(--dur-instant) var(--ease-out);
+    color: inherit;
+    cursor: pointer;
+    transition: color var(--dur-instant) var(--ease-out), border-color var(--dur-instant) var(--ease-out);
   }
 
   .nav__enlace:hover,
@@ -110,13 +220,359 @@ const enlaces = [
     color: var(--color-brand-700);
   }
 
-  @media (max-width: 759.98px) {
-    .nav__lista {
-      gap: var(--space-3);
+  .nav__chevron {
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .nav__enlace[aria-expanded='true'] .nav__chevron {
+    transform: rotate(180deg);
+  }
+
+  .cta-outline {
+    display: none;
+    align-items: center;
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-4);
+    border: var(--border-width) solid var(--color-brand-700);
+    color: var(--color-brand-700);
+    font: var(--text-ui-sm);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    transition: background-color var(--dur-instant) var(--ease-out), color var(--dur-instant) var(--ease-out);
+  }
+
+  .cta-outline:hover {
+    background: var(--color-brand-700);
+    color: var(--color-neutral-0);
+  }
+
+  .hamburguesa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    margin-left: auto;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .hamburguesa__lineas,
+  .hamburguesa__lineas::before,
+  .hamburguesa__lineas::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    content: '';
+  }
+
+  .hamburguesa__lineas {
+    position: relative;
+  }
+
+  .hamburguesa__lineas::before {
+    position: absolute;
+    top: -7px;
+  }
+
+  .hamburguesa__lineas::after {
+    position: absolute;
+    top: 7px;
+  }
+
+  /* ---------- Estado sobre el hero (solo desktop) ---------- */
+
+  @media (min-width: 1024px) {
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) {
+      position: fixed;
+      inset-inline: 0;
+      background: transparent;
+      border-bottom-color: transparent;
+      color: var(--color-text-on-dark);
     }
 
-    .nav__enlace {
-      font-size: 0.6875rem;
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .cabecera__marca {
+      color: var(--color-neutral-0);
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .nav__enlace {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .nav__enlace:hover {
+      color: var(--color-neutral-0);
+      border-bottom-color: var(--color-border-on-dark-strong);
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .cta-outline {
+      color: var(--color-neutral-0);
+      border-color: var(--color-border-on-dark-strong);
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .cta-outline:hover {
+      background: var(--color-neutral-0);
+      color: var(--color-neutral-700);
+      border-color: var(--color-neutral-0);
+    }
+  }
+
+  @media (min-width: 760px) {
+    .nav,
+    .cta-outline {
+      display: flex;
+    }
+
+    .hamburguesa {
+      display: none;
+    }
+
+    .cabecera__banda {
+      gap: var(--space-10);
+    }
+  }
+
+  /* ---------- Megamenú ---------- */
+
+  .megamenu {
+    display: none;
+    border-top: var(--border-width) solid transparent;
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+    background: var(--color-surface-base);
+    animation: panel-entra var(--dur-fast) var(--ease-out) both;
+  }
+
+  @keyframes panel-entra {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .megamenu:not([hidden]) {
+    display: block;
+  }
+
+  .megamenu__interior {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--space-12);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-gutter-page) var(--space-10);
+  }
+
+  .megamenu__titulo {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .megamenu__enlaces {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .megamenu__enlaces a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height-sm);
+    color: var(--color-text-primary);
+    font: var(--text-body-base);
+  }
+
+  .megamenu__enlaces a:hover {
+    color: var(--color-brand-700);
+  }
+
+  .megamenu__materias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .materia {
+    display: grid;
+    gap: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .materia__foto {
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+  }
+
+  .materia__nombre {
+    font: var(--text-ui-md);
+  }
+
+  .materia__detalle {
+    font: var(--text-caption-lg);
+    color: var(--color-text-muted);
+  }
+
+  .materia:hover .materia__nombre {
+    color: var(--color-brand-700);
+  }
+
+  /* ---------- Menú móvil: lista anclada al pie ---------- */
+
+  .menu-movil {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--color-surface-brand);
+    color: var(--color-text-on-dark);
+    padding: var(--space-6) var(--space-gutter-page);
+    padding-top: max(var(--space-6), env(safe-area-inset-top));
+    padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
+    animation: menu-entra var(--dur-base) var(--ease-out) both;
+  }
+
+  @keyframes menu-entra {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .menu-movil[hidden] {
+    display: none;
+  }
+
+  .menu-movil__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .menu-movil__marca {
+    color: var(--color-neutral-0);
+  }
+
+  .menu-movil__cerrar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .menu-movil__nav ul {
+    display: grid;
+  }
+
+  .menu-movil__nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: var(--space-3);
+    color: var(--color-text-on-dark);
+    font: var(--text-title-sm);
+  }
+
+  .menu-movil__nav a[aria-current='page'] {
+    color: var(--color-brand-300);
+  }
+
+  @media (min-width: 760px) {
+    .menu-movil {
+      display: none;
     }
   }
 </style>
+
+<script>
+  const CERRADO = 'false'
+
+  function iniciar() {
+    const cabecera = document.querySelector<HTMLElement>('[data-cabecera]')
+    if (!cabecera) return
+
+    const megamenu = cabecera.querySelector<HTMLElement>('[data-megamenu]')
+    const disparadorMega = cabecera.querySelector<HTMLButtonElement>('[data-abre-megamenu]')
+    const menuMovil = document.querySelector<HTMLElement>('[data-menu-movil]')
+    const abreMenu = cabecera.querySelector<HTMLButtonElement>('[data-abre-menu]')
+    const cierraMenu = menuMovil?.querySelector<HTMLButtonElement>('[data-cierra-menu]')
+
+    // Banda sólida al scrollear. El umbral es la altura de la propia banda.
+    const alScrollear = () => {
+      if (window.scrollY > 8) cabecera.setAttribute('data-scrolled', '')
+      else cabecera.removeAttribute('data-scrolled')
+    }
+    alScrollear()
+    window.addEventListener('scroll', alScrollear, {passive: true})
+
+    const cerrarMega = () => {
+      if (!megamenu || !disparadorMega) return
+      megamenu.hidden = true
+      disparadorMega.setAttribute('aria-expanded', CERRADO)
+      cabecera.removeAttribute('data-panel-abierto')
+    }
+
+    disparadorMega?.addEventListener('click', () => {
+      if (!megamenu) return
+      const abierto = disparadorMega.getAttribute('aria-expanded') === 'true'
+      if (abierto) {
+        cerrarMega()
+        return
+      }
+      megamenu.hidden = false
+      disparadorMega.setAttribute('aria-expanded', 'true')
+      cabecera.setAttribute('data-panel-abierto', '')
+    })
+
+    const abrirMenuMovil = (abrir: boolean) => {
+      if (!menuMovil || !abreMenu) return
+      menuMovil.hidden = !abrir
+      abreMenu.setAttribute('aria-expanded', abrir ? 'true' : CERRADO)
+      document.documentElement.style.overflow = abrir ? 'hidden' : ''
+      if (abrir) cierraMenu?.focus()
+      else abreMenu.focus()
+    }
+
+    abreMenu?.addEventListener('click', () => abrirMenuMovil(true))
+    cierraMenu?.addEventListener('click', () => abrirMenuMovil(false))
+
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key !== 'Escape') return
+      cerrarMega()
+      if (menuMovil && !menuMovil.hidden) abrirMenuMovil(false)
+    })
+
+    // Clic fuera cierra el megamenú.
+    document.addEventListener('click', (evento) => {
+      if (!megamenu || megamenu.hidden) return
+      if (!cabecera.contains(evento.target as Node)) cerrarMega()
+    })
+
+    // Al navegar, todo se cierra: la cáscara persiste pero el estado no.
+    document.addEventListener('astro:before-swap', () => {
+      cerrarMega()
+      if (menuMovil) {
+        menuMovil.hidden = true
+        document.documentElement.style.overflow = ''
+        abreMenu?.setAttribute('aria-expanded', CERRADO)
+      }
+    })
+  }
+
+  iniciar()
+  document.addEventListener('astro:page-load', iniciar)
+</script>

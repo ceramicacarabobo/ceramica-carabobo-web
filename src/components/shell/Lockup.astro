@@ -1,0 +1,72 @@
+---
+/**
+ * Lockup de marca — EXACTAMENTE 2 variantes (Tokens v0 §09):
+ *   horizontal: iso 36×38 + wordmark 86×27, gap 12px — header compacto, banda fija.
+ *   apilada:    iso 38×41 + wordmark 132×20, gap 8px — header sobre hero, footer, menú móvil.
+ * Los SVG se aplican como máscara para poder colorearlos con un token.
+ */
+interface Props {
+  variante?: 'horizontal' | 'apilada'
+  class?: string
+}
+
+const {variante = 'horizontal', class: clase} = Astro.props
+---
+
+<span class:list={['lockup', `lockup--${variante}`, clase]} data-lockup aria-hidden="true">
+  <span class="lockup__iso"></span>
+  <span class="lockup__wordmark"></span>
+</span>
+
+<style>
+  .lockup {
+    display: flex;
+    align-items: center;
+  }
+
+  .lockup--horizontal {
+    gap: 12px;
+  }
+
+  .lockup--apilada {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .lockup__iso,
+  .lockup__wordmark {
+    display: block;
+    background: currentColor;
+  }
+
+  .lockup__iso {
+    -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+    mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+  }
+
+  .lockup__wordmark {
+    -webkit-mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+    mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+  }
+
+  .lockup--horizontal .lockup__iso {
+    width: 36px;
+    height: 38px;
+  }
+
+  .lockup--horizontal .lockup__wordmark {
+    width: 86px;
+    height: 27px;
+  }
+
+  .lockup--apilada .lockup__iso {
+    width: 38px;
+    height: 41px;
+  }
+
+  .lockup--apilada .lockup__wordmark {
+    width: 132px;
+    height: 20px;
+  }
+</style>

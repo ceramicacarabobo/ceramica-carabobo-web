@@ -1,0 +1,107 @@
+---
+/**
+ * Button — primitiva de `design/Primitivas v1` §01.
+ * Work Sans 600 · 15px · min-height 44px · radius-none · dur-instant + ease-out.
+ * Active = hover (brand-900) + translateY(1px) — decisión G1 del handoff.
+ */
+interface Props {
+  variante?: 'primary' | 'secondary' | 'ghost' | 'inverse'
+  href?: string
+  tipo?: 'button' | 'submit'
+  ancho?: boolean
+  class?: string
+}
+
+const {variante = 'primary', href, tipo = 'button', ancho = false, class: clase} = Astro.props
+const Etiqueta = href ? 'a' : 'button'
+---
+
+<Etiqueta
+  class:list={['boton', `boton--${variante}`, ancho && 'boton--ancho', clase]}
+  href={href}
+  type={href ? undefined : tipo}
+>
+  <slot />
+</Etiqueta>
+
+<style>
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-5);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-none);
+    font: 600 0.9375rem/1.4 var(--font-heading);
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out),
+      border-color var(--dur-instant) var(--ease-out),
+      transform var(--dur-instant) var(--ease-out);
+  }
+
+  .boton--ancho {
+    width: 100%;
+  }
+
+  .boton:active {
+    transform: translateY(1px);
+  }
+
+  .boton--primary {
+    background: var(--color-action-primary);
+    color: var(--color-action-on-primary);
+  }
+
+  .boton--primary:hover,
+  .boton--primary:active {
+    background: var(--color-action-primary-hover);
+    color: var(--color-action-on-primary);
+  }
+
+  .boton--secondary {
+    background: transparent;
+    color: var(--color-action-secondary-text);
+    border-color: var(--color-action-secondary-border);
+  }
+
+  .boton--secondary:hover,
+  .boton--secondary:active {
+    background: var(--color-action-secondary-hover-bg);
+    color: var(--color-action-primary-hover);
+  }
+
+  .boton--ghost {
+    background: transparent;
+    color: var(--color-action-secondary-text);
+    padding-inline: var(--space-2);
+  }
+
+  .boton--ghost:hover,
+  .boton--ghost:active {
+    color: var(--color-action-primary-hover);
+  }
+
+  /* Nunca un botón vinotinto sobre fondo oscuro (Tokens v0 §01). */
+  .boton--inverse {
+    background: var(--color-action-inverse-bg);
+    color: var(--color-action-inverse-text);
+  }
+
+  .boton--inverse:hover,
+  .boton--inverse:active {
+    background: var(--color-brand-100);
+  }
+
+  .boton[disabled] {
+    background: var(--color-bg-disabled);
+    border-color: var(--color-border-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>

@@ -112,6 +112,8 @@ export interface Ajustes {
   titulo: string
   descripcion?: string
   imagenOG?: Imagen
+  textoPie?: string
+  direccion?: string
   telefono?: string
   correo?: string
   whatsapp?: string

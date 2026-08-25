@@ -47,6 +47,11 @@ export default defineConfig({
     }),
     react(),
   ],
+  image: {
+    // Las imágenes del CMS se descargan y reprocesan en el build: el HTML de
+    // producción nunca referencia cdn.sanity.io (condición §3.3 del plan).
+    remotePatterns: [{protocol: 'https', hostname: 'cdn.sanity.io'}],
+  },
   prefetch: {prefetchAll: true, defaultStrategy: 'hover'},
   vite: {
     define: {

@@ -1,0 +1,62 @@
+---
+/**
+ * Contenedor de sección: ritmo vertical y gutter del sistema.
+ * Grilla de `design/Responsividad v0` §02 — gutter 20 → 32 → 40-72px,
+ * ritmo entre secciones 64 → 88 → 104-120px, contenido con tope de 1600px.
+ * Los valores salen de los tokens `--space-gutter-page` y `--space-section`.
+ */
+interface Props {
+  /** Etiqueta del landmark. */
+  como?: 'section' | 'div' | 'footer' | 'header'
+  /** Fondo de la sección. */
+  fondo?: 'base' | 'raised' | 'sunken' | 'inverse' | 'brand' | 'ninguno'
+  /** El contenido llega al borde de la pantalla (imágenes a sangre). */
+  sangrado?: boolean
+  id?: string
+  class?: string
+  'aria-labelledby'?: string
+}
+
+const {como: Etiqueta = 'section', fondo = 'ninguno', sangrado = false, id, class: clase, ...resto} = Astro.props
+---
+
+<Etiqueta id={id} class:list={['seccion', `seccion--${fondo}`, sangrado && 'seccion--sangrado', clase]} {...resto}>
+  <slot />
+</Etiqueta>
+
+<style>
+  .seccion {
+    padding-block: var(--space-section);
+  }
+
+  .seccion:not(.seccion--sangrado) {
+    padding-inline: var(--space-gutter-page);
+  }
+
+  .seccion > :global(*) {
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+  }
+
+  .seccion--base {
+    background: var(--color-surface-base);
+  }
+
+  .seccion--raised {
+    background: var(--color-surface-raised);
+  }
+
+  .seccion--sunken {
+    background: var(--color-surface-sunken);
+  }
+
+  .seccion--inverse {
+    background: var(--color-surface-inverse);
+    color: var(--color-text-on-dark);
+  }
+
+  .seccion--brand {
+    background: var(--color-surface-brand);
+    color: var(--color-text-on-dark);
+  }
+</style>
