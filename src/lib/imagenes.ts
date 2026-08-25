@@ -10,9 +10,18 @@ const builder = createImageUrlBuilder({projectId, dataset})
  * URL de origen de una imagen del CMS. Solo se usa en build (astro:assets la
  * descarga y la reprocesa) o en el preview: en el HTML de producción nunca
  * aparece `cdn.sanity.io`.
+ *
+ * El ancho pedido se recorta al ancho real del archivo (parseado de la
+ * referencia): sin este tope, Sanity agranda la imagen antes de entregarla
+ * (nunca se niega a hacerlo), y astro:assets la vuelve a achicar al tamaño
+ * real más tarde. Ese viaje agranda-achica no gana nitidez y arruina la
+ * compresión: un archivo de 380 KB en su tamaño real puede salir pesando el
+ * doble tras pasar por un agrandado innecesario.
  */
 export function urlOrigen(imagen: Imagen, ancho = 2400): string {
-  return builder.image(imagen.ref).width(ancho).auto('format').url()
+  const dims = dimensiones(imagen)
+  const anchoSeguro = dims ? Math.min(ancho, dims.ancho) : ancho
+  return builder.image(imagen.ref).width(anchoSeguro).auto('format').url()
 }
 
 /** Punto focal → `object-position`. Sin hotspot, el centro. */

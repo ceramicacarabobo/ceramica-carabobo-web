@@ -33,7 +33,11 @@ async function main() {
     return
   }
 
-  const query = encodeURIComponent('*[_type == "sanity.fileAsset"]{_id, url, extension}')
+  // Solo los archivos que algún documento referencia: los huérfanos (versiones
+  // viejas que quedaron en la librería) no tienen por qué bajarse en cada build.
+  const query = encodeURIComponent(
+    '*[_type == "sanity.fileAsset" && count(*[references(^._id)]) > 0]{_id, url, extension}',
+  )
   const respuesta = await fetch(`https://${projectId}.api.sanity.io/v2026-08-01/data/query/${dataset}?query=${query}`)
 
   if (!respuesta.ok) {

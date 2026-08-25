@@ -3,8 +3,17 @@
  * Wrapper propio de imagen (condición §3.1 del plan: los componentes no conocen
  * Sanity). Reserva la proporción para que no haya salto de layout, respeta el
  * punto focal y deja que astro:assets procese el archivo en el build.
+ *
+ * Requisito de peso (Requisitos técnicos v0, "Formato moderno y tope de peso"):
+ * AVIF y WebP con respaldo JPG, ninguno de los tres por encima de 400 KB. Se
+ * arma el <picture> a mano (en vez de <Picture> de astro:assets) porque cada
+ * formato necesita su propia calidad para llegar a ese tope sin sacrificar
+ * nitidez de más donde no hace falta: AVIF y WebP comprimen mejor y aguantan
+ * más calidad; JPG (el respaldo para navegadores viejos) necesita bajar más
+ * la calidad para no pasarse.
  */
-import {Image} from 'astro:assets'
+import {getImage} from 'astro:assets'
+import type {GetImageResult} from 'astro'
 import type {Imagen as TipoImagen} from '~/lib/data'
 import {dimensiones, posicionFocal, urlOrigen} from '~/lib/imagenes'
 
@@ -24,22 +33,52 @@ const {imagen, ratio, sizes = '100vw', prioridad = false, class: clase, ancho = 
 
 const dims = imagen ? dimensiones(imagen) : null
 const proporcion = ratio ?? (dims ? `${dims.ancho} / ${dims.alto}` : '3 / 2')
+
+const ANCHOS = [480, 760, 1024, 1600, 2400]
+
+let avif: GetImageResult | undefined
+let webp: GetImageResult | undefined
+let jpg: GetImageResult | undefined
+
+if (imagen) {
+  const base = {
+    src: urlOrigen(imagen, ancho),
+    width: dims?.ancho ?? ancho,
+    height: dims?.alto ?? Math.round(ancho * 0.66),
+    widths: ANCHOS,
+    sizes,
+  }
+  ;[avif, webp, jpg] = await Promise.all([
+    getImage({...base, format: 'avif', quality: 60}),
+    getImage({...base, format: 'webp', quality: 70}),
+    getImage({...base, format: 'jpg', quality: 48}),
+  ])
+}
+
+/** `srcset` con candidato único si el archivo no tiene variantes (más chico que el ancho pedido). */
+function srcset(resultado: GetImageResult): string {
+  return resultado.srcSet.values.length > 0 ? resultado.srcSet.attribute : resultado.src
+}
 ---
 
 {
-  imagen && (
+  imagen && avif && webp && jpg && (
     <figure class:list={['imagen', clase]} style={`--ratio: ${proporcion}; --focal: ${posicionFocal(imagen)}`}>
-      <Image
-        src={urlOrigen(imagen, ancho)}
-        alt={imagen.alt}
-        width={dims?.ancho ?? ancho}
-        height={dims?.alto ?? Math.round(ancho * 0.66)}
-        widths={[480, 760, 1024, 1600, 2400]}
-        sizes={sizes}
-        loading={prioridad ? 'eager' : 'lazy'}
-        fetchpriority={prioridad ? 'high' : 'auto'}
-        decoding={prioridad ? 'sync' : 'async'}
-      />
+      <picture>
+        <source srcset={srcset(avif)} sizes={sizes} type="image/avif" />
+        <source srcset={srcset(webp)} sizes={sizes} type="image/webp" />
+        <img
+          src={jpg.src}
+          srcset={jpg.srcSet.values.length > 0 ? jpg.srcSet.attribute : undefined}
+          sizes={sizes}
+          alt={imagen.alt}
+          width={jpg.attributes.width}
+          height={jpg.attributes.height}
+          loading={prioridad ? 'eager' : 'lazy'}
+          fetchpriority={prioridad ? 'high' : 'auto'}
+          decoding={prioridad ? 'sync' : 'async'}
+        />
+      </picture>
     </figure>
   )
 }
