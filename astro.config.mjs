@@ -22,6 +22,7 @@ if (projectId === 'placeholder') {
 
 export default defineConfig({
   site: env.SITE_URL || 'http://localhost:4321',
+  trailingSlash: 'never',
   output: visualEditingEnabled ? 'server' : 'static',
   adapter: cloudflare({imageService: 'compile'}),
   integrations: [

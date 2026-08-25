@@ -8,7 +8,9 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     // Requisito nº11 del handoff: el 404 del servidor sirve la página 404 del sitio.
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    // Rutas limpias: /catalogo se sirve directo, sin redirigir a /catalogo/.
+    "html_handling": "drop-trailing-slash"
   },
   "observability": {"enabled": true}
 }

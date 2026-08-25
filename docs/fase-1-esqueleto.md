@@ -24,72 +24,60 @@ Verificado en local: `npm run build` (6 páginas, 0 errores), `npm run check` (0
 `npm run dev` sirve `/` y `/admin`, y el HTML construido **no referencia ningún CDN externo**
 (tipografías Work Sans y Open Sans empaquetadas por `@fontsource-variable`).
 
-## 2. Lo que falta y depende de cuentas (no se puede hacer desde el repo)
+## 1.bis Datos del entorno de QA (creado el 2026-08-25)
 
-Estos pasos necesitan iniciar sesión; hay que hacerlos una vez, en las cuentas del
-desarrollador (producción se rehace en las del cliente en la Fase 7).
+| Qué | Valor |
+|---|---|
+| Repositorio | `git@github.com:freddyc26/ceramica-carabobo-web.git` (privado, rama `main`) |
+| Organización de Sanity | `ozx400x1m` — "Ceramica Carabobo" |
+| Proyecto de Sanity | **`egpui9al`**, dataset `production` (público) |
+| Cuenta de Cloudflare | `ad857af1656d828f42c5bc88253e8cd4` |
+| Worker de producción | `ceramica-carabobo-web` → https://ceramica-carabobo-web.ceramica-carabobo-web.workers.dev |
+| Worker de preview | `ceramica-carabobo-preview` → https://ceramica-carabobo-preview.ceramica-carabobo-web.workers.dev |
+| Orígenes CORS con credenciales | `localhost:4321`, worker de producción, worker de preview |
+| Token de lectura | etiqueta `preview-visual-editing`, rol *viewer* (guardado solo en `.env`) |
 
-### 2.1 Crear el proyecto de Sanity
+Las credenciales viven en `.env`, que no se versiona. Para reconstruir el entorno en otra
+máquina: copiar `.env.example`, completar y `npm ci`.
 
-```bash
-npx sanity login                 # abre el navegador
-npx sanity projects create "Ceramica Carabobo"
-npx sanity dataset create production
-```
+## 2. Estado de la puesta en marcha
 
-Copiar el `projectId` a `.env`:
+Hecho el 2026-08-25 (§1.bis tiene los valores):
 
-```
-PUBLIC_SANITY_PROJECT_ID="xxxxxxxx"
-PUBLIC_SANITY_DATASET="production"
-```
+- [x] Sesión de Sanity en el VPS (`sanity login --no-open --provider google`).
+- [x] Organización, proyecto `egpui9al` y dataset `production` creados.
+- [x] Orígenes CORS con credenciales para local, producción y preview.
+- [x] Token de lectura *viewer* para el preview.
+- [x] Repositorio en GitHub y primer push.
+- [x] Worker de producción desplegado (estático) y worker de preview desplegado (SSR).
+- [x] 404 del servidor sirviendo la página 404 del sitio; rutas sin barra final.
 
-Mientras no exista el proyecto, el valor `placeholder` deja el sitio compilando y
-sirviendo contenido vacío (las secciones bajo su mínimo se ocultan solas).
+Queda un paso manual y dos que dependen de él:
 
-### 2.2 Habilitar CORS del Studio
+### 2.1 Conectar el repositorio con Workers Builds (requiere un clic tuyo)
 
-En `sanity.io/manage → API → CORS origins`, agregar **con credenciales**:
-`http://localhost:4321` y la URL del deploy de QA. Sin esto el Studio embebido no
-puede autenticar.
+Panel de Cloudflare → *Compute (Workers)* → `ceramica-carabobo-web` → *Settings → Build* →
+*Connect to Git* → autorizar GitHub → elegir `freddyc26/ceramica-carabobo-web`, rama `main`.
+Es un permiso OAuth entre Cloudflare y GitHub: no existe por API.
 
-### 2.3 Token de lectura para el preview
+Comando de build: `npm run build` · Directorio: raíz · Variable de build obligatoria:
+**`NODE_VERSION=22.22.0`**, más `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`,
+`PUBLIC_SANITY_PREVIEW_URL` y `SITE_URL`.
 
-`sanity.io/manage → API → Tokens → Add token` (permiso *Viewer*) → `SANITY_API_READ_TOKEN`.
-Solo lo usa el deploy de preview para leer borradores; el build de producción no lo necesita.
+### 2.2 Deploy hook + webhook de Sanity
 
-### 2.4 Deploy a Cloudflare
+Con el repositorio conectado, Workers Builds permite crear *deploy hooks* (disponibles desde
+abril de 2026, con deduplicación de eventos en ráfaga). El webhook de Sanity llama esa URL al
+publicar:
 
-```bash
-npx wrangler login
-npm run deploy            # producción estática  → dist/client
-npm run deploy:preview    # preview con SSR      → dist/server (worker aparte)
-```
+- Trigger: `Create`, `Update`, `Delete`.
+- Filtro: `_type in ["producto","distribuidor","materia","home","contacto","dondeComprar","ajustes"]`.
+- Método: `POST`, sin proyección.
 
-Variables a cargar en el worker (`Workers → Settings → Variables`, o `wrangler secret put`):
-`PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE_URL` y —solo en el de
-preview— `SANITY_API_READ_TOKEN` y `PUBLIC_SANITY_VISUAL_EDITING_ENABLED=true`.
+### 2.3 Contraseña del QA
 
-En el build de Cloudflare hay que fijar **`NODE_VERSION=22.22.0`** (Astro 7 no corre con Node 20).
-
-Después del primer deploy: poner `PUBLIC_SANITY_PREVIEW_URL` (URL del worker de preview)
-en el entorno del Studio para que el Presentation Tool apunte ahí.
-
-### 2.5 Webhook de publicación (publicar → build)
-
-1. Cloudflare → el proyecto → *Deploy hooks* → crear uno para la rama `main`; copiar la URL.
-2. Sanity → `sanity.io/manage → API → Webhooks → Create webhook`:
-   - URL: la del deploy hook.
-   - Trigger: `Create`, `Update`, `Delete`.
-   - Filter: `_type in ["producto","distribuidor","materia","home","contacto","dondeComprar","ajustes"]`.
-   - Projection: vacía. HTTP method: `POST`.
-3. Publicar cualquier cambio y confirmar que arranca un build (2–4 min, expectativa ya comunicada).
-
-### 2.6 Contraseña de QA
-
-Antes de que el cliente vea la URL, proteger el deploy de QA con Cloudflare Access
-(gratis hasta 50 usuarios): el sitio no puede quedar público con los placeholders
-marcados en el LEEME del handoff.
+Cloudflare Access (gratis hasta 50 usuarios) sobre los dos workers. El sitio no puede quedar
+público con los placeholders que marca el LEEME del handoff.
 
 ## 3. Decisiones tomadas durante la ejecución
 
@@ -120,9 +108,11 @@ marcados en el LEEME del handoff.
 - [x] `npm run build` y `npm run check` sin errores.
 - [x] Home mínima con la cáscara compartida y el 404 propio.
 - [x] Sin CDN externo en el HTML construido.
-- [ ] `/admin` carga el Studio con el proyecto real y guarda contenido (requiere §2.1–2.2).
-- [ ] Click-to-edit desde el Presentation Tool sobre el deploy de preview (requiere §2.3–2.4).
-- [ ] Publicar dispara build y el cambio aparece en QA (requiere §2.5).
+- [x] Sitio en línea en Cloudflare con el 404 propio y rutas limpias.
+- [x] `/admin` desplegado y apuntando al proyecto `egpui9al`.
+- [ ] Iniciar sesión en `/admin` desde el navegador y guardar un documento (verificación humana).
+- [ ] Click-to-edit desde el Presentation Tool sobre el worker de preview.
+- [ ] Publicar dispara build y el cambio aparece en QA (requiere §2.1–2.2).
 
 ## 5. Siguiente
 
