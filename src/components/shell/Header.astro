@@ -221,7 +221,9 @@ const hayMegamenu = materias.length >= 4
     text-transform: uppercase;
     color: inherit;
     cursor: pointer;
-    transition: color var(--dur-instant) var(--ease-out), border-color var(--dur-instant) var(--ease-out);
+    /* 240ms medidos sobre el prototipo; con --dur-instant (80ms) el hover se
+       sentía seco y distinto al resto de la cabecera. */
+    transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
   }
 
   .nav__enlace:hover,
@@ -247,7 +249,10 @@ const hayMegamenu = materias.length >= 4
     font: var(--text-ui-sm);
     letter-spacing: var(--tracking-uppercase-md);
     text-transform: uppercase;
-    transition: background-color var(--dur-instant) var(--ease-out), color var(--dur-instant) var(--ease-out);
+    transition:
+      background-color var(--dur-respuesta) var(--ease-respuesta),
+      color var(--dur-respuesta) var(--ease-respuesta),
+      border-color var(--dur-respuesta) var(--ease-respuesta);
   }
 
   .cta-outline:hover {

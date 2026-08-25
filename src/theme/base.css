@@ -4,6 +4,27 @@
    con su componente (Fase 2).
    ============================================================================ */
 
+/* ---------------------------------------------------------------------------
+   Calibración de movimiento del prototipo.
+
+   El prototipo servido corre con `data-mov="editorial"` y `data-heroms="700"`
+   activados: esos son los valores REALES del diseño, medidos sobre él en marcha,
+   y son más lentos y con otra curva que los del bloque de tokens. Viven acá y no
+   en tokens.css porque ese archivo es copia literal del documento de diseño.
+
+   - Entrada del hero: 700ms, curva simétrica, desplazamiento de 10px.
+   - Aparición al entrar en pantalla: 660ms, misma curva.
+   - Respuesta a una acción (pestañas, tiles): 180ms con curva de interfaz.
+   --------------------------------------------------------------------------- */
+:root {
+  --ease-editorial: cubic-bezier(0.37, 0, 0.63, 1);
+  --dur-entrada: 700ms;
+  --dur-aparicion: 660ms;
+  --desplazamiento-entrada: 10px;
+  --dur-respuesta: 180ms;
+  --ease-respuesta: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 *,
 *::before,
 *::after {

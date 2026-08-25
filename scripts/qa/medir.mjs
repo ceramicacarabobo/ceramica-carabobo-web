@@ -15,6 +15,8 @@ const PROPIEDADES = [
   'color', 'backgroundColor', 'padding', 'margin', 'gap', 'display', 'flexDirection',
   'alignItems', 'justifyContent', 'gridTemplateColumns', 'maxWidth', 'width', 'height',
   'position', 'top', 'left', 'right', 'bottom', 'zIndex', 'opacity', 'transition', 'borderBottom',
+  'animationName', 'animationDuration', 'animationTimingFunction', 'animationDelay', 'animationFillMode',
+  'transitionDuration', 'transitionTimingFunction', 'transitionDelay', 'transform',
 ]
 
 async function medir(url, selector) {

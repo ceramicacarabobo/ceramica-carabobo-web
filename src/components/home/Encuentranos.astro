@@ -156,6 +156,11 @@ const panelCtaBase = 'Dónde comprar'
     flex-direction: column;
     gap: clamp(12px, 1.6vw, 18px);
     max-width: 44ch;
+    /* Seccion centra con `margin-inline: auto` a todo hijo directo (para
+       bloques a ancho completo no se nota, pero acá el bloque es angosto
+       —44ch— y quedaba centrado en vez de pegado al gutter, como el
+       prototipo). */
+    margin-inline: 0;
     margin-bottom: clamp(24px, 3vw, 40px);
   }
 
@@ -331,12 +336,17 @@ const panelCtaBase = 'Dónde comprar'
       grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     }
 
-    .encuentranos__panel-envoltorio {
+    /* En el prototipo el sticky va en el ÍNDICE (la lista de estados es la
+       más larga de las dos columnas), no en el panel: al bajar por la lista
+       el panel queda libre de desplazarse con la página. */
+    .encuentranos__indice {
       position: sticky;
-      /* Aproximado: esta sección no conoce el alto real del header fijo
-         (vive en `Header.astro`, fuera de este componente); se deja un
-         margen conservador en vez de acoplarse a otro componente. */
-      top: var(--space-8);
+      /* 63px es el alto documentado de la banda compacta del header fijo
+         (`docs/fase-2-qa-fidelidad.md`); esta sección no importa ese valor
+         de `Header.astro` para no acoplarse, así que replica la constante
+         del prototipo (`Math.max(63, bandH) + 16`) en vez del token de
+         espaciado que había antes. */
+      top: calc(63px + var(--space-4));
     }
 
     .fila {

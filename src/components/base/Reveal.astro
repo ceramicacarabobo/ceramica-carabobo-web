@@ -3,9 +3,12 @@
  * Aparición al entrar en pantalla: opacity 0→1 + translateY(--reveal-offset),
  * una sola vez. Solo opacity y transform (Tokens v0 §07).
  *
- * Valores tomados del prototipo (`calibrarReveals` y `syncReveals`), que es la
- * referencia: duración 480ms con `--ease-out`, umbral cuando el elemento entró
- * de verdad en pantalla (top < 86% del alto de ventana) y cascada de 60 + i×70ms.
+ * Valores MEDIDOS sobre el prototipo en marcha (que corre con su calibración
+ * editorial activada): 660ms, curva simétrica `cubic-bezier(.37,0,.63,1)` y
+ * desplazamiento de 10px. El umbral es cuando el elemento entró de verdad en
+ * pantalla (top < 86% del alto de ventana) y la cascada, 60 + i×70ms.
+ * La curva simétrica es deliberada: el ease-out fuerte queda para las respuestas
+ * a una acción del usuario, no para las entradas de contenido.
  * Con `prefers-reduced-motion` el contenido nace visible y no se anima nada.
  */
 interface Props {
@@ -37,10 +40,10 @@ const Etiqueta = como as 'div'
 <style>
   .reveal {
     opacity: 0;
-    transform: translateY(var(--reveal-offset));
+    transform: translateY(var(--desplazamiento-entrada));
     transition:
-      opacity var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms),
-      transform var(--dur-slow) var(--ease-out) var(--reveal-delay, 0ms);
+      opacity var(--dur-aparicion) var(--ease-editorial) var(--reveal-delay, 0ms),
+      transform var(--dur-aparicion) var(--ease-editorial) var(--reveal-delay, 0ms);
   }
 
   .reveal[data-visible] {

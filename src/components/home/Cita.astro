@@ -14,18 +14,34 @@ interface Props {
 }
 
 const {cita} = Astro.props
+
+// El campo es un textarea de 2 filas (modelo-de-contenido.md): el salto de
+// línea que escribe el editor viaja como "\n" literal en el string. HTML
+// colapsa esa "\n" a un espacio, así que sin esto el navegador reenvuelve el
+// texto a su propio criterio en vez del corte editorial de 2 líneas — el
+// mismo que el prototipo fija con un <br> a mano. Medido: el ancho de la caja
+// del texto cambiaba (537px en el prototipo vs 780px acá) y el diff de
+// píxeles subía a 1,66% en la sección completa.
+const lineas = cita?.split('\n') ?? []
 ---
 
 {
   cita && (
-    <Seccion como="section" aria-label={cita}>
+    <Seccion como="section" id="cita" aria-label={cita}>
       <Reveal como="div">
         {/* La clase de layout va en este div, no en la del Reveal: el elemento
             raíz de Reveal pertenece a Reveal.astro y su propio scope de CSS,
             así que una clase de este archivo puesta ahí nunca calzaría con
             esta hoja de estilos (mismo caso que Ambientes.astro). */}
         <div class="cita">
-          <p class="cita__texto">{cita}</p>
+          <p class="cita__texto">
+            {lineas.map((linea, indice) => (
+              <>
+                {indice > 0 && <br />}
+                {linea}
+              </>
+            ))}
+          </p>
         </div>
       </Reveal>
     </Seccion>
@@ -33,6 +49,14 @@ const {cita} = Astro.props
 }
 
 <style>
+  /* El id gana por especificidad al `.seccion` de Seccion.astro (que este
+     archivo no puede tocar): el prototipo usa un ritmo más angosto acá —
+     clamp(64px,7vw,96px) — que el --space-section genérico
+     (clamp(72px,8vw,120px)); a 1440px son 96px contra 115,2px. */
+  #cita {
+    padding-top: clamp(64px, 7vw, 96px);
+  }
+
   .cita {
     max-width: min(100%, 780px);
     margin-inline: auto;

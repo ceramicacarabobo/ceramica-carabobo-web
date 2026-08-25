@@ -280,22 +280,24 @@ const hayCarrusel = estados.length > 1
     display: none;
   }
 
-  /* Entrada del hero: solo opacity y transform, con la curva expresiva —
-     único uso permitido de ease-expressive en todo el sitio (Tokens v0 §07). */
+  /* Entrada del hero. Valores medidos sobre el prototipo en marcha: 700ms con
+     curva simétrica y 10px de desplazamiento, escalonado 0 / 90 / 180ms.
+     El desplazamiento no es decoración del fundido: es lo que lo hace legible
+     como movimiento, y por eso es corto. */
   [data-entra] {
-    animation: hero-entra var(--dur-slow) var(--ease-expressive) both;
+    animation: hero-entra var(--dur-entrada) var(--ease-editorial) both;
   }
 
   [data-entra='1'] {
-    animation-delay: 120ms;
+    animation-delay: 0ms;
   }
 
   [data-entra='2'] {
-    animation-delay: 200ms;
+    animation-delay: 90ms;
   }
 
   [data-entra='3'] {
-    animation-delay: 440ms;
+    animation-delay: 180ms;
   }
 
   /* Mientras el telón está en pantalla el hero no entra: si animara detrás de la
@@ -307,7 +309,7 @@ const hayCarrusel = estados.length > 1
   @keyframes hero-entra {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(var(--desplazamiento-entrada));
     }
     to {
       opacity: 1;

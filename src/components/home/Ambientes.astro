@@ -125,6 +125,15 @@ const pestanas = ambientes.pestanas
     overflow: hidden;
   }
 
+  /* El selector de id gana por especificidad al `.seccion` de Seccion.astro
+     (que este archivo no puede tocar): el prototipo usa un ritmo más angosto
+     para esta sección — clamp(64px,7vw,104px) — que el --space-section
+     genérico (clamp(72px,8vw,120px)). Medido: 14,4px de los ~37px de más
+     salían de esta diferencia a 1440px. */
+  #ambientes {
+    padding-top: clamp(64px, 7vw, 104px);
+  }
+
   .ambientes__cabecera {
     padding-inline: var(--space-gutter-page);
     display: flex;
@@ -144,6 +153,10 @@ const pestanas = ambientes.pestanas
   .ambientes__eyebrow {
     margin: 0;
     font: var(--text-overline);
+    /* El prototipo no fija line-height en este texto (usa el "normal" del
+       navegador); el 1.35 del token --text-overline agrega ~2px de alto
+       medidos contra el prototipo. Se corrige solo acá, sin tocar el token. */
+    line-height: normal;
     letter-spacing: var(--tracking-uppercase-lg);
     text-transform: uppercase;
     color: var(--color-text-muted);
@@ -175,24 +188,36 @@ const pestanas = ambientes.pestanas
   }
 
   .ambientes__tab {
+    position: relative;
     flex: none;
     display: inline-flex;
     align-items: center;
-    /* Área tocable mínima 44px: el texto original es más angosto (padding 4px),
-       se agranda el hit-box sin tocar tipografía ni color. */
-    min-height: 44px;
     padding-block: 4px;
     background: transparent;
     border: 0;
     border-bottom: 1px solid transparent;
     cursor: pointer;
-    font: 400 0.8125rem/1 var(--font-heading);
+    /* line-height "normal" (no /1): el prototipo no fija line-height acá; con
+       /1 la fila media ~21px contra los ~24px medidos en el prototipo. */
+    font: 400 0.8125rem/normal var(--font-heading);
     letter-spacing: var(--tracking-uppercase-lg);
     text-transform: uppercase;
     color: var(--color-text-muted);
     transition:
       color var(--dur-base) var(--ease-out),
       border-color var(--dur-base) var(--ease-out);
+  }
+
+  /* Área tocable mínima 44px sin inflar la fila: el prototipo mide ~24px de
+     alto acá (min-height:44px en el botón agregaba 20px de más, medido). Se
+     superpone una zona invisible más alta que el texto en vez de agrandar la
+     caja real. */
+  .ambientes__tab::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    transform: translateY(-50%);
+    min-height: 44px;
   }
 
   .ambientes__tab:hover {
@@ -302,6 +327,14 @@ const pestanas = ambientes.pestanas
   @media (min-width: 760px) {
     .ambientes__flechas {
       display: flex;
+    }
+
+    /* En desktop todas las pestañas entran sin desbordar (las flechas
+       reemplazan el gesto de swipe): overflow-x:auto no hace falta y, sin
+       querer, recorta la zona tocable ::after de arriba (overflow-x distinto
+       de visible fuerza overflow-y a "auto" también, aunque no se declare). */
+    .ambientes__tabs {
+      overflow: visible;
     }
 
     .ambientes__panel {

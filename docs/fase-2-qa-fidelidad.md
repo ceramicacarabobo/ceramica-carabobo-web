@@ -59,6 +59,27 @@ sale vacía y no hay nada que comparar.
    tabla de `Responsividad v0` §02 tenía razón y el valor por defecto del prototipo (78dvh) era
    un tweak de su entorno.
 
+## Movimiento: los valores reales del diseño (medidos 2026-08-25)
+
+El prototipo servido corre con **`data-mov="editorial"` y `data-heroms="700"` activados**. Esa
+calibración —que el propio documento describe como "reversible"— es la que está puesta en el
+diseño entregado, así que es la que manda. Es más lenta y con otra curva que la del bloque de
+tokens, y explica la sensación de "movimiento demasiado rápido".
+
+| Qué | Valor medido en el prototipo |
+|---|---|
+| Entrada del hero | **700ms**, `cubic-bezier(0.37, 0, 0.63, 1)`, translateY **10px**, escalonado 0 / 90 / 180ms |
+| Aparición al entrar en pantalla | **660ms**, misma curva, translateY 10px, cascada 60 + i×70ms |
+| Máscara de imagen | 660ms, misma curva, `clip-path: inset(0 0 14%)` → `inset(0)` |
+| Respuesta a una acción (pestañas, tiles) | **180ms**, `cubic-bezier(0.4, 0, 0.2, 1)` |
+| Enlaces de nav | 240ms, `cubic-bezier(0.2, 0, 0, 1)` |
+
+La curva simétrica en las entradas es deliberada: el ease-out fuerte queda para lo que responde a
+una acción del usuario, donde arrancar inmediato es lo correcto. Estos valores viven en
+`src/theme/base.css` como `--ease-editorial`, `--dur-entrada`, `--dur-aparicion`,
+`--desplazamiento-entrada`, `--dur-respuesta` y `--ease-respuesta` — no en `tokens.css`, que es
+copia literal del documento de diseño.
+
 ## Reglas del arreglo
 
 - El árbitro de valores es el marcado del prototipo; ante ambigüedad, `Tokens v0` y `Responsividad v0`.
