@@ -1,0 +1,128 @@
+---
+/**
+ * Sección "03 · Profesionales" de la home: split 50/50 imagen + texto.
+ *
+ * El prototipo (`design/publicar/index.html`, bloque "PROFESIONALES (split
+ * 50/50)") arma la mitad izquierda como un video de instalación (con botón de
+ * play) y la derecha con título, bajada y enlaces a Instagram/YouTube/TikTok.
+ * Ninguno de esos dos elementos está en el contrato de datos —
+ * `Home['profesionales']` solo trae `etiqueta/titulo/texto/imagen`, sin URL de
+ * video ni de redes— así que se omiten en vez de inventar destinos que no
+ * salen del CMS (CLAUDE.md: "textos de marca nunca hardcodeados"). Queda una
+ * imagen fija a la izquierda y el bloque editorial a la derecha.
+ *
+ * Reflow: replica el switch a una columna bajo 760px que usa `proSplitCols`
+ * en el prototipo (mobile 1fr, desktop 1fr 1fr) — el mismo breakpoint que
+ * Proyectos y Encuéntranos, no el de 1024.
+ *
+ * Contenido defensivo: sin título ni texto no hay nada que editorializar y la
+ * sección entera se oculta (regla del encargo).
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  profesionales: Home['profesionales']
+}
+
+const {profesionales} = Astro.props
+
+const hayTextos = Boolean(profesionales.titulo || profesionales.texto)
+---
+
+{
+  hayTextos && (
+    <Seccion
+      como="section"
+      id="profesionales"
+      class="profesionales"
+      fondo="base"
+      aria-labelledby={profesionales.titulo ? 'profesionales-titulo' : undefined}
+    >
+      <div class="profesionales__grid">
+        <Reveal como="div" class="profesionales__marco">
+          {profesionales.imagen && (
+            <Imagen
+              imagen={profesionales.imagen}
+              ratio="var(--ratio-feature)"
+              sizes="(min-width: 760px) 50vw, 100vw"
+              class="profesionales__foto"
+            />
+          )}
+        </Reveal>
+        <Reveal como="div" indice={1} class="profesionales__texto">
+          {profesionales.etiqueta && (
+            <p class="profesionales__eyebrow">
+              <span class="profesionales__numero">03</span> · {profesionales.etiqueta}
+            </p>
+          )}
+          {profesionales.titulo && (
+            <h2 id="profesionales-titulo" class="profesionales__titulo">
+              {profesionales.titulo}
+            </h2>
+          )}
+          {profesionales.texto && <p class="profesionales__bajada">{profesionales.texto}</p>}
+        </Reveal>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .profesionales__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: var(--color-surface-sunken);
+  }
+
+  .profesionales__marco {
+    min-width: 0;
+  }
+
+  .profesionales__marco :global(.profesionales__foto) {
+    width: 100%;
+  }
+
+  .profesionales__texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(20px, 2.2vw, 28px);
+    padding: clamp(32px, 5vw, 80px);
+  }
+
+  .profesionales__eyebrow {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .profesionales__numero {
+    color: var(--color-brand-700);
+  }
+
+  .profesionales__titulo {
+    margin: 0;
+    max-width: 20ch;
+    font: 300 clamp(1.875rem, 1.5rem + 1.6vw, 2.75rem) / 1.12 var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .profesionales__bajada {
+    margin: 0;
+    max-width: 44ch;
+    font: var(--text-body-15);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 760px) {
+    .profesionales__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

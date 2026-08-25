@@ -1,131 +1,66 @@
 ---
 /**
- * Home — versión mínima de la Fase 1 (esqueleto).
- * Muestra el contenido que ya viene del CMS y, mientras no lo haya, el estado
- * del esqueleto. Las secciones reales del diseño (hero con video, ambientes,
- * proyectos, historia, profesionales, encuéntranos) se implementan en la Fase 2.
- * Nada de texto de marca está escrito en el código: si no está en el CMS, no se muestra.
+ * Home. La composición y el orden de las secciones son FIJOS (no editables);
+ * el contenido de cada una viene del CMS y cada sección se oculta sola si no
+ * llega a su mínimo — regla de contenido defensivo del handoff.
  */
 import Base from '~/layouts/Base.astro'
-import {contarPorEstado, getAjustes, getDistribuidores, getHome, getMaterias, getProductos, sanityConfigurado} from '~/lib/data'
+import Hero from '~/components/home/Hero.astro'
+import Ambientes from '~/components/home/Ambientes.astro'
+import Cita from '~/components/home/Cita.astro'
+import Proyectos from '~/components/home/Proyectos.astro'
+import Historia from '~/components/home/Historia.astro'
+import Profesionales from '~/components/home/Profesionales.astro'
+import Encuentranos from '~/components/home/Encuentranos.astro'
+import {getAjustes, getDistribuidores, getHome} from '~/lib/data'
 
-const [ajustes, home, productos, distribuidores, materias] = await Promise.all([
-  getAjustes(),
-  getHome(),
-  getProductos(),
-  getDistribuidores(),
-  getMaterias(),
-])
+const [ajustes, home, distribuidores] = await Promise.all([getAjustes(), getHome(), getDistribuidores()])
 
-const hayHero = Boolean(home.hero.titular || home.hero.eyebrow)
-const porEstado = contarPorEstado(distribuidores)
+const hayHero = Boolean(home.hero.titular || home.hero.videoUrl || home.hero.capas.length > 0)
 ---
 
-<Base titulo={ajustes.titulo} descripcion={ajustes.descripcion} noIndex={!sanityConfigurado}>
-  {
-    hayHero && (
-      <section class="hero contenedor">
-        {home.hero.eyebrow && <p class="overline hero__eyebrow">{home.hero.eyebrow}</p>}
-        {home.hero.titular && <h1 class="hero__titular">{home.hero.titular}</h1>}
-      </section>
-    )
-  }
+<Base titulo={ajustes.titulo} descripcion={ajustes.descripcion} sobreHero={hayHero}>
+  {hayHero && <Hero hero={home.hero} />}
+
+  <Ambientes ambientes={home.ambientes} />
+  <Cita cita={home.cita} />
+  <Proyectos proyectos={home.proyectos} />
+  <Historia historia={home.historia} />
+  <Profesionales profesionales={home.profesionales} />
+  <Encuentranos encuentranos={home.encuentranos} distribuidores={distribuidores} />
 
   {
     !hayHero && (
-      <section class="esqueleto contenedor">
-        <p class="overline">Fase 1 · Esqueleto</p>
-        <h1 class="esqueleto__titular">El sitio está en pie; falta cargarle contenido.</h1>
+      <section class="esqueleto">
+        <p class="overline">Sin contenido</p>
+        <h1 class="esqueleto__titular">La home todavía no tiene contenido cargado.</h1>
         <p class="esqueleto__texto">
-          La cáscara compartida, el enrutado y el administrador ya funcionan. El contenido de esta
-          página se edita en <a href="/admin">/admin</a> y se publica desde ahí.
+          Se edita en <a href="/admin">/admin</a>, en la página Home, y se publica desde ahí.
         </p>
       </section>
     )
   }
-
-  <section class="estado contenedor" aria-labelledby="estado-titulo">
-    <h2 id="estado-titulo" class="overline">Estado del contenido</h2>
-    <dl class="estado__grilla">
-      <div class="estado__dato">
-        <dt>Conexión con el CMS</dt>
-        <dd>{sanityConfigurado ? 'configurada' : 'pendiente (PUBLIC_SANITY_PROJECT_ID)'}</dd>
-      </div>
-      <div class="estado__dato">
-        <dt>Productos</dt>
-        <dd>{productos.length}</dd>
-      </div>
-      <div class="estado__dato">
-        <dt>Distribuidores</dt>
-        <dd>{distribuidores.length}{porEstado.length > 0 && ` en ${porEstado.length} estados`}</dd>
-      </div>
-      <div class="estado__dato">
-        <dt>Materias</dt>
-        <dd>{materias.length}</dd>
-      </div>
-    </dl>
-  </section>
 </Base>
 
 <style>
-  .hero,
   .esqueleto {
-    padding-block: var(--space-section);
+    padding: var(--space-section) var(--space-gutter-page);
     max-width: 44ch;
     margin-inline: auto;
   }
 
-  .hero__eyebrow,
   .esqueleto .overline {
     color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
-  .hero__titular,
   .esqueleto__titular {
-    font: var(--text-display);
-    letter-spacing: var(--tracking-display-light);
+    font: var(--text-heading-xl);
   }
 
   .esqueleto__texto {
     margin-top: var(--space-6);
     font: var(--text-body-lg);
     color: var(--color-text-secondary);
-  }
-
-  .estado {
-    padding-bottom: var(--space-section);
-  }
-
-  .estado__grilla {
-    margin-top: var(--space-6);
-    display: grid;
-    gap: var(--border-width);
-    background: var(--color-border-hairline);
-    border: var(--border-width) solid var(--color-border-hairline);
-  }
-
-  .estado__dato {
-    background: var(--color-surface-raised);
-    padding: var(--space-4);
-  }
-
-  .estado__dato dt {
-    font: var(--text-caption);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-uppercase-sm);
-  }
-
-  .estado__dato dd {
-    margin: var(--space-2) 0 0;
-    font: var(--text-data);
-    font-variant-numeric: tabular-nums;
-  }
-
-  @media (min-width: 760px) {
-    .estado__grilla {
-      grid-template-columns: repeat(4, 1fr);
-    }
   }
 </style>

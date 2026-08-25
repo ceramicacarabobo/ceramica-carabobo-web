@@ -72,14 +72,14 @@ export interface Home {
   ambientes: {
     etiqueta?: string
     titulo?: string
-    pestanas: {label: string; fichas: {nombre?: string; spec?: string; foto?: Imagen}[]}[]
+    pestanas: {label: string; fichas: {nombre?: string; slug?: string; spec?: string; foto?: Imagen}[]}[]
   }
   cita?: string
   proyectos: {
     etiqueta?: string
     titulo?: string
     bajada?: string
-    obras: {nombre: string; ciudad?: string; credito?: string; diseno?: string; formato?: string; foto?: Imagen}[]
+    obras: {nombre: string; ciudad?: string; credito?: string; diseno?: string; disenoSlug?: string; formato?: string; foto?: Imagen}[]
   }
   historia: {titulo?: string; hitos: {anio: number; titulo: string; texto?: string; imagen?: Imagen}[]}
   profesionales: {etiqueta?: string; titulo?: string; texto?: string; imagen?: Imagen}

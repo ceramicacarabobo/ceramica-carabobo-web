@@ -1,0 +1,452 @@
+---
+/**
+ * Hero de la home. Carrusel a sangre: el video de ambiente es el primer estado y
+ * las capas siguientes son fotos de diseños, en fundido cruzado de 900ms.
+ *
+ * Reflow (`Responsividad v0` §03): desktop pone titular abajo-izquierda e
+ * indicadores abajo-derecha en una fila; móvil apila —titular arriba,
+ * indicadores debajo, tocables de 44px— y NO autoavanza (compite con el scroll
+ * y consume datos).
+ *
+ * Contenido defensivo: con menos de 2 estados no hay entre qué elegir, así que
+ * desaparecen los indicadores y el hero queda como imagen fija.
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  hero: Home['hero']
+}
+
+const {hero} = Astro.props
+
+const capas = hero.capas.filter((capa) => capa.imagen)
+const hayVideo = Boolean(hero.videoUrl)
+// El video ocupa el primer estado; las capas van después.
+const estados = [
+  ...(hayVideo ? [{etiqueta: 'Ambiente', imagen: undefined}] : []),
+  ...capas,
+]
+const hayCarrusel = estados.length > 1
+---
+
+<section class="hero" data-hero>
+  <div class="hero__medios">
+    {
+      hayVideo && (
+        <video
+          class="hero__video"
+          data-hero-video
+          data-src={hero.videoUrl}
+          poster={hero.poster ? undefined : undefined}
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-label={hero.poster?.alt || 'Ambiente con revestimiento cerámico'}
+          data-capa="0"
+        />
+      )
+    }
+
+    {
+      hero.poster && (
+        <div class="hero__poster" data-capa={hayVideo ? '0' : undefined} data-activa={hayVideo ? '' : undefined}>
+          <Imagen imagen={hero.poster} ratio="16 / 9" sizes="100vw" prioridad class="hero__medio" />
+        </div>
+      )
+    }
+
+    {
+      capas.map((capa, indice) => (
+        <div class="hero__capa" data-capa={indice + (hayVideo ? 1 : 0)} data-activa={!hayVideo && indice === 0 ? '' : undefined}>
+          <Imagen imagen={capa.imagen} ratio="16 / 9" sizes="100vw" prioridad={indice === 0} class="hero__medio" />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="hero__velo" aria-hidden="true"></div>
+  <div class="hero__velo-superior" aria-hidden="true"></div>
+
+  <div class="hero__contenido">
+    <div class="hero__fila">
+      <div class="hero__texto">
+        {hero.eyebrow && <p class="hero__eyebrow" data-entra="1">{hero.eyebrow}</p>}
+        {hero.titular && <h1 class="hero__titular" data-entra="2">{hero.titular}</h1>}
+      </div>
+
+      {
+        hayCarrusel && (
+          <div class="hero__indicadores" data-entra="3" data-indicadores>
+            <p class="hero__rotulo" data-rotulo>Estás viendo</p>
+            <div class="hero__barras">
+              {estados.map((estado, indice) => (
+                <button
+                  class="indicador"
+                  type="button"
+                  data-indicador={indice}
+                  aria-label={estado.etiqueta || `Estado ${indice + 1}`}
+                  aria-current={indice === 0 ? 'true' : 'false'}
+                >
+                  <span class="indicador__barra" aria-hidden="true" />
+                  <span class="indicador__label">{estado.etiqueta}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 78dvh;
+    min-height: 480px;
+    background: var(--color-surface-inverse);
+    overflow: hidden;
+  }
+
+  .hero__medios {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__video,
+  .hero__poster,
+  .hero__capa {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+
+  .hero__video {
+    object-fit: cover;
+  }
+
+  .hero__video[data-activa],
+  .hero__poster[data-activa],
+  .hero__capa[data-activa] {
+    opacity: 1;
+  }
+
+  .hero__medios :global(.hero__medio) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  /* Velo general de legibilidad + rampa superior para la nav transparente. */
+  .hero__velo {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: rgba(31, 31, 31, 0.32);
+    opacity: 0.8;
+  }
+
+  .hero__velo-superior {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    height: clamp(160px, 26vh, 280px);
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(31, 31, 31, 0.4) 0%,
+      rgba(31, 31, 31, 0.24) 45%,
+      rgba(31, 31, 31, 0) 100%
+    );
+  }
+
+  /* El scrim del texto vive en la caja del contenido (patrón G9), no en el marco:
+     así la rampa cubre el texto sea cual sea el alto del hero o la foto. */
+  .hero__contenido {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 5;
+    padding: 44px var(--space-5) 22px;
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+    background: linear-gradient(
+      0deg,
+      rgba(31, 31, 31, 0.72) 0%,
+      rgba(31, 31, 31, 0.55) 55%,
+      rgba(31, 31, 31, 0) 100%
+    );
+  }
+
+  .hero__fila {
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: clamp(24px, 5vw, 64px);
+    flex-wrap: wrap;
+  }
+
+  .hero__texto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hero__eyebrow {
+    font: 400 0.75rem/1.35 var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .hero__titular {
+    max-width: 16ch;
+    font: 300 clamp(2.25rem, 1.6rem + 3.2vw, 3.5rem) / 1.06 var(--font-heading);
+    letter-spacing: var(--tracking-display-light);
+    color: var(--color-text-on-dark);
+  }
+
+  .hero__indicadores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: none;
+    width: 100%;
+  }
+
+  .hero__rotulo {
+    font: 400 0.75rem/1.35 var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .hero__barras {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .indicador {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font: 400 0.75rem/1.35 var(--font-heading);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color var(--dur-base) var(--ease-out);
+  }
+
+  .indicador[aria-current='true'] {
+    color: var(--color-neutral-0);
+  }
+
+  .indicador__barra {
+    display: block;
+    width: 100%;
+    height: 2px;
+    flex: none;
+    background: rgba(255, 255, 255, 0.34);
+    transition: background var(--dur-base) var(--ease-out);
+  }
+
+  .indicador[aria-current='true'] .indicador__barra {
+    background: var(--color-neutral-0);
+  }
+
+  /* En móvil el nombre del diseño activo sube al rótulo. */
+  .indicador__label {
+    display: none;
+  }
+
+  /* Entrada del hero: solo opacity y transform, con la curva expresiva —
+     único uso permitido de ease-expressive en todo el sitio (Tokens v0 §07). */
+  [data-entra] {
+    animation: hero-entra var(--dur-slow) var(--ease-expressive) both;
+  }
+
+  [data-entra='1'] {
+    animation-delay: 120ms;
+  }
+
+  [data-entra='2'] {
+    animation-delay: 200ms;
+  }
+
+  [data-entra='3'] {
+    animation-delay: 440ms;
+  }
+
+  /* Mientras el telón está en pantalla el hero no entra: si animara detrás de la
+     hoja, al levantarse ya estaría asentado y el relevo no revelaría nada. */
+  :global(html[data-telon]) [data-entra] {
+    animation-play-state: paused;
+  }
+
+  @keyframes hero-entra {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      min-height: 560px;
+    }
+
+    .hero__contenido {
+      padding: clamp(64px, 10vh, 120px) var(--space-gutter-page) clamp(48px, 7vh, 88px);
+    }
+
+    .hero__fila {
+      flex-direction: row;
+      align-items: flex-end;
+    }
+
+    .hero__texto {
+      gap: clamp(14px, 2vh, 20px);
+    }
+
+    .hero__indicadores {
+      width: auto;
+    }
+
+    .hero__barras {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .indicador {
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      flex: none;
+      min-height: auto;
+      padding-block: 3px;
+      font-size: 0.6875rem;
+    }
+
+    .indicador__barra {
+      width: 10px;
+      height: 1px;
+      transition: width 320ms var(--ease-out), background var(--dur-base) var(--ease-out);
+    }
+
+    .indicador[aria-current='true'] .indicador__barra {
+      width: 22px;
+    }
+
+    .indicador__label {
+      display: inline;
+    }
+  }
+</style>
+
+<script>
+  const INTERVALO = 9000
+
+  function iniciarHero() {
+    const hero = document.querySelector<HTMLElement>('[data-hero]')
+    if (!hero) return
+
+    const capas = [...hero.querySelectorAll<HTMLElement>('[data-capa]')]
+    const indicadores = [...hero.querySelectorAll<HTMLButtonElement>('[data-indicador]')]
+    const rotulo = hero.querySelector<HTMLElement>('[data-rotulo]')
+    const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]')
+
+    // Save-Data o conexión lenta: el video no se descarga, queda el poster.
+    const conexion = (navigator as Navigator & {connection?: {saveData?: boolean; effectiveType?: string}}).connection
+    const ahorroDatos = Boolean(conexion?.saveData) || /2g/.test(conexion?.effectiveType ?? '')
+    if (video && !ahorroDatos) {
+      const fuente = video.dataset.src
+      if (fuente) {
+        video.src = fuente
+        video.load()
+        video.play().catch(() => {
+          /* Si el navegador bloquea el autoplay, queda el poster: no es un error. */
+        })
+      }
+    }
+
+    if (capas.length === 0) return
+
+    let activa = 0
+    const mostrar = (indice: number) => {
+      activa = indice
+      capas.forEach((capa) => {
+        const suya = Number(capa.dataset.capa) === indice
+        capa.toggleAttribute('data-activa', suya)
+      })
+      indicadores.forEach((boton, i) => boton.setAttribute('aria-current', i === indice ? 'true' : 'false'))
+      // En móvil el rótulo muestra el nombre del estado activo.
+      if (rotulo && window.matchMedia('(max-width: 759px)').matches) {
+        rotulo.textContent = indicadores[indice]?.getAttribute('aria-label') ?? 'Estás viendo'
+      } else if (rotulo) {
+        rotulo.textContent = 'Estás viendo'
+      }
+    }
+
+    mostrar(0)
+
+    indicadores.forEach((boton, indice) => {
+      boton.addEventListener('click', () => {
+        detener()
+        mostrar(indice)
+      })
+      // El hover solo selecciona en desktop: en táctil el tap es el único gesto.
+      boton.addEventListener('mouseenter', () => {
+        if (window.matchMedia('(hover: hover)').matches) {
+          detener()
+          mostrar(indice)
+        }
+      })
+    })
+
+    let reloj: number | undefined
+    const detener = () => {
+      if (reloj) window.clearInterval(reloj)
+      reloj = undefined
+    }
+
+    const arrancar = () => {
+      // El carrusel no autoavanza en móvil ni con movimiento reducido.
+      const movil = window.matchMedia('(max-width: 759px)').matches
+      const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (movil || reducido || capas.length < 2 || reloj) return
+      reloj = window.setInterval(() => mostrar((activa + 1) % capas.length), INTERVALO)
+    }
+
+    hero.addEventListener('mouseenter', detener)
+    hero.addEventListener('mouseleave', arrancar)
+    document.addEventListener('astro:before-swap', detener, {once: true})
+
+    arrancar()
+  }
+
+  iniciarHero()
+  document.addEventListener('astro:page-load', iniciarHero)
+</script>

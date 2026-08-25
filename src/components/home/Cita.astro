@@ -1,0 +1,46 @@
+---
+/**
+ * Respiro editorial entre "Ambientes" y "Proyectos": una línea destacada,
+ * centrada, sin más ornamento (los filetes que tuvo en diseño salieron del
+ * markup el 24/08 — ver `design/NOTAS-SESION-DISENO.md`).
+ *
+ * Contenido defensivo: sin texto, la sección no existe.
+ */
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+
+interface Props {
+  cita?: string
+}
+
+const {cita} = Astro.props
+---
+
+{
+  cita && (
+    <Seccion como="section" aria-label={cita}>
+      <Reveal como="div" class="cita">
+        <p class="cita__texto">{cita}</p>
+      </Reveal>
+    </Seccion>
+  )
+}
+
+<style>
+  .cita {
+    max-width: min(100%, 780px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cita__texto {
+    margin: 0;
+    font: 300 clamp(1.875rem, 1.4rem + 2.1vw, 3.25rem) / 1.15 var(--font-heading);
+    letter-spacing: var(--tracking-display-light);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+</style>

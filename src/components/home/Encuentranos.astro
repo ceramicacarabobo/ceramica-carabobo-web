@@ -1,0 +1,411 @@
+---
+/**
+ * Sección "04 · Encuéntranos" de la home: índice de estados + panel con el
+ * total de la red, tomado de `design/publicar/index.html` (constantes
+ * REGIONES/RED, método `filaEnc` y las claves `enc*` de `renderVals()`).
+ *
+ * Los conteos NUNCA se escriben a mano (regla del encargo): se derivan acá
+ * mismo de `distribuidores` con `contarPorEstado()` (`src/lib/data/index.ts`)
+ * para el índice por estado, y con `Set` sobre `ciudad` para el total de
+ * ciudades — el mismo criterio que documenta el prototipo ("24 puntos, 20
+ * estados, 23 ciudades: los dos de Caracas comparten ciudad").
+ *
+ * Hover-only → tap: en el prototipo, pasar el cursor por una fila del índice
+ * "posa" el panel en ese estado y salir del índice lo devuelve al agregado
+ * (`salirEnc`/`posarEnc`). Acá cada fila es un <button>: click/Enter/Espacio
+ * hacen exactamente lo mismo que el hover (por eso el listener de mouseenter
+ * sólo corre bajo `(hover: hover)`), así que nada del panel es exclusivo del
+ * mouse. El foco por teclado también posa el panel, para no dejar ese estado
+ * inalcanzable sin mouse ni tap.
+ *
+ * Reflow: el índice+panel pasan de una columna a dos (`encCols` del
+ * prototipo) en el mismo breakpoint móvil de 760px que usan Proyectos y
+ * Profesionales.
+ *
+ * Contenido defensivo: sin etiqueta/título/texto y sin distribuidores no hay
+ * nada que mostrar y la sección desaparece. Con textos pero sin distribuidores
+ * (regla del encargo), se muestra solo el encabezado — ningún número
+ * inventado. El panel de foto del prototipo se omitió: `Home['encuentranos']`
+ * no trae imagen y esta sección no tiene un campo de foto propio en el CMS.
+ */
+import Boton from '~/components/base/Boton.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import {contarPorEstado} from '~/lib/data'
+import type {Distribuidor, Home} from '~/lib/data'
+
+interface Props {
+  encuentranos: Home['encuentranos']
+  distribuidores: Distribuidor[]
+}
+
+const {encuentranos, distribuidores} = Astro.props
+
+const hayTextos = Boolean(encuentranos.etiqueta || encuentranos.titulo || encuentranos.texto)
+const hayRed = distribuidores.length > 0
+const mostrarSeccion = hayTextos || hayRed
+
+const porEstado = contarPorEstado(distribuidores)
+
+const ciudadesDeEstado = (estado: string) =>
+  [...new Set(distribuidores.filter((d) => d.estado === estado).map((d) => d.ciudad))].join(' · ')
+
+const filas = porEstado.map((f, indice) => ({
+  numero: String(indice + 1).padStart(2, '0'),
+  estado: f.estado,
+  total: f.total,
+  ciudades: ciudadesDeEstado(f.estado),
+}))
+
+const totalPuntos = distribuidores.length
+const totalEstados = porEstado.length
+const totalCiudades = new Set(distribuidores.map((d) => d.ciudad)).size
+
+// "Red nacional" es un rótulo de UI (como "Estado" o "Ciudad" en las fichas),
+// no texto de marca: aparece solo cuando ningún estado está seleccionado.
+const panelEtiquetaBase = 'Red nacional'
+const panelTituloBase = encuentranos.titulo || panelEtiquetaBase
+const panelDatoBase = String(totalPuntos).padStart(2, '0')
+const panelUnidadBase = 'distribuidores'
+const panelCiudadesBase = `${totalEstados} ${totalEstados === 1 ? 'estado' : 'estados'} · ${totalCiudades} ${totalCiudades === 1 ? 'ciudad' : 'ciudades'}`
+const panelCtaBase = 'Dónde comprar'
+---
+
+{
+  mostrarSeccion && (
+    <Seccion
+      como="section"
+      id="donde-comprar"
+      class="encuentranos"
+      fondo="base"
+      aria-labelledby={encuentranos.titulo ? 'encuentranos-titulo' : undefined}
+    >
+      <Reveal como="div" class="encuentranos__cabecera">
+        {encuentranos.etiqueta && (
+          <p class="encuentranos__eyebrow">
+            <span class="encuentranos__numero">04</span> · {encuentranos.etiqueta}
+          </p>
+        )}
+        {encuentranos.titulo && (
+          <h2 id="encuentranos-titulo" class="encuentranos__titulo">
+            {encuentranos.titulo}
+          </h2>
+        )}
+        {encuentranos.texto && <p class="encuentranos__bajada">{encuentranos.texto}</p>}
+      </Reveal>
+
+      {hayRed && (
+        <div class="encuentranos__grid" data-encuentranos>
+          <ul class="encuentranos__indice" data-indice>
+            {filas.map((fila) => (
+              <li>
+                <button
+                  type="button"
+                  class="fila"
+                  data-fila
+                  aria-pressed="false"
+                  data-estado={fila.estado}
+                  data-total={fila.total}
+                  data-ciudades={fila.ciudades}
+                >
+                  <span class="fila__num" aria-hidden="true">
+                    {fila.numero}
+                  </span>
+                  <span class="fila__nombre">{fila.estado}</span>
+                  <span class="fila__valor">
+                    {fila.total} {fila.total === 1 ? 'punto' : 'puntos'}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <Reveal como="div" indice={1} class="encuentranos__panel-envoltorio">
+            <div class="panel" data-panel aria-live="polite">
+              <p class="panel__etiqueta" data-panel-etiqueta>
+                {panelEtiquetaBase}
+              </p>
+              <p class="panel__titulo" data-panel-titulo>
+                {panelTituloBase}
+              </p>
+              <div class="panel__dato">
+                <span class="panel__numero" data-panel-dato>
+                  {panelDatoBase}
+                </span>
+                <span class="panel__unidad" data-panel-unidad>
+                  {panelUnidadBase}
+                </span>
+              </div>
+              <p class="panel__ciudades" data-panel-ciudades>
+                {panelCiudadesBase}
+              </p>
+              <Boton href="/donde-comprar" class="panel__cta">
+                <span data-panel-cta>{panelCtaBase}</span>
+              </Boton>
+            </div>
+          </Reveal>
+        </div>
+      )}
+    </Seccion>
+  )
+}
+
+<style>
+  .encuentranos__cabecera {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 1.6vw, 18px);
+    max-width: 44ch;
+    margin-bottom: clamp(24px, 3vw, 40px);
+  }
+
+  .encuentranos__eyebrow {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .encuentranos__numero {
+    color: var(--color-brand-700);
+  }
+
+  .encuentranos__titulo {
+    margin: 0;
+    font: var(--text-display);
+    color: var(--color-text-primary);
+  }
+
+  .encuentranos__bajada {
+    margin: 0;
+    font: var(--text-body-15);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .encuentranos__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: clamp(32px, 4.5vw, 64px);
+  }
+
+  .encuentranos__indice {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .fila {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    align-items: baseline;
+    gap: var(--space-4);
+    width: 100%;
+    padding: 16px 0 16px 12px;
+    background: transparent;
+    border: 0;
+    border-top: var(--border-width) solid var(--color-surface-sunken);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out);
+  }
+
+  li:first-child .fila {
+    border-top-color: var(--color-border-hairline);
+  }
+
+  .fila:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-border-focus);
+    outline-offset: calc(var(--focus-ring-offset) * -1);
+  }
+
+  @media (hover: hover) {
+    .fila:hover {
+      transform: translateX(12px);
+    }
+  }
+
+  .fila[aria-pressed='true'] {
+    background: var(--color-surface-sunken);
+    border-left-color: var(--color-brand-700);
+  }
+
+  .fila__num {
+    font: 400 0.75rem/1.35 var(--font-heading);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+  }
+
+  .fila[aria-pressed='true'] .fila__num {
+    color: var(--color-brand-700);
+  }
+
+  .fila__nombre {
+    font: var(--text-title-md);
+    color: var(--color-text-primary);
+    min-width: 0;
+  }
+
+  .fila__valor {
+    font: var(--text-caption-lg);
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+  }
+
+  .fila[aria-pressed='true'] .fila__valor {
+    color: var(--color-brand-700);
+  }
+
+  .panel {
+    background: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-hairline);
+    padding: clamp(24px, 2.6vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .panel__etiqueta {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .panel__titulo {
+    margin: 0;
+    font: 300 clamp(1.625rem, 1.4rem + 0.9vw, 2rem) / 1.04 var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .panel__dato {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .panel__numero {
+    font: 300 clamp(2rem, 1.7rem + 1.2vw, 2.5rem) / 0.9 var(--font-heading);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+  }
+
+  .panel__unidad {
+    font: 400 0.75rem/1.35 var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .panel__ciudades {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .panel__cta {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 760px) {
+    .encuentranos__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    }
+
+    .encuentranos__panel-envoltorio {
+      position: sticky;
+      /* Aproximado: esta sección no conoce el alto real del header fijo
+         (vive en `Header.astro`, fuera de este componente); se deja un
+         margen conservador en vez de acoplarse a otro componente. */
+      top: var(--space-8);
+    }
+
+    .fila {
+      grid-template-columns: 44px 1fr auto;
+      padding: clamp(18px, 2.2vw, 26px) 0 clamp(18px, 2.2vw, 26px) 14px;
+    }
+  }
+</style>
+
+<script>
+  function iniciarEncuentranos() {
+    const raiz = document.querySelector<HTMLElement>('[data-encuentranos]')
+    if (!raiz) return
+
+    const lista = raiz.querySelector<HTMLElement>('[data-indice]')
+    const filas = [...raiz.querySelectorAll<HTMLButtonElement>('[data-fila]')]
+    const panel = raiz.querySelector<HTMLElement>('[data-panel]')
+    if (!lista || !panel || filas.length === 0) return
+
+    const etiquetaEl = panel.querySelector<HTMLElement>('[data-panel-etiqueta]')
+    const tituloEl = panel.querySelector<HTMLElement>('[data-panel-titulo]')
+    const datoEl = panel.querySelector<HTMLElement>('[data-panel-dato]')
+    const unidadEl = panel.querySelector<HTMLElement>('[data-panel-unidad]')
+    const ciudadesEl = panel.querySelector<HTMLElement>('[data-panel-ciudades]')
+    const ctaEl = panel.querySelector<HTMLElement>('[data-panel-cta]')
+    if (!etiquetaEl || !tituloEl || !datoEl || !unidadEl || !ciudadesEl || !ctaEl) return
+
+    // Estado base = agregado nacional, leído del primer render (SSR) para no
+    // duplicar los totales ya calculados en el frontmatter.
+    const base = {
+      etiqueta: etiquetaEl.textContent ?? '',
+      titulo: tituloEl.textContent ?? '',
+      dato: datoEl.textContent ?? '',
+      unidad: unidadEl.textContent ?? '',
+      ciudades: ciudadesEl.textContent ?? '',
+      cta: ctaEl.textContent ?? '',
+    }
+
+    const mostrar = (fila: HTMLButtonElement | null) => {
+      filas.forEach((f) => f.setAttribute('aria-pressed', String(f === fila)))
+      if (fila) {
+        const total = Number(fila.dataset.total ?? 0)
+        etiquetaEl.textContent = 'Estado'
+        tituloEl.textContent = fila.dataset.estado ?? ''
+        datoEl.textContent = String(total).padStart(2, '0')
+        unidadEl.textContent = total === 1 ? 'punto de venta' : 'puntos de venta'
+        ciudadesEl.textContent = fila.dataset.ciudades ?? ''
+        ctaEl.textContent = 'Ver distribuidores'
+      } else {
+        etiquetaEl.textContent = base.etiqueta
+        tituloEl.textContent = base.titulo
+        datoEl.textContent = base.dato
+        unidadEl.textContent = base.unidad
+        ciudadesEl.textContent = base.ciudades
+        ctaEl.textContent = base.cta
+      }
+    }
+
+    filas.forEach((fila) => {
+      const activar = () => mostrar(fila)
+      fila.addEventListener('click', activar)
+      fila.addEventListener('focus', activar)
+      // El hover solo posa en desktop: en táctil el único gesto es el tap,
+      // que ya dispara 'click'.
+      fila.addEventListener('mouseenter', () => {
+        if (window.matchMedia('(hover: hover)').matches) activar()
+      })
+    })
+
+    lista.addEventListener('mouseleave', () => {
+      if (window.matchMedia('(hover: hover)').matches) mostrar(null)
+    })
+  }
+
+  iniciarEncuentranos()
+  document.addEventListener('astro:page-load', iniciarEncuentranos)
+</script>

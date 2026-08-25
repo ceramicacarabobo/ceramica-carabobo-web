@@ -19,9 +19,9 @@ Fuentes de verdad, en orden de autoridad ante una duda visual:
 | # | Bloque | Estado |
 |---|---|---|
 | 2.1 | Fundaciones: `<Imagen>` (Sanity → assets en build), `<Seccion>`, `<Reveal>`, `<Boton>` | ✅ |
-| 2.2 | Cáscara: header (transparente sobre hero → sólido), megamenú, menú móvil anclado al pie, footer de 3 columnas | ✅ · falta el telón de entrada |
-| 2.3 | Contenido de referencia: script que sube las imágenes del handoff a Sanity y crea los documentos con los textos del prototipo | pendiente |
-| 2.4 | Secciones de la home: hero, ambientes, cita, proyectos, historia, profesionales, encuéntranos | pendiente |
+| 2.2 | Cáscara: telón de entrada, header (transparente sobre hero → sólido), megamenú, menú móvil anclado al pie, footer de 3 columnas | ✅ |
+| 2.3 | Contenido de referencia: `scripts/importar-contenido.mjs` (idempotente) — 69 assets, 6 materias, 29 productos de Serie Venezuela, home y ajustes | ✅ |
+| 2.4 | Secciones de la home: hero, ambientes, cita, proyectos, historia, profesionales, encuéntranos | ✅ |
 | 2.5 | QA de la fase: comparación lado a lado por rango + reglas duras de `Responsividad v0` §04 | pendiente |
 
 ## Reglas que gobiernan esta fase
@@ -46,5 +46,18 @@ Fuentes de verdad, en orden de autoridad ante una duda visual:
    `direccion`. Sin ellos, esos textos quedaban hardcodeados, que es justo lo que la fase prohíbe.
 3. **El megamenú deriva su conteo del catálogo** (productos por materia) y se oculta entero si hay
    menos de 4 materias con foto: contenido defensivo, igual que las secciones del home.
-4. **Estado de la cabecera por atributos en el DOM**, no por breakpoints en JS: `data-sobre-hero`,
+4. **Las fichas de Ambientes y las obras de Proyectos ya traen el slug del producto**, pero todavía
+   no enlazan: las rutas por producto nacen en la Fase 3. Conectar el enlace será una línea.
+5. **La navegación usa Work Sans 400**, no el 500 que declara `--text-nav`. Las cuatro páginas del
+   diseño escriben 400 y el propio documento de tokens (§10) manda auditar por valor, no por nombre.
+6. **Los archivos de Sanity (el video del hero) se descargan en el build** a `public/medios/` y se
+   sirven desde el propio sitio: `scripts/descargar-medios.mjs`, enganchado como `prebuild`. Sin
+   esto el HTML quedaba con una URL de `cdn.sanity.io`, que la condición de autosuficiencia prohíbe.
+   Las imágenes ya las resolvía astro:assets; los archivos no pasan por ahí.
+7. **Historia sin pin en móvil**: el prototipo lo mantiene, `Responsividad v0` §03 y §04 lo prohíben.
+   Manda la spec. La guardia de alto (&lt;640px sin pin) se aplica también en desktop.
+8. **Faltan marcas de "ejemplo" fuera de producto**: las fotos de obras, hitos y profesionales son
+   de referencia y el schema no tiene dónde declararlo (solo `fotoProducto` tiene `esEjemplo`).
+   Anotado para la Fase 6, que es la que controla el reemplazo de placeholders antes de publicar.
+9. **Estado de la cabecera por atributos en el DOM**, no por breakpoints en JS: `data-sobre-hero`,
    `data-scrolled` y `data-panel-abierto` combinados con media queries CSS.

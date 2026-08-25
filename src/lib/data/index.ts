@@ -6,6 +6,7 @@
  */
 import * as Q from '../queries'
 import {consultar} from './cliente'
+import medios from '../medios.json'
 import type {Ajustes, Contacto, Distribuidor, DondeComprar, Home, Materia, Producto} from './types'
 
 export type * from './types'
@@ -34,7 +35,13 @@ export const getDistribuidores = () => consultar<Distribuidor[]>(Q.DISTRIBUIDORE
 
 export const getMaterias = () => consultar<Materia[]>(Q.MATERIAS, {}, [])
 
-export const getHome = () => consultar<Home>(Q.HOME, {}, HOME_VACIA)
+export const getHome = async () => {
+  const home = await consultar<Home>(Q.HOME, {}, HOME_VACIA)
+  // Autosuficiencia: el video se sirve desde el propio sitio, no desde el CDN
+  // de Sanity. El manifiesto lo genera `scripts/descargar-medios.mjs` en el build.
+  const local = (medios as Record<string, string>)[home.hero.videoUrl ?? '']
+  return local ? {...home, hero: {...home.hero, videoUrl: local}} : home
+}
 
 export const getContacto = () =>
   consultar<Contacto>(Q.CONTACTO, {}, {hero: {}, sedes: [], formulario: {}})

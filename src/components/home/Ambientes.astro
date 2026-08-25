@@ -1,0 +1,387 @@
+---
+/**
+ * Sección "01 · Ambientes" de la home: pestañas por espacio (Baños, Salas…)
+ * con un track de fichas por pestaña.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Track de ambientes"): desktop/tablet
+ * usa pestañas + flechas y tarjetas de 280–440px, sin autoavance; móvil usa
+ * pestañas scrolleables horizontalmente + track por swipe con scroll-snap,
+ * tarjetas al 78vw, y las flechas se ocultan porque el gesto las reemplaza.
+ * El corte entre ambos modos es el breakpoint móvil (760px) — decidido por
+ * CSS, nunca por JS.
+ *
+ * Contenido defensivo: una ficha sin foto no tiene nada que mostrar; una
+ * pestaña con menos de 3 fichas útiles no se muestra (modelo-de-contenido.md
+ * §Home: "mínimo 3 fichas por pestaña"); si no queda ninguna pestaña, la
+ * sección entera desaparece.
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  ambientes: Home['ambientes']
+}
+
+const {ambientes} = Astro.props
+
+const pestanas = ambientes.pestanas
+  .map((pestana) => ({...pestana, fichas: pestana.fichas.filter((ficha) => ficha.foto)}))
+  .filter((pestana) => pestana.label && pestana.fichas.length >= 3)
+---
+
+{
+  pestanas.length > 0 && (
+    <Seccion como="section" id="ambientes" class="ambientes" sangrado aria-labelledby={ambientes.titulo ? 'ambientes-titulo' : undefined}>
+      <Reveal como="div" class="ambientes__cabecera">
+        <div class="ambientes__intro">
+          {ambientes.etiqueta && (
+            <p class="ambientes__eyebrow">
+              <span class="ambientes__numero">01</span> · {ambientes.etiqueta}
+            </p>
+          )}
+          {ambientes.titulo && (
+            <h2 id="ambientes-titulo" class="ambientes__titulo">
+              {ambientes.titulo}
+            </h2>
+          )}
+          <div class="ambientes__tabs" role="tablist" aria-orientation="horizontal" aria-label={ambientes.etiqueta || ambientes.titulo || 'Ambientes'}>
+            {pestanas.map((pestana, indice) => (
+              <button
+                type="button"
+                role="tab"
+                id={`ambientes-tab-${indice}`}
+                aria-controls={`ambientes-panel-${indice}`}
+                aria-selected={indice === 0 ? 'true' : 'false'}
+                tabindex={indice === 0 ? 0 : -1}
+                class="ambientes__tab"
+                data-amb-tab
+              >
+                {pestana.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="ambientes__flechas">
+          <button type="button" class="ambientes__flecha" aria-label="Anterior" data-amb-prev>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </svg>
+          </button>
+          <button type="button" class="ambientes__flecha" aria-label="Siguiente" data-amb-next>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </Reveal>
+
+      <Reveal como="div" indice={1} class="ambientes__pistas">
+        {pestanas.map((pestana, indice) => (
+          <div
+            class="ambientes__panel"
+            id={`ambientes-panel-${indice}`}
+            role="tabpanel"
+            aria-labelledby={`ambientes-tab-${indice}`}
+            hidden={indice !== 0}
+            data-amb-panel
+          >
+            <div class="ambientes__track" data-amb-track>
+              {pestana.fichas.map((ficha) => (
+                <div class="ambientes__ficha">
+                  <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
+                  <span class="ambientes__velo" aria-hidden="true" />
+                  {(ficha.nombre || ficha.spec) && (
+                    <span class="ambientes__datos">
+                      {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
+                      {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </Reveal>
+    </Seccion>
+  )
+}
+
+<style>
+  .ambientes {
+    overflow: hidden;
+  }
+
+  .ambientes__cabecera {
+    padding-inline: var(--space-gutter-page);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .ambientes__intro {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2vw, 24px);
+    min-width: 0;
+  }
+
+  .ambientes__eyebrow {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .ambientes__numero {
+    color: var(--color-brand-700);
+  }
+
+  .ambientes__titulo {
+    margin: 0;
+    font: var(--text-display);
+    color: var(--color-text-primary);
+  }
+
+  .ambientes__tabs {
+    display: flex;
+    gap: clamp(24px, 3vw, 44px);
+    margin-top: clamp(8px, 1vw, 16px);
+    /* Pestañas scrolleables horizontalmente (Responsividad v0 §03): en desktop
+       no hace falta porque entran todas, en móvil reemplaza el wrap. */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .ambientes__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ambientes__tab {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    /* Área tocable mínima 44px: el texto original es más angosto (padding 4px),
+       se agranda el hit-box sin tocar tipografía ni color. */
+    min-height: 44px;
+    padding-block: 4px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    font: 400 0.8125rem/1 var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition:
+      color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+
+  .ambientes__tab:hover {
+    color: var(--color-text-primary);
+  }
+
+  .ambientes__tab[aria-selected='true'] {
+    color: var(--color-text-primary);
+    border-bottom-color: var(--color-action-primary);
+  }
+
+  .ambientes__tab:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .ambientes__flechas {
+    display: none;
+    gap: var(--space-2);
+    flex: none;
+  }
+
+  .ambientes__flecha {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-default);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+
+  .ambientes__flecha:hover {
+    border-color: var(--color-action-primary);
+  }
+
+  .ambientes__flecha:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .ambientes__pistas {
+    margin-top: clamp(28px, 3.5vw, 48px);
+  }
+
+  .ambientes__panel {
+    /* Móvil: el único desborde horizontal es este track, con scroll-snap. */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .ambientes__track {
+    display: flex;
+    gap: clamp(12px, 1.5vw, 20px);
+    padding-inline: var(--space-gutter-page);
+    width: max-content;
+    /* 480ms + ease-out: mismo par que el prototipo. No se reutiliza --dur-slow
+       porque ese token queda reservado al hero (ver tokens.css). */
+    transition: transform 480ms var(--ease-out);
+  }
+
+  .ambientes__ficha {
+    position: relative;
+    flex: none;
+    scroll-snap-align: start;
+    width: 78vw;
+    background: var(--color-surface-sunken);
+  }
+
+  .ambientes__foto {
+    display: block;
+  }
+
+  .ambientes__velo {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 46%;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(31, 31, 31, 0.62) 0%, rgba(31, 31, 31, 0) 100%);
+  }
+
+  .ambientes__datos {
+    position: absolute;
+    left: clamp(16px, 2vw, 28px);
+    right: clamp(16px, 2vw, 28px);
+    bottom: clamp(16px, 2vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ambientes__nombre {
+    font: 300 clamp(1.375rem, 1.2rem + 0.7vw, 1.875rem) / 1.2 var(--font-heading);
+    color: var(--color-text-on-dark);
+  }
+
+  .ambientes__spec {
+    font: var(--text-caption-lg);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (min-width: 760px) {
+    .ambientes__flechas {
+      display: flex;
+    }
+
+    .ambientes__panel {
+      overflow: hidden;
+      scroll-snap-type: none;
+    }
+
+    .ambientes__ficha {
+      width: clamp(280px, 27vw, 440px);
+    }
+  }
+</style>
+
+<script>
+  function iniciarAmbientes() {
+    const seccion = document.querySelector<HTMLElement>('#ambientes')
+    if (!seccion) return
+
+    const tabs = [...seccion.querySelectorAll<HTMLButtonElement>('[data-amb-tab]')]
+    const paneles = [...seccion.querySelectorAll<HTMLElement>('[data-amb-panel]')]
+    const previo = seccion.querySelector<HTMLButtonElement>('[data-amb-prev]')
+    const siguiente = seccion.querySelector<HTMLButtonElement>('[data-amb-next]')
+    if (tabs.length === 0 || paneles.length === 0) return
+
+    // Desplazamiento acumulado del track de cada panel (uno por pestaña).
+    const desplazamientos = new WeakMap<HTMLElement, number>()
+
+    const reiniciarTrack = (panel: HTMLElement) => {
+      const track = panel.querySelector<HTMLElement>('[data-amb-track]')
+      if (!track) return
+      desplazamientos.set(track, 0)
+      track.style.transform = 'none'
+      track.scrollLeft = 0
+    }
+
+    let activo = 0
+
+    const mostrar = (indice: number) => {
+      activo = indice
+      tabs.forEach((tab, i) => {
+        const on = i === indice
+        tab.setAttribute('aria-selected', on ? 'true' : 'false')
+        tab.tabIndex = on ? 0 : -1
+      })
+      paneles.forEach((panel, i) => {
+        panel.hidden = i !== indice
+      })
+      reiniciarTrack(paneles[indice])
+    }
+
+    tabs.forEach((tab, indice) => {
+      tab.addEventListener('click', () => mostrar(indice))
+      // Navegación por teclado del tablist: flechas, Home y End.
+      tab.addEventListener('keydown', (evento) => {
+        let destino = -1
+        if (evento.key === 'ArrowRight') destino = (indice + 1) % tabs.length
+        else if (evento.key === 'ArrowLeft') destino = (indice - 1 + tabs.length) % tabs.length
+        else if (evento.key === 'Home') destino = 0
+        else if (evento.key === 'End') destino = tabs.length - 1
+        if (destino < 0) return
+        evento.preventDefault()
+        mostrar(destino)
+        tabs[destino].focus()
+      })
+    })
+
+    // Track de ambientes: sin auto-run, solo flechas. Transform puro.
+    const mover = (direccion: number) => {
+      const panel = paneles[activo]
+      const track = panel?.querySelector<HTMLElement>('[data-amb-track]')
+      const envoltura = track?.parentElement
+      if (!track || !envoltura || track.children.length === 0) return
+      const primera = track.children[0] as HTMLElement
+      const estilo = getComputedStyle(track)
+      const espacio = parseFloat(estilo.columnGap || estilo.gap || '0') || 0
+      const paso = primera.getBoundingClientRect().width + espacio
+      const max = Math.max(0, track.scrollWidth - envoltura.clientWidth)
+      const actual = desplazamientos.get(track) ?? 0
+      const proximo = Math.min(max, Math.max(0, actual + direccion * paso))
+      desplazamientos.set(track, proximo)
+      track.style.transform = 'translateX(' + -Math.round(proximo) + 'px)'
+    }
+
+    previo?.addEventListener('click', () => mover(-1))
+    siguiente?.addEventListener('click', () => mover(1))
+
+    mostrar(0)
+  }
+
+  iniciarAmbientes()
+  document.addEventListener('astro:page-load', iniciarAmbientes)
+</script>

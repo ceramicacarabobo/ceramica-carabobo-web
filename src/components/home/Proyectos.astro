@@ -1,0 +1,260 @@
+---
+/**
+ * Sección "02 · Proyectos" de la home: ficha editorial por obra, imagen +
+ * datos alternando de lado (par/impar), tomada de `design/publicar/index.html`
+ * (constante PROYECTOS + `p.cols`/`p.colImg`/`p.colDatos` en `renderVals()`).
+ *
+ * El prototipo no traía fila de "Crédito" (comentario del handoff: "sin
+ * crédito de arquitecto — el dato no lo tenemos"), pero el schema de Sanity
+ * (`sanity/schemas/objects/proyecto.ts`) ya separa `ciudad` y `credito`: se
+ * agrega esa cuarta fila, oculta como las demás si no hay dato.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Tabla de specs" + lógica de
+ * `proHeadCols`/`p.cols` del prototipo, que conmutan en el breakpoint móvil
+ * de 760px, no en 1024): bajo 760px, cabecera y ficha se apilan a una
+ * columna; desde 760px la cabecera reparte eyebrow/título e intro en dos
+ * columnas y cada obra pasa a imagen+datos, alternando qué lado lleva la foto.
+ *
+ * Contenido defensivo: con menos de 2 obras no hay "proyectos" (plural) que
+ * mostrar y la sección entera desaparece (modelo-de-contenido.md §1: mínimo
+ * 2 obras). Una obra sin foto no pierde sus datos: la imagen simplemente no
+ * reserva columna y el bloque de datos ocupa todo el ancho.
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  proyectos: Home['proyectos']
+}
+
+const {proyectos} = Astro.props
+
+const hayObras = proyectos.obras.length >= 2
+
+const obras = proyectos.obras.map((obra, indice) => {
+  const clases = ['proyectos__obra']
+  if (indice % 2 === 1) clases.push('proyectos__obra--par')
+  if (!obra.foto) clases.push('proyectos__obra--sin-foto')
+  return {...obra, indice, clase: clases.join(' ')}
+})
+---
+
+{
+  hayObras && (
+    <Seccion
+      como="section"
+      id="proyectos"
+      class="proyectos"
+      fondo="base"
+      aria-labelledby={proyectos.titulo ? 'proyectos-titulo' : undefined}
+    >
+      <Reveal como="div" class="proyectos__cabecera">
+        <div class="proyectos__intro">
+          {proyectos.etiqueta && (
+            <p class="proyectos__eyebrow">
+              <span class="proyectos__numero">02</span> · {proyectos.etiqueta}
+            </p>
+          )}
+          {proyectos.titulo && (
+            <h2 id="proyectos-titulo" class="proyectos__titulo">
+              {proyectos.titulo}
+            </h2>
+          )}
+        </div>
+        {proyectos.bajada && <p class="proyectos__bajada">{proyectos.bajada}</p>}
+      </Reveal>
+
+      <div class="proyectos__lista">
+        {obras.map((obra) => (
+          <Reveal como="article" indice={obra.indice} class={obra.clase}>
+            {obra.foto && (
+              <div class="proyectos__marco">
+                <Imagen
+                  imagen={obra.foto}
+                  ratio="16 / 9"
+                  sizes="(min-width: 760px) 60vw, 100vw"
+                  class="proyectos__foto"
+                />
+              </div>
+            )}
+            <div class="proyectos__datos">
+              <h3 class="proyectos__nombre">{obra.nombre}</h3>
+              <dl class="proyectos__specs">
+                {obra.ciudad && (
+                  <div class="proyectos__fila">
+                    <dt>Ciudad</dt>
+                    <dd>{obra.ciudad}</dd>
+                  </div>
+                )}
+                {obra.credito && (
+                  <div class="proyectos__fila">
+                    <dt>Crédito</dt>
+                    <dd>{obra.credito}</dd>
+                  </div>
+                )}
+                {obra.diseno && (
+                  <div class="proyectos__fila">
+                    <dt>Diseño</dt>
+                    <dd>{obra.diseno}</dd>
+                  </div>
+                )}
+                {obra.formato && (
+                  <div class="proyectos__fila">
+                    <dt>Formato</dt>
+                    <dd>{obra.formato}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .proyectos__cabecera {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: end;
+    gap: clamp(16px, 4vw, 64px);
+    margin-bottom: clamp(40px, 5vw, 72px);
+  }
+
+  .proyectos__intro {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2vw, 24px);
+    min-width: 0;
+  }
+
+  .proyectos__eyebrow {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .proyectos__numero {
+    color: var(--color-brand-700);
+  }
+
+  .proyectos__titulo {
+    margin: 0;
+    font: var(--text-display);
+    color: var(--color-text-primary);
+  }
+
+  .proyectos__bajada {
+    margin: 0;
+    max-width: 44ch;
+    font: var(--text-body-15);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .proyectos__lista {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw, 72px);
+  }
+
+  .proyectos__obra {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'imagen' 'datos';
+    align-items: start;
+    gap: clamp(20px, 3vw, 48px);
+    padding-top: clamp(20px, 2.5vw, 32px);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .proyectos__obra--sin-foto {
+    grid-template-areas: 'datos';
+  }
+
+  .proyectos__marco {
+    grid-area: imagen;
+    background: var(--color-surface-sunken);
+  }
+
+  .proyectos__marco :global(.proyectos__foto) {
+    width: 100%;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .proyectos__marco:hover :global(.proyectos__foto) {
+      transform: scale(var(--hover-image-scale));
+    }
+  }
+
+  .proyectos__datos {
+    grid-area: datos;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .proyectos__nombre {
+    margin: 0;
+    font: 300 clamp(1.5rem, 1.3rem + 0.8vw, 2.125rem) / 1.2 var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .proyectos__specs {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .proyectos__fila {
+    display: grid;
+    grid-template-columns: minmax(64px, 84px) 1fr;
+    gap: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-surface-sunken);
+  }
+
+  .proyectos__fila dt {
+    margin: 0;
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .proyectos__fila dd {
+    margin: 0;
+    font: var(--text-caption-lg);
+    color: var(--color-text-primary);
+  }
+
+  @media (min-width: 760px) {
+    .proyectos__cabecera {
+      grid-template-columns: 1fr 44ch;
+    }
+
+    .proyectos__obra {
+      grid-template-columns: 1.6fr 1fr;
+      grid-template-areas: 'imagen datos';
+    }
+
+    .proyectos__obra--par {
+      grid-template-columns: 1fr 1.6fr;
+      grid-template-areas: 'datos imagen';
+    }
+
+    .proyectos__obra--sin-foto,
+    .proyectos__obra--par.proyectos__obra--sin-foto {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'datos';
+    }
+  }
+</style>

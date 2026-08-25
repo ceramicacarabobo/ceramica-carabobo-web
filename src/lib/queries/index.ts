@@ -70,6 +70,7 @@ export const HOME = /* groq */ `
       label,
       "fichas": coalesce(fichas[]{
         "nombre": producto->nombre,
+        "slug": producto->slug.current,
         spec,
         "foto": foto${IMAGEN}
       }, [])
@@ -85,6 +86,7 @@ export const HOME = /* groq */ `
       ciudad,
       credito,
       "diseno": producto->nombre,
+      "disenoSlug": producto->slug.current,
       formato,
       "foto": foto${IMAGEN}
     }, [])

@@ -1,0 +1,459 @@
+---
+/**
+ * Historia: el hilo de hitos conducido por scroll. Es la ÚNICA excepción de
+ * movimiento aprobada del sitio (`Tokens v0` §07, 19/08/2026) y viene con
+ * cuatro límites que este componente respeta al pie de la letra:
+ *
+ *  1. Una sola vez en todo el sitio: ninguna otra sección fija el scroll.
+ *  2. El tramo fijado no pasa de 100vh por capa — acá son 40vh por hito.
+ *  3. Solo se animan opacity y transform; el scroll nunca se secuestra
+ *     (`position: sticky`: seguir desplazándose siempre avanza).
+ *  4. Con `prefers-reduced-motion: reduce` colapsa a la versión de teléfono
+ *     —imagen fija + lista de hitos con hairlines—, que no fija nada.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Historia (hilo con pin)"): desktop pin
+ * sticky de 100vh con las capas en fundido cruzado y el año en cifras grandes;
+ * tablet igual, pero sin pin si el alto útil es menor a 640px; móvil sin pin ni
+ * scroll-driven — imagen fija y lista cronológica.
+ *
+ * La decisión de layout vive SOLO en CSS: el custom property `--pin` (0/1) se
+ * resuelve por media query y el script lo lee. No hay un breakpoint en JS.
+ *
+ * Contenido defensivo: con menos de 3 hitos no hay hilo que contar y la sección
+ * entera no se muestra.
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  historia: Home['historia']
+}
+
+const {historia} = Astro.props
+
+// Orden cronológico: la spec de móvil lo pide explícitamente y en el pin el
+// avance del riel solo tiene sentido si los años suben.
+const hitos = [...historia.hitos].sort((a, b) => a.anio - b.anio)
+
+const hayHilo = hitos.length >= 3
+// En móvil hay una sola imagen fija: la del primer hito con foto.
+const indiceImagenMovil = hitos.findIndex((hito) => hito.imagen)
+---
+
+{
+  hayHilo && (
+    <section class="historia" data-historia style={`--hitos: ${hitos.length}`}>
+      <div class="historia__hilo" data-hilo>
+        <div class="historia__marco">
+          <div class="historia__capas">
+            {hitos.map((hito, indice) => (
+              <div
+                class="historia__capa"
+                data-capa={indice}
+                data-capa-movil={indice === indiceImagenMovil ? '' : undefined}
+                style={`z-index: ${indice + 1}`}
+              >
+                <Imagen
+                  imagen={hito.imagen}
+                  sizes="100vw"
+                  prioridad={false}
+                  class="historia__medio"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div class="historia__velo" aria-hidden="true" />
+
+          <div class="historia__panel">
+            {historia.titulo && <h2 class="historia__rotulo">{historia.titulo}</h2>}
+
+            <ol class="historia__hitos">
+              {hitos.map((hito, indice) => (
+                <li class="historia__hito" data-hito={indice} data-activo={indice === 0 ? '' : undefined}>
+                  <span class="historia__anio">{hito.anio}</span>
+                  <h3 class="historia__titulo">{hito.titulo}</h3>
+                  {hito.texto && <p class="historia__texto">{hito.texto}</p>}
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Riel de progreso: repite los años como orientación visual, no como
+              contenido — el lector de pantalla ya los tiene en la lista. */}
+          <div class="historia__riel" aria-hidden="true" data-riel>
+            <span class="historia__riel-linea" />
+            <span class="historia__riel-relleno" data-relleno />
+            {hitos.map((hito, indice) => (
+              <span class="historia__marca" data-marca={indice} data-cumplido={indice === 0 ? '' : undefined}>
+                <span class="historia__marca-anio">{hito.anio}</span>
+                <span class="historia__punto" />
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  /* --pin: la única fuente de verdad del modo. 0 = lista, 1 = pin sticky.
+     Lo escribe CSS por media query y lo lee el script; nunca al revés. */
+  .historia {
+    --pin: 0;
+    margin-top: var(--space-section);
+  }
+
+  .historia__marco {
+    position: relative;
+    background: var(--color-surface-inverse);
+    overflow: hidden;
+  }
+
+  /* ===== Base = versión de teléfono: imagen fija + lista con hairlines ===== */
+
+  .historia__capa {
+    display: none;
+  }
+
+  .historia__capa[data-capa-movil] {
+    display: block;
+  }
+
+  .historia__capa :global(.historia__medio) {
+    width: 100%;
+    aspect-ratio: var(--ratio-feature);
+  }
+
+  .historia__velo {
+    display: none;
+  }
+
+  .historia__panel {
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: var(--space-10) var(--space-gutter-page) var(--space-12);
+  }
+
+  .historia__rotulo {
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .historia__hitos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .historia__hito {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+  }
+
+  .historia__hito + .historia__hito {
+    border-top: var(--border-width) solid var(--color-border-on-dark);
+  }
+
+  .historia__anio {
+    font: var(--text-title-md);
+    color: var(--color-text-on-dark);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .historia__titulo {
+    font: 500 clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem) / 1.3 var(--font-heading);
+    letter-spacing: var(--tracking-label);
+    color: var(--color-text-on-dark);
+  }
+
+  .historia__texto {
+    max-width: 44ch;
+    font: 400 clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem) / 1.7 var(--font-body);
+    color: var(--color-text-on-dark-secondary);
+    text-wrap: pretty;
+  }
+
+  .historia__riel {
+    display: none;
+  }
+
+  /* ===== Pin: desde 760px, solo si el alto útil llega a 640px y el usuario
+     no pidió movimiento reducido (los tres límites, en una sola consulta). ===== */
+  @media (min-width: 760px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+    .historia {
+      --pin: 1;
+    }
+
+    /* 100vh de pantalla fija + 40vh de recorrido por hito (anclaje corto del
+       prototipo: 5 hitos = 300vh). Nunca más de 100vh por capa. */
+    .historia__hilo {
+      position: relative;
+      height: calc(100vh + var(--hitos) * 40vh);
+    }
+
+    .historia__marco {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .historia__capas {
+      position: absolute;
+      inset: 0;
+    }
+
+    .historia__capa {
+      display: block;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    /* Apilado: la capa de abajo queda opaca y solo la de arriba sube 0→1, así
+       nunca hay dos translúcidas promediándose. Sin JS se ve la primera foto. */
+    .historia__capa[data-capa='0'] {
+      opacity: 1;
+    }
+
+    .historia__capa :global(.historia__medio) {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .historia__velo {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      background: var(--color-scrim);
+    }
+
+    .historia__panel {
+      position: relative;
+      z-index: 7;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(24px, 5vw, 64px);
+      padding: clamp(48px, 7vw, 104px) clamp(124px, 14vw, 220px) clamp(32px, 5vw, 104px)
+        var(--space-gutter-page);
+      box-sizing: border-box;
+    }
+
+    /* Los hitos se apilan en la misma celda de grilla: un solo texto visible,
+       sin duplicar contenido en el DOM y sin posicionamiento absoluto. */
+    .historia__hitos {
+      display: grid;
+    }
+
+    .historia__hito {
+      grid-area: 1 / 1;
+      align-self: start;
+      gap: clamp(12px, 2vw, 20px);
+      padding-block: 0;
+      border: 0;
+      opacity: 0;
+    }
+
+    /* Cambio seco, como el prototipo: el fundido lo hace la foto, no el texto. */
+    .historia__hito[data-activo] {
+      opacity: 1;
+    }
+
+    .historia__anio {
+      font: 300 clamp(3.5rem, 2.4rem + 4.4vw, 6.5rem) / 1 var(--font-heading);
+    }
+
+    .historia__riel {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      right: var(--space-gutter-page);
+      transform: translateY(-50%);
+      z-index: 8;
+      height: clamp(260px, 40vh, 400px);
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .historia__riel-linea,
+    .historia__riel-relleno {
+      position: absolute;
+      top: 4px;
+      right: 3.5px;
+      width: 1px;
+    }
+
+    .historia__riel-linea {
+      bottom: 4px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .historia__riel-relleno {
+      height: 0;
+      background: var(--color-brand-300);
+    }
+
+    .historia__marca {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+    }
+
+    .historia__marca-anio {
+      font: 400 0.9375rem/1.4 var(--font-heading);
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.55);
+      font-variant-numeric: tabular-nums;
+      transition: color var(--dur-base) var(--ease-out);
+    }
+
+    .historia__marca[data-cumplido] .historia__marca-anio {
+      color: var(--color-text-on-dark);
+    }
+
+    .historia__punto {
+      display: block;
+      width: 8px;
+      height: 8px;
+      flex: none;
+      background: rgba(255, 255, 255, 0.3);
+      transition: background var(--dur-base) var(--ease-out);
+    }
+
+    .historia__marca[data-cumplido] .historia__punto {
+      background: var(--color-brand-300);
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Motor del hilo. Solo escribe opacity (capas y texto) y el alto del relleno
+   * del riel: ninguna propiedad que dispare layout en el resto de la página.
+   */
+
+  // Tramo del recorrido de un hito que ocupa el fundido de su foto: el 45% de
+  // entrada y el resto es lectura. Con el reparto por scroll —y no por tiempo—
+  // el fundido no depende de la velocidad con la que se baje.
+  const FUNDIDO = 0.45
+  // El texto cambia con un poco de retraso respecto de la foto: en el borde de
+  // la banda la foto entrante recién arranca y se leería el año nuevo sobre la
+  // foto vieja. Mismo corrimiento para el relleno del riel, así la línea llega
+  // al punto de un año justo cuando ese año se enciende.
+  const RETRASO = 0.225
+
+  function iniciarHistoria() {
+    const seccion = document.querySelector<HTMLElement>('[data-historia]')
+    if (!seccion) return
+
+    const hilo = seccion.querySelector<HTMLElement>('[data-hilo]')
+    const capas = [...seccion.querySelectorAll<HTMLElement>('[data-capa]')]
+    const hitos = [...seccion.querySelectorAll<HTMLElement>('[data-hito]')]
+    const marcas = [...seccion.querySelectorAll<HTMLElement>('[data-marca]')]
+    const riel = seccion.querySelector<HTMLElement>('[data-riel]')
+    const relleno = seccion.querySelector<HTMLElement>('[data-relleno]')
+    if (!hilo || hitos.length === 0) return
+
+    const total = hitos.length
+
+    // El modo lo decide el CSS (media query → custom property). Se cachea
+    // porque leerlo obliga a recalcular estilo y esto corre en cada frame.
+    let conPin = false
+    const leerModo = () => {
+      conPin = getComputedStyle(seccion).getPropertyValue('--pin').trim() === '1'
+    }
+
+    // Al salir del pin hay que devolver el control al CSS: si quedan estilos
+    // en línea, la versión de lista hereda las opacidades del último frame.
+    const soltar = () => {
+      capas.forEach((capa) => {
+        capa.style.opacity = ''
+      })
+      if (relleno) relleno.style.height = ''
+    }
+
+    const sincronizar = () => {
+      if (!conPin) {
+        soltar()
+        return
+      }
+
+      const recorrido = Math.max(1, hilo.offsetHeight - window.innerHeight)
+      const avance = Math.min(1, Math.max(0, -hilo.getBoundingClientRect().top / recorrido))
+      const crudo = avance * total
+      const indice = Math.min(total - 1, Math.floor(crudo))
+      const indiceTexto = indice > 0 && crudo - indice < RETRASO ? indice - 1 : indice
+
+      capas.forEach((capa, i) => {
+        const opacidad = i === 0 ? 1 : Math.min(1, Math.max(0, (crudo - i) / FUNDIDO))
+        capa.style.opacity = opacidad.toFixed(3)
+      })
+
+      hitos.forEach((hito, i) => hito.toggleAttribute('data-activo', i === indiceTexto))
+      marcas.forEach((marca, i) => marca.toggleAttribute('data-cumplido', i <= indiceTexto))
+
+      // El alto va en px medidos: el track corre de centro a centro de punto,
+      // no de borde a borde del riel (de ahí los 8px del punto).
+      if (riel && relleno && total > 1) {
+        const track = Math.max(0, riel.offsetHeight - 8)
+        const unidad = Math.max(0, Math.min(total - 1, crudo - RETRASO))
+        relleno.style.height = Math.round((unidad / (total - 1)) * track) + 'px'
+      }
+    }
+
+    let pendiente = 0
+    const encolar = () => {
+      if (pendiente) return
+      pendiente = requestAnimationFrame(() => {
+        pendiente = 0
+        sincronizar()
+      })
+    }
+
+    const alRedimensionar = () => {
+      leerModo()
+      encolar()
+    }
+
+    window.addEventListener('scroll', encolar, {passive: true})
+    window.addEventListener('resize', alRedimensionar, {passive: true})
+
+    // El recorrido depende de offsetHeight, que cambia después del montaje
+    // (fuentes e imágenes que terminan de cargar): sin observarlo, la sección
+    // queda calculada contra un alto viejo.
+    let observador: ResizeObserver | undefined
+    if ('ResizeObserver' in window) {
+      observador = new ResizeObserver(encolar)
+      observador.observe(hilo)
+    }
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        window.removeEventListener('scroll', encolar)
+        window.removeEventListener('resize', alRedimensionar)
+        observador?.disconnect()
+        if (pendiente) cancelAnimationFrame(pendiente)
+      },
+      {once: true},
+    )
+
+    leerModo()
+    sincronizar()
+  }
+
+  iniciarHistoria()
+  document.addEventListener('astro:page-load', iniciarHistoria)
+</script>

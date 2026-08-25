@@ -1,0 +1,350 @@
+---
+/**
+ * Telón de entrada — port literal de la "variante B · la marca va al nav" del prototipo
+ * (`design/publicar/index.html`, constantes TELON/CORTES/BANDA_*, métodos bez/medirTelon/
+ * arrancarTelon y las claves `telon*` de renderVals).
+ *
+ * Cómo funciona (un solo reloj en ms, 2200 en total):
+ *   0→440    el isotipo se dibuja de izquierda a derecha (clip-path).
+ *   90→650   barrido de la banda superior del wordmark.
+ *   260+     los 8 glifos de CARABOBO aparecen escalonados (paso 70 ms, dur 380 ms).
+ *   1500→2200 fase D: la hoja se retrae hacia arriba Y la marca viaja hasta el lockup del
+ *             header, donde el lockup real la releva. Es un solo movimiento, no dos
+ *             encadenados, por eso comparten la misma fase.
+ *
+ * El viaje se MIDE comparando el rect de la marca del telón con el del lockup del header:
+ * origen y destino salen del mismo sistema de coordenadas, así que no pueden desfasarse.
+ *
+ * Reglas del proyecto:
+ *   - Una vez por sesión (sessionStorage) — decisión cerrada, `docs/modelo-de-contenido.md` §anexo 1.
+ *   - `prefers-reduced-motion: reduce` → no hay telón, en absoluto.
+ *   - Solo se animan opacity, transform y clip-path.
+ *   - aria-hidden + pointer-events:none: no roba foco ni tapa el contenido para lectores de
+ *     pantalla, y el HTML de abajo es clicable desde el primer fotograma.
+ */
+
+// Cortes de los 8 glifos de CARABOBO, leídos de las coordenadas de arranque de los paths de
+// `public/assets/logo-wordmark.svg` (viewBox x: 496 → 1664). Valor literal del prototipo.
+const CORTES = [0, 0.1241, 0.2496, 0.3716, 0.4961, 0.6126, 0.7453, 0.8686, 1]
+// Bandas del wordmark dentro de su caja: superior = "CERÁMICA", inferior = "CARABOBO".
+const BANDA_SUP = [3, 57.3]
+const BANDA_INF = [59, 3.3]
+
+// Ancho de la marca en el telón (prop `telonMarcaAncho` del prototipo, default 100px). El resto
+// del lockup escala con él: 86px es el ancho del wordmark en la variante horizontal del lockup.
+const ANCHO_MARCA = 100
+const kM = ANCHO_MARCA / 86
+
+const medidas = {
+  gap: Math.round(12 * kM),
+  isoAncho: Math.round(36 * kM),
+  isoAlto: Math.round(38 * kM),
+  palabraAncho: ANCHO_MARCA,
+  palabraAlto: Math.round(27 * kM),
+}
+
+// El recorte de cada glifo es fijo (solo animan opacidad y desplazamiento), así que se calcula
+// aquí y no en cada fotograma.
+const glifos = CORTES.slice(0, 8).map((corte, i) => ({
+  clip: `inset(${BANDA_INF[0]}% ${((1 - CORTES[i + 1]) * 100).toFixed(2)}% ${BANDA_INF[1]}% ${(corte * 100).toFixed(2)}%)`,
+}))
+
+// Fotograma cero servido en el HTML: hoja entera, marca sin recortar todavía. Si el script no
+// llega a correr, lo único visible es una hoja del color del fondo del sitio.
+const clipIsoInicial = 'inset(0 100.00% 0 0)'
+const clipBarridoInicial = `inset(${BANDA_SUP[0]}% 100.00% ${BANDA_SUP[1]}% 0)`
+---
+
+<div class="telon" id="telon" aria-hidden="true" hidden>
+  <div class="telon__hoja" data-hoja style="clip-path: inset(0 0 0.00% 0)"></div>
+
+  <div class="telon__capa">
+    <span class="telon__marca" data-marca style={`gap: ${medidas.gap}px; transform: translate(0px, 0px) scale(1)`}>
+      <span
+        class="telon__iso"
+        data-iso
+        style={`width: ${medidas.isoAncho}px; height: ${medidas.isoAlto}px; clip-path: ${clipIsoInicial}`}
+      ></span>
+
+      <span class="telon__palabra" style={`width: ${medidas.palabraAncho}px; height: ${medidas.palabraAlto}px`}>
+        <span class="telon__barrido" data-barrido style={`clip-path: ${clipBarridoInicial}`}></span>
+        {glifos.map(({clip}) => <span class="telon__glifo" data-glifo style={`clip-path: ${clip}`}></span>)}
+      </span>
+    </span>
+  </div>
+</div>
+
+<script is:inline>
+  // Decisión SÍNCRONA, en el punto exacto del documento donde está el telón: así el navegador
+  // nunca pinta primero la home y encima la hoja. Si no toca telón, el markup se queda `hidden`
+  // y no cuesta nada. Sin JS tampoco hay telón (el markup nace oculto), que es lo correcto.
+  ;(function () {
+    var CLAVE = 'cc:telon-visto'
+
+    // Sin movimiento: no hay telón, en absoluto.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    // Una vez por sesión. Si sessionStorage no está disponible (modo privado, cookies
+    // bloqueadas) se opta por NO mostrarlo: mejor perderse la animación que repetirla en cada
+    // carga sin poder recordarla.
+    try {
+      if (sessionStorage.getItem(CLAVE)) return
+      // Se marca YA, antes de animar: si el visitante navega a mitad del telón, no se repite.
+      sessionStorage.setItem(CLAVE, '1')
+    } catch (e) {
+      return
+    }
+
+    var telon = document.getElementById('telon')
+    if (!telon) return
+    telon.hidden = false
+    // Bandera en <html> para que el lockup del header se oculte mientras la marca viaja.
+    document.documentElement.setAttribute('data-telon', '')
+  })()
+</script>
+
+<style is:global>
+  /* Mientras el telón está vivo, el lockup del header no se ve: el que está en pantalla es el
+     del telón, que aterriza justo encima. Al quitar el atributo el relevo es instantáneo y —
+     por construcción de la medida — sin salto. Va en global porque el header es otro componente. */
+  html[data-telon] [data-cabecera] [data-lockup] {
+    opacity: 0;
+  }
+</style>
+
+<style>
+  .telon {
+    position: fixed;
+    inset: 0;
+    /* Por encima de todo, incluido --z-toast (50): mismo escalón que el prototipo. */
+    z-index: 60;
+    /* No intercepta nada: el contenido de abajo es navegable desde el primer fotograma. */
+    pointer-events: none;
+  }
+
+  .telon[hidden] {
+    display: none;
+  }
+
+  /* La hoja: mismo color que el fondo del sitio, se retrae hacia arriba con clip-path. */
+  .telon__hoja {
+    position: absolute;
+    inset: 0;
+    background: var(--color-surface-base);
+    will-change: clip-path;
+  }
+
+  .telon__capa {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .telon__marca {
+    display: flex;
+    align-items: center;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Los SVG se usan como máscara para poder pintarlos con el token de marca y recortarlos. */
+  .telon__iso,
+  .telon__barrido,
+  .telon__glifo {
+    background: var(--color-brand-700);
+  }
+
+  .telon__iso {
+    display: block;
+    flex: none;
+    -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+    mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+  }
+
+  .telon__palabra {
+    position: relative;
+    display: block;
+    flex: none;
+  }
+
+  /* Banda superior del wordmark: se descubre de izquierda a derecha. */
+  .telon__barrido,
+  .telon__glifo {
+    position: absolute;
+    inset: 0;
+    -webkit-mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+    mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+  }
+
+  /* Cada glifo de CARABOBO es la misma máscara recortada a su columna. */
+  .telon__glifo {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+</style>
+
+<script>
+  /** Reloj y tramos del telón — valores literales del prototipo, no ajustar de a uno. */
+  const TELON = {
+    total: 2200,
+    iso: [0, 440],
+    barrido: [90, 650],
+    glifo: {inicio: 260, paso: 70, dur: 380},
+    faseD: [1500, 2200],
+    desp: 8,
+  }
+  const BANDA_SUP = [3, 57.3]
+
+  /** Bézier resuelta por bisección: mismas curvas que los tokens, pero evaluadas en JS porque
+   *  todo el telón cuelga de un único reloj. */
+  function bez(p: number, x1: number, y1: number, x2: number, y2: number): number {
+    if (p <= 0) return 0
+    if (p >= 1) return 1
+    const cx = (t: number) => 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t
+    const cy = (t: number) => 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t
+    let lo = 0
+    let hi = 1
+    let t = p
+    for (let i = 0; i < 24; i++) {
+      t = (lo + hi) / 2
+      if (cx(t) < p) lo = t
+      else hi = t
+    }
+    return cy(t)
+  }
+
+  /** --ease-out: cubic-bezier(0.2, 0, 0, 1) — el ease del sistema. */
+  const eSist = (p: number) => bez(p, 0.2, 0, 0, 1)
+  /** ease-in-out clásico — el barrido de la marca no arranca ni frena en seco. */
+  const eBarr = (p: number) => bez(p, 0.42, 0, 0.58, 1)
+
+  let rafPaso = 0
+  let arranque = 0
+
+  function limpiar() {
+    cancelAnimationFrame(rafPaso)
+    clearTimeout(arranque)
+    document.documentElement.removeAttribute('data-telon')
+  }
+
+  function iniciar() {
+    const telon = document.getElementById('telon')
+
+    // El script en línea ya decidió: sin bandera en <html> o con el markup oculto, no hay telón.
+    // (Con View Transitions esto es lo que garantiza que solo corra en la primera carga: la
+    // bandera de sesión se escribió en la primera visita y el markup de las siguientes nace
+    // oculto.)
+    if (!telon || telon.hidden || !document.documentElement.hasAttribute('data-telon')) {
+      document.documentElement.removeAttribute('data-telon')
+      return
+    }
+    if (telon.dataset.corriendo !== undefined) return
+    telon.dataset.corriendo = ''
+
+    const hoja = telon.querySelector<HTMLElement>('[data-hoja]')
+    const marca = telon.querySelector<HTMLElement>('[data-marca]')
+    const iso = telon.querySelector<HTMLElement>('[data-iso]')
+    const barrido = telon.querySelector<HTMLElement>('[data-barrido]')
+    const glifos = Array.from(telon.querySelectorAll<HTMLElement>('[data-glifo]'))
+    const lockup = document.querySelector<HTMLElement>('[data-cabecera] [data-lockup]')
+
+    if (!hoja || !marca || !iso || !barrido) {
+      limpiar()
+      telon.remove()
+      return
+    }
+
+    // Destino del viaje. Se mide contra el lockup del header: la diferencia de centros da el
+    // desplazamiento y la de anchos la escala. Si el lockup no existe, la marca no viaja y solo
+    // se retrae la hoja.
+    let dx = 0
+    let dy = 0
+    let esc = 1
+    const medir = () => {
+      if (!lockup) return
+      const m = marca.getBoundingClientRect()
+      const n = lockup.getBoundingClientRect()
+      if (!m.width || !n.width) return
+      dx = n.left + n.width / 2 - (m.left + m.width / 2)
+      dy = n.top + n.height / 2 - (m.top + m.height / 2)
+      esc = n.width / m.width
+    }
+    medir()
+
+    // Remedir si cambia el viewport, pero SOLO antes de la fase D: durante el viaje la marca ya
+    // está transformada y su rect dejaría de ser el origen real.
+    let t = 0
+    const alRedimensionar = () => {
+      if (t < TELON.faseD[0]) medir()
+    }
+    window.addEventListener('resize', alRedimensionar, {passive: true})
+
+    const pintar = () => {
+      const tramo = (a: number, b: number) => (b <= a ? 1 : Math.min(1, Math.max(0, (t - a) / (b - a))))
+      const dFase = eSist(tramo(TELON.faseD[0], TELON.faseD[1]))
+
+      // La hoja se retrae y la marca viaja en la MISMA fase: un movimiento, no dos.
+      hoja.style.clipPath = `inset(0 0 ${(dFase * 100).toFixed(2)}% 0)`
+      marca.style.transform =
+        `translate(${(dx * dFase).toFixed(1)}px, ${(dy * dFase).toFixed(1)}px)` +
+        ` scale(${(1 + (esc - 1) * dFase).toFixed(4)})`
+
+      iso.style.clipPath = `inset(0 ${((1 - eBarr(tramo(TELON.iso[0], TELON.iso[1]))) * 100).toFixed(2)}% 0 0)`
+      barrido.style.clipPath =
+        `inset(${BANDA_SUP[0]}% ${((1 - eBarr(tramo(TELON.barrido[0], TELON.barrido[1]))) * 100).toFixed(2)}%` +
+        ` ${BANDA_SUP[1]}% 0)`
+
+      glifos.forEach((glifo, i) => {
+        const ini = TELON.glifo.inicio + i * TELON.glifo.paso
+        const p = eBarr(tramo(ini, ini + TELON.glifo.dur))
+        glifo.style.opacity = p.toFixed(3)
+        glifo.style.transform = `translateX(${((1 - p) * -TELON.desp).toFixed(2)}px)`
+      })
+    }
+
+    const arrancar = () => {
+      const t0 = performance.now()
+      const paso = (ahora: number) => {
+        t = Math.min(TELON.total, ahora - t0)
+        pintar()
+        if (t < TELON.total) {
+          rafPaso = requestAnimationFrame(paso)
+          return
+        }
+        // Fin: el lockup del header releva a la marca y el telón desaparece del DOM.
+        window.removeEventListener('resize', alRedimensionar)
+        document.documentElement.removeAttribute('data-telon')
+        telon.remove()
+      }
+      rafPaso = requestAnimationFrame(paso)
+    }
+
+    // Una máscara sin decodificar pinta el elemento ENTERO: si el reloj arranca antes, los
+    // primeros fotogramas de la marca son bloques burdeos en vez de letras. Se esperan los dos
+    // SVG, con un tope para no colgar la entrada.
+    const listos = ['/assets/logo-iso.svg', '/assets/logo-wordmark.svg'].map(
+      (src) =>
+        new Promise<void>((ok) => {
+          const im = new Image()
+          im.onload = () => ok()
+          im.onerror = () => ok()
+          im.src = src
+        }),
+    )
+    const tope = new Promise<void>((ok) => {
+      arranque = window.setTimeout(ok, 1500)
+    })
+    Promise.race([Promise.all(listos), tope]).then(() => {
+      clearTimeout(arranque)
+      arranque = window.setTimeout(arrancar, 160)
+    })
+  }
+
+  // Si se navega a mitad del telón, no se arrastra la bandera a la página siguiente.
+  document.addEventListener('astro:before-swap', limpiar)
+
+  iniciar()
+  document.addEventListener('astro:page-load', iniciar)
+</script>

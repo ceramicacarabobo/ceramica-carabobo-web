@@ -17,3 +17,13 @@ npm-debug.log*
 # logos SVG, LEEME— SÍ se versiona: es el contrato de fidelidad visual.
 design/publicar/uploads/
 design/publicar/assets/catalogo/
+
+# --- Script de importación de contenido de referencia -----------------------
+# Mapa local ruta-de-archivo -> assetId de Sanity, para no volver a subir lo
+# ya subido. No aporta nada fuera de esta máquina.
+scripts/.assets-subidos.json
+
+# Medios descargados de Sanity en el build (video del hero, archivos).
+# No se versionan: los regenera `npm run prebuild` desde el CMS.
+public/medios/
+src/lib/medios.json
