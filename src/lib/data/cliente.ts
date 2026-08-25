@@ -16,7 +16,7 @@ const token = import.meta.env.SANITY_API_READ_TOKEN
 /** En preview se leen borradores; en producción, solo lo publicado. */
 const cliente =
   visualEditingHabilitado && token
-    ? sanityClient.withConfig({token, perspective: 'drafts', useCdn: false, stega: {enabled: true, studioUrl: '/admin'}})
+    ? sanityClient.withConfig({token, perspective: 'drafts', useCdn: false, stega: {enabled: true, studioUrl: import.meta.env.PUBLIC_SANITY_STUDIO_URL || '/admin'}})
     : sanityClient
 
 let avisoEmitido = false

@@ -14,7 +14,15 @@ const dataset = env.PUBLIC_SANITY_DATASET || 'production'
 
 // El visual editing (Presentation Tool) exige páginas server-rendered.
 // Solo el deploy de preview lo enciende; producción se construye estática.
-const visualEditingEnabled = env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
+// Se mira primero process.env para que `PUBLIC_...=true astro build` mande sobre
+// el valor de los archivos .env, y se reinyecta más abajo con `vite.define` para
+// que el código de las páginas vea exactamente lo mismo que esta configuración.
+const visualEditingEnabled =
+  (process.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED ?? env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED) === 'true'
+
+// El Studio vive en el sitio estático y el preview en otro dominio: la URL del
+// Studio tiene que ser absoluta o los overlays no encuentran a quién hablarle.
+const studioUrl = env.PUBLIC_SANITY_STUDIO_URL || '/admin'
 
 if (projectId === 'placeholder') {
   console.warn(
@@ -35,10 +43,16 @@ export default defineConfig({
       // Producción nunca depende de Sanity en runtime: el build baja el contenido.
       useCdn: false,
       studioBasePath: '/admin',
-      stega: {studioUrl: '/admin'},
+      stega: {studioUrl},
     }),
     react(),
   ],
   prefetch: {prefetchAll: true, defaultStrategy: 'hover'},
+  vite: {
+    define: {
+      'import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED': JSON.stringify(String(visualEditingEnabled)),
+      'import.meta.env.PUBLIC_SANITY_STUDIO_URL': JSON.stringify(studioUrl),
+    },
+  },
   build: {inlineStylesheets: 'auto'},
 })

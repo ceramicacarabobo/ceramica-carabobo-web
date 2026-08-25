@@ -27,6 +27,12 @@ interface Props {
 
 const {titulo, descripcion, imagenOG, noIndex = false} = Astro.props
 
+// QA y preview nunca deben indexarse: el sitio todavía muestra datos de ejemplo
+// (distribuidores inventados, fotos ajenas, hitos sin validar). Solo el despliegue
+// marcado como producción es indexable.
+const esProduccion = import.meta.env.PUBLIC_ENTORNO === 'produccion'
+const sinIndexar = noIndex || !esProduccion
+
 const ajustes = await getAjustes()
 const tituloPagina = titulo === ajustes.titulo ? titulo : `${titulo} — ${ajustes.titulo}`
 const meta = descripcion ?? ajustes.descripcion
@@ -41,7 +47,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
     <title>{tituloPagina}</title>
     {meta && <meta name="description" content={meta} />}
     <link rel="canonical" href={canonical} />
-    {noIndex && <meta name="robots" content="noindex" />}
+    {sinIndexar && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={ajustes.titulo} />
