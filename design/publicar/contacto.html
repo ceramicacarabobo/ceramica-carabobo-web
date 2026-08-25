@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contacto — Cerámica Carabobo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --cream:#F5F3F0; --surface:#ECE9E4; --white:#FFFFFF;
+    --ink:#2E2E2E; --ink-2:#5C5A56; --ink-3:#5C5A56; --ink-4:#6E6C68;
+    --hair:#D9D9D9; --brand:#6B0F1A; --brand-900:#55000F; --nude:#E6C0A8;
+    --ease:cubic-bezier(0.2,0,0,1); --ease-micro:cubic-bezier(.4,0,.2,1); --ease-ed:cubic-bezier(.37,0,.63,1); --dur-micro:180ms;
+    --dur-reveal:320ms; --dur-mask:400ms;
+    --scrim-hero:linear-gradient(to bottom,rgba(31,31,31,0.32) 0%,rgba(31,31,31,0.16) 30%,rgba(31,31,31,0.40) 62%,rgba(31,31,31,0.62) 100%);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;font-family:'Open Sans',sans-serif}
+  a{color:var(--brand)}
+  a:hover{color:var(--brand-900)}
+  .wrap{max-width:1600px;margin:0 auto;padding:0 clamp(20px,5vw,72px)}
+  .over{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase}
+  /* Anillo de foco: el que Primitivas v1 ya definía para inputs, ahora en todo lo enfocable.
+   Sobre imagen o header transparente va en blanco, que es donde el burdeos no se ve. */
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  header:not(.solid) :focus-visible,.hero :focus-visible{outline-color:#FFFFFF}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:600;border-bottom:1px solid transparent;transition:background var(--dur-micro) var(--ease-micro),border-color var(--dur-micro) var(--ease-micro)}
+  header.solid{background:var(--cream);border-bottom-color:var(--hair)}
+  header .bar{display:flex;align-items:center;gap:clamp(12px,2vw,32px);padding-top:8px;padding-bottom:8px}
+  .logo{display:flex;align-items:center;gap:12px;flex:none}
+  .logo span{display:block;background:#FFFFFF;transition:background var(--dur-micro) var(--ease-micro)}
+  header.solid .logo span{background:var(--brand-900)}
+  .iso{width:36px;height:38px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center/contain;mask:url('assets/logo-iso.svg') no-repeat center/contain}
+  .word{width:86px;height:27px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center/contain;mask:url('assets/logo-wordmark.svg') no-repeat center/contain}
+  nav.main{display:flex;align-items:center;gap:clamp(20px,2.5vw,36px);flex:1;justify-content:flex-end}
+  nav.main a{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;padding:12px 0;color:rgba(255,255,255,0.85)}
+  nav.main a:hover{color:#FFFFFF}
+  nav.main a.current{color:#FFFFFF;border-bottom:1px solid currentColor}
+  header.solid nav.main a{color:var(--ink)}
+  header.solid nav.main a:hover{color:var(--brand)}
+  header.solid nav.main a.current{color:var(--brand)}
+
+  .hero{position:relative;height:auto;min-height:max(420px,46dvh);overflow:hidden;background:var(--ink)}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transition:opacity var(--dur-reveal) var(--ease-ed)}
+  .hero img[data-lista="1"]{opacity:1}
+  /* Carga de imagen: superficie neutra, sin latido en bucle (barrido 2026-08-23). */
+  @media (prefers-reduced-motion:reduce){.hero img{opacity:1}}
+  .hero .scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(31,31,31,0.32) 0%,rgba(31,31,31,0.16) 30%,rgba(31,31,31,0.40) 62%,rgba(31,31,31,0.62) 100%)}
+  .hero .inner{position:relative;min-height:max(420px,46dvh);display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(16px,2vw,24px);padding-top:clamp(96px,11vw,140px);padding-bottom:clamp(32px,4vw,56px)}
+  .hero h1{margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(2.5rem,1.7rem + 3.4vw,4.75rem);line-height:1.06;letter-spacing:0.01em;color:#FFFFFF;text-wrap:pretty}
+  .crumb{display:flex;gap:8px;align-items:center;font-size:0.8125rem;color:#FFFFFF}
+  .crumb a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.40)}
+
+  /* datos + mapa */
+  .visita{display:grid;grid-template-columns:minmax(320px,0.8fr) minmax(0,1.2fr);gap:clamp(28px,4vw,72px);align-items:start;padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(64px,7vw,104px)}
+  .datos{display:flex;flex-direction:column}
+  .datos h2{margin:0 0 clamp(20px,2.4vw,28px);font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.75rem,1.45rem + 1.4vw,2.5rem);line-height:1.1;text-wrap:pretty}
+  .bloque{display:flex;flex-direction:column;gap:8px;padding:clamp(18px,2.2vw,24px) 0;border-top:1px solid var(--hair)}
+  .bloque:last-of-type{border-bottom:1px solid var(--hair)}
+  .bloque .t{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3)}
+  .bloque p{margin:0;font-size:0.9375rem;line-height:1.65;color:var(--ink-2);text-wrap:pretty}
+  .bloque .big{font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.125rem,1rem + 0.5vw,1.5rem);line-height:1.25;color:var(--ink)}
+  .bloque a{text-decoration:none;border-bottom:1px solid rgba(107,15,26,0.40);transition:border-color var(--dur-micro) var(--ease-micro)}
+  .bloque a:hover{border-bottom-color:var(--brand-900)}
+  .tel{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;margin-top:4px;border:1px solid var(--brand);color:var(--brand);text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:background 80ms var(--ease),color 80ms var(--ease)}
+  .tel:hover{background:var(--brand);color:#FFFFFF}
+
+  .mapcol{position:sticky;top:96px;display:flex;flex-direction:column;gap:16px}
+  .sedes{display:flex;flex-wrap:wrap;gap:8px}
+  .sede{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;background:transparent;border:1px solid var(--hair);border-radius:2px;cursor:pointer;color:var(--ink-2);font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.04em;transition:border-color 80ms var(--ease),color 80ms var(--ease),background 80ms var(--ease)}
+  .sede:hover{border-color:var(--brand);color:var(--brand)}
+  .sede.on{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+  #map{position:relative;z-index:0;isolation:isolate;width:100%;aspect-ratio:4/3;min-height:380px;background:var(--surface);border:1px solid var(--hair)}
+  .leaflet-container{font-family:'Open Sans',sans-serif}
+  .leaflet-container a{color:var(--brand)}
+  .maplink{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:color var(--dur-micro) var(--ease-micro)}
+  .maplink:hover{color:var(--brand)}
+  .note{margin:0;font-size:0.8125rem;line-height:1.55;color:var(--ink-3);max-width:76ch}
+
+  /* formulario */
+  .form-sec{background:var(--surface)}
+  .form-grid{display:grid;grid-template-columns:minmax(280px,0.75fr) minmax(0,1.25fr);gap:clamp(28px,4vw,72px);align-items:start;padding-top:clamp(56px,7vw,96px);padding-bottom:clamp(56px,7vw,96px)}
+  .form-grid h2{margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.75rem,1.4rem + 1.6vw,2.75rem);line-height:1.12;text-wrap:pretty}
+  form{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px)}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field.full{grid-column:1 / -1}
+  label.lbl{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3)}
+  input.in,textarea.in{width:100%;background:var(--white);border:1px solid var(--hair);border-radius:2px;padding:14px 16px;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.5;color:var(--ink);min-height:48px;transition:border-color 80ms var(--ease)}
+  textarea.in{min-height:180px;resize:vertical}
+  input.in:focus{border-color:var(--brand)}
+  textarea.in:focus{border-color:var(--brand)}
+  input.in::placeholder,textarea.in::placeholder{color:var(--ink-4)}
+  .submit-row{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding-top:4px}
+  .priv{margin:0;font-size:0.8125rem;line-height:1.5;color:var(--ink-3);max-width:44ch}
+  .fill{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:0 32px;background:var(--brand);border:1px solid var(--brand);color:#FFFFFF;text-decoration:none;cursor:pointer;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms var(--ease),transform 80ms var(--ease)}
+  .fill:hover{background:var(--brand-900);border-color:var(--brand-900)}
+  .fill:active{transform:translateY(1px)}
+  .sent{grid-column:1 / -1;padding:20px;background:var(--white);border:1px solid var(--hair);font-size:0.9375rem;color:var(--ink-2)}
+
+  footer{background:var(--cream);border-top:1px solid var(--hair)}
+  footer .in{padding-top:clamp(40px,5vw,72px);padding-bottom:32px;display:flex;flex-direction:column;gap:clamp(32px,4vw,48px)}
+  footer .row1{display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,80px);align-items:start;justify-content:space-between}
+  footer .links{display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)}
+  footer .links a{color:var(--ink-2);text-decoration:none;font-size:0.875rem}
+  footer .links a:hover{color:var(--ink)}
+  footer .row2{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--hair);padding-top:20px;font-size:0.75rem;color:var(--ink-3)}
+  .badge{font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:4px 12px;background:var(--nude);color:var(--ink)}
+
+  [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity var(--dur-reveal) var(--ease-ed),transform var(--dur-reveal) var(--ease-ed)}
+  [data-reveal].in{opacity:1;transform:none}
+  [data-mask]{clip-path:inset(0 0 12% 0);transition:clip-path var(--dur-mask) var(--ease-ed)}
+  [data-mask].in{clip-path:inset(0 0 0 0)}
+  @media (prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none}[data-mask]{clip-path:none}}
+
+  /* Zona del pulgar: la acción principal aparece al desplazarse, solo en teléfono.
+     No es navegación (eso vive arriba): es la acción de esta página al alcance de la mano. */
+  .accion-pulgar{display:none}
+  @media (max-width:759px){
+    .accion-pulgar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:35;
+      padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+      background:var(--cream);border-top:1px solid var(--hair);
+      opacity:0;transform:translateY(100%);pointer-events:none;
+      transition:opacity var(--dur-reveal) var(--ease-ed), transform var(--dur-reveal) var(--ease-ed)}
+    .accion-pulgar.in{opacity:1;transform:translateY(0);pointer-events:auto}
+    .accion-pulgar .fill{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px}
+  }
+  @media (prefers-reduced-motion:reduce){.accion-pulgar{transition-duration:1ms}}
+  /* Tablet y abajo — el breakpoint del sistema (--bp-tablet), no el 1000 heredado. */
+  @media (max-width:1023px){
+    .visita,.form-grid,form{grid-template-columns:1fr}
+    .mapcol{position:static}
+  }
+
+  /* Teléfono. Tres decisiones, no un reflow.
+     1) 16px en los campos: por debajo de eso iOS hace zoom al enfocar y descuadra la página.
+     2) El mapa deja de competir por la pantalla: es referencia, no la tarea.
+     3) Todo lo que se toca llega a 48px. */
+  @media (max-width:759px){
+    input.in,textarea.in{font-size:1rem;padding:14px 16px}
+    textarea.in{min-height:132px}
+    .sedes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .sede{min-height:48px;justify-content:center}
+    #map{aspect-ratio:auto;height:260px;min-height:0}
+    .submit-row{flex-direction:column;align-items:stretch}
+    .submit-row .fill{width:100%;justify-content:center;min-height:48px}
+    .priv{order:2;max-width:none}
+    /* La barra del pulgar no debe tapar el final del formulario ni el cierre. */
+    body{padding-bottom:0}
+    .cierre{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:1ms !important;animation-duration:1ms !important}}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="logo" href="Propuesta 1.dc.html" aria-label="Cerámica Carabobo — inicio"><span class="iso"></span><span class="word"></span></a>
+    <nav class="main">
+      <a href="catalogo-c5.dc.html">Catálogo</a>
+      <a class="current" href="contacto.html">Contacto</a>
+      <a href="donde-comprar.html">Dónde comprar</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="uploads/ambiente-piedra.png" decoding="async" onload="this.dataset.lista='1'" onerror="this.style.display='none'" alt="Terraza revestida con porcelanato Cerámica Carabobo">
+  <span class="scrim" aria-hidden="true"></span>
+  <div class="wrap inner">
+    <nav class="crumb" aria-label="Ruta"><a href="Propuesta 1.dc.html">Inicio</a><span aria-hidden="true">/</span><span>Contacto</span></nav>
+    <div style="display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:clamp(20px,3vw,48px)">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:24ch">
+        <div class="over" style="color:#FFFFFF">Hablemos</div>
+        <h1>Contacto</h1>
+      </div>
+      <p style="margin:0;max-width:40ch;font-size:clamp(0.9375rem,0.9rem + 0.2vw,1.0625rem);line-height:1.6;color:#FFFFFF;text-wrap:pretty">Ven a la planta a ver el material, escríbenos o llámanos. Atendemos obra residencial, arquitectos y distribuidores.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap visita">
+  <div class="datos">
+    <h2>Para reservar una visita</h2>
+
+    <div class="bloque" data-reveal data-reveal-i="0">
+      <div class="t">Horario</div>
+      <p>Lunes a miércoles de 9:00 am – 3:00 pm<br>Jueves y viernes de 9:00 am – 2:00 pm</p>
+    </div>
+
+    <div class="bloque" data-reveal data-reveal-i="1">
+      <div class="t">Correo</div>
+      <p>Envíanos un correo electrónico a la siguiente dirección:</p>
+      <p class="big"><a href="mailto:lapieldetuhogar@ceramica-carabobo.com">lapieldetuhogar@ceramica-carabobo.com</a></p>
+    </div>
+
+    <div class="bloque" data-reveal data-reveal-i="2">
+      <div class="t">Dirección Valencia</div>
+      <p>Av. Lisandro Alvarado, fundo La Guacamaya, calle de Servicio, Sector C-04. Valencia, estado Carabobo.</p>
+      <a class="tel" href="tel:+582418134131"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg> 0241-8134131</a>
+    </div>
+
+    <div class="bloque" data-reveal data-reveal-i="3">
+      <div class="t">Dirección Guacara</div>
+      <p>Carretera Nacional Los Guayos. Guacara, estado Carabobo.</p>
+      <a class="tel" href="tel:+582455715262"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg> 0245-571.52.62</a>
+    </div>
+  </div>
+
+  <div class="mapcol" data-reveal data-reveal-i="1">
+    <div class="sedes" role="tablist" aria-label="Sedes">
+      <button class="sede on" id="s-valencia" role="tab" aria-selected="true">Planta Valencia</button>
+      <button class="sede" id="s-guacara" role="tab" aria-selected="false">Planta Guacara</button>
+    </div>
+    <div id="map" data-mask role="application" aria-label="Mapa de las sedes de Cerámica Carabobo"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+      <a class="maplink" id="gmaps" href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Lisandro+Alvarado+Valencia+Carabobo+Venezuela" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg> Abrir la ruta en Google Maps</a>
+    </div>
+    <p class="note">Mapa: OpenStreetMap. La posición exacta de los pines es <strong>aproximada, pendiente de validar</strong> con las coordenadas de planta.</p>
+  </div>
+</section>
+
+<section class="form-sec">
+  <div class="wrap form-grid">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="over" style="color:var(--ink-3)">Escríbenos</div>
+      <h2>Si tienes dudas sobre nuestros productos o servicios, envíanos un mensaje.</h2>
+      <p style="margin:0;font-size:0.9375rem;line-height:1.65;color:var(--ink-2);text-wrap:pretty">Te respondemos en horario de oficina. Si necesitas cálculo de metros o ficha técnica, cuéntanos el proyecto y la ciudad.</p>
+    </div>
+    <form id="form" data-reveal data-reveal-i="1" novalidate>
+      <div class="field">
+        <label class="lbl" for="nombre">Nombre</label>
+        <input class="in" id="nombre" name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label class="lbl" for="asunto">Asunto</label>
+        <input class="in" id="asunto" name="asunto" type="text" required placeholder="Motivo de tu mensaje">
+      </div>
+      <div class="field full">
+        <label class="lbl" for="mensaje">Mensaje</label>
+        <textarea class="in" id="mensaje" name="mensaje" required placeholder="Cuéntanos qué necesitas"></textarea>
+      </div>
+      <div class="submit-row">
+        <p class="priv">Al enviar este formulario aceptas <a href="#" onclick="return false">la política de privacidad</a>.</p>
+        <button class="fill" type="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap in">
+    <div class="row1">
+      <span style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <span style="display:block;width:38px;height:41px;background:var(--brand-900);-webkit-mask:url('assets/logo-iso.svg') no-repeat center/contain;mask:url('assets/logo-iso.svg') no-repeat center/contain"></span>
+        <span style="display:block;width:132px;height:20px;background:var(--brand-900);-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center/contain;mask:url('assets/logo-wordmark.svg') no-repeat center/contain"></span>
+      </span>
+      <div class="links">
+        <a href="catalogo-c5.dc.html">Catálogo</a>
+          <a href="donde-comprar.html">Distribuidores</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="row2">
+      <div>© 2026 Cerámica Carabobo, C.A. Todos los derechos reservados.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const SEDES = {
+  valencia: {
+    nombre: 'Planta Valencia',
+    dir: 'Av. Lisandro Alvarado, fundo La Guacamaya, calle de Servicio, Sector C-04',
+    tel: '0241-8134131',
+    lat: 10.1730, lon: -67.9945,
+    gmaps: 'https://www.google.com/maps/search/?api=1&query=Av.+Lisandro+Alvarado+Valencia+Carabobo+Venezuela'
+  },
+  guacara: {
+    nombre: 'Planta Guacara',
+    dir: 'Carretera Nacional Los Guayos, Guacara',
+    tel: '0245-571.52.62',
+    lat: 10.2286, lon: -67.8760,
+    gmaps: 'https://www.google.com/maps/search/?api=1&query=Carretera+Nacional+Los+Guayos+Guacara+Carabobo+Venezuela'
+  }
+};
+
+let map = null, markers = {}, activa = 'valencia';
+
+function initMap() {
+  map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([SEDES.valencia.lat, SEDES.valencia.lon], 14);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors', maxZoom: 19
+  }).addTo(map);
+
+  Object.keys(SEDES).forEach((k) => {
+    const s = SEDES[k];
+    const m = L.circleMarker([s.lat, s.lon], {
+      radius: 9, color: '#FFFFFF', weight: 2, fillColor: '#6B0F1A', fillOpacity: 1
+    }).addTo(map);
+    m.bindPopup('<strong style="font-family:\'Work Sans\',sans-serif;font-weight:500">' + s.nombre + '</strong><br>' + s.dir + '<br>Tel. ' + s.tel);
+    m.on('click', () => setSede(k, false));
+    markers[k] = m;
+  });
+  markers.valencia.openPopup();
+}
+
+// La sede vive en la dirección: #sede=guacara se puede compartir y abre ahí.
+// Se REESCRIBE la entrada en vez de empujar una nueva: son dos pestañas de una
+// misma vista, no una capa encima — con pushState, atrás recorrería pestañas
+// en vez de salir de la página, que es lo que el visitante espera.
+function sedeDeURL() {
+  const m = /(?:^|[#&])sede=([^&]*)/.exec(location.hash || '');
+  const k = m && decodeURIComponent(m[1]);
+  return (k === 'valencia' || k === 'guacara') ? k : null;
+}
+
+function setSede(k, fly) {
+  activa = k;
+  const destino = k === 'valencia' ? (location.pathname + location.search) : '#sede=' + k;
+  if ((location.hash || '') !== (k === 'valencia' ? '' : '#sede=' + k)) history.replaceState(history.state, '', destino);
+  const s = SEDES[k];
+  document.getElementById('s-valencia').classList.toggle('on', k === 'valencia');
+  document.getElementById('s-guacara').classList.toggle('on', k === 'guacara');
+  document.getElementById('s-valencia').setAttribute('aria-selected', k === 'valencia');
+  document.getElementById('s-guacara').setAttribute('aria-selected', k === 'guacara');
+  document.getElementById('gmaps').href = s.gmaps;
+  if (map && fly !== false) map.flyTo([s.lat, s.lon], 15, { duration: 0.8 });
+  if (markers[k]) markers[k].openPopup();
+}
+
+if (window.L) initMap();
+document.getElementById('s-valencia').addEventListener('click', () => setSede('valencia', true));
+document.getElementById('s-guacara').addEventListener('click', () => setSede('guacara', true));
+const __sede0 = sedeDeURL();
+if (__sede0 && __sede0 !== activa) setSede(__sede0, true);
+window.addEventListener('popstate', () => {
+  const k = sedeDeURL() || 'valencia';
+  if (k !== activa) setSede(k, true);
+});
+
+document.getElementById('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.target;
+  if (!f.nombre.value.trim() || !f.asunto.value.trim() || !f.mensaje.value.trim()) {
+    [f.nombre, f.asunto, f.mensaje].forEach((el) => { el.style.borderColor = el.value.trim() ? '' : '#6B0F1A'; });
+    return;
+  }
+  f.innerHTML = '<div class="sent">Gracias, ' + f.nombre.value.trim().split(' ')[0] + '. Recibimos tu mensaje y te respondemos al correo en horario de oficina. <em>(Prototipo: el envío no está conectado.)</em></div>';
+});
+
+
+const __io = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const i = +(el.dataset.revealI || 0);
+    if (i) el.style.transitionDelay = (i * 60) + 'ms';
+    el.classList.add('in');
+    __io.unobserve(el);
+  });
+}, { rootMargin: '0px 0px -6% 0px' });
+document.querySelectorAll('[data-reveal],[data-mask]').forEach((el) => __io.observe(el));
+
+const hdr = document.getElementById('hdr');
+const onScroll = () => hdr.classList.toggle('solid', window.scrollY > Math.max(220, window.innerHeight * 0.36));
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+
+<div id="accion-contacto" class="accion-pulgar" aria-hidden="true">
+  <a class="fill" href="tel:+582418134131"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Llamar a la planta</a>
+</div>
+<script>
+// La acción baja al pulgar recién cuando el usuario pasó la primera pantalla, y se retira
+// al llegar al cierre de la página, donde el mismo botón ya está en el contenido.
+(function(){
+  var barra = document.getElementById('accion-contacto');
+  if (!barra) return;
+  var cierre = document.querySelector('.cierre') || document.querySelector('footer');
+  var visible = false;
+  function ver(){
+    var pasoElHero = window.scrollY > window.innerHeight * 0.6;
+    var enElCierre = cierre ? cierre.getBoundingClientRect().top < window.innerHeight : false;
+    var debe = pasoElHero && !enElCierre;
+    if (debe === visible) return;
+    visible = debe;
+    barra.classList.toggle('in', debe);
+    barra.setAttribute('aria-hidden', debe ? 'false' : 'true');
+  }
+  window.addEventListener('scroll', ver, { passive: true });
+  window.addEventListener('resize', ver, { passive: true });
+  ver();
+})();
+</script>
+</body>
+</html>

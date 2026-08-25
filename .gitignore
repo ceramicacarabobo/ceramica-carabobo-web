@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+backups/
+.env
+.env.*
+!.env.example
+.DS_Store
+npm-debug.log*
+
+# --- Binarios pesados del handoff (NO versionados) ---------------------------
+# 113 MB de fotos y video del bundle de diseño. Se quedan en el disco de trabajo
+# y su destino final es Sanity (y de ahí, los exports del dataset).
+# El resto de `design/` —HTML del prototipo, specs, JSON del catálogo, GeoJSON,
+# logos SVG, LEEME— SÍ se versiona: es el contrato de fidelidad visual.
+design/publicar/uploads/
+design/publicar/assets/catalogo/

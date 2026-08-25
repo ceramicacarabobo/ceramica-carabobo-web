@@ -1,0 +1,211 @@
+/* ============================================================================
+   Tokens core — v0  ·  Cerámica Carabobo
+   Copiado VERBATIM de `design/Tokens v0.dc.html` (§09 Implementación).
+   Fuente de verdad de fidelidad visual: no editar valores aquí sin actualizar
+   el documento de diseño. Ver docs/plan-proyecto.md §3.0.
+   ============================================================================ */
+
+:root {
+  /* ===== Color · Brand ===== */
+  --color-brand-900: #55000F;   /* kit — brand profundo */
+  --color-brand-700: #6B0F1A;   /* kit — núcleo de marca */
+  --color-brand-300: #E6C0A8;   /* nude cerámica — acentos on-dark */
+  --color-brand-100: #F2E5D8;   /* fondo de selección / hover secundario */
+  /* ===== Color · Action ===== */
+  --color-action-primary: var(--color-brand-700);
+  --color-action-primary-hover: var(--color-brand-900);
+  --color-action-on-primary: #FFFFFF;
+  --color-action-secondary-text: var(--color-brand-700);
+  --color-action-secondary-border: var(--color-brand-700);
+  --color-action-secondary-hover-bg: var(--color-brand-100);
+  --color-action-inverse-bg: #FFFFFF;          /* botón sobre fondos oscuros */
+  --color-action-inverse-text: var(--color-brand-700);
+  /* active = hover (brand-900) + translateY(1px). Decisión: sin brand-950 —
+     un paso más oscuro que #55000F es imperceptible y no es verificable contra el kit */
+  /* ===== Color · Surface ===== */
+  --color-surface-base: #F5F3F0;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-sunken: #ECE9E4;
+  --color-surface-brand: var(--color-brand-900);
+  --color-surface-inverse: #2E2E2E;
+  --color-surface-inverse-deep: #1F1F1F;
+  /* ===== Color · Neutral ===== */
+  --color-neutral-0: #FFFFFF;    /* kit */
+  --color-neutral-50: #F5F3F0;
+  --color-neutral-100: #ECE9E4;
+  --color-neutral-200: #D9D9D9;  /* kit */
+  --color-neutral-300: #BFBDB9;
+  --color-neutral-400: #8F8D89;  /* solo UI grande / disabled — 3.3:1 */
+  --color-neutral-500: #6E6C68;
+  --color-neutral-600: #5C5A56;
+  --color-neutral-700: #2E2E2E;  /* kit */
+  --color-neutral-800: #1F1F1F;
+  /* ===== Color · Text ===== */
+  --color-text-primary: var(--color-neutral-700);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-text-link: var(--color-brand-700);
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-secondary: #C9C7C3;
+  --color-text-link-on-dark: var(--color-brand-300);
+  /* Set on-dark tipificado 2026-07-28 (A4): valores únicos, sin alphas ad-hoc */
+  --color-border-on-dark: rgba(255,255,255,0.40);         /* hairlines sobre imagen */
+  --color-border-on-dark-strong: rgba(255,255,255,0.65);  /* borde de control sobre imagen */
+  /* ===== Color · Border ===== */
+  --color-border-default: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-brand-700);        /* on-dark: brand-300 */
+  --color-bg-disabled: var(--color-neutral-100);       /* alias semántico */
+  --color-border-disabled: var(--color-neutral-200);   /* alias semántico */
+  /* ===== Color · Semantic ===== */
+  --color-success-100: #E4EFE7;
+  --color-success-600: #2F6B45;  /* icono / borde */
+  --color-success-700: #24523A;  /* texto sobre tinte */
+  --color-warning-100: #F6EDD9;
+  --color-warning-600: #8A5800;
+  --color-warning-700: #6E4600;
+  --color-error-100: #F8E7E0;
+  --color-error-600: #B4441F;    /* ladrillo — no compite con brand */
+  --color-error-700: #8C3312;
+  /* ===== Typography ===== */
+  --font-heading: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  /* shorthand: weight size/line-height family */
+  /* Recalibrado 2026-07-28 por la aplicación A4: display y heading-xl pasan a weight 300
+     (editorial premium por sustracción); heading-lg a 500. Ver CLAUDE.md · Versiones. */
+  --text-display: 300 clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem)/1.08 var(--font-heading);
+  --text-heading-xl: 300 clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem)/1.12 var(--font-heading);
+  --text-heading-lg: 500 clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem)/1.2 var(--font-heading);
+  --text-heading-md: 600 clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem)/1.3 var(--font-heading);
+  --text-heading-sm: 600 1rem/1.4 var(--font-heading);
+  --text-body-lg: 400 clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem)/1.6 var(--font-body);
+  --text-body-md: 400 1rem/1.6 var(--font-body);
+  --text-body-base: 400 0.9375rem/1.65 var(--font-body); /* promovido 2026-08-05: cuerpo por defecto — 20 usos en 4 páginas; body-md queda para intro */
+  --text-body-sm: 400 0.875rem/1.5 var(--font-body);
+  --text-caption: 400 0.75rem/1.4 var(--font-body);
+  --text-overline: 500 0.75rem/1.35 var(--font-heading); /* recalibrado 2026-07-28: 500 + uppercase, ls 0.16em */
+  --text-nav: 500 0.75rem/1.35 var(--font-heading);      /* nav y labels de header — uppercase, ls 0.16em */
+  --text-ui-md: 500 1rem/1.4 var(--font-heading);        /* label de UI en 16px: nombre de proyecto */
+  --text-ui-sm: 500 0.8125rem/1.45 var(--font-heading);  /* 13px UI: nombres de serie, CTA de texto */
+  --text-title-md: 300 clamp(1.375rem, 1.15rem + 1vw, 2rem)/1.15 var(--font-heading);        /* título light de fila/banda */
+  --text-title-sm: 300 clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem)/1.25 var(--font-heading);  /* título light de card */
+  --text-body-15: 400 0.9375rem/1.7 var(--font-body);    /* bajadas de sección y cuerpo editorial (15px, leading 1.7) */
+  --text-caption-lg: 400 0.8125rem/1.5 var(--font-body); /* 13px cuerpo: captions, créditos, metadatos */
+  --text-data: 500 0.9375rem/1.4 var(--font-heading);    /* + tabular-nums */
+  /* RETIRADO 2026-08-19 --tracking-display: -0.01em — el display del sitio es siempre
+     weight 300 y usa tracking-display-light; el negativo quedó sin consumidor. */
+  --tracking-display-light: 0.01em;   /* display en weight 300 — compensa el peso ligero */
+  /* RETIRADO 2026-08-19 --tracking-overline: 0.1em — los overlines usan la escala
+     tracking-uppercase-*; este valor quedó huérfano al promoverse esa escala. */
+  /* Escala de tracking uppercase (agregada 2026-07-28 desde A4) */
+  --tracking-uppercase-xs: 0.08em;    /* links editoriales */
+  --tracking-uppercase-sm: 0.12em;    /* nombres de serie, CTA fill */
+  --tracking-uppercase-md: 0.14em;    /* CTA outline, numeración */
+  --tracking-uppercase-lg: 0.16em;    /* nav, eyebrows, overline */
+  --tracking-label: 0.02em;           /* labels en sentence case */
+  --tracking-badge: 0.04em;           /* badges */
+  /* ===== Spacing (base 4 px, nombre = múltiplo) ===== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  /* ===== Layout (promovidos 2026-07-28 desde A4) ===== */
+  --size-content-max: 1600px;                     /* ancho máximo de contenido */
+  --space-gutter-page: clamp(20px, 5vw, 72px);    /* gutter lateral de página */
+  --space-section: clamp(72px, 8vw, 120px);       /* ritmo vertical entre secciones */
+  --border-width: 1px;
+  --color-border-hairline: var(--color-neutral-200); /* #D9D9D9 — separador estructural.
+     CORREGIDO 2026-08-19: aliaseaba neutral-300 (#BFBDB9), un color que ninguna página usa,
+     mientras su propio comentario declaraba #D9D9D9 y las cuatro páginas escriben #D9D9D9. */
+  --bp-mobile: 760px;                             /* límite superior de móvil (ver Responsividad v0) */
+  --bp-tablet: 1024px;                            /* límite superior de tablet; desde acá, desktop */
+  /* ===== Patrones de interacción (promovidos 2026-07-28 desde A4) ===== */
+  --hover-image-scale: 1.03;   /* hover estándar de imagen: transform + dur-base + ease-out */
+  --hover-image-dim: 0.92;     /* atenuación de imagen en hover de card.
+     CORREGIDO 2026-08-19: decía 0.88; el catálogo —único consumidor— usa 0.92. */
+  --reveal-offset: 24px;       /* reveal on-scroll: opacity 0→1 + translateY, dur-slow, una vez */
+  /* ===== Lockup de marca — EXACTAMENTE 2 variantes =====
+     horizontal: iso 36×38 + wordmark 86×27, gap 12px — headers compactos, banda fija
+                 (recalibrado 2026-08-05: a 70px el wordmark leía chico en banda ancha)
+     apilada:    iso 38×41 + wordmark 132×20, gap 8px — header sobre hero, footer, menú móvil
+     (logo-full.svg queda reservado para usos editoriales fuera de UI) */
+  /* ===== Radius ===== */
+  --radius-none: 0;      /* default — cards, imágenes, botones */
+  --radius-sm: 2px;      /* inputs, chips, badges */
+  --radius-md: 4px;      /* solo flotantes: tooltip, dropdown, toast */
+  /* ===== Elevation (sombra = neutral-800 con alpha, nunca negro puro) ===== */
+  --elevation-0: none;                             /* default — el reposo usa bordes */
+  --elevation-1: 0 1px 3px rgba(31,31,31,0.10);    /* sticky: header, barra de filtros */
+  --elevation-2: 0 4px 12px rgba(31,31,31,0.14);   /* flotantes: dropdown, tooltip, toast */
+  --elevation-3: 0 12px 32px rgba(31,31,31,0.22);  /* modal, drawer de filtros móvil */
+  /* Escala de scrim (agregada 2026-07-28 desde A4 — unifica 4 valores dispersos) */
+  --scrim-subtle: rgba(31,31,31,0.24);  /* hover de tile: caption sobre imagen */
+  --scrim-base: rgba(31,31,31,0.32);    /* panel de navegación, velo de hero */
+  --scrim-strong: rgba(31,31,31,0.40);  /* texto grande sobre imagery full-bleed */
+  --color-scrim: rgba(31,31,31,0.50);   /* modal y drawer — sin cambios */
+  /* Rampa de hero (promovida 2026-08-05): 4 paradas — menú arriba, foto limpia al centro,
+     base para el titular. Idéntica en home, catálogo, contacto y dónde comprar. */
+  --scrim-hero: linear-gradient(to bottom,
+    rgba(31,31,31,0.32) 0%,
+    rgba(31,31,31,0.16) 30%,
+    rgba(31,31,31,0.40) 62%,
+    rgba(31,31,31,0.62) 100%);
+  /* ===== Motion (solo opacity y transform) ===== */
+  --dur-instant: 80ms;   /* feedback de estado: hover, active, checkbox */
+  --dur-fast: 160ms;     /* chips, dropdown, tooltip, toast */
+  --dur-base: 240ms;     /* drawer, acordeón de specs, modal */
+  --dur-reveal: 320ms;   /* promovido 2026-08-05: reveal on-scroll de bloque */
+  --dur-mask: 400ms;     /* promovido 2026-08-05: máscara clip-path de imagen */
+  --dur-slow: 480ms;     /* SOLO hero de home, con ease-expressive */
+  /* Cascada: NO es un token. El elemento i de un grupo espera i × 70ms (home) / i × 60ms (internas). */
+  /* RETIRADO 2026-08-19 --dur-spin: 800ms. Estados v0 decidió que la espera se comunica
+     con el latido del Marcador de imagen y NO con un indicador giratorio: el token no
+     tiene consumidor posible. Se deja anotado para que nadie lo reintroduzca. */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);          /* default: entradas y apariciones */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);     /* reversibles: acordeones, expandir */
+  --ease-expressive: cubic-bezier(0.16, 1, 0.3, 1); /* SOLO hero de home */
+  /* ===== Iconography (Lucide, ISC) ===== */
+  --icon-stroke: 2px;    /* absoluto en toda la escala (absoluteStrokeWidth) */
+  --icon-sm: 16px;       /* inline: inputs, chips, metadatos */
+  --icon-md: 20px;       /* botones, nav móvil */
+  --icon-lg: 24px;       /* default de UI */
+  --icon-xl: 32px;       /* features en fichas; hit target siempre >= 44px */
+  /* ===== Controls (accesibilidad) ===== */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --control-height-lg: 48px;   /* CTA de cierre / acción destacada (agregado 2026-07-28 desde A4) */
+  --control-height-md: 44px;   /* buttons, inputs, selects — hit target */
+  --control-height-sm: 36px;   /* chips, filas de checkbox */
+  --control-box: 20px;         /* checkbox / radio */
+  /* ===== Media ratios ===== */
+  --ratio-product: 4 / 3;      /* card de catálogo */
+  --ratio-feature: 3 / 2;      /* destacados home, ficha */
+  --ratio-portrait: 4 / 5;     /* v0.1.1 — opción galería vertical (ProductCard media); pendiente probar vs ratio-product en grilla real */
+  /* ===== Z-index ===== */
+  --z-sticky: 10;         /* header fijo, header y nav sobre hero */
+  --z-dropdown: 20;
+  --z-scrim: 30;
+  --z-megapanel-scrim: 30; /* scrim del mega-panel de Catálogo (G14) */
+  --z-megapanel: 32;       /* mega-panel de Catálogo, sobre su scrim */
+  --z-modal: 40;           /* modal, drawer, menú móvil */
+  --z-toast: 50;
+  /* Ad-hoc documentado (NO tokenizar hasta probar contra catálogo real en 1.2):
+     sidebar filtros 280px · modal 480px · bottom sheet max 85dvh */
+}
+/* Reduced motion — no negociable */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

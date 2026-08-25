@@ -1,0 +1,3972 @@
+{
+  "meta": {
+    "generado": "2026-08-20",
+    "fuentes": [
+      "Planilla \"Productos del Portafolio Guacara con PEI y MOHS - año 2026\" — 97 filas",
+      "Catálogo Serie Venezuela PDF partes 1-3 — 29 fichas (texto extraíble, no escaneo)"
+    ],
+    "unidad": "Una fila del archivo del cliente = un producto. No se agrupa por nombre; la propuesta de agrupar por diseño quedó en consulta (ver \"Ejemplo - SKU o diseno.dc.html\").",
+    "ejesSeparados": "materia, formato, uso, brillo y textura son campos independientes y filtrables. serie es navegación, no faceta. Ningún campo lleva dos valores pegados: la planilla escribe \"Brillante / Liso\" y el PDF \"cemento mate\", y acá se parten.",
+    "fueraDelSistema": {
+      "Tipo": "Porcelanato / Revestimiento — cero dato en las dos fuentes. Retirado.",
+      "Borde": "Rectificado — cero dato en las dos fuentes. Retirado. El rectificado de Ontario Bianco y Venato Gray era invención del prototipo.",
+      "30×60": "No existe en ninguna de las dos fuentes. Eliminado del eje formato."
+    },
+    "topeFotosPorFicha": 4,
+    "convencionFoto": "assets/catalogo/<slug>-1.jpg … -4.jpg — la -1 es la macro de la pieza (obligatoria) y de la -2 en adelante ambientes. slug = nombre en minúsculas, sin acentos, separado por guiones.",
+    "pendientes": [
+      "FOTOS: 31 productos con fotografía REAL del cliente — los 29 de Serie Venezuela (macro de la baldosa + un ambiente por producto, extraídos de su catálogo) más Ciprés Gris y Ciprés Moka. 66 llevan foto de EJEMPLO que no corresponde al producto que ilustra (ejemplo: true) y 29 se muestran sin foto. Las de Serie Venezuela son también las que usa el home.",
+      "MATERIA: 26 declaradas por el cliente (campo Acabado del PDF), 71 deducidas por nosotros (tipología 42 · formato 17 · nombre 10 · supuesto 2) y 29 sin materia (26 de la planilla + 3 del PDF: adícora ×2 y choroní). Pedir la columna al cliente es el único pedido bloqueante.",
+      "2 mármoles por SUPUESTO (materiaOrigen \"supuesto\"): Elba y Livorno Avorio. Elegidos por nombre para llegar a los 14 de la tabla del cliente. Es el dato más flojo del archivo: revertir si el cliente indica otros.",
+      "TEXTURA sin dato en 29 productos (los de Serie Venezuela): el filtro se oculta en esa vista en vez de llevar el resultado a cero.",
+      "BRILLO sin dato en 20 productos: quedan fuera de ese filtro y la fila desaparece de su ficha.",
+      "formatoReal: 24 de las 29 fichas de Venezuela declaran \"59,4 × 59,4 cm\" y 5 declaran 60 × 60. Todas se muestran como 60×60 y el valor del cliente va en la fila \"Medida real\"."
+    ]
+  },
+  "ejes": {
+    "serie": [
+      "Regular",
+      "Venezuela"
+    ],
+    "materia": [
+      "Piedra",
+      "Cemento",
+      "Madera",
+      "Mármol",
+      "Terrazo",
+      "Otros"
+    ],
+    "formato": [
+      "60×60",
+      "60×120",
+      "25×120"
+    ],
+    "uso": [
+      "Interiores",
+      "Alto tránsito"
+    ],
+    "textura": [
+      "Liso",
+      "Estructurado",
+      "Rústico"
+    ],
+    "brillo": [
+      "Brillante",
+      "Mate",
+      "Satinado"
+    ]
+  },
+  "productos": [
+    {
+      "id": "reg-001",
+      "itemCliente": 1,
+      "nombre": "Agata Nacar",
+      "slug": "agata-nacar",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-002",
+      "itemCliente": 2,
+      "nombre": "Blanco Brillante",
+      "slug": "blanco-brillante",
+      "serie": "Regular",
+      "materia": "Otros",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-003",
+      "itemCliente": 3,
+      "nombre": "Capri",
+      "slug": "capri",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-004",
+      "itemCliente": 4,
+      "nombre": "Carrara Brillante",
+      "slug": "carrara-brillante",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-marmol.jpg",
+          "alt": "Macro de textura símil mármol",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-marmol.jpg",
+          "alt": "Ambiente interior símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-005",
+      "itemCliente": 5,
+      "nombre": "Carrara Gold",
+      "slug": "carrara-gold",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-marmol.jpg",
+          "alt": "Ambiente interior símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-living.jpg",
+          "alt": "Living con piso símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-006",
+      "itemCliente": 6,
+      "nombre": "Enigma White",
+      "slug": "enigma-white",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-007",
+      "itemCliente": 7,
+      "nombre": "Elba",
+      "slug": "elba",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "supuesto",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-living.jpg",
+          "alt": "Living con piso símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-marmol.jpg",
+          "alt": "Macro de textura símil mármol",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-008",
+      "itemCliente": 8,
+      "nombre": "Granite Stone Beige",
+      "slug": "granite-stone-beige",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-009",
+      "itemCliente": 9,
+      "nombre": "Granite Stone Gray",
+      "slug": "granite-stone-gray",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-010",
+      "itemCliente": 10,
+      "nombre": "Guaparo",
+      "slug": "guaparo",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-011",
+      "itemCliente": 11,
+      "nombre": "Hydra",
+      "slug": "hydra",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-012",
+      "itemCliente": 12,
+      "nombre": "Kos",
+      "slug": "kos",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-013",
+      "itemCliente": 13,
+      "nombre": "Livorno Avorio",
+      "slug": "livorno-avorio",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "supuesto",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-marmol.jpg",
+          "alt": "Macro de textura símil mármol",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-marmol.jpg",
+          "alt": "Ambiente interior símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-014",
+      "itemCliente": 14,
+      "nombre": "Milos Gris",
+      "slug": "milos-gris",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-015",
+      "itemCliente": 15,
+      "nombre": "Mykonos",
+      "slug": "mykonos",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-016",
+      "itemCliente": 16,
+      "nombre": "Mosaico Azul-Blanco",
+      "slug": "mosaico-azul-blanco",
+      "serie": "Regular",
+      "materia": "Otros",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-017",
+      "itemCliente": 17,
+      "nombre": "Pompeya",
+      "slug": "pompeya",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-018",
+      "itemCliente": 18,
+      "nombre": "Prebo",
+      "slug": "prebo",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-019",
+      "itemCliente": 19,
+      "nombre": "Trigal",
+      "slug": "trigal",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-020",
+      "itemCliente": 20,
+      "nombre": "Rodas",
+      "slug": "rodas",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-021",
+      "itemCliente": 21,
+      "nombre": "Santorini",
+      "slug": "santorini",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-022",
+      "itemCliente": 22,
+      "nombre": "Venato Gray",
+      "slug": "venato-gray",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-marmol.jpg",
+          "alt": "Ambiente interior símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-living.jpg",
+          "alt": "Living con piso símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-023",
+      "itemCliente": 23,
+      "nombre": "Viñedo",
+      "slug": "vinedo",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-024",
+      "itemCliente": 24,
+      "nombre": "Blanco Mate",
+      "slug": "blanco-mate",
+      "serie": "Regular",
+      "materia": "Otros",
+      "materiaOrigen": "nombre",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-025",
+      "itemCliente": 25,
+      "nombre": "Cemento Beige",
+      "slug": "cemento-beige",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-026",
+      "itemCliente": 26,
+      "nombre": "Cemento Gris",
+      "slug": "cemento-gris",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-027",
+      "itemCliente": 27,
+      "nombre": "Ilusion Camel",
+      "slug": "ilusion-camel",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-028",
+      "itemCliente": 28,
+      "nombre": "Ilusion Graphite",
+      "slug": "ilusion-graphite",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-029",
+      "itemCliente": 29,
+      "nombre": "Ilusion Grey",
+      "slug": "ilusion-grey",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-030",
+      "itemCliente": 30,
+      "nombre": "Park Camel",
+      "slug": "park-camel",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-031",
+      "itemCliente": 31,
+      "nombre": "Park Graphite",
+      "slug": "park-graphite",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-032",
+      "itemCliente": 32,
+      "nombre": "Park Grey",
+      "slug": "park-grey",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-033",
+      "itemCliente": 33,
+      "nombre": "Santa Marta Gris",
+      "slug": "santa-marta-gris",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-034",
+      "itemCliente": 34,
+      "nombre": "Amazonia",
+      "slug": "amazonia",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-035",
+      "itemCliente": 35,
+      "nombre": "Arce Gris",
+      "slug": "arce-gris",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-036",
+      "itemCliente": 36,
+      "nombre": "Aragon Blanco",
+      "slug": "aragon-blanco",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-037",
+      "itemCliente": 37,
+      "nombre": "Aragon Cotto",
+      "slug": "aragon-cotto",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-038",
+      "itemCliente": 38,
+      "nombre": "Aragon Grigio",
+      "slug": "aragon-grigio",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-039",
+      "itemCliente": 39,
+      "nombre": "Aragon Musgo",
+      "slug": "aragon-musgo",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-040",
+      "itemCliente": 40,
+      "nombre": "Cordillera",
+      "slug": "cordillera",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-041",
+      "itemCliente": 41,
+      "nombre": "Duna",
+      "slug": "duna",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-042",
+      "itemCliente": 42,
+      "nombre": "Duna Crema",
+      "slug": "duna-crema",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-043",
+      "itemCliente": 43,
+      "nombre": "Duna Gris",
+      "slug": "duna-gris",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-044",
+      "itemCliente": 44,
+      "nombre": "Gran Sabana",
+      "slug": "gran-sabana",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-045",
+      "itemCliente": 45,
+      "nombre": "Mallorca Beige",
+      "slug": "mallorca-beige",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-046",
+      "itemCliente": 46,
+      "nombre": "Mallorca Gris",
+      "slug": "mallorca-gris",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-047",
+      "itemCliente": 47,
+      "nombre": "Mallorca Perla",
+      "slug": "mallorca-perla",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-048",
+      "itemCliente": 48,
+      "nombre": "Merida Ceniza",
+      "slug": "merida-ceniza",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-049",
+      "itemCliente": 49,
+      "nombre": "Merida Cieno",
+      "slug": "merida-cieno",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-050",
+      "itemCliente": 50,
+      "nombre": "Salto Angel",
+      "slug": "salto-angel",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×60",
+      "formatoReal": null,
+      "brillo": [],
+      "textura": "Rústico",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-063",
+      "itemCliente": 63,
+      "nombre": "Abedul",
+      "slug": "abedul",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-064",
+      "itemCliente": 64,
+      "nombre": "Bahia Crema",
+      "slug": "bahia-crema",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-065",
+      "itemCliente": 65,
+      "nombre": "Bahia Crema Canal",
+      "slug": "bahia-crema-canal",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-066",
+      "itemCliente": 66,
+      "nombre": "Bahia Gris Canal",
+      "slug": "bahia-gris-canal",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-067",
+      "itemCliente": 67,
+      "nombre": "Cava",
+      "slug": "cava",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-068",
+      "itemCliente": 68,
+      "nombre": "Ciprés Gris",
+      "slug": "cipres-gris",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-cipres.jpg",
+          "alt": "Ambiente con diseño Ciprés",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "reg-069",
+      "itemCliente": 69,
+      "nombre": "Ciprés Moka",
+      "slug": "cipres-moka",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-cipres.jpg",
+          "alt": "Ambiente con diseño Ciprés",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "reg-070",
+      "itemCliente": 70,
+      "nombre": "Corteza",
+      "slug": "corteza",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-071",
+      "itemCliente": 71,
+      "nombre": "Forest Caramel",
+      "slug": "forest-caramel",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-072",
+      "itemCliente": 72,
+      "nombre": "Forest Fresno",
+      "slug": "forest-fresno",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-073",
+      "itemCliente": 73,
+      "nombre": "Forest Grey",
+      "slug": "forest-grey",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-074",
+      "itemCliente": 74,
+      "nombre": "Forest Sand",
+      "slug": "forest-sand",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-075",
+      "itemCliente": 75,
+      "nombre": "Forest Smoke",
+      "slug": "forest-smoke",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-076",
+      "itemCliente": 76,
+      "nombre": "Nogal",
+      "slug": "nogal",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-077",
+      "itemCliente": 77,
+      "nombre": "Nogal Sg",
+      "slug": "nogal-sg",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-078",
+      "itemCliente": 78,
+      "nombre": "Olmo",
+      "slug": "olmo",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-madera.jpg",
+          "alt": "Interior con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-079",
+      "itemCliente": 79,
+      "nombre": "Teca",
+      "slug": "teca",
+      "serie": "Regular",
+      "materia": "Madera",
+      "materiaOrigen": "formato",
+      "formato": "25×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-restaurante.jpg",
+          "alt": "Salón de restaurante con piso símil madera",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-madera.jpg",
+          "alt": "Macro de textura símil madera",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-080",
+      "itemCliente": 80,
+      "nombre": "Abudabi",
+      "slug": "abudabi",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-081",
+      "itemCliente": 81,
+      "nombre": "Apolo",
+      "slug": "apolo",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-082",
+      "itemCliente": 82,
+      "nombre": "Atenea",
+      "slug": "atenea",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-083",
+      "itemCliente": 83,
+      "nombre": "Dubai",
+      "slug": "dubai",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-084",
+      "itemCliente": 84,
+      "nombre": "Enigma White",
+      "slug": "enigma-white",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-085",
+      "itemCliente": 85,
+      "nombre": "Eros Brillante",
+      "slug": "eros-brillante",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-086",
+      "itemCliente": 86,
+      "nombre": "Hydra",
+      "slug": "hydra",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-087",
+      "itemCliente": 87,
+      "nombre": "Kos",
+      "slug": "kos",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-088",
+      "itemCliente": 88,
+      "nombre": "Mykonos",
+      "slug": "mykonos",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-089",
+      "itemCliente": 89,
+      "nombre": "Pompeya",
+      "slug": "pompeya",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-090",
+      "itemCliente": 90,
+      "nombre": "Santorini",
+      "slug": "santorini",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-091",
+      "itemCliente": 91,
+      "nombre": "Travertino Brillante",
+      "slug": "travertino-brillante",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "nombre",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-living.jpg",
+          "alt": "Living con piso símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-marmol.jpg",
+          "alt": "Macro de textura símil mármol",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-092",
+      "itemCliente": 92,
+      "nombre": "Sarja",
+      "slug": "sarja",
+      "serie": "Regular",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Brillante"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 7,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": []
+    },
+    {
+      "id": "reg-093",
+      "itemCliente": 93,
+      "nombre": "Bari",
+      "slug": "bari",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-094",
+      "itemCliente": 94,
+      "nombre": "Cemento Gris Mate",
+      "slug": "cemento-gris-mate",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-095",
+      "itemCliente": 95,
+      "nombre": "City Grey",
+      "slug": "city-grey",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-096",
+      "itemCliente": 96,
+      "nombre": "Concreto",
+      "slug": "concreto",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-097",
+      "itemCliente": 97,
+      "nombre": "Manhattan",
+      "slug": "manhattan",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-098",
+      "itemCliente": 98,
+      "nombre": "Milan",
+      "slug": "milan",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-099",
+      "itemCliente": 99,
+      "nombre": "Santa Marta Gris",
+      "slug": "santa-marta-gris",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-100",
+      "itemCliente": 100,
+      "nombre": "Travertino Mate",
+      "slug": "travertino-mate",
+      "serie": "Regular",
+      "materia": "Mármol",
+      "materiaOrigen": "nombre",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-marmol.jpg",
+          "alt": "Macro de textura símil mármol",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-marmol.jpg",
+          "alt": "Ambiente interior símil mármol",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-101",
+      "itemCliente": 101,
+      "nombre": "Tokio",
+      "slug": "tokio",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-102",
+      "itemCliente": 102,
+      "nombre": "Venecia",
+      "slug": "venecia",
+      "serie": "Regular",
+      "materia": "Cemento",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Liso",
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": 8,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-cemento.jpg",
+          "alt": "Baño con porcelanato símil cemento",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-cemento.jpg",
+          "alt": "Macro de textura símil cemento",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-103",
+      "itemCliente": 103,
+      "nombre": "Duna",
+      "slug": "duna",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-104",
+      "itemCliente": 104,
+      "nombre": "Duna Crema",
+      "slug": "duna-crema",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-105",
+      "itemCliente": 105,
+      "nombre": "Duna Gris",
+      "slug": "duna-gris",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-106",
+      "itemCliente": 106,
+      "nombre": "Gran Sabana",
+      "slug": "gran-sabana",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-107",
+      "itemCliente": 107,
+      "nombre": "Mallorca Gris",
+      "slug": "mallorca-gris",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-108",
+      "itemCliente": 108,
+      "nombre": "Mallorca Beige",
+      "slug": "mallorca-beige",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "reg-109",
+      "itemCliente": 109,
+      "nombre": "Venecia Rustico",
+      "slug": "venecia-rustico",
+      "serie": "Regular",
+      "materia": "Piedra",
+      "materiaOrigen": "tipología",
+      "formato": "60×120",
+      "formatoReal": null,
+      "brillo": [
+        "Mate"
+      ],
+      "textura": "Estructurado",
+      "uso": "Alto tránsito",
+      "pei": "IV",
+      "mohs": 9,
+      "mtsCaja": null,
+      "fuente": "planilla",
+      "fotos": [
+        {
+          "src": "assets/catalogo/ejemplo-ambiente-piedra.jpg",
+          "alt": "Terraza exterior símil piedra",
+          "tipo": "ambiente",
+          "ejemplo": true
+        },
+        {
+          "src": "assets/catalogo/ejemplo-macro-piedra.jpg",
+          "alt": "Macro de textura símil piedra",
+          "tipo": "macro",
+          "ejemplo": true
+        }
+      ]
+    },
+    {
+      "id": "vzl-001",
+      "itemCliente": null,
+      "nombre": "Sanare Perla",
+      "slug": "sanare-perla",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/sanare-perla-1.jpg",
+          "alt": "Macro de la baldosa Sanare Perla",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/sanare-perla-2.webp",
+          "alt": "Ambiente con Sanare Perla",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-002",
+      "itemCliente": null,
+      "nombre": "Sanare Beige",
+      "slug": "sanare-beige",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/sanare-beige-1.jpg",
+          "alt": "Macro de la baldosa Sanare Beige",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/sanare-beige-2.webp",
+          "alt": "Ambiente con Sanare Beige",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-003",
+      "itemCliente": null,
+      "nombre": "Sanare Marrón",
+      "slug": "sanare-marron",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/sanare-marron-1.jpg",
+          "alt": "Macro de la baldosa Sanare Marrón",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/sanare-marron-2.webp",
+          "alt": "Ambiente con Sanare Marrón",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-004",
+      "itemCliente": null,
+      "nombre": "Samán Beige",
+      "slug": "saman-beige",
+      "serie": "Venezuela",
+      "materia": "Madera",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "madera",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/saman-beige-1.jpg",
+          "alt": "Macro de la baldosa Samán Beige",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/saman-beige-2.webp",
+          "alt": "Ambiente con Samán Beige",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-005",
+      "itemCliente": null,
+      "nombre": "Samán Gris",
+      "slug": "saman-gris",
+      "serie": "Venezuela",
+      "materia": "Madera",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "madera",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/saman-gris-1.jpg",
+          "alt": "Macro de la baldosa Samán Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/saman-gris-2.webp",
+          "alt": "Ambiente con Samán Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-006",
+      "itemCliente": null,
+      "nombre": "Samán Marrón",
+      "slug": "saman-marron",
+      "serie": "Venezuela",
+      "materia": "Madera",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "madera",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/saman-marron-1.jpg",
+          "alt": "Macro de la baldosa Samán Marrón",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/saman-marron-2.webp",
+          "alt": "Ambiente con Samán Marrón",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-007",
+      "itemCliente": null,
+      "nombre": "Páramo Gris",
+      "slug": "paramo-gris",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/paramo-gris-1.jpg",
+          "alt": "Macro de la baldosa Páramo Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/paramo-gris-2.webp",
+          "alt": "Ambiente con Páramo Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-008",
+      "itemCliente": null,
+      "nombre": "Páramo Beige",
+      "slug": "paramo-beige",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/paramo-beige-1.jpg",
+          "alt": "Macro de la baldosa Páramo Beige",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/paramo-beige-2.webp",
+          "alt": "Ambiente con Páramo Beige",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-009",
+      "itemCliente": null,
+      "nombre": "Páramo Perla",
+      "slug": "paramo-perla",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/paramo-perla-1.jpg",
+          "alt": "Macro de la baldosa Páramo Perla",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/paramo-perla-2.webp",
+          "alt": "Ambiente con Páramo Perla",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-010",
+      "itemCliente": null,
+      "nombre": "Macuto Arena",
+      "slug": "macuto-arena",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/macuto-arena-1.jpg",
+          "alt": "Macro de la baldosa Macuto Arena",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/macuto-arena-2.webp",
+          "alt": "Ambiente con Macuto Arena",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-011",
+      "itemCliente": null,
+      "nombre": "Macuto Boreal",
+      "slug": "macuto-boreal",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/macuto-boreal-1.jpg",
+          "alt": "Macro de la baldosa Macuto Boreal",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/macuto-boreal-2.webp",
+          "alt": "Ambiente con Macuto Boreal",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-012",
+      "itemCliente": null,
+      "nombre": "Galipan Gris",
+      "slug": "galipan-gris",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/galipan-gris-1.jpg",
+          "alt": "Macro de la baldosa Galipan Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/galipan-gris-2.webp",
+          "alt": "Ambiente con Galipan Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-013",
+      "itemCliente": null,
+      "nombre": "Galipan Taupe",
+      "slug": "galipan-taupe",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/galipan-taupe-1.jpg",
+          "alt": "Macro de la baldosa Galipan Taupe",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/galipan-taupe-2.webp",
+          "alt": "Ambiente con Galipan Taupe",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-014",
+      "itemCliente": null,
+      "nombre": "Cubiro Gris",
+      "slug": "cubiro-gris",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/cubiro-gris-1.jpg",
+          "alt": "Macro de la baldosa Cubiro Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/cubiro-gris-2.webp",
+          "alt": "Ambiente con Cubiro Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-015",
+      "itemCliente": null,
+      "nombre": "Cubiro Marrón",
+      "slug": "cubiro-marron",
+      "serie": "Venezuela",
+      "materia": "Mármol",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "marmol satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/cubiro-marron-1.jpg",
+          "alt": "Macro de la baldosa Cubiro Marrón",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/cubiro-marron-2.webp",
+          "alt": "Ambiente con Cubiro Marrón",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-016",
+      "itemCliente": null,
+      "nombre": "Cata Azul",
+      "slug": "cata-azul",
+      "serie": "Venezuela",
+      "materia": "Terrazo",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate",
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "terrazo mate/satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/cata-azul-1.jpg",
+          "alt": "Macro de la baldosa Cata Azul",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/macros/cata-azul-1b.jpg",
+          "alt": "Cata Azul — segunda terminación",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/cata-azul-2.webp",
+          "alt": "Ambiente con Cata Azul",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-017",
+      "itemCliente": null,
+      "nombre": "Cata Marrón",
+      "slug": "cata-marron",
+      "serie": "Venezuela",
+      "materia": "Terrazo",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate",
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "terrazo mate/satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/cata-marron-1.jpg",
+          "alt": "Macro de la baldosa Cata Marrón",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/macros/cata-marron-1b.jpg",
+          "alt": "Cata Marrón — segunda terminación",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/cata-marron-2.webp",
+          "alt": "Ambiente con Cata Marrón",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-018",
+      "itemCliente": null,
+      "nombre": "Cata Humo",
+      "slug": "cata-humo",
+      "serie": "Venezuela",
+      "materia": "Terrazo",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate",
+        "Satinado"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "terrazo mate/satinado",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/cata-humo-1.jpg",
+          "alt": "Macro de la baldosa Cata Humo",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/macros/cata-humo-1b.jpg",
+          "alt": "Cata Humo — segunda terminación",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/cata-humo-2.webp",
+          "alt": "Ambiente con Cata Humo",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-019",
+      "itemCliente": null,
+      "nombre": "Baruta Beige",
+      "slug": "baruta-beige",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "60 x 60 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,8 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/baruta-beige-1.jpg",
+          "alt": "Macro de la baldosa Baruta Beige",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/baruta-beige-2.webp",
+          "alt": "Ambiente con Baruta Beige",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-020",
+      "itemCliente": null,
+      "nombre": "Baruta Gris",
+      "slug": "baruta-gris",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "60 x 60 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,8 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/baruta-gris-1.jpg",
+          "alt": "Macro de la baldosa Baruta Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/baruta-gris-2.webp",
+          "alt": "Ambiente con Baruta Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-021",
+      "itemCliente": null,
+      "nombre": "Baruta Terra",
+      "slug": "baruta-terra",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "60 x 60 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,8 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/baruta-terra-1.jpg",
+          "alt": "Macro de la baldosa Baruta Terra",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/baruta-terra-2.webp",
+          "alt": "Ambiente con Baruta Terra",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-022",
+      "itemCliente": null,
+      "nombre": "Baruta Silver",
+      "slug": "baruta-silver",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "60 x 60 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,8 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/baruta-silver-1.jpg",
+          "alt": "Macro de la baldosa Baruta Silver",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/baruta-silver-2.webp",
+          "alt": "Ambiente con Baruta Silver",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-023",
+      "itemCliente": null,
+      "nombre": "Ávila Gris",
+      "slug": "avila-gris",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/avila-gris-1.jpg",
+          "alt": "Macro de la baldosa Ávila Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/avila-gris-2.webp",
+          "alt": "Ambiente con Ávila Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-024",
+      "itemCliente": null,
+      "nombre": "Ávila Geométrico",
+      "slug": "avila-geometrico",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/avila-geometrico-1.jpg",
+          "alt": "Macro de la baldosa Ávila Geométrico",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/avila-geometrico-2.webp",
+          "alt": "Ambiente con Ávila Geométrico",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-025",
+      "itemCliente": null,
+      "nombre": "Ávila Gris Oscuro",
+      "slug": "avila-gris-oscuro",
+      "serie": "Venezuela",
+      "materia": "Cemento",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "cemento mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/avila-gris-oscuro-1.jpg",
+          "alt": "Macro de la baldosa Ávila Gris Oscuro",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/avila-gris-oscuro-2.webp",
+          "alt": "Ambiente con Ávila Gris Oscuro",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-026",
+      "itemCliente": null,
+      "nombre": "Adícora Beige",
+      "slug": "adicora-beige",
+      "serie": "Venezuela",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/adicora-beige-1.jpg",
+          "alt": "Macro de la baldosa Adícora Beige",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/adicora-beige-2.webp",
+          "alt": "Ambiente con Adícora Beige",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-027",
+      "itemCliente": null,
+      "nombre": "Adícora Gris",
+      "slug": "adicora-gris",
+      "serie": "Venezuela",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/adicora-gris-1.jpg",
+          "alt": "Macro de la baldosa Adícora Gris",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/adicora-gris-2.webp",
+          "alt": "Ambiente con Adícora Gris",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-028",
+      "itemCliente": null,
+      "nombre": "Catatumbo",
+      "slug": "catatumbo",
+      "serie": "Venezuela",
+      "materia": "Piedra",
+      "materiaOrigen": "acabado del PDF",
+      "formato": "60×60",
+      "formatoReal": "60 x 60 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,8 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "piedra mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/catatumbo-1.jpg",
+          "alt": "Macro de la baldosa Catatumbo",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/catatumbo-2.webp",
+          "alt": "Ambiente con Catatumbo",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    },
+    {
+      "id": "vzl-029",
+      "itemCliente": null,
+      "nombre": "Choroní",
+      "slug": "choroni",
+      "serie": "Venezuela",
+      "materia": null,
+      "materiaOrigen": "pendiente",
+      "formato": "60×60",
+      "formatoReal": "59,4 x 59,4 cm",
+      "brillo": [
+        "Mate"
+      ],
+      "textura": null,
+      "uso": "Interiores",
+      "pei": "III",
+      "mohs": null,
+      "mtsCaja": "1,77 MT2",
+      "fuente": "pdf",
+      "acabadoFuente": "mate",
+      "fotos": [
+        {
+          "src": "assets/catalogo/macros/choroni-1.jpg",
+          "alt": "Macro de la baldosa Choroní",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/macros/choroni-1b.jpg",
+          "alt": "Choroní — segunda terminación",
+          "tipo": "macro",
+          "ejemplo": false
+        },
+        {
+          "src": "assets/catalogo/ambientes/choroni-2.webp",
+          "alt": "Ambiente con Choroní",
+          "tipo": "ambiente",
+          "ejemplo": false
+        }
+      ]
+    }
+  ]
+}

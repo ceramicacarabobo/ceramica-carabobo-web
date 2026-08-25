@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+:focus-visible{outline:2px solid #6B0F1A;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:1ms !important;animation-duration:1ms !important}}
+</style>
+</helmet>
+
+<div style="min-height:100dvh;display:flex;flex-direction:column">
+<div data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#F5F3F0;border-bottom:1px solid #D9D9D9">
+  <div style="max-width:1600px;margin:0 auto;height:84px;padding:0 clamp(20px,5vw,72px);display:flex;align-items:center;gap:24px">
+    <a href="Propuesta 1.dc.html" aria-label="Cerámica Carabobo — inicio" style="display:flex;align-items:center;gap:12px;flex:none">
+      <span style="display:block;width:36px;height:38px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#55000F"></span>
+      <span style="display:block;width:86px;height:27px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center / contain;mask:url('assets/logo-wordmark.svg') no-repeat center / contain;background:#55000F"></span>
+    </a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex;align-items:center;gap:clamp(20px,2.5vw,36px);flex:1;justify-content:flex-end">
+        <a href="catalogo-c5.dc.html" style="color:#2E2E2E;text-decoration:none;white-space:nowrap;font-family:'Work Sans',sans-serif;font-weight:400;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid transparent" style-hover="color:#6B0F1A;border-color:#6B0F1A">Catálogo</a>
+        <a href="contacto.html" style="color:#2E2E2E;text-decoration:none;white-space:nowrap;font-family:'Work Sans',sans-serif;font-weight:400;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid transparent" style-hover="color:#6B0F1A;border-color:#6B0F1A">Contacto</a>
+        <a href="donde-comprar.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border:1px solid #6B0F1A;color:#6B0F1A;text-decoration:none;white-space:nowrap;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;transition:background 180ms cubic-bezier(.4,0,.2,1),color 240ms cubic-bezier(0.2,0,0,1)" style-hover="background:#6B0F1A;color:#FFFFFF">Dónde comprar</a>
+      </nav>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <a href="catalogo-c5.dc.html" style="margin-left:auto;flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #6B0F1A;color:#6B0F1A;text-decoration:none;white-space:nowrap;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase">Catálogo</a>
+    </sc-if>
+  </div>
+</div>
+
+<main data-screen-label="404" style="flex:1;display:flex;align-items:center">
+  <div style="max-width:1600px;width:100%;margin:0 auto;padding:clamp(64px,10vw,140px) clamp(20px,5vw,72px);display:flex;flex-direction:column;gap:clamp(18px,2.4vw,28px)">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56">Error 404</div>
+    <h1 style="margin:0;max-width:20ch;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.08;letter-spacing:0.01em;color:#2E2E2E;text-wrap:pretty">Esta página no existe.</h1>
+    <p style="margin:0;max-width:44ch;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.7;color:#5C5A56;text-wrap:pretty">Puede que el enlace esté viejo o que hayamos movido el contenido. El catálogo completo sigue en su lugar.</p>
+    <a href="catalogo-c5.dc.html" style="align-self:flex-start;display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 24px;margin-top:4px;background:#6B0F1A;border:1px solid #6B0F1A;color:#FFFFFF;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;transition:background 180ms cubic-bezier(.4,0,.2,1)" style-hover="background:#55000F">Ver el catálogo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    <span style="display:block;width:40px;height:1px;background:#6B0F1A;margin-top:clamp(8px,1.4vw,16px)"></span>
+  </div>
+</main>
+
+<footer data-screen-label="Footer" style="background:#F5F3F0;border-top:1px solid #D9D9D9">
+  <div style="max-width:1600px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(20px,5vw,72px) 28px;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:clamp(28px,4vw,64px)">
+    <span style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex:none">
+      <span style="display:block;width:38px;height:41px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#55000F"></span>
+      <span style="display:block;width:132px;height:20px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center / contain;mask:url('assets/logo-wordmark.svg') no-repeat center / contain;background:#55000F"></span>
+    </span>
+    <nav style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)">
+      <a href="catalogo-c5.dc.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;padding:8px 0" style-hover="color:#2E2E2E">Catálogo</a>
+      <a href="donde-comprar.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;padding:8px 0" style-hover="color:#2E2E2E">Distribuidores</a>
+      <a href="contacto.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;padding:8px 0" style-hover="color:#2E2E2E">Contacto</a>
+    </nav>
+  </div>
+  <div style="max-width:1600px;margin:0 auto;padding:0 clamp(20px,5vw,72px) 32px">
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:0.75rem;line-height:1.4;color:#5C5A56">© 2026 Cerámica Carabobo, C.A. Todos los derechos reservados.</p>
+  </div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { movil: false };
+
+  componentDidMount() {
+    // Responsividad v0: móvil < 760px.
+    this.mq = window.matchMedia('(max-width: 759px)');
+    this.onMq = () => this.setState({ movil: this.mq.matches });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+  }
+
+  componentWillUnmount() { if (this.mq) this.mq.removeEventListener('change', this.onMq); }
+
+  renderVals() {
+    return {
+      isMobile: this.state.movil,
+      isDesktop: !this.state.movil,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

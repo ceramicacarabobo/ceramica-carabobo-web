@@ -1,0 +1,122 @@
+---
+/**
+ * Cáscara compartida — cabecera.
+ * Persiste entre navegaciones (transition:persist en el layout): no se
+ * remonta ni parpadea. La versión completa (megamenú, header sobre hero,
+ * menú móvil anclado al pie) llega en la Fase 2.
+ */
+const rutaActual = Astro.url.pathname.replace(/\/$/, '') || '/'
+
+const enlaces = [
+  {href: '/catalogo', texto: 'Catálogo'},
+  {href: '/contacto', texto: 'Contacto'},
+  {href: '/donde-comprar', texto: 'Dónde comprar'},
+]
+---
+
+<header class="cabecera">
+  <div class="cabecera__interior contenedor">
+    <a class="lockup" href="/" aria-label="Cerámica Carabobo — inicio">
+      <span class="lockup__iso" aria-hidden="true"></span>
+      <span class="lockup__wordmark" aria-hidden="true"></span>
+    </a>
+
+    <nav class="nav" aria-label="Principal">
+      <ul class="nav__lista">
+        {
+          enlaces.map(({href, texto}) => (
+            <li>
+              <a
+                class="nav__enlace"
+                href={href}
+                aria-current={rutaActual === href ? 'page' : undefined}
+              >
+                {texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-surface-base);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+    box-shadow: var(--elevation-1);
+    padding-block: var(--space-3);
+    padding-top: max(var(--space-3), env(safe-area-inset-top));
+  }
+
+  .cabecera__interior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  /* Lockup horizontal: iso 36×38 + wordmark 86×27, gap 12 (Tokens v0). */
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: var(--control-height-md);
+  }
+
+  .lockup__iso,
+  .lockup__wordmark {
+    display: block;
+    background: var(--color-brand-900);
+  }
+
+  .lockup__iso {
+    width: 36px;
+    height: 38px;
+    -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+    mask: url('/assets/logo-iso.svg') no-repeat center / contain;
+  }
+
+  .lockup__wordmark {
+    width: 86px;
+    height: 27px;
+    -webkit-mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+    mask: url('/assets/logo-wordmark.svg') no-repeat center / contain;
+  }
+
+  .nav__lista {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .nav__enlace {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height-md);
+    font: var(--text-nav);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    transition: color var(--dur-instant) var(--ease-out);
+  }
+
+  .nav__enlace:hover,
+  .nav__enlace[aria-current='page'] {
+    color: var(--color-brand-700);
+  }
+
+  @media (max-width: 759.98px) {
+    .nav__lista {
+      gap: var(--space-3);
+    }
+
+    .nav__enlace {
+      font-size: 0.6875rem;
+    }
+  }
+</style>

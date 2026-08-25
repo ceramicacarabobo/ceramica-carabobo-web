@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+</style>
+</helmet>
+
+<header data-screen-label="Header" style="background:#2E2E2E;color:#FFFFFF;padding:48px 24px 40px">
+  <div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="display:block;width:41px;height:44px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#FFFFFF"></span>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#E6C0A8">Cerámica Carabobo · Design System</div>
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#E6C0A8;color:#2E2E2E">v0 — especificación de handoff</span>
+    </div>
+    <h1 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.05;letter-spacing:-0.01em">Responsividad — v0</h1>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:17px;line-height:1.6;color:#C9C7C3;max-width:760px">Escala de breakpoints, grilla por breakpoint y regla de reflow para cada patrón del sitio. Es el documento que decide qué hace cada componente al angostarse, para que la implementación no tenga que inferirlo del prototipo. Consume <a href="Tokens v0.dc.html" style="color:#E6C0A8">Tokens v0</a> y describe los patrones de <a href="Primitivas v1.dc.html" style="color:#E6C0A8">Primitivas v1</a>.</p>
+  </div>
+</header>
+
+<section data-screen-label="Breakpoints" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">01 · Escala</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Tres rangos, dos breakpoints</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Los valores no son nuevos: 760px ya era el conmutador real del home y de la ficha del catálogo, y 1024px reemplaza al 1000px hardcodeado de las páginas internas (contacto y dónde comprar). Con esto el sistema deja de tener dos breakpoints en disputa. Móvil y desktop están diseñados; tablet es <strong>degradación declarada</strong>: no tiene composición propia, sigue las reglas de la tabla 03.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:760px">
+      <div style="display:grid;grid-template-columns:160px 180px 1fr 200px;gap:16px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Rango</div><div>Ancho</div><div>Referencia de diseño</div><div>Token</div>
+      </div>
+      <div style="display:grid;grid-template-columns:160px 180px 1fr 200px;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Móvil</div>
+        <div>&lt; 760px</div>
+        <div>390 × 844 (iPhone 14/15). Piso soportado: 360px.</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.8125rem;color:#5C5A56">hasta <code>--bp-mobile</code></div>
+      </div>
+      <div style="display:grid;grid-template-columns:160px 180px 1fr 200px;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Tablet</div>
+        <div>760 – 1023px</div>
+        <div>820 × 1180 (iPad Air). Sin composición propia: degradación declarada.</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.8125rem;color:#5C5A56"><code>--bp-mobile</code> → <code>--bp-tablet</code></div>
+      </div>
+      <div style="display:grid;grid-template-columns:160px 180px 1fr 200px;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Desktop</div>
+        <div>≥ 1024px</div>
+        <div>1440 de referencia; contenido tope 1600px y luego solo crece el margen.</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.8125rem;color:#5C5A56">desde <code>--bp-tablet</code></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin:16px 0 0;font-family:'Open Sans',sans-serif;font-size:0.8125rem;line-height:1.6;color:#8F8D89;max-width:760px">Mobile-first en la implementación: las reglas base son las de móvil y los breakpoints suman con <code>min-width</code>. El prototipo hace lo contrario (conmuta por JS desde desktop) por una limitación del entorno, no por decisión de diseño — ver nota al pie de la tabla 03.</p>
+</section>
+
+<section data-screen-label="Grilla" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">02 · Grilla</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Columnas, gutter y ritmo</h2>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:760px">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Medida</div><div>Móvil</div><div>Tablet</div><div>Desktop</div>
+      </div>
+      <sc-for list="{{ grilla }}" as="g" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:16px;align-items:baseline;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#2E2E2E">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem">{{ g.k }}</div>
+          <div>{{ g.m }}</div>
+          <div>{{ g.t }}</div>
+          <div>{{ g.d }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Reflow" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">03 · Reflow</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Qué hace cada patrón al angostarse</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Una fila por patrón del sitio. Si un patrón nuevo no está acá, no está especificado: se agrega a esta tabla antes de implementarlo.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:900px">
+      <div style="display:grid;grid-template-columns:190px 1fr 1fr 1fr;gap:16px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Patrón</div><div>Desktop</div><div>Tablet</div><div>Móvil</div>
+      </div>
+      <sc-for list="{{ reflow }}" as="r" hint-placeholder-count="12">
+        <div style="display:grid;grid-template-columns:190px 1fr 1fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.6;color:#2E2E2E">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem">{{ r.k }}</span>
+            <span style="font-family:'Work Sans',sans-serif;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#8F8D89">{{ r.donde }}</span>
+          </div>
+          <div>{{ r.d }}</div>
+          <div>{{ r.t }}</div>
+          <div style="color:#2E2E2E">{{ r.m }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <p style="margin:16px 0 0;font-family:'Open Sans',sans-serif;font-size:0.8125rem;line-height:1.6;color:#8F8D89;max-width:820px"><strong style="color:#5C5A56">Nota de implementación:</strong> en el prototipo estas conmutaciones están resueltas en JavaScript (un <code>matchMedia</code> que alimenta <code>isMobile</code> y decide <code>grid-template-columns</code>), porque el entorno de los Design Components no admite media queries dentro de estilos inline. En producción deben ser <strong>media queries CSS</strong> —o container queries donde el componente se reutiliza a distintos anchos, como la card de diseño— nunca un breakpoint en JS: un layout que depende de JS parpadea en la primera carga y no funciona con el HTML sin hidratar.</p>
+</section>
+
+<section data-screen-label="Reglas duras" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">04 · Reglas duras</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">No negociables en móvil</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:{{ colsReglas }};gap:1px;background:#D9D9D9;border:1px solid #D9D9D9">
+    <sc-for list="{{ reglas }}" as="x" hint-placeholder-count="8">
+      <div style="background:#FFFFFF;padding:20px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#2E2E2E">{{ x.k }}</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.6;color:#5C5A56">{{ x.v }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Estado" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">05 · Estado</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">El prototipo contra esta spec</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Lo que el prototipo ya resuelve y lo que queda como trabajo de implementación. Sirve para presupuestar: la columna "falta" es el alcance real del móvil.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:820px">
+      <div style="display:grid;grid-template-columns:210px 110px 1fr;gap:16px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Página</div><div>Móvil hoy</div><div>Qué falta</div>
+      </div>
+      <sc-for list="{{ estado }}" as="e" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:210px 110px 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.6;color:#2E2E2E">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem">{{ e.k }}</div>
+          <div><span style="{{ e.badgeStyle }}">{{ e.badge }}</span></div>
+          <div>{{ e.falta }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="gaps" data-screen-label="Gaps" style="max-width:1120px;margin:0 auto;padding:48px 24px 80px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">06 · Gaps</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Abiertos por esta spec</h2>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:1px;background:#D9D9D9;border:1px solid #D9D9D9">
+    <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="4">
+      <div style="background:#FFFFFF;padding:20px;display:flex;gap:20px;flex-wrap:wrap">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:700;font-size:0.9375rem;color:#6B0F1A;flex:none;width:48px">{{ g.id }}</div>
+        <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#2E2E2E">{{ g.k }}</div>
+          <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.6;color:#5C5A56">{{ g.v }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1180, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = { estrecho: false };
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 760px)');
+    this.onMq = () => this.setState({ estrecho: this.mq.matches });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+  }
+
+  componentWillUnmount() { if (this.mq) this.mq.removeEventListener('change', this.onMq); }
+
+  renderVals() {
+    const badge = (txt, ok) => ({
+      badge: txt,
+      badgeStyle: {
+        display: 'inline-flex', alignItems: 'center', padding: '3px 10px',
+        fontFamily: "'Work Sans', sans-serif", fontWeight: 600, fontSize: '0.75rem',
+        letterSpacing: '0.06em', textTransform: 'uppercase',
+        background: ok === 'si' ? '#E6C0A8' : (ok === 'parcial' ? '#ECE9E4' : '#6B0F1A'),
+        color: ok === 'no' ? '#FFFFFF' : '#2E2E2E',
+      },
+    });
+
+    return {
+      colsReglas: this.state.estrecho ? '1fr' : 'repeat(2, 1fr)',
+
+      grilla: [
+        { k: 'Gutter lateral', m: '20px', t: '32px', d: '40 → 72px (fluido)' },
+        { k: 'Columnas de referencia', m: '4', t: '8', d: '12' },
+        { k: 'Ancho de contenido', m: '100% − gutter', t: '100% − gutter', d: 'tope 1600px, centrado' },
+        { k: 'Gap entre tarjetas', m: '12px', t: '20px', d: '20 → 32px' },
+        { k: 'Ritmo entre secciones', m: '64px', t: '88px', d: '104 → 120px' },
+        { k: 'Alto del hero', m: '78dvh (mín. 480px)', t: '88dvh', d: '100dvh (mín. 560px)' },
+      ],
+
+      reflow: [
+        { k: 'Header y nav', donde: 'todas', d: 'Lockup horizontal izquierda + nav derecha + CTA outline. Transparente sobre el hero, sólido y fijo al scrollear.', t: 'Igual que desktop; el CTA puede perder la etiqueta si no cabe antes que el nav.', m: 'Solo lockup + hamburguesa 44px. Menú full-screen con lockup apilado, links en escala grande y el CTA como último ítem. La banda sólida es siempre sólida: no hay header transparente en móvil.' },
+        { k: 'Megamenú de Catálogo', donde: 'todas', d: 'Panel anclado al header, 200px de índice + grilla de 4 materias.', t: 'Panel a ancho completo, materias en 2 columnas.', m: 'No existe: el menú full-screen lista Catálogo como link directo. Nada de hover.' },
+        { k: 'Hero', donde: 'home', d: 'Titular abajo-izquierda e indicadores del carrusel abajo-derecha, en una fila.', t: 'Misma fila; el titular baja un paso de escala.', m: 'Columna: titular arriba, indicadores debajo alineados a la izquierda, tocables 44px. El carrusel no autoavanza en móvil (consume datos y compite con el scroll).' },
+        { k: 'Grilla de diseños', donde: 'catálogo', d: 'auto-fill minmax(300px, 1fr), gap 32px.', t: '3 columnas fijas.', m: '2 columnas, gutter 12px (decisión ya acordada del sistema). Specs debajo de la imagen, nunca encima.' },
+        { k: 'Sidebar de facetas', donde: 'catálogo', d: 'Columna sticky de 260px a la izquierda de la grilla.', t: 'Sticky de 220px; si no caben 2 columnas de cards, pasa al patrón móvil.', m: 'Desaparece la columna: botón "Filtrar (n)" fijo en la barra + overlay full-screen con las facetas en acordeón, "Limpiar" y "Ver n diseños" al pie. La grilla nunca comparte ancho con el sidebar.' },
+        { k: 'Card de diseño', donde: 'catálogo, home', d: 'Imagen 4/5 + nombre + 3 líneas de spec. Hover: scale 1.03 + atenuación.', t: 'Igual.', m: 'Imagen 4/5 o 1/1, nombre y máximo 2 líneas de spec. Sin hover: el estado activo es el tap. Toda la card es el área tocable.' },
+        { k: 'Ficha técnica (modal)', donde: 'catálogo', d: 'Split imagen + tabla, ancho 880px, cierre por botón, clic fuera o Escape.', t: 'Igual, ancho 88vw.', m: 'Hoja a pantalla completa (no diálogo centrado): imagen arriba, tabla debajo, botón de cierre 44px fijo arriba a la derecha, acciones ancladas al pie. Scroll interno, no del documento.' },
+        { k: 'Tabla de specs', donde: 'ficha, proyectos', d: 'Etiqueta a la izquierda, valor a la derecha, hairline por fila.', t: 'Igual.', m: 'Se mantiene la fila de dos columnas mientras la etiqueta quepa en una línea; si no, etiqueta arriba y valor abajo. Nunca scroll horizontal.' },
+        { k: 'Track de ambientes', donde: 'home', d: 'Pestañas + track con flechas, tarjetas de 280–440px, sin autoavance.', t: 'Igual, tarjetas más angostas.', m: 'Pestañas scrolleables horizontalmente + track por swipe (scroll-snap), tarjetas al 78vw. Las flechas se ocultan: el gesto las reemplaza.' },
+        { k: 'Historia (hilo con pin)', donde: 'home', d: 'Pin sticky de 100vh, 5 capas en crossfade conducidas por scroll, año en escala grande.', t: 'Igual, pero sin pin si el alto útil es menor a 640px.', m: 'Sin pin ni scroll-driven: imagen fija + lista de hitos con hairlines, en orden cronológico. Regla general: ningún efecto conducido por scroll sobrevive en móvil.' },
+        { k: 'Mapa por estados', donde: 'dónde comprar', d: 'Mapa 2/3 + panel de resultados sticky 1/3, zoom por estado.', t: 'Mapa arriba, panel debajo, ambos a ancho completo.', m: 'El mapa deja de ser el control principal: entrada por buscador + índice de estados en lista; el mapa queda como ilustración de alto fijo (no menos de 320px) y el zoom se activa al elegir un estado en la lista. Pines nunca menores a 24px de área tocable.' },
+        { k: 'Mapa de sedes', donde: 'contacto', d: 'Datos a la izquierda, mapa sticky a la derecha, conmutador de sedes.', t: 'Apilado, mapa estático de 420px.', m: 'Datos primero (teléfonos y correo como botones de 44px), mapa después con alto de 280px y el conmutador de sedes arriba del mapa, no dentro.' },
+        { k: 'Formulario', donde: 'contacto', d: 'Dos columnas, inputs de 44px.', t: 'Una columna.', m: 'Una columna, inputs a ancho completo, 48px de alto, teclado correcto por tipo de campo (email, tel) y el botón de envío a ancho completo.' },
+        { k: 'Acción al pulgar', donde: 'catálogo, contacto, dónde comprar', d: 'No existe: la acción principal vive en el contenido y en el header.', t: 'Igual que desktop.', m: 'Barra fija al pie con la acción principal de la página (Filtrar / Llamar / WhatsApp). Aparece cuando la acción original sale de cuadro y se retira al llegar al cierre, donde el mismo botón ya está en el contenido. Nunca es navegación: los destinos siguen en el menú. Se oculta si hay una Hoja o el menú abiertos — las hojas son dueñas del pie.' },
+        { k: 'Cierre de las hojas', donde: 'catálogo', d: 'Botón de cierre y clic fuera; el diálogo no se arrastra.', t: 'Igual que desktop.', m: 'Además del aspa, arrastrar hacia abajo desde el asa o la barra de título cierra la Hoja. El cuerpo no arrastra: ahí manda el scroll, y sobre un botón o un enlace tampoco. Umbral 96px o gesto rápido; si no llega, vuelve a su lugar.' },
+        { k: 'Menú de navegación', donde: 'todas', d: 'Nav horizontal en el header.', t: 'Igual que desktop mientras quepa.', m: 'El disparador queda arriba, pero la lista de enlaces se ancla al PIE de la pantalla: lo que se toca es la lista, no el disparador. Respeta el área segura del sistema.' },
+        { k: 'Footer', donde: 'todas', d: '3 columnas (storytelling + 2 de links).', t: '2 columnas.', m: '1 columna en el orden del desktop; los links con 44px de separación vertical.' },
+      ],
+
+      reglas: [
+        { k: 'Área tocable mínima 44 × 44px', v: 'Todo lo que se toca: links de nav, chips de filtro, indicadores del hero, pines del mapa, cierre de modales. Si el elemento visible es más chico, se extiende el área con padding, no se agranda el dibujo.' },
+        { k: 'Nada depende de hover', v: 'Todo estado que en desktop aparece al hover tiene que ser visible por defecto o accesible por tap en móvil: captions de imagen, specs de proyecto, panel de crossfade del índice. Un hover-only en móvil es contenido inexistente.' },
+        { k: 'Piso tipográfico 12px', v: '0.75rem es el mínimo absoluto y solo para overlines y etiquetas. Cuerpo nunca por debajo de 0.875rem en móvil.' },
+        { k: 'Sin scroll horizontal', v: 'El documento nunca desborda. Los únicos desbordes permitidos son tracks declarados con scroll-snap (ambientes, pestañas) y tablas anchas dentro de su propio contenedor.' },
+        { k: 'Motion se apaga antes de estorbar', v: 'Reveals on-scroll se conservan (fade + translateY corto); parallax, pin sticky y cualquier efecto conducido por scroll no existen en móvil. reduced-motion colapsa todo a 1ms en los tres rangos.' },
+        { k: 'Imagen: peso y recorte', v: 'Cada imagen de ambiente necesita un recorte vertical o cuadrado para móvil: el 16/9 del desktop pierde el sujeto. Servir con srcset y no cargar el video del hero bajo conexión limitada (poster + imagen fija).' },
+        { k: 'Safe areas', v: 'Cualquier barra fija (header, botón de filtrar, acciones de la ficha) respeta env(safe-area-inset-*) para no quedar bajo la barra del sistema en iOS.' },
+        { k: 'Orden de lectura', v: 'El reflow no reordena el DOM: lo que en desktop está a la derecha aparece debajo. Si hace falta otro orden, se cambia el orden del documento y el desktop lo recompone, no al revés.' },
+      ],
+
+      estado: [
+        Object.assign({ k: 'Home — Propuesta 1', falta: 'Aplicado el 19/08: tres rangos, carrusel sin autoplay en móvil, indicadores de 44px, hero apilado, scroll-snap en Ambientes, parallax apagado y menú anclado al pie. Sin Acción al pulgar a propósito: es un scroll narrativo y un botón fijo lo abarata. Queda el recorte vertical de las imágenes (G33) y pasar el conmutador de JS a media queries.' }, badge('Resuelto', 'si')),
+        Object.assign({ k: 'Catálogo C5', falta: 'Aplicado el 19/08: grilla de 2 columnas, **Hoja** de filtros con **Acordeón de faceta**, **Ficha de diseño** como Hoja con arrastre para cerrar, header sólido con hamburguesa, menú anclado al pie y **Acción al pulgar** para Filtrar. Queda el rango tablet (G32): entre 760 y 1023px sigue mostrando el sidebar de 220px.' }, badge('Resuelto', 'si')),
+        Object.assign({ k: 'Contacto', falta: 'Resuelto el 19/08: conmuta contra el breakpoint del sistema, campos a 16px (por debajo de eso iOS hace zoom al enfocar), sedes en dos botones de 48px, mapa a 260px como referencia, envío a ancho completo, Acción al pulgar (Llamar) y sede en la dirección.' }, badge('Sí', 'si')),
+        Object.assign({ k: 'Dónde comprar', falta: 'Resuelto el 19/08: en teléfono se invierte la jerarquía —buscador e índice primero, mapa como ilustración debajo—, listas sin scroll interno, filas de 56px, acciones de 44px, Acción al pulgar (WhatsApp) y estado del mapa en la dirección.' }, badge('Sí', 'si')),
+      ],
+
+      gaps: [
+        { id: 'G30', k: 'Hoja de filtros — RESUELTO', v: 'Nombrado y documentado: la Hoja y el Acordeón de faceta están en §08 de Primitivas v1, e implementados en el catálogo. Queda como referencia histórica.' },
+        { id: 'G31', k: 'Ficha de diseño como Hoja — RESUELTO', v: 'Nombrado y documentado en §08 de Primitivas v1: la Hoja es la variante móvil del Modal, no un tamaño suyo. Implementada, con arrastre para cerrar.' },
+        { id: 'G32', k: 'Rango tablet sin composición', v: 'Declarado como degradación. Riesgo asumido: entre 760 y 1023px hay layouts que solo se validaron por regla, no por diseño — en particular el catálogo con sidebar y la ficha de proyectos.' },
+        { id: 'G33', k: 'Arte de imagen por breakpoint', v: 'Hoy hay un solo recorte por imagen. Falta decidir si el móvil usa recorte propio (art direction con <picture>) o solo reescala; afecta al pedido de material fotográfico al cliente.' },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dónde comprar — Cerámica Carabobo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --cream:#F5F3F0; --surface:#ECE9E4; --white:#FFFFFF;
+    --ink:#2E2E2E; --ink-2:#5C5A56; --ink-3:#5C5A56; --ink-4:#6E6C68;
+    --hair:#D9D9D9; --brand:#6B0F1A; --brand-900:#55000F; --nude:#E6C0A8; --nude-100:#F2E5D8;
+    --geo-empty:#ECE9E4; --geo-hover:#DCAF9A;
+    --ease:cubic-bezier(0.2,0,0,1); --ease-micro:cubic-bezier(.4,0,.2,1); --ease-ed:cubic-bezier(.37,0,.63,1); --dur-micro:180ms;
+    --dur-reveal:320ms; --dur-mask:400ms;
+    --scrim-hero:linear-gradient(to bottom,rgba(31,31,31,0.32) 0%,rgba(31,31,31,0.16) 30%,rgba(31,31,31,0.40) 62%,rgba(31,31,31,0.62) 100%);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;font-family:'Open Sans',sans-serif}
+  a{color:var(--brand)}
+  a:hover{color:var(--brand-900)}
+  .wrap{max-width:1600px;margin:0 auto;padding:0 clamp(20px,5vw,72px)}
+  .ws{font-family:'Work Sans',sans-serif}
+  .over{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase}
+  /* Anillo de foco: el que Primitivas v1 ya definía para inputs, ahora en todo lo enfocable.
+   Sobre imagen o header transparente va en blanco, que es donde el burdeos no se ve. */
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  header:not(.solid) :focus-visible,.hero :focus-visible{outline-color:#FFFFFF}
+
+  /* header */
+  header{position:fixed;top:0;left:0;right:0;z-index:10;border-bottom:1px solid transparent;transition:background var(--dur-micro) var(--ease-micro),border-color var(--dur-micro) var(--ease-micro)}
+  header.solid{background:var(--cream);border-bottom-color:var(--hair)}
+  header .bar{display:flex;align-items:center;gap:clamp(12px,2vw,32px);padding-top:8px;padding-bottom:8px}
+  .logo{display:flex;align-items:center;gap:12px;flex:none}
+  .logo span{display:block;background:#FFFFFF;transition:background var(--dur-micro) var(--ease-micro)}
+  header.solid .logo span{background:var(--brand-900)}
+  .iso{width:36px;height:38px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center/contain;mask:url('assets/logo-iso.svg') no-repeat center/contain}
+  .word{width:86px;height:27px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center/contain;mask:url('assets/logo-wordmark.svg') no-repeat center/contain}
+  nav.main{display:flex;align-items:center;gap:clamp(20px,2.5vw,36px);flex:1;justify-content:flex-end}
+  nav.main a{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;padding:12px 0;color:rgba(255,255,255,0.85)}
+  nav.main a:hover{color:#FFFFFF}
+  nav.main a.current{color:#FFFFFF;border-bottom:1px solid currentColor}
+  header.solid nav.main a{color:var(--ink)}
+  header.solid nav.main a:hover{color:var(--brand)}
+  header.solid nav.main a.current{color:var(--brand)}
+
+  /* hero */
+  .hero{position:relative;height:auto;min-height:max(460px,54dvh);overflow:hidden;background:var(--ink)}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transition:opacity var(--dur-reveal) var(--ease-ed)}
+  .hero img[data-lista="1"]{opacity:1}
+  /* Carga de imagen: superficie neutra, sin latido en bucle (barrido 2026-08-23). */
+  @media (prefers-reduced-motion:reduce){.hero img{opacity:1}}
+  .hero .scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(31,31,31,0.32) 0%,rgba(31,31,31,0.16) 30%,rgba(31,31,31,0.40) 62%,rgba(31,31,31,0.62) 100%)}
+  .hero .inner{position:relative;min-height:max(460px,54dvh);display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(16px,2vw,24px);padding-top:clamp(96px,11vw,140px);padding-bottom:clamp(32px,4vw,56px)}
+  .hero h1{margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(2.5rem,1.7rem + 3.4vw,4.75rem);line-height:1.06;letter-spacing:0.01em;color:#FFFFFF;text-wrap:pretty}
+  .crumb{display:flex;gap:8px;align-items:center;font-size:0.8125rem;color:#FFFFFF}
+  .crumb a{color:#FFFFFF;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.40)}
+
+  /* map section */
+  .finder{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,0.85fr);gap:clamp(28px,4vw,64px);align-items:start;padding-top:clamp(32px,4vw,56px);padding-bottom:clamp(72px,8vw,112px)}
+  .mapcol{position:sticky;top:96px}
+  svg.map{width:100%;height:auto;display:block;overflow:visible}
+  svg.map path.state{fill:var(--geo-empty);stroke:var(--cream);cursor:default;transition:fill var(--dur-micro) var(--ease-micro)}
+  svg.map path.state.has{fill:var(--nude);cursor:pointer}
+  svg.map path.state.has:hover{fill:var(--geo-hover)}
+  svg.map path.state.sel{fill:var(--brand)}
+  svg.map path.state.dim{opacity:0.35}
+  svg.map path.state:focus{outline:none;stroke:var(--brand-900);stroke-width:1.5}
+  #zoomG{transition:transform 480ms var(--ease)}
+  .pin{transition:transform 480ms var(--ease),opacity var(--dur-micro) var(--ease-micro)}
+  .pin circle{fill:var(--brand-900);stroke:#FFFFFF;stroke-width:1.5}
+  .pin.on-sel circle{fill:#FFFFFF;stroke:rgba(255,255,255,0.65)}
+  .pin text{font-family:'Work Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;fill:var(--ink);paint-order:stroke;stroke:var(--cream);stroke-width:3px}
+  .maptools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--hair)}
+  .legend{display:flex;flex-wrap:wrap;gap:20px;font-size:0.8125rem;color:var(--ink-3)}
+  .legend span.key{display:inline-flex;align-items:center;gap:8px}
+  .legend i{width:14px;height:14px;display:block}
+  .btn-ghost{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 16px;background:transparent;border:1px solid var(--hair);border-radius:2px;cursor:pointer;color:var(--ink-2);font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;transition:border-color 80ms var(--ease),color 80ms var(--ease)}
+  .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+
+  /* panel */
+  .panel{display:flex;flex-direction:column;gap:clamp(20px,2.4vw,28px);min-width:0}
+  .search{display:flex;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:2px;background:var(--white);padding:0 16px;min-height:48px}
+  .search input{flex:1;border:0;outline:none;background:transparent;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:var(--ink);min-width:0}
+  .search input::placeholder{color:var(--ink-4)}
+  .search svg{flex:none;color:var(--ink-4)}
+  .count{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3)}
+  .statelist{display:flex;flex-direction:column;border-top:1px solid var(--hair);max-height:min(58dvh,620px);overflow-y:auto}
+  /* Anatomía de fila del home: numeral, nombre con sus ciudades debajo, conteo con unidad a la
+     derecha y filete de acento al pasar el cursor. El numeral usa Work Sans con cifras
+     tabulares, no una monoespaciada: el kit de marca tiene dos familias. */
+  .staterow{display:grid;grid-template-columns:38px 1fr auto;align-items:baseline;gap:16px;padding:16px 4px 16px 12px;border-bottom:1px solid var(--hair);background:transparent;border-left:2px solid transparent;border-right:0;border-top:0;text-align:left;cursor:pointer;transition:background var(--dur-micro) var(--ease-micro),border-left-color var(--dur-micro) var(--ease-micro)}
+  .staterow:hover{background:var(--surface);border-left-color:var(--brand)}
+  .staterow:hover .num,.staterow:hover .ct,.staterow:hover .cities{color:var(--brand)}
+  .staterow .num{font-family:'Work Sans',sans-serif;font-weight:400;font-size:0.75rem;letter-spacing:0.1em;font-variant-numeric:tabular-nums;color:var(--ink-3);transition:color var(--dur-micro) var(--ease-micro)}
+  .staterow .nmwrap{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .staterow .nm{font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.125rem,1rem + 0.5vw,1.5rem);line-height:1.15;color:var(--ink)}
+  .staterow .cities{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.6875rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);transition:color var(--dur-micro) var(--ease-micro)}
+  .staterow .ct{font-size:0.8125rem;white-space:nowrap;color:var(--ink-3);transition:color var(--dur-micro) var(--ease-micro)}
+  .cards{display:flex;flex-direction:column;gap:16px;max-height:min(58dvh,620px);overflow-y:auto}
+  .card{background:var(--white);border:1px solid var(--hair);padding:20px;display:flex;flex-direction:column;gap:12px;transition:border-color var(--dur-micro) var(--ease-micro)}
+  .card:hover{border-color:var(--ink-4)}
+  .card .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .card .nm{font-family:'Work Sans',sans-serif;font-weight:500;font-size:1.0625rem;letter-spacing:0.02em}
+  .card .city{font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-3)}
+  .card .meta{display:flex;flex-direction:column;gap:4px;font-size:0.8125rem;line-height:1.55;color:var(--ink-3)}
+  .card .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .act{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid var(--brand);color:var(--brand);text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:background 80ms var(--ease),color 80ms var(--ease)}
+  .act:hover{background:var(--brand);color:#FFFFFF}
+  .act.mail{border-color:var(--hair);color:var(--ink-2)}
+  .act.mail:hover{background:transparent;border-color:var(--ink-2);color:var(--ink)}
+  .back{display:inline-flex;align-items:center;gap:8px;background:transparent;border:0;padding:0;cursor:pointer;color:var(--ink-3);font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase}
+  .back:hover{color:var(--brand)}
+  .empty{padding:clamp(40px,6vw,72px) 24px;background:var(--surface);text-align:center;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.125rem,1rem + 0.6vw,1.625rem);line-height:1.2}
+  .note{margin:0;font-size:0.8125rem;line-height:1.55;color:var(--ink-3);max-width:76ch}
+  /* Estado vacío: rótulo + explicación + UNA acción. La salida de último recurso es el WhatsApp central. */
+  .empty{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .empty h3{margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.125rem,1rem + 0.6vw,1.625rem);line-height:1.15;color:var(--ink);max-width:30ch}
+  .empty p{margin:0;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:var(--ink-3);max-width:44ch;text-wrap:pretty}
+
+  /* cierre + footer */
+  .cierre{background:var(--surface)}
+  .cierre .in{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:clamp(28px,4vw,64px);padding-top:clamp(56px,7vw,104px);padding-bottom:clamp(56px,7vw,104px)}
+  .cierre h2{margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.75rem,1.4rem + 1.6vw,2.75rem);line-height:1.12;text-wrap:pretty}
+  .fill{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 32px;background:var(--brand);border:1px solid var(--brand);color:#FFFFFF;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms var(--ease),transform 80ms var(--ease)}
+  .fill:hover{background:var(--brand-900);border-color:var(--brand-900);color:#FFFFFF}
+  .fill:active{transform:translateY(1px)}
+  footer{background:var(--cream);border-top:1px solid var(--hair)}
+  footer .in{padding-top:clamp(40px,5vw,72px);padding-bottom:32px;display:flex;flex-direction:column;gap:clamp(32px,4vw,48px)}
+  footer .row1{display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,80px);align-items:start;justify-content:space-between}
+  footer .links{display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)}
+  footer .links a{color:var(--ink-2);text-decoration:none;font-size:0.875rem}
+  footer .links a:hover{color:var(--ink)}
+  footer .row2{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--hair);padding-top:20px;font-size:0.75rem;color:var(--ink-3)}
+  .badge{font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:4px 12px;background:var(--nude);color:var(--ink)}
+
+  [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity var(--dur-reveal) var(--ease-ed),transform var(--dur-reveal) var(--ease-ed)}
+  [data-reveal].in{opacity:1;transform:none}
+  [data-mask]{clip-path:inset(0 0 12% 0);transition:clip-path var(--dur-mask) var(--ease-ed)}
+  [data-mask].in{clip-path:inset(0 0 0 0)}
+  @media (prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none}[data-mask]{clip-path:none}}
+
+  /* Zona del pulgar: la acción principal aparece al desplazarse, solo en teléfono.
+     No es navegación (eso vive arriba): es la acción de esta página al alcance de la mano. */
+  .accion-pulgar{display:none}
+  @media (max-width:759px){
+    .accion-pulgar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:35;
+      padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+      background:var(--cream);border-top:1px solid var(--hair);
+      opacity:0;transform:translateY(100%);pointer-events:none;
+      transition:opacity var(--dur-reveal) var(--ease-ed), transform var(--dur-reveal) var(--ease-ed)}
+    .accion-pulgar.in{opacity:1;transform:translateY(0);pointer-events:auto}
+    .accion-pulgar .fill{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px}
+  }
+  @media (prefers-reduced-motion:reduce){.accion-pulgar{transition-duration:1ms}}
+  /* Tablet y abajo — el breakpoint del sistema (--bp-tablet), no el 1000 heredado. */
+  @media (max-width:1023px){
+    .finder{grid-template-columns:1fr}
+    .mapcol{position:static}
+  }
+
+  /* Teléfono. La decisión de fondo es de JERARQUÍA, no de ancho: en un teléfono
+     el mapa no se puede usar —los estados quedan de pocos milímetros y los pines
+     por debajo del dedo—, así que la tarea la resuelve el buscador y el índice, y
+     el mapa pasa a ilustrar debajo. Con el orden heredado de escritorio, lo primero
+     que veía el visitante era justo lo único que no le sirve. */
+  @media (max-width:759px){
+    .finder{display:flex;flex-direction:column;gap:32px}
+    .panel{order:1}
+    .mapcol{order:2}
+    .search input{font-size:1rem}
+    /* Sin scroll dentro del scroll: en teléfono las listas fluyen con la página. */
+    .statelist,.cards{max-height:none;overflow:visible}
+    .staterow{min-height:56px;padding:14px 4px 14px 10px;grid-template-columns:30px 1fr auto;gap:12px}
+    .act{min-height:44px;flex:1;justify-content:center}
+    .card .acts{gap:8px}
+    /* El mapa queda como referencia de cobertura, no como control. */
+    .mapcol .legend{font-size:0.8125rem}
+    .cierre .in{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:1ms !important;animation-duration:1ms !important}}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="logo" href="Propuesta 1.dc.html" aria-label="Cerámica Carabobo — inicio"><span class="iso"></span><span class="word"></span></a>
+    <nav class="main">
+      <a href="catalogo-c5.dc.html">Catálogo</a>
+      <a href="contacto.html">Contacto</a>
+      <a class="current" href="donde-comprar.html">Dónde comprar</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="uploads/living.png" decoding="async" onload="this.dataset.lista='1'" onerror="this.style.display='none'" alt="Sala con piso de porcelanato Cerámica Carabobo">
+  <span class="scrim" aria-hidden="true"></span>
+  <div class="wrap inner">
+    <nav class="crumb" aria-label="Ruta"><a href="Propuesta 1.dc.html">Inicio</a><span aria-hidden="true">/</span><span>Dónde comprar</span></nav>
+    <div style="display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:clamp(20px,3vw,48px)">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:24ch">
+        <div class="over" style="color:#FFFFFF">Red de distribuidores</div>
+        <h1>Dónde comprar</h1>
+      </div>
+      <p style="margin:0;max-width:40ch;font-size:clamp(0.9375rem,0.9rem + 0.2vw,1.0625rem);line-height:1.6;color:#FFFFFF;text-wrap:pretty">No vendemos en línea. Elige tu estado en el mapa y habla directo con el distribuidor que tiene el material a la vista.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap finder">
+  <div class="mapcol" data-reveal>
+    <svg class="map" id="map" viewBox="0 0 800 505" role="group" aria-label="Mapa de Venezuela con la cobertura de distribuidores por estado">
+      <g id="zoomG"></g>
+      <g id="pinsG"></g>
+    </svg>
+    <div class="maptools">
+      <div class="legend">
+        <span class="key"><i style="background:var(--nude)"></i> Con distribuidores</span>
+        <span class="key"><i style="background:var(--geo-empty)"></i> Sin cobertura aún</span>
+        <span class="key"><i style="background:var(--brand-900);border-radius:50%;width:10px;height:10px"></i> Ciudad</span>
+      </div>
+      <button class="btn-ghost" id="reset" hidden>Ver todo el país</button>
+    </div>
+    <p class="note" style="margin-top:16px">Geometría de estados: datos públicos Natural Earth / Apache Superset (Apache-2.0). Red de distribuidores, direcciones y teléfonos: <strong>placeholder pendiente de validar</strong>.</p>
+  </div>
+
+  <div class="panel" data-reveal data-reveal-i="1">
+    <label class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input id="q" type="search" placeholder="Busca por ciudad o estado" aria-label="Busca por ciudad o estado">
+    </label>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div class="count" id="count" aria-live="polite">—</div>
+      <button class="back" id="back" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg> Todos los estados</button>
+    </div>
+    <div id="results"></div>
+  </div>
+</section>
+
+<section class="cierre">
+  <div class="wrap in">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:34ch">
+      <div class="over" style="color:var(--ink-3)">¿No ves tu ciudad?</div>
+      <h2>Te decimos quién te puede atender más cerca.</h2>
+      <p style="margin:0;font-size:0.9375rem;line-height:1.6;color:var(--ink-2);text-wrap:pretty">Escríbenos con tu ubicación y los metros que necesitas; te conectamos con el distribuidor correspondiente.</p>
+    </div>
+    <a class="fill" href="https://wa.me/584140000000" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap in">
+    <div class="row1">
+      <span style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <span style="display:block;width:38px;height:41px;background:var(--brand-900);-webkit-mask:url('assets/logo-iso.svg') no-repeat center/contain;mask:url('assets/logo-iso.svg') no-repeat center/contain"></span>
+        <span style="display:block;width:132px;height:20px;background:var(--brand-900);-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center/contain;mask:url('assets/logo-wordmark.svg') no-repeat center/contain"></span>
+      </span>
+      <div class="links">
+        <a href="catalogo-c5.dc.html">Catálogo</a>
+          <a href="donde-comprar.html">Distribuidores</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="row2">
+      <div>© 2026 Cerámica Carabobo, C.A. Todos los derechos reservados.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- datos placeholder (pendiente de validar) ----------
+const DIST = [
+  { nombre:'Cerámicas del Centro', estado:'Carabobo', ciudad:'Valencia', dir:'Av. Bolívar Norte, C.C. Camoruco, local 12', tel:'+58 241 555 0142', wa:'584141234567', mail:'valencia@placeholder.com', hor:'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat:10.1620, lon:-68.0077 },
+  { nombre:'Depósito Puerto Cabello', estado:'Carabobo', ciudad:'Puerto Cabello', dir:'Zona industrial, galpón 4, calle Sucre', tel:'+58 242 555 0198', wa:'584141234568', mail:'pcabello@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:10.4731, lon:-68.0125 },
+  { nombre:'Materiales Caracas C.A.', estado:'Distrito Capital', ciudad:'Caracas', dir:'Av. Andrés Bello, Edif. Norte, PB', tel:'+58 212 555 0110', wa:'584141234569', mail:'caracas@placeholder.com', hor:'Lun–Vie 8:30–17:30 · Sáb 9:00–14:00', lat:10.4806, lon:-66.9036 },
+  { nombre:'Casa del Porcelanato', estado:'Distrito Capital', ciudad:'Caracas', dir:'Av. Libertador, nivel plaza, local 8', tel:'+58 212 555 0171', wa:'584141234570', mail:'libertador@placeholder.com', hor:'Lun–Sáb 9:00–18:00', lat:10.4950, lon:-66.8600 },
+  { nombre:'Distribuidora Miranda', estado:'Miranda', ciudad:'Guarenas', dir:'Carretera Nacional, sector Trapichito', tel:'+58 212 555 0233', wa:'584141234571', mail:'miranda@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:10.4736, lon:-66.6136 },
+  { nombre:'Acabados Baruta', estado:'Miranda', ciudad:'Baruta', dir:'Calle Real de Baruta, quinta 22', tel:'+58 212 555 0244', wa:'584141234572', mail:'baruta@placeholder.com', hor:'Lun–Vie 9:00–18:00', lat:10.4333, lon:-66.8667 },
+  { nombre:'Cerámicas Aragua', estado:'Aragua', ciudad:'Maracay', dir:'Av. Las Delicias, C.C. Paseo, local 5', tel:'+58 243 555 0127', wa:'584141234573', mail:'maracay@placeholder.com', hor:'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat:10.2469, lon:-67.5958 },
+  { nombre:'Zulia Revestimientos', estado:'Zulia', ciudad:'Maracaibo', dir:'Av. 15 Las Delicias con calle 72', tel:'+58 261 555 0166', wa:'584141234574', mail:'maracaibo@placeholder.com', hor:'Lun–Vie 8:00–17:30 · Sáb 9:00–13:00', lat:10.6427, lon:-71.6125 },
+  { nombre:'Depósito Cabimas', estado:'Zulia', ciudad:'Cabimas', dir:'Carretera Lara–Zulia, km 4', tel:'+58 264 555 0188', wa:'584141234575', mail:'cabimas@placeholder.com', hor:'Lun–Vie 8:00–16:00', lat:10.3900, lon:-71.4467 },
+  { nombre:'Lara Materiales', estado:'Lara', ciudad:'Barquisimeto', dir:'Av. Vargas con Av. Los Leones, local 3', tel:'+58 251 555 0119', wa:'584141234576', mail:'barquisimeto@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:10.0678, lon:-69.3467 },
+  { nombre:'Oriente Cerámicas', estado:'Anzoátegui', ciudad:'Puerto La Cruz', dir:'Av. Municipal, sector Guaraguao', tel:'+58 281 555 0154', wa:'584141234577', mail:'plc@placeholder.com', hor:'Lun–Vie 8:00–17:00 · Sáb 9:00–13:00', lat:10.2167, lon:-64.6167 },
+  { nombre:'Guayana Acabados', estado:'Bolívar', ciudad:'Puerto Ordaz', dir:'Av. Guayana, Alta Vista Sur, galpón 2', tel:'+58 286 555 0135', wa:'584141234578', mail:'guayana@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:8.2967, lon:-62.7100 },
+  { nombre:'Andes Porcelanato', estado:'Táchira', ciudad:'San Cristóbal', dir:'Av. 19 de Abril, sector Barrio Obrero', tel:'+58 276 555 0143', wa:'584141234579', mail:'tachira@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:7.7669, lon:-72.2250 },
+  { nombre:'Mérida Cerámicas', estado:'Mérida', ciudad:'Mérida', dir:'Av. Andrés Bello, sector La Parroquia', tel:'+58 274 555 0129', wa:'584141234580', mail:'merida@placeholder.com', hor:'Lun–Vie 8:30–17:00', lat:8.5897, lon:-71.1561 },
+  { nombre:'Margarita Deco', estado:'Nueva Esparta', ciudad:'Porlamar', dir:'Av. Juan Bautista Arismendi, local 7', tel:'+58 295 555 0177', wa:'584141234581', mail:'margarita@placeholder.com', hor:'Lun–Sáb 9:00–18:00', lat:10.9577, lon:-63.8699 },
+  { nombre:'Monagas Materiales', estado:'Monagas', ciudad:'Maturín', dir:'Av. Raúl Leoni, sector Los Guaritos', tel:'+58 291 555 0161', wa:'584141234582', mail:'maturin@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:9.7457, lon:-63.1832 },
+  { nombre:'Falcón Revestimientos', estado:'Falcón', ciudad:'Punto Fijo', dir:'Av. Colombia con calle Girardot', tel:'+58 269 555 0148', wa:'584141234583', mail:'puntofijo@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:11.6947, lon:-70.1997 },
+  { nombre:'Sucre Acabados', estado:'Sucre', ciudad:'Cumaná', dir:'Av. Perimetral, sector Caigüire', tel:'+58 293 555 0192', wa:'584141234584', mail:'cumana@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:10.4544, lon:-64.1767 },
+  { nombre:'Llanos Cerámicas', estado:'Portuguesa', ciudad:'Acarigua', dir:'Av. Libertador, zona industrial', tel:'+58 255 555 0157', wa:'584141234585', mail:'acarigua@placeholder.com', hor:'Lun–Vie 8:00–17:00', lat:9.5597, lon:-69.2019 },
+  { nombre:'Barinas Materiales', estado:'Barinas', ciudad:'Barinas', dir:'Av. 23 de Enero, sector Alto Barinas', tel:'+58 273 555 0125', wa:'584141234586', mail:'barinas@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:8.6226, lon:-70.2075 },
+  { nombre:'Trujillo Deco', estado:'Trujillo', ciudad:'Valera', dir:'Av. Bolívar con calle 12, local 4', tel:'+58 271 555 0138', wa:'584141234587', mail:'valera@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:9.3167, lon:-70.6039 },
+  { nombre:'Yaracuy Cerámicas', estado:'Yaracuy', ciudad:'San Felipe', dir:'Av. La Fuente, sector centro', tel:'+58 254 555 0173', wa:'584141234588', mail:'yaracuy@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:10.3399, lon:-68.7422 },
+  { nombre:'Guárico Materiales', estado:'Guárico', ciudad:'San Juan de los Morros', dir:'Av. Rómulo Gallegos, galpón 1', tel:'+58 246 555 0111', wa:'584141234589', mail:'guarico@placeholder.com', hor:'Lun–Vie 8:00–16:00', lat:9.9036, lon:-67.3547 },
+  { nombre:'La Guaira Acabados', estado:'La Guaira', ciudad:'Catia La Mar', dir:'Av. Principal, sector Playa Grande', tel:'+58 212 555 0206', wa:'584141234590', mail:'laguaira@placeholder.com', hor:'Lun–Vie 8:00–16:30', lat:10.6000, lon:-67.0167 }
+];
+
+const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const ALIAS = { 'vargas':'la guaira', 'la guaira':'la guaira', 'distrito federal':'distrito capital', 'dtto capital':'distrito capital' };
+const canon = (s) => ALIAS[norm(s)] || norm(s);
+
+const byState = {};
+DIST.forEach((d) => { (byState[canon(d.estado)] = byState[canon(d.estado)] || []).push(d); });
+
+const W = 800, H = 505;
+const svg = document.getElementById('map');
+const zoomG = document.getElementById('zoomG');
+const pinsG = document.getElementById('pinsG');
+const results = document.getElementById('results');
+const countEl = document.getElementById('count');
+const backBtn = document.getElementById('back');
+const resetBtn = document.getElementById('reset');
+const qEl = document.getElementById('q');
+
+let features = [], path = null, projection = null, selected = null, query = '';
+let tr = { k: 1, x: 0, y: 0 };
+const cities = Object.values(DIST.reduce((acc, d) => {
+  const key = canon(d.estado) + '|' + norm(d.ciudad);
+  acc[key] = acc[key] || { ciudad: d.ciudad, estado: d.estado, lat: d.lat, lon: d.lon, n: 0 };
+  acc[key].n++;
+  return acc;
+}, {}));
+
+// Geometria de los 26 estados. Dos correcciones el 19/08/2026, despues de que el mapa
+// dejara de cargar: (a) Superset movio el archivo de legacy-plugin-chart-country-map a
+// plugin-chart-country-map y la ruta vieja paso a 404; (b) apuntaba a @master, o sea a
+// una rama viva — por eso se rompio solo, sin que nadie tocara este archivo. Ahora va
+// FIJADO a un commit. Para produccion esto no alcanza: desarrollo tiene que servir el
+// GeoJSON desde el propio servidor (ver Requisitos tecnicos), no desde un CDN ajeno.
+const GEO = 'https://cdn.jsdelivr.net/gh/apache/superset@2ecce20e48f30284fa893e8c46beeaafc6818daa/superset-frontend/plugins/plugin-chart-country-map/src/countries/venezuela.geojson';
+
+function stateName(f) { const p = f.properties || {}; return p.NAME_1 || p.name || p.NAME || p.ISO || ''; }
+
+fetch(GEO).then((r) => r.json()).then((geo) => {
+  features = (geo.features || []).filter((f) => f.geometry);
+  projection = d3.geoMercator().fitExtent([[16, 16], [W - 16, H - 16]], { type: 'FeatureCollection', features: features });
+  path = d3.geoPath(projection);
+  drawStates();
+  drawPins();
+  renderPanel();
+  // Un enlace compartido tiene que abrir en su estado: la geometría llega después
+  // del primer render, así que la dirección se aplica acá y no al cargar la página.
+  const k0 = estadoDeURL();
+  if (k0) select(k0, true);
+}).catch(() => {
+  svg.insertAdjacentHTML('afterend', '<p class="note" style="color:var(--brand)">No pudimos cargar el mapa. El índice de estados de abajo funciona igual: busca tu ciudad ahí.</p>');
+  svg.setAttribute('hidden', '');
+  renderPanel();
+});
+
+function drawStates() {
+  zoomG.innerHTML = '';
+  features.forEach((f) => {
+    const nm = stateName(f);
+    const key = canon(nm);
+    const has = !!byState[key];
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    el.setAttribute('d', path(f));
+    el.setAttribute('class', 'state' + (has ? ' has' : ''));
+    el.dataset.key = key;
+    el.dataset.name = nm;
+    if (has) {
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', nm + ' — ' + byState[key].length + ' distribuidores');
+      el.addEventListener('click', () => select(key));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(key); } });
+    } else {
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '<title>' + nm + ' — sin cobertura aún</title>';
+    }
+    zoomG.appendChild(el);
+  });
+}
+
+function drawPins() {
+  pinsG.innerHTML = '';
+  cities.forEach((c) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'pin');
+    g.dataset.key = canon(c.estado);
+    const p = projection([c.lon, c.lat]);
+    g.dataset.px = p[0];
+    g.dataset.py = p[1];
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('r', '4');
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', '10');
+    label.setAttribute('y', '4');
+    label.textContent = c.ciudad;
+    label.setAttribute('opacity', '0');
+    g.appendChild(circle);
+    g.appendChild(label);
+    pinsG.appendChild(g);
+  });
+  placePins();
+}
+
+function placePins() {
+  Array.from(pinsG.children).forEach((g) => {
+    const px = +g.dataset.px, py = +g.dataset.py;
+    g.setAttribute('transform', 'translate(' + (px * tr.k + tr.x) + ',' + (py * tr.k + tr.y) + ')');
+    const isSel = selected && g.dataset.key === selected;
+    const label = g.querySelector('text');
+    label.setAttribute('opacity', selected ? (isSel ? '1' : '0') : '0');
+    g.classList.toggle('on-sel', !!isSel);
+    g.style.opacity = selected ? (isSel ? '1' : '0.25') : '1';
+  });
+}
+
+function applyTransform() {
+  zoomG.setAttribute('transform', 'translate(' + tr.x + ',' + tr.y + ') scale(' + tr.k + ')');
+  zoomG.style.strokeWidth = (1 / tr.k) + 'px';
+  Array.from(zoomG.children).forEach((p) => p.setAttribute('stroke-width', (1 / tr.k)));
+  placePins();
+}
+
+function zoomTo(key) {
+  const f = features.find((x) => canon(stateName(x)) === key);
+  if (!f) { tr = { k: 1, x: 0, y: 0 }; applyTransform(); return; }
+  const b = path.bounds(f);
+  const dx = Math.max(b[1][0] - b[0][0], 1), dy = Math.max(b[1][1] - b[0][1], 1);
+  const k = Math.min(7, 0.72 * Math.min(W / dx, H / dy));
+  tr = { k: k, x: W / 2 - k * (b[0][0] + b[1][0]) / 2, y: H / 2 - k * (b[0][1] + b[1][1]) / 2 };
+  applyTransform();
+}
+
+// El estado seleccionado vive en la dirección: #estado=Zulia se comparte y abre ahí.
+// Acá SÍ se empuja una entrada —a diferencia de las sedes de contacto— porque entrar
+// a un estado es bajar un nivel: el botón atrás tiene que devolver al mapa del país,
+// no sacar del sitio. La marca va en la entrada misma; no hay variable que la espeje.
+function estadoDeURL() {
+  const m = /(?:^|[#&])estado=([^&]*)/.exec(location.hash || '');
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function select(key, desdeURL) {
+  selected = key;
+  query = '';
+  qEl.value = '';
+  zoomTo(key);
+  paintStates();
+  renderPanel();
+  if (desdeURL) return;
+  const destino = '#estado=' + encodeURIComponent(key);
+  if ((location.hash || '') !== destino) history.pushState({ omCapa: true }, '', destino);
+}
+
+function reset(desdeURL) {
+  // Si el estado se abrió desde acá, se vuelve por el historial para no dejar
+  // pares abrir/cerrar y para que el botón atrás del sistema haga lo mismo.
+  if (!desdeURL && history.state && history.state.omCapa) { history.back(); return; }
+  selected = null;
+  tr = { k: 1, x: 0, y: 0 };
+  applyTransform();
+  paintStates();
+  renderPanel();
+  if (!desdeURL && (location.hash || '')) history.replaceState(history.state, '', location.pathname + location.search);
+}
+
+function paintStates() {
+  const q = norm(query);
+  Array.from(zoomG.children).forEach((p) => {
+    const key = p.dataset.key;
+    p.classList.toggle('sel', selected === key);
+    const has = p.classList.contains('has');
+    let dim = false;
+    if (selected) dim = key !== selected;
+    else if (q) dim = !has || !(byState[key] || []).some((d) => norm(d.ciudad).indexOf(q) > -1 || norm(d.estado).indexOf(q) > -1 || norm(d.nombre).indexOf(q) > -1);
+    p.classList.toggle('dim', dim);
+  });
+}
+
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+function cardHTML(d) {
+  return '<article class="card">' +
+    '<div class="top"><span class="nm">' + esc(d.nombre) + '</span><span class="city">' + esc(d.ciudad) + '</span></div>' +
+    '<div class="meta"><span>' + esc(d.dir) + '</span><span>' + esc(d.estado) + '</span><span>' + esc(d.hor) + '</span></div>' +
+    '<div class="acts">' +
+      '<a class="act" href="tel:' + esc(d.tel.replace(/\s/g, '')) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg> ' + esc(d.tel) + '</a>' +
+      '<a class="act" href="https://wa.me/' + esc(d.wa) + '" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"></path></svg> WhatsApp</a>' +
+      '<a class="act mail" href="mailto:' + esc(d.mail) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> Correo</a>' +
+    '</div></article>';
+}
+
+// No afirma cuál es el más cercano: el sitio no tiene esa distancia y una sugerencia
+// equivocada es peor que ninguna. La salida es escribir y que se lo digan.
+function vacio(titulo, expl) {
+  return '<div class="empty"><h3>' + titulo + '</h3><p>' + expl + '</p>' +
+    '<a class="fill" href="https://wa.me/584140000000" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></div>';
+}
+
+function renderPanel() {
+  const q = norm(query);
+  backBtn.hidden = !selected;
+  resetBtn.hidden = !selected;
+
+  if (selected) {
+    const list = byState[selected] || [];
+    const nm = (features.find((f) => canon(stateName(f)) === selected) && stateName(features.find((f) => canon(stateName(f)) === selected))) || (list[0] && list[0].estado) || '';
+    countEl.textContent = nm + ' · ' + list.length + (list.length === 1 ? ' distribuidor' : ' distribuidores');
+    results.innerHTML = list.length
+      ? '<div class="cards">' + list.map(cardHTML).join('') + '</div>'
+      : vacio('Todavía no hay distribuidor en ' + esc(nm), 'Escríbenos con tu ubicación y los metros que necesitas: te decimos desde qué estado podemos despacharte.');
+    return;
+  }
+
+  if (q) {
+    const hits = DIST.filter((d) => norm(d.ciudad).indexOf(q) > -1 || norm(d.estado).indexOf(q) > -1 || norm(d.nombre).indexOf(q) > -1);
+    countEl.textContent = hits.length + ' de ' + DIST.length + ' distribuidores';
+    results.innerHTML = hits.length
+      ? '<div class="cards">' + hits.map(cardHTML).join('') + '</div>'
+      : vacio('Todavía no llegamos a «' + esc(query) + '»', 'Escríbenos con tu ubicación y los metros que necesitas: te decimos cuál es el punto de venta que te conviene y si podemos despachar a tu zona.');
+    return;
+  }
+
+  const keys = Object.keys(byState).sort((a, b) => a.localeCompare(b));
+  countEl.textContent = DIST.length + ' distribuidores en ' + keys.length + ' estados';
+  results.innerHTML = '<div class="statelist">' + keys.map((k, i) => {
+    const list = byState[k];
+    const nm = list[0].estado;
+    const ciudades = Array.from(new Set(list.map((d) => d.ciudad))).join(' · ');
+    return '<button class="staterow" data-key="' + esc(k) + '">'
+      + '<span class="num">' + String(i + 1).padStart(2, '0') + '</span>'
+      + '<span class="nmwrap"><span class="nm">' + esc(nm) + '</span>'
+      + '<span class="cities">' + esc(ciudades) + '</span></span>'
+      + '<span class="ct">' + list.length + (list.length === 1 ? ' punto' : ' puntos') + '</span></button>';
+  }).join('') + '</div>';
+
+  Array.from(results.querySelectorAll('.staterow')).forEach((row) => {
+    row.addEventListener('click', () => select(row.dataset.key));
+    row.addEventListener('mouseenter', () => hoverState(row.dataset.key, true));
+    row.addEventListener('mouseleave', () => hoverState(row.dataset.key, false));
+  });
+}
+
+function hoverState(key, on) {
+  const p = Array.from(zoomG.children).find((x) => x.dataset.key === key);
+  if (p) p.style.fill = on ? 'var(--geo-hover)' : '';
+}
+
+qEl.addEventListener('input', () => { query = qEl.value; selected = null; tr = { k: 1, x: 0, y: 0 }; applyTransform(); paintStates(); renderPanel(); });
+backBtn.addEventListener('click', () => reset());
+resetBtn.addEventListener('click', () => reset());
+
+window.addEventListener('popstate', () => {
+  const k = estadoDeURL();
+  if (k && k !== selected) select(k, true);
+  else if (!k && selected) reset(true);
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && selected) reset(); });
+
+
+const __io = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const i = +(el.dataset.revealI || 0);
+    if (i) el.style.transitionDelay = (i * 60) + 'ms';
+    el.classList.add('in');
+    __io.unobserve(el);
+  });
+}, { rootMargin: '0px 0px -6% 0px' });
+document.querySelectorAll('[data-reveal],[data-mask]').forEach((el) => __io.observe(el));
+
+const hdr = document.getElementById('hdr');
+const onScroll = () => hdr.classList.toggle('solid', window.scrollY > Math.max(240, window.innerHeight * 0.4));
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+
+<div id="accion-distribuidores" class="accion-pulgar" aria-hidden="true">
+  <a class="fill" href="https://wa.me/584140000000" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"></path></svg> Escríbenos por WhatsApp</a>
+</div>
+<script>
+// La acción baja al pulgar recién cuando el usuario pasó la primera pantalla, y se retira
+// al llegar al cierre de la página, donde el mismo botón ya está en el contenido.
+(function(){
+  var barra = document.getElementById('accion-distribuidores');
+  if (!barra) return;
+  var cierre = document.querySelector('.cierre') || document.querySelector('footer');
+  var visible = false;
+  function ver(){
+    var pasoElHero = window.scrollY > window.innerHeight * 0.6;
+    var enElCierre = cierre ? cierre.getBoundingClientRect().top < window.innerHeight : false;
+    var debe = pasoElHero && !enElCierre;
+    if (debe === visible) return;
+    visible = debe;
+    barra.classList.toggle('in', debe);
+    barra.setAttribute('aria-hidden', debe ? 'false' : 'true');
+  }
+  window.addEventListener('scroll', ver, { passive: true });
+  window.addEventListener('resize', ver, { passive: true });
+  ver();
+})();
+</script>
+</body>
+</html>

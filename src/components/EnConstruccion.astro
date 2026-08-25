@@ -1,0 +1,41 @@
+---
+/**
+ * Marcador de página pendiente. Existe solo durante el esqueleto (Fase 1):
+ * cada página se reemplaza por su composición real en su fase.
+ */
+interface Props {
+  titulo: string
+  fase: string
+}
+
+const {titulo, fase} = Astro.props
+---
+
+<section class="pendiente contenedor">
+  <p class="overline pendiente__fase">{fase}</p>
+  <h1 class="pendiente__titulo">{titulo}</h1>
+  <p class="pendiente__texto">Esta página todavía no está implementada. La cáscara, el enrutado y el administrador sí.</p>
+</section>
+
+<style>
+  .pendiente {
+    padding-block: var(--space-section);
+    max-width: 44ch;
+    margin-inline: auto;
+  }
+
+  .pendiente__fase {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .pendiente__titulo {
+    font: var(--text-heading-xl);
+  }
+
+  .pendiente__texto {
+    margin-top: var(--space-6);
+    font: var(--text-body-lg);
+    color: var(--color-text-secondary);
+  }
+</style>

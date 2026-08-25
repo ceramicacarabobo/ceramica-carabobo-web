@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;600;700&amp;family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+</style>
+</helmet>
+
+<!-- ============ HEADER ============ -->
+<header data-screen-label="Header" style="background:#2E2E2E;color:#FFFFFF;padding:56px 24px 48px">
+  <div style="max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="display:block;width:41px;height:44px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#FFFFFF"></span>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#E6C0A8">Cerámica Carabobo · Design System</div>
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.04em;padding:3px 10px;background:#E6C0A8;color:#2E2E2E">v0.1 — Etapa 1.1</span>
+    </div>
+    <h1 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.05;letter-spacing:-0.01em">Tokens core — v0</h1>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:17px;line-height:1.6;color:#C9C7C3;max-width:640px">Fundaciones de color, tipografía, spacing, radius, elevation, motion e iconografía para el sitio de marketing + catálogo. Solo tokens; sin componentes. Fuente de verdad: kit de marca oficial.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+      <span style="font-family:'Open Sans',sans-serif;font-size:12px;padding:4px 10px;border:1px solid #5C5A56;color:#C9C7C3">Mobile-first · escala fluida</span>
+      <span style="font-family:'Open Sans',sans-serif;font-size:12px;padding:4px 10px;border:1px solid #5C5A56;color:#C9C7C3">WCAG AA verificado por par</span>
+      <span style="font-family:'Open Sans',sans-serif;font-size:12px;padding:4px 10px;border:1px solid #5C5A56;color:#C9C7C3">Base 4 px · radius 0/2/4</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SUPUESTOS ============ -->
+<section data-screen-label="Supuestos" style="max-width:1080px;margin:0 auto;padding:40px 24px 8px">
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:24px 28px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A;margin-bottom:12px">Decisiones acordadas</div>
+    <ul style="margin:0;padding-left:20px;font-family:'Open Sans',sans-serif;font-size:14px;line-height:1.7;color:#5C5A56;columns:2;column-gap:40px">
+      <li>Acción primaria = <strong style="color:#2E2E2E">#6B0F1A</strong>; #55000F reservado como brand profundo (hover, hero, footer).</li>
+      <li>Fondo base off-white cálido; blanco puro solo para cards y superficies elevadas.</li>
+      <li>Secciones oscuras (#2E2E2E) contempladas: set on-dark completo.</li>
+      <li>Semánticos convencionales oscurecidos; error corrido a ladrillo para no competir con el vinotinto.</li>
+      <li>Radius 0 por defecto (hexágono isométrico = aristas duras); 2/4 px solo funcional.</li>
+      <li>Spacing base 4 px: el catálogo denso móvil necesita pasos finos (4/8/12) en chips, specs y celdas.</li>
+      <li>Tipografía fluida (clamp 375→1280 px), solo Work Sans + Open Sans. Sin mono: Work Sans con tabular-nums cubre datos técnicos.</li>
+      <li>Nomenclatura sin prefijo de marca, familia-primero: <strong style="color:#2E2E2E">--color-surface-base</strong>, <strong style="color:#2E2E2E">--space-4</strong>, <strong style="color:#2E2E2E">--radius-sm</strong>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ COLOR ============ -->
+<section data-screen-label="Color" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">01 · Color</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Brand, acción y superficies</h2>
+  </div>
+
+  <!-- Brand & Action -->
+  <h3 style="margin:24px 0 12px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Brand + acción</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:88px;background:#55000F"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">brand-900 · #55000F</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Del kit. Brand profundo: hero, footer, hover de acción primaria.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:88px;background:#6B0F1A"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">brand-700 · #6B0F1A</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Del kit. Núcleo de marca y <strong>action-primary</strong>: botones, links, focus.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:88px;background:#E6C0A8"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">brand-300 · #E6C0A8</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Extendido: nude cerámica para links y acentos sobre fondos oscuros (8.1:1 sobre #2E2E2E).</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:88px;background:#F2E5D8;border-bottom:1px solid #ECE9E4"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">brand-100 · #F2E5D8</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Extendido: fondo de selección, hover de acción secundaria, chips de filtro activos.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones demo -->
+  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;background:#FFFFFF;border:1px solid #D9D9D9;padding:20px">
+    <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#55000F">Acción primaria</span>
+    <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:transparent;border:1.5px solid #6B0F1A;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#F2E5D8">Acción secundaria</span>
+    <span style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68">Hit target mínimo 44 px · hover: primaria → brand-900, secundaria → brand-100</span>
+  </div>
+
+  <!-- Surfaces -->
+  <h3 style="margin:36px 0 12px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Superficies</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#F5F3F0;border-bottom:1px solid #ECE9E4"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-base · #F5F3F0</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Extendido: off-white cálido (el kit lo usa en layouts). Fondo de página.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#FFFFFF;border-bottom:1px solid #ECE9E4"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-raised · #FFFFFF</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Del kit. Cards de producto, modales, inputs.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#ECE9E4"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-sunken · #ECE9E4</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Extendido: zonas hundidas — fondos de filtros, tablas zebra, wells.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#55000F"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-brand · #55000F</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Hero y bloques de marca de alto impacto.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#2E2E2E"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-inverse · #2E2E2E</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Del kit. Footer, secciones oscuras.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:64px;background:#1F1F1F"></div>
+      <div style="padding:12px 14px">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">surface-inverse-deep · #1F1F1F</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68;margin-top:4px">Extendido: un paso bajo inverse para jerarquía dentro de zonas oscuras.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neutral scale -->
+  <h3 style="margin:36px 0 4px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Escala de neutros</h3>
+  <p style="margin:0 0 12px;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">El kit trae 3 neutros (#FFFFFF, #D9D9D9, #2E2E2E). Se extienden 7 pasos intermedios con sesgo cálido (canal azul levemente menor) para que convivan con el off-white y el vinotinto. Cada paso cubre un rol que la paleta original dejaba sin resolver.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#FFFFFF;border-bottom:1px solid #ECE9E4"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-0 · #FFFFFF</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Del kit. Superficies elevadas, texto sobre oscuro.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#F5F3F0"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-50 · #F5F3F0</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Fondo de página cálido; separa cards blancas sin bordes duros.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#ECE9E4"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-100 · #ECE9E4</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Hover de filas/celdas, fondos hundidos, divisores suaves.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#D9D9D9"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-200 · #D9D9D9</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Del kit. Borde por defecto de cards e inputs.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#BFBDB9"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-300 · #BFBDB9</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Borde fuerte (inputs activos, tablas), controles deshabilitados.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#8F8D89"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-400 · #8F8D89</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Solo iconos grandes, placeholders y texto disabled (3.3:1 — no texto normal).</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#6E6C68"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-500 · #6E6C68</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Texto muted: metadatos, captions. AA sobre blanco y base.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#5C5A56"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-600 · #5C5A56</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Texto secundario con margen AA holgado (6:1) sobre off-white.</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#2E2E2E"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-700 · #2E2E2E</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Del kit. Texto primario y superficie inversa (12.3:1 sobre base).</div></div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+      <div style="height:48px;background:#1F1F1F"></div>
+      <div style="padding:10px 12px"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12.5px;color:#2E2E2E">neutral-800 · #1F1F1F</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.45;color:#6E6C68;margin-top:3px">Profundidad dentro de zonas oscuras (cards sobre inverse).</div></div>
+    </div>
+  </div>
+
+  <!-- Semantic -->
+  <h3 style="margin:36px 0 4px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Estados semánticos</h3>
+  <p style="margin:0 0 12px;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Convencionales pero oscurecidos y desaturados para no competir con el vinotinto. El error se corre hacia ladrillo (#B4441F): se lee como alerta sin confundirse con brand-700. Tres pasos por estado: tinte de fondo (100), icono/borde (600), texto sobre tinte (700).</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:16px">
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <div style="flex:1;height:44px;background:#E4EFE7;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#24523A">100</div>
+        <div style="flex:1;height:44px;background:#2F6B45;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">600</div>
+        <div style="flex:1;height:44px;background:#24523A;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">700</div>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">success · #E4EFE7 / #2F6B45 / #24523A</div>
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:4px 8px;background:#E4EFE7;font-family:'Open Sans',sans-serif;font-weight:600;font-size:12px;color:#24523A">● Disponible en stock</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:16px">
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <div style="flex:1;height:44px;background:#F6EDD9;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#6E4600">100</div>
+        <div style="flex:1;height:44px;background:#8A5800;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">600</div>
+        <div style="flex:1;height:44px;background:#6E4600;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">700</div>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">warning · #F6EDD9 / #8A5800 / #6E4600</div>
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:4px 8px;background:#F6EDD9;font-family:'Open Sans',sans-serif;font-weight:600;font-size:12px;color:#6E4600">● Últimas unidades</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:16px">
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <div style="flex:1;height:44px;background:#F8E7E0;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#8C3312">100</div>
+        <div style="flex:1;height:44px;background:#B4441F;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">600</div>
+        <div style="flex:1;height:44px;background:#8C3312;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#FFFFFF">700</div>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">error · #F8E7E0 / #B4441F / #8C3312</div>
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:4px 8px;background:#F8E7E0;font-family:'Open Sans',sans-serif;font-weight:600;font-size:12px;color:#8C3312">● Campo requerido</div>
+    </div>
+  </div>
+
+  <!-- On dark -->
+  <h3 style="margin:36px 0 12px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Set on-dark</h3>
+  <div style="background:#2E2E2E;padding:28px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:700;font-size:22px;color:#FFFFFF">text-on-dark · #FFFFFF <span style="font-weight:500;font-size:13px;color:#C9C7C3">— títulos y cuerpo principal (13.6:1)</span></div>
+    <div style="font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#C9C7C3;max-width:640px">text-on-dark-secondary · #C9C7C3 — cuerpo secundario y metadatos sobre superficies oscuras (8.1:1). Sesgo cálido consistente con la escala de neutros.</div>
+    <div style="font-family:'Open Sans',sans-serif;font-size:0.9375rem"><span style="color:#E6C0A8;font-weight:600;text-decoration:underline;text-underline-offset:3px">link-on-dark · brand-300 #E6C0A8</span> <span style="color:#C9C7C3">— el vinotinto puro es ilegible sobre #2E2E2E (1.1:1); este tinte lo reemplaza (8.1:1). También es el color de focus ring en oscuro.</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:4px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#FFFFFF;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#F2E5D8">Acción inversa</span>
+      <span style="font-family:'Open Sans',sans-serif;font-size:12px;color:#C9C7C3">action-inverse: fondo blanco + texto brand-700 (12.3:1). Nunca botón vinotinto sobre oscuro.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTRASTE ============ -->
+<section data-screen-label="Contraste" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">02 · Verificación de contraste</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Pares texto/superficie — nivel {{ level }}</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Ratios calculados en vivo (fórmula WCAG 2.1). Cambiá el nivel a AAA desde Tweaks para ver qué pares resisten. Pares marcados "≥3" son solo para UI grande / iconos / disabled, exentos del 4.5.</p>
+  </div>
+  <div style="border:1px solid #D9D9D9;background:#FFFFFF">
+    <div style="display:grid;grid-template-columns:88px 1fr 130px 90px 90px;gap:12px;align-items:center;padding:10px 16px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+      <div>Muestra</div><div>Par</div><div>Uso</div><div style="text-align:right">Ratio</div><div style="text-align:right">Resultado</div>
+    </div>
+    <sc-for list="{{ pairs }}" as="p" hint-placeholder-count="8">
+      <div style="display:grid;grid-template-columns:88px 1fr 130px 90px 90px;gap:12px;align-items:center;padding:9px 16px;border-top:1px solid #ECE9E4">
+        <div style="width:88px;height:38px;background:{{ p.bg }};border:1px solid #D9D9D9;display:flex;align-items:center;justify-content:center;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:{{ p.fg }}">Aa</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:13px;color:#2E2E2E;overflow-wrap:anywhere">{{ p.label }}</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68">{{ p.usage }}</div>
+        <div style="text-align:right;font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;color:#2E2E2E">{{ p.ratioText }}</div>
+        <div style="text-align:right"><span style="display:inline-block;padding:3px 9px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;background:{{ p.badgeBg }};color:{{ p.badgeFg }}">{{ p.badgeText }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ============ TIPOGRAFÍA ============ -->
+<section data-screen-label="Tipografia" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">03 · Tipografía</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Escala fluida — Work Sans + Open Sans</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Un solo set de tokens con clamp() calibrado entre 375 y 1280 px. Work Sans (500/600/700) para títulos, énfasis y datos; Open Sans (400/600) para cuerpo. Datos técnicos usan Work Sans 500 con tabular-nums — sin fuente mono extra.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;border:1px solid #D9D9D9;background:#FFFFFF">
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-display</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 700<br>clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem)<br>lh 1.05 · ls −0.01em</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.05;letter-spacing:-0.01em;color:#2E2E2E;overflow-wrap:anywhere">{{ specimenText }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-heading-xl</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 700<br>clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem)<br>lh 1.1</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Porcelanato para alto tránsito</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-heading-lg</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 600<br>clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem)<br>lh 1.2</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);line-height:1.2;color:#2E2E2E">Línea Terracota — formato 60×60</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-heading-md</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 600<br>clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem)<br>lh 1.3</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);line-height:1.3;color:#2E2E2E">Título de card de producto en el catálogo</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-heading-sm</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 600 · 1rem · lh 1.4</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;line-height:1.4;color:#2E2E2E">Subtítulo dentro de ficha técnica</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-body-lg</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Open Sans 400<br>clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem)<br>lh 1.6</div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem);line-height:1.6;color:#2E2E2E;max-width:560px">Intro y párrafos destacados. Setenta años fabricando revestimientos cerámicos en Venezuela, con capacidad instalada para obra pública y residencial.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-body-md</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Open Sans 400 · 1rem · lh 1.6</div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:1rem;line-height:1.6;color:#2E2E2E;max-width:560px">Cuerpo por defecto. Descripciones de producto, texto de formularios y contenido general del sitio.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-body-sm</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Open Sans 400 · 0.875rem · lh 1.5</div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#5C5A56;max-width:560px">Texto de apoyo: metadatos de card, notas de formulario, filas secundarias de tabla.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-caption</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Open Sans 400 · 0.75rem · lh 1.4</div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:0.75rem;line-height:1.4;color:#6E6C68">Pie de imagen, legales, timestamps. Nunca menor a 12 px.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px;border-bottom:1px solid #ECE9E4">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-overline</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 600 · 0.75rem<br>uppercase · ls 0.1em</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">Catálogo de productos</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:22px 24px">
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">text-data</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Work Sans 500 · 0.9375rem<br>tabular-nums · lh 1.4</div></div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;line-height:1.4;font-variant-numeric:tabular-nums;color:#2E2E2E">60 × 60 cm · PEI IV · 1.44 m²/caja · SKU CC-6060-TER-04</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPACING ============ -->
+<section data-screen-label="Spacing" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">04 · Spacing</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Escala base 4 px</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Base 4 (no 8) porque el catálogo denso en móvil — grilla de 2 columnas, chips de filtro, tablas de specs — necesita los pasos finos 4/8/12 dentro de las cards. A partir de 16 px la escala salta de a 8, y de a 16 en macro-layout: granularidad donde se usa, disciplina donde no.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:24px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-1</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">4 px</div><div style="height:16px;width:4px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-2</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">8 px</div><div style="height:16px;width:8px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-3</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">12 px</div><div style="height:16px;width:12px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-4</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">16 px</div><div style="height:16px;width:16px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-5</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">20 px</div><div style="height:16px;width:20px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-6</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">24 px</div><div style="height:16px;width:24px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-8</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">32 px</div><div style="height:16px;width:32px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-10</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">40 px</div><div style="height:16px;width:40px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-12</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">48 px</div><div style="height:16px;width:48px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-16</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">64 px</div><div style="height:16px;width:64px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-20</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">80 px</div><div style="height:16px;width:80px;background:#6B0F1A"></div></div>
+    <div style="display:grid;grid-template-columns:110px 60px 1fr;gap:16px;align-items:center"><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">space-24</div><div style="font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;text-align:right;font-variant-numeric:tabular-nums">96 px</div><div style="height:16px;width:96px;background:#6B0F1A"></div></div>
+    <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.6;color:#6E6C68;margin-top:8px;border-top:1px solid #ECE9E4;padding-top:12px">Nombre = múltiplo de 4 (space-6 = 24 px). Uso guía: 1–3 dentro de componentes · 4–6 entre elementos · 8–12 entre bloques · 16–24 entre secciones. Gutter del catálogo móvil: space-3 (12 px) entre cards de 2 columnas.</div>
+  </div>
+</section>
+
+<!-- ============ RADIUS ============ -->
+<section data-screen-label="Radius" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">05 · Border radius</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Geometría de arista dura</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">El isotipo es un hexágono isométrico de aristas rectas y las baldosas son rectángulos perfectos: el radius por defecto es 0. Los pasos 2/4 existen solo por función, nunca por estética.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <div style="width:72px;height:72px;flex:none;background:#F5F3F0;border:2px solid #6B0F1A;border-radius:0"></div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">radius-none · 0</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px"><strong>Default.</strong> Cards, imágenes de producto, botones, secciones, tablas. La baldosa no tiene esquinas redondeadas; la UI tampoco.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <div style="width:72px;height:72px;flex:none;background:#F5F3F0;border:2px solid #6B0F1A;border-radius:2px"></div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">radius-sm · 2 px</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px">Suaviza el aliasing en elementos pequeños de borde fino: inputs, chips de filtro, badges. Imperceptible como "redondeo".</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <div style="width:72px;height:72px;flex:none;background:#F5F3F0;border:2px solid #6B0F1A;border-radius:4px"></div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">radius-md · 4 px</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px">Máximo permitido. Solo elementos flotantes que necesitan despegarse del plano: tooltips, dropdowns, toasts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ELEVATION ============ -->
+<section data-screen-label="Elevation" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">06 · Elevation</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Cuatro niveles, sombra como excepción</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Marca plana e industrial: el reposo se resuelve con bordes, no con sombra. La elevación solo aparece cuando algo se despega físicamente del plano de scroll. El clásico "hover-lift" de cards se colapsó en el nivel 0 — el hover cambia el borde (neutral-300), no eleva. Sombra siempre en neutral-800 con alpha, nunca negro puro.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:72px;background:#FFFFFF;border:1px solid #D9D9D9;display:flex;align-items:center;justify-content:center;font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68;cursor:pointer" style-hover="border-color:#BFBDB9">card en reposo / hover</div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">elevation-0 · none</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px"><strong>Default.</strong> Cards de producto, secciones, tablas. El hover pasa el borde a neutral-300 — no hay lift.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:72px;background:#FFFFFF;box-shadow:0 1px 3px rgba(31,31,31,0.10);display:flex;align-items:center;justify-content:center;font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68">barra sticky</div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">elevation-1 · 0 1px 3px 10%</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px">Elementos pegados durante scroll: header del sitio, barra de filtros del catálogo. Solo aparece cuando hay contenido debajo.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:72px;background:#FFFFFF;box-shadow:0 4px 12px rgba(31,31,31,0.14);display:flex;align-items:center;justify-content:center;font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68">dropdown · tooltip · toast</div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">elevation-2 · 0 4px 12px 14%</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px">Flotantes anclados a un trigger: dropdown de ordenamiento, tooltip de spec, toast. Par natural de radius-md.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:72px;background:rgba(31,31,31,0.50);display:flex;align-items:center;justify-content:center"><div style="background:#FFFFFF;box-shadow:0 12px 32px rgba(31,31,31,0.22);padding:10px 18px;font-family:'Open Sans',sans-serif;font-size:12px;color:#6E6C68">modal / drawer</div></div>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">elevation-3 · 0 12px 32px 22% + scrim</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:4px">Bloqueantes: drawer de filtros en móvil, modal de distribuidor, lightbox de producto. Siempre con scrim rgba(31,31,31,0.5).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOTION ============ -->
+<section data-screen-label="Motion" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">07 · Motion</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Motion funcional, una sola licencia expresiva</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Esto es un catálogo: el movimiento confirma acciones, no decora. Solo se animan opacity y transform (móviles de gama media son el caso base). ease-expressive existe únicamente para el hero de home — en cualquier otro lugar es un bug de diseño. Pasá el mouse por las filas para sentir cada duración.</p>
+  </div>
+
+  <div style="border:1px solid #D9D9D9;background:#FFFFFF">
+    <div style="display:grid;grid-template-columns:150px 70px 1fr 170px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid #ECE9E4">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">dur-instant</div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;color:#2E2E2E">80 ms</div>
+      <div style="height:24px;position:relative;background:#F5F3F0"><div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#6B0F1A;transition:transform 80ms cubic-bezier(0.2,0,0,1)" style-hover="transform:translateX(200px)"></div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68">Feedback de estado: hover, active, checkbox, cambio de color</div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 70px 1fr 170px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid #ECE9E4">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">dur-fast</div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;color:#2E2E2E">160 ms</div>
+      <div style="height:24px;position:relative;background:#F5F3F0"><div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#6B0F1A;transition:transform 160ms cubic-bezier(0.2,0,0,1)" style-hover="transform:translateX(200px)"></div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68">Micro-transiciones: chip activo, dropdown, tooltip, toast in</div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 70px 1fr 170px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid #ECE9E4">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">dur-base</div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;color:#2E2E2E">240 ms</div>
+      <div style="height:24px;position:relative;background:#F5F3F0"><div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#6B0F1A;transition:transform 240ms cubic-bezier(0.2,0,0,1)" style-hover="transform:translateX(200px)"></div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68">Paneles: drawer de filtros móvil, acordeón de specs, modal</div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 70px 1fr 170px;gap:16px;align-items:center;padding:14px 20px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#6B0F1A">dur-slow</div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;color:#2E2E2E">480 ms</div>
+      <div style="height:24px;position:relative;background:#F5F3F0"><div style="position:absolute;top:4px;left:4px;width:16px;height:16px;background:#55000F;transition:transform 480ms cubic-bezier(0.16,1,0.3,1)" style-hover="transform:translateX(200px)"></div></div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#6E6C68"><strong>Solo hero de home</strong> (con ease-expressive). Nunca en catálogo ni fichas</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <svg width="80" height="56" viewBox="0 0 80 56" style="flex:none"><path d="M4,52 C18.4,52 4,4 76,4" fill="none" stroke="#6B0F1A" stroke-width="2"/></svg>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">ease-out</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:11.5px;color:#6E6C68;margin-top:2px">cubic-bezier(0.2, 0, 0, 1)</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:6px"><strong>Default funcional.</strong> Todo lo que entra o aparece: dropdowns, toasts, drawer. Arranca rápido, asienta sin rebote.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <svg width="80" height="56" viewBox="0 0 80 56" style="flex:none"><path d="M4,52 C32.8,52 18.4,4 76,4" fill="none" stroke="#6B0F1A" stroke-width="2"/></svg>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">ease-in-out</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:11.5px;color:#6E6C68;margin-top:2px">cubic-bezier(0.4, 0, 0.2, 1)</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:6px">Cambios reversibles de layout: acordeón de ficha técnica, expandir/colapsar filtros. Simétrico en ambos sentidos.</div>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;gap:16px;align-items:flex-start">
+      <svg width="80" height="56" viewBox="0 0 80 56" style="flex:none"><path d="M4,52 C15.52,4 25.6,4 76,4" fill="none" stroke="#55000F" stroke-width="2"/></svg>
+      <div>
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;color:#2E2E2E">ease-expressive</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:11.5px;color:#6E6C68;margin-top:2px">cubic-bezier(0.16, 1, 0.3, 1)</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:6px"><strong>Reservado: hero de home</strong> con dur-slow. Entrada de titular e imagen en primera carga. Un solo uso por página.</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:#FFFFFF;border:1px solid #6B0F1A;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#6B0F1A;color:#FFFFFF">Excepción declarada</span>
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">Historia del home — fijado conducido por scroll</span>
+    </div>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty">Aprobada el 19/08/2026. La sección Historia fija la pantalla y pasa cinco capas en fundido cruzado mientras el scroll avanza, con el año en cifras grandes y una barra de progreso. Excede la licencia general —«solo opacidad y transformación; parallax únicamente en bandas de ancho completo»— porque además <strong style="color:#2E2E2E">se apropia del scroll</strong> durante un tramo.</p>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty"><strong style="color:#2E2E2E">Se acepta con cuatro límites.</strong> Una sola vez en todo el sitio: es el momento de marca, no un recurso reutilizable — ninguna otra sección ni página puede fijar el scroll. El tramo fijado no pasa de 100vh de alto de pantalla por capa y el usuario nunca queda atrapado: seguir desplazándose siempre avanza. Las transiciones internas siguen siendo solo opacidad y transformación. Con movimiento reducido colapsa a la versión de teléfono —imagen más lista de hitos con hairlines—, que ya existe y no fija nada.</p>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#6E6C68;text-wrap:pretty">Para desarrollo: es el patrón más caro de los aprobados y el que peor tolera implementarse a ojo. Si el presupuesto obliga a recortar algo de movimiento, este es el primero — la versión de teléfono es la degradación válida.</p>
+  </div>
+  <div style="margin-top:16px;background:#ECE9E4;padding:16px 20px;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#5C5A56"><strong style="color:#2E2E2E">Regla reduced-motion (no negociable):</strong> con <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px">prefers-reduced-motion: reduce</span>, toda duración colapsa a 1 ms y se desactiva cualquier parallax o autoplay. Los estados finales son idénticos: la animación nunca carga significado.</div>
+</section>
+
+<!-- ============ ICONOGRAFÍA ============ -->
+<section data-screen-label="Iconografia" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">08 · Iconografía</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Lucide — stroke geométrico como el isotipo</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Set propuesto: <strong>Lucide</strong> (open-source, licencia ISC, +1500 iconos). Trazo lineal sin relleno y esquinas geométricas — el mismo lenguaje del hexágono isométrico del logo. Sin color propio: los iconos heredan los tokens de texto (text-primary, text-muted, text-link, on-dark).</p>
+  </div>
+
+  <h3 style="margin:8px 0 12px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Escala de tamaños — stroke 2 px absoluto</h3>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F3F0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">icon-sm · 16 px</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Inline con texto: dentro de inputs, chips de filtro, metadatos de card.</div></div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F3F0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></div>
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">icon-md · 20 px</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Botones ("Descargar ficha"), nav móvil, acciones de card.</div></div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F3F0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">icon-lg · 24 px</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Default de UI: header, listado de distribuidores, estados vacíos.</div></div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#F5F3F0"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <div><div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">icon-xl · 32 px</div><div style="font-family:'Open Sans',sans-serif;font-size:11.5px;line-height:1.5;color:#6E6C68;margin-top:3px">Features en fichas técnicas y bloques de valor (contacto, garantía). Hit target siempre ≥44 px, independiente del tamaño visual.</div></div>
+    </div>
+  </div>
+
+  <h3 style="margin:32px 0 4px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">Validación del stroke al tamaño mínimo (16 px)</h3>
+  <p style="margin:0 0 12px;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px">Con escalado proporcional (default de Lucide), el trazo de 2 px baja a 1.33 px efectivos a 16 px: se quiebra en pantallas 1× y pierde el carácter industrial. Con stroke absoluto de 2 px el icono denso (teléfono) se empasta. Veredicto: <strong>stroke 2 px absoluto</strong> (absoluteStrokeWidth) con 1.75 px solo en el caso denso a 16 px si hace falta — en la práctica, evitar iconos densos por debajo de 20 px.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px">
+      <div style="display:flex;gap:14px;align-items:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E;margin-top:12px">1.33 px efectivo (proporcional)</div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#8C3312;margin-top:3px">✕ Descartado — trazo frágil, se quiebra en 1× y pierde peso frente a Open Sans 400.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #6B0F1A;padding:18px">
+      <div style="display:flex;gap:14px;align-items:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2.625" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2.625" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2.625" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E;margin-top:12px">1.75 px efectivo</div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#24523A;margin-top:3px">✓ Mínimo legible — resuelve incluso el teléfono denso. Fallback para iconos densos a 16 px.</div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #6B0F1A;padding:18px;position:relative">
+      <div style="position:absolute;top:0;right:0;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;padding:3px 8px">ELEGIDO</div>
+      <div style="display:flex;gap:14px;align-items:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E;margin-top:12px">2 px efectivo (absoluto)</div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.5;color:#24523A;margin-top:3px">✓ Default del sistema — peso parejo con el logo y los bordes de 2 px en toda la escala. Iconos simples (search, chevron, x) se leen perfecto; los densos se reservan para ≥20 px.</div>
+    </div>
+  </div>
+
+  <h3 style="margin:32px 0 12px;font-family:'Work Sans',sans-serif;font-weight:600;font-size:18px;color:#2E2E2E">En contexto</h3>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+    <div style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid #BFBDB9;border-radius:2px;flex:1;min-width:220px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6C68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span style="font-family:'Open Sans',sans-serif;font-size:14px;color:#8F8D89">Buscar por línea o formato…</span>
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:8px;justify-content:center;min-height:44px;padding:0 20px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#55000F">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      Ficha técnica
+    </span>
+    <span style="display:inline-flex;align-items:center;gap:8px;font-family:'Open Sans',sans-serif;font-size:14px;color:#5C5A56">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B0F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Valencia, Carabobo — 12 distribuidores
+    </span>
+  </div>
+</section>
+
+<!-- ============ CSS VARS ============ -->
+<section data-screen-label="CSS Variables" style="max-width:1080px;margin:0 auto;padding:48px 24px 64px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">09 · Implementación</div>
+      <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">CSS custom properties</h2>
+    </div>
+    <button onClick="{{ copyCss }}" style="min-height:44px;padding:0 24px;background:#6B0F1A;color:#FFFFFF;border:none;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#55000F">{{ copyLabel }}</button>
+  </div>
+  <pre id="css-token-block" style="margin:0;background:#1F1F1F;color:#C9C7C3;padding:28px;overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.65">:root {
+  /* ===== Color · Brand ===== */
+  --color-brand-900: #55000F;   /* kit — brand profundo */
+  --color-brand-700: #6B0F1A;   /* kit — núcleo de marca */
+  --color-brand-300: #E6C0A8;   /* nude cerámica — acentos on-dark */
+  --color-brand-100: #F2E5D8;   /* fondo de selección / hover secundario */
+
+  /* ===== Color · Action ===== */
+  --color-action-primary: var(--color-brand-700);
+  --color-action-primary-hover: var(--color-brand-900);
+  --color-action-on-primary: #FFFFFF;
+  --color-action-secondary-text: var(--color-brand-700);
+  --color-action-secondary-border: var(--color-brand-700);
+  --color-action-secondary-hover-bg: var(--color-brand-100);
+  --color-action-inverse-bg: #FFFFFF;          /* botón sobre fondos oscuros */
+  --color-action-inverse-text: var(--color-brand-700);
+  /* active = hover (brand-900) + translateY(1px). Decisión: sin brand-950 —
+     un paso más oscuro que #55000F es imperceptible y no es verificable contra el kit */
+
+  /* ===== Color · Surface ===== */
+  --color-surface-base: #F5F3F0;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-sunken: #ECE9E4;
+  --color-surface-brand: var(--color-brand-900);
+  --color-surface-inverse: #2E2E2E;
+  --color-surface-inverse-deep: #1F1F1F;
+
+  /* ===== Color · Neutral ===== */
+  --color-neutral-0: #FFFFFF;    /* kit */
+  --color-neutral-50: #F5F3F0;
+  --color-neutral-100: #ECE9E4;
+  --color-neutral-200: #D9D9D9;  /* kit */
+  --color-neutral-300: #BFBDB9;
+  --color-neutral-400: #8F8D89;  /* solo UI grande / disabled — 3.3:1 */
+  --color-neutral-500: #6E6C68;
+  --color-neutral-600: #5C5A56;
+  --color-neutral-700: #2E2E2E;  /* kit */
+  --color-neutral-800: #1F1F1F;
+
+  /* ===== Color · Text ===== */
+  --color-text-primary: var(--color-neutral-700);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-text-link: var(--color-brand-700);
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-secondary: #C9C7C3;
+  --color-text-link-on-dark: var(--color-brand-300);
+  /* Set on-dark tipificado 2026-07-28 (A4): valores únicos, sin alphas ad-hoc */
+  --color-border-on-dark: rgba(255,255,255,0.40);         /* hairlines sobre imagen */
+  --color-border-on-dark-strong: rgba(255,255,255,0.65);  /* borde de control sobre imagen */
+
+  /* ===== Color · Border ===== */
+  --color-border-default: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-brand-700);        /* on-dark: brand-300 */
+  --color-bg-disabled: var(--color-neutral-100);       /* alias semántico */
+  --color-border-disabled: var(--color-neutral-200);   /* alias semántico */
+
+  /* ===== Color · Semantic ===== */
+  --color-success-100: #E4EFE7;
+  --color-success-600: #2F6B45;  /* icono / borde */
+  --color-success-700: #24523A;  /* texto sobre tinte */
+  --color-warning-100: #F6EDD9;
+  --color-warning-600: #8A5800;
+  --color-warning-700: #6E4600;
+  --color-error-100: #F8E7E0;
+  --color-error-600: #B4441F;    /* ladrillo — no compite con brand */
+  --color-error-700: #8C3312;
+
+  /* ===== Typography ===== */
+  --font-heading: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  /* shorthand: weight size/line-height family */
+  /* Recalibrado 2026-07-28 por la aplicación A4: display y heading-xl pasan a weight 300
+     (editorial premium por sustracción); heading-lg a 500. Ver CLAUDE.md · Versiones. */
+  --text-display: 300 clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem)/1.08 var(--font-heading);
+  --text-heading-xl: 300 clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem)/1.12 var(--font-heading);
+  --text-heading-lg: 500 clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem)/1.2 var(--font-heading);
+  --text-heading-md: 600 clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem)/1.3 var(--font-heading);
+  --text-heading-sm: 600 1rem/1.4 var(--font-heading);
+  --text-body-lg: 400 clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem)/1.6 var(--font-body);
+  --text-body-md: 400 1rem/1.6 var(--font-body);
+  --text-body-base: 400 0.9375rem/1.65 var(--font-body); /* promovido 2026-08-05: cuerpo por defecto — 20 usos en 4 páginas; body-md queda para intro */
+  --text-body-sm: 400 0.875rem/1.5 var(--font-body);
+  --text-caption: 400 0.75rem/1.4 var(--font-body);
+  --text-overline: 500 0.75rem/1.35 var(--font-heading); /* recalibrado 2026-07-28: 500 + uppercase, ls 0.16em */
+  --text-nav: 500 0.75rem/1.35 var(--font-heading);      /* nav y labels de header — uppercase, ls 0.16em */
+  --text-ui-md: 500 1rem/1.4 var(--font-heading);        /* label de UI en 16px: nombre de proyecto */
+  --text-ui-sm: 500 0.8125rem/1.45 var(--font-heading);  /* 13px UI: nombres de serie, CTA de texto */
+  --text-title-md: 300 clamp(1.375rem, 1.15rem + 1vw, 2rem)/1.15 var(--font-heading);        /* título light de fila/banda */
+  --text-title-sm: 300 clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem)/1.25 var(--font-heading);  /* título light de card */
+  --text-body-15: 400 0.9375rem/1.7 var(--font-body);    /* bajadas de sección y cuerpo editorial (15px, leading 1.7) */
+  --text-caption-lg: 400 0.8125rem/1.5 var(--font-body); /* 13px cuerpo: captions, créditos, metadatos */
+  --text-data: 500 0.9375rem/1.4 var(--font-heading);    /* + tabular-nums */
+  /* RETIRADO 2026-08-19 --tracking-display: -0.01em — el display del sitio es siempre
+     weight 300 y usa tracking-display-light; el negativo quedó sin consumidor. */
+  --tracking-display-light: 0.01em;   /* display en weight 300 — compensa el peso ligero */
+  /* RETIRADO 2026-08-19 --tracking-overline: 0.1em — los overlines usan la escala
+     tracking-uppercase-*; este valor quedó huérfano al promoverse esa escala. */
+  /* Escala de tracking uppercase (agregada 2026-07-28 desde A4) */
+  --tracking-uppercase-xs: 0.08em;    /* links editoriales */
+  --tracking-uppercase-sm: 0.12em;    /* nombres de serie, CTA fill */
+  --tracking-uppercase-md: 0.14em;    /* CTA outline, numeración */
+  --tracking-uppercase-lg: 0.16em;    /* nav, eyebrows, overline */
+  --tracking-label: 0.02em;           /* labels en sentence case */
+  --tracking-badge: 0.04em;           /* badges */
+
+  /* ===== Spacing (base 4 px, nombre = múltiplo) ===== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ===== Layout (promovidos 2026-07-28 desde A4) ===== */
+  --size-content-max: 1600px;                     /* ancho máximo de contenido */
+  --space-gutter-page: clamp(20px, 5vw, 72px);    /* gutter lateral de página */
+  --space-section: clamp(72px, 8vw, 120px);       /* ritmo vertical entre secciones */
+  --border-width: 1px;
+  --color-border-hairline: var(--color-neutral-200); /* #D9D9D9 — separador estructural.
+     CORREGIDO 2026-08-19: aliaseaba neutral-300 (#BFBDB9), un color que ninguna página usa,
+     mientras su propio comentario declaraba #D9D9D9 y las cuatro páginas escriben #D9D9D9. */
+  --bp-mobile: 760px;                             /* límite superior de móvil (ver Responsividad v0) */
+  --bp-tablet: 1024px;                            /* límite superior de tablet; desde acá, desktop */
+
+  /* ===== Patrones de interacción (promovidos 2026-07-28 desde A4) ===== */
+  --hover-image-scale: 1.03;   /* hover estándar de imagen: transform + dur-base + ease-out */
+  --hover-image-dim: 0.92;     /* atenuación de imagen en hover de card.
+     CORREGIDO 2026-08-19: decía 0.88; el catálogo —único consumidor— usa 0.92. */
+  --reveal-offset: 24px;       /* reveal on-scroll: opacity 0→1 + translateY, dur-slow, una vez */
+
+  /* ===== Lockup de marca — EXACTAMENTE 2 variantes =====
+     horizontal: iso 36×38 + wordmark 86×27, gap 12px — headers compactos, banda fija
+                 (recalibrado 2026-08-05: a 70px el wordmark leía chico en banda ancha)
+     apilada:    iso 38×41 + wordmark 132×20, gap 8px — header sobre hero, footer, menú móvil
+     (logo-full.svg queda reservado para usos editoriales fuera de UI) */
+
+  /* ===== Radius ===== */
+  --radius-none: 0;      /* default — cards, imágenes, botones */
+  --radius-sm: 2px;      /* inputs, chips, badges */
+  --radius-md: 4px;      /* solo flotantes: tooltip, dropdown, toast */
+
+  /* ===== Elevation (sombra = neutral-800 con alpha, nunca negro puro) ===== */
+  --elevation-0: none;                             /* default — el reposo usa bordes */
+  --elevation-1: 0 1px 3px rgba(31,31,31,0.10);    /* sticky: header, barra de filtros */
+  --elevation-2: 0 4px 12px rgba(31,31,31,0.14);   /* flotantes: dropdown, tooltip, toast */
+  --elevation-3: 0 12px 32px rgba(31,31,31,0.22);  /* modal, drawer de filtros móvil */
+  /* Escala de scrim (agregada 2026-07-28 desde A4 — unifica 4 valores dispersos) */
+  --scrim-subtle: rgba(31,31,31,0.24);  /* hover de tile: caption sobre imagen */
+  --scrim-base: rgba(31,31,31,0.32);    /* panel de navegación, velo de hero */
+  --scrim-strong: rgba(31,31,31,0.40);  /* texto grande sobre imagery full-bleed */
+  --color-scrim: rgba(31,31,31,0.50);   /* modal y drawer — sin cambios */
+  /* Rampa de hero (promovida 2026-08-05): 4 paradas — menú arriba, foto limpia al centro,
+     base para el titular. Idéntica en home, catálogo, contacto y dónde comprar. */
+  --scrim-hero: linear-gradient(to bottom,
+    rgba(31,31,31,0.32) 0%,
+    rgba(31,31,31,0.16) 30%,
+    rgba(31,31,31,0.40) 62%,
+    rgba(31,31,31,0.62) 100%);
+
+  /* ===== Motion (solo opacity y transform) ===== */
+  --dur-instant: 80ms;   /* feedback de estado: hover, active, checkbox */
+  --dur-fast: 160ms;     /* chips, dropdown, tooltip, toast */
+  --dur-base: 240ms;     /* drawer, acordeón de specs, modal */
+  --dur-reveal: 320ms;   /* promovido 2026-08-05: reveal on-scroll de bloque */
+  --dur-mask: 400ms;     /* promovido 2026-08-05: máscara clip-path de imagen */
+  --dur-slow: 480ms;     /* SOLO hero de home, con ease-expressive */
+  /* Cascada: NO es un token. El elemento i de un grupo espera i × 70ms (home) / i × 60ms (internas). */
+  /* RETIRADO 2026-08-19 --dur-spin: 800ms. Estados v0 decidió que la espera se comunica
+     con el latido del Marcador de imagen y NO con un indicador giratorio: el token no
+     tiene consumidor posible. Se deja anotado para que nadie lo reintroduzca. */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);          /* default: entradas y apariciones */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);     /* reversibles: acordeones, expandir */
+  --ease-expressive: cubic-bezier(0.16, 1, 0.3, 1); /* SOLO hero de home */
+
+  /* ===== Iconography (Lucide, ISC) ===== */
+  --icon-stroke: 2px;    /* absoluto en toda la escala (absoluteStrokeWidth) */
+  --icon-sm: 16px;       /* inline: inputs, chips, metadatos */
+  --icon-md: 20px;       /* botones, nav móvil */
+  --icon-lg: 24px;       /* default de UI */
+  --icon-xl: 32px;       /* features en fichas; hit target siempre >= 44px */
+
+  /* ===== Controls (accesibilidad) ===== */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --control-height-lg: 48px;   /* CTA de cierre / acción destacada (agregado 2026-07-28 desde A4) */
+  --control-height-md: 44px;   /* buttons, inputs, selects — hit target */
+  --control-height-sm: 36px;   /* chips, filas de checkbox */
+  --control-box: 20px;         /* checkbox / radio */
+
+  /* ===== Media ratios ===== */
+  --ratio-product: 4 / 3;      /* card de catálogo */
+  --ratio-feature: 3 / 2;      /* destacados home, ficha */
+  --ratio-portrait: 4 / 5;     /* v0.1.1 — opción galería vertical (ProductCard media); pendiente probar vs ratio-product en grilla real */
+
+  /* ===== Z-index ===== */
+  --z-sticky: 10;         /* header fijo, header y nav sobre hero */
+  --z-dropdown: 20;
+  --z-scrim: 30;
+  --z-megapanel-scrim: 30; /* scrim del mega-panel de Catálogo (G14) */
+  --z-megapanel: 32;       /* mega-panel de Catálogo, sobre su scrim */
+  --z-modal: 40;           /* modal, drawer, menú móvil */
+  --z-toast: 50;
+
+  /* Ad-hoc documentado (NO tokenizar hasta probar contra catálogo real en 1.2):
+     sidebar filtros 280px · modal 480px · bottom sheet max 85dvh */
+}
+
+/* Reduced motion — no negociable */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}</pre>
+  <p style="margin:20px 0 0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:720px"><strong style="color:#2E2E2E">Próximos pasos sugeridos:</strong> validar el set on-dark contra el arte final del hero · v1 de componentes: card de producto, chip de filtro, tabla de specs, drawer de filtros.</p>
+</section>
+
+
+<!-- ============ AUDITORÍA ============ -->
+<section data-screen-label="Auditoria" style="max-width:1080px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">10 · Auditoría contra la Propuesta 1</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E;text-wrap:pretty">El sistema se corrige contra lo aprobado</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px;text-wrap:pretty">19/08/2026. La Propuesta 1 y sus tres internas son la verdad; lo que este documento declaraba y ninguna página aplica se corrige o se retira. <strong style="color:#2E2E2E">Método:</strong> comparación por <strong style="color:#2E2E2E">valor</strong>, no por nombre de token — los Design Components no admiten <code style="font-family:ui-monospace,monospace;font-size:12px">var()</code> en estilos inline, así que buscar <code style="font-family:ui-monospace,monospace;font-size:12px">var(--x)</code> devuelve 145 de 147 tokens «sin uso» y no significa nada.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#6B0F1A;color:#FFFFFF">Corregido</span>
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">--color-border-hairline</span>
+      </div>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty">Aliaseaba <code style="font-family:ui-monospace,monospace;font-size:12px">neutral-300</code>, que es #BFBDB9, mientras su propio comentario declaraba #D9D9D9. Es el separador más repetido del sitio y apuntaba a un color que ninguna página usa. Ahora aliasea <code style="font-family:ui-monospace,monospace;font-size:12px">neutral-200</code>. Es el hallazgo más serio: una contradicción dentro de una sola línea, invisible mientras nadie consumiera el token.</p>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#6B0F1A;color:#FFFFFF">Corregido</span>
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">Lockup horizontal · --hover-image-dim</span>
+      </div>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty">El lockup horizontal pasa a <strong style="color:#2E2E2E">iso 36×38 + wordmark 86×27</strong>: la recalibración se aplicó en las cuatro páginas el 05/08 y el documento se quedó en 30×32 + 70×22 dos semanas. La atenuación de imagen pasa de 0.88 a <strong style="color:#2E2E2E">0.92</strong>, que es lo que usa el catálogo, su único consumidor.</p>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#2E2E2E;color:#FFFFFF">Retirado</span>
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">--dur-spin · --tracking-display · --tracking-overline</span>
+      </div>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty"><code style="font-family:ui-monospace,monospace;font-size:12px">--dur-spin</code> no puede tener consumidor: Estados v0 decidió que la espera se comunica con el latido del Marcador de imagen y nunca con un indicador giratorio. Los dos <code style="font-family:ui-monospace,monospace;font-size:12px">tracking</code> quedaron huérfanos al promoverse la escala <code style="font-family:ui-monospace,monospace;font-size:12px">tracking-uppercase-*</code> y al fijarse el display en weight 300. Quedan anotados en el CSS, comentados, para que nadie los reintroduzca.</p>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#ECE9E4;color:#2E2E2E">Se conserva</span>
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">Éxito · Advertencia · Error (9 tokens)</span>
+      </div>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty">Ninguna página los usa, pero no se retiran: son la evidencia de un hueco real. El formulario de contacto valida y <strong style="color:#2E2E2E">no tiene ningún estilo de error</strong> — ni borde, ni mensaje, ni <code style="font-family:ui-monospace,monospace;font-size:12px">aria-invalid</code>. El token no sobra: falta la pantalla que lo consuma. Queda como pendiente de diseño, no de sistema.</p>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#ECE9E4;color:#2E2E2E">Se conserva</span>
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:#2E2E2E">--bp-tablet · #DCAF9A</span>
+      </div>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty"><code style="font-family:ui-monospace,monospace;font-size:12px">--bp-tablet</code> no aparece en ninguna página porque contacto y dónde comprar siguen conmutando en 1000px: el token está bien, la implementación está atrasada. <code style="font-family:ui-monospace,monospace;font-size:12px">#DCAF9A</code> (hover del mapa) es el único hex fuera de paleta del sitio; se promueve o se reemplaza cuando se decida el Mapa de cobertura.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;background:#ECE9E4;padding:18px 20px;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.65;color:#5C5A56;text-wrap:pretty"><strong style="color:#2E2E2E">Regla que deja esta auditoría.</strong> Un token es verdad solo si alguna página lo aplica. Auditar por valor y no por nombre; y cuando un valor cambia en las páginas, el documento se corrige en el mismo movimiento — el desfase del lockup duró dos semanas porque se aplicó en cuatro archivos y se anotó en ninguno.</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;contrastLevel&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;AA&quot;, &quot;AAA&quot;], &quot;default&quot;: &quot;AA&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Verificación&quot;}, &quot;specimenText&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;La piel de tu hogar…&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Tipografía&quot;}}">
+class Component extends DCLogic {
+  state = { copied: false };
+
+  lum(hex) {
+    const n = hex.replace('#', '');
+    const c = [0, 2, 4].map((i) => {
+      const v = parseInt(n.substr(i, 2), 16) / 255;
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  ratio(a, b) {
+    const l1 = this.lum(a), l2 = this.lum(b);
+    const hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+
+  renderVals() {
+    const level = this.props.contrastLevel ?? 'AA';
+    const P = [
+      ['#2E2E2E', '#F5F3F0', 'text-primary / surface-base', 'Cuerpo general', 4.5],
+      ['#2E2E2E', '#FFFFFF', 'text-primary / surface-raised', 'Texto en cards', 4.5],
+      ['#5C5A56', '#F5F3F0', 'text-secondary / surface-base', 'Texto secundario', 4.5],
+      ['#6E6C68', '#FFFFFF', 'text-muted / surface-raised', 'Metadatos, captions', 4.5],
+      ['#6B0F1A', '#F5F3F0', 'text-link / surface-base', 'Links', 4.5],
+      ['#FFFFFF', '#6B0F1A', 'action-on-primary / action-primary', 'Botón primario', 4.5],
+      ['#FFFFFF', '#55000F', 'text-on-dark / surface-brand', 'Hero vinotinto', 4.5],
+      ['#FFFFFF', '#2E2E2E', 'text-on-dark / surface-inverse', 'Footer, secciones oscuras', 4.5],
+      ['#C9C7C3', '#2E2E2E', 'text-on-dark-secondary / surface-inverse', 'Cuerpo on-dark', 4.5],
+      ['#E6C0A8', '#2E2E2E', 'link-on-dark / surface-inverse', 'Links on-dark', 4.5],
+      ['#24523A', '#E4EFE7', 'success-700 / success-100', 'Badge success', 4.5],
+      ['#2F6B45', '#FFFFFF', 'success-600 / surface-raised', 'Icono/texto success', 4.5],
+      ['#6E4600', '#F6EDD9', 'warning-700 / warning-100', 'Badge warning', 4.5],
+      ['#8A5800', '#FFFFFF', 'warning-600 / surface-raised', 'Icono/texto warning', 4.5],
+      ['#8C3312', '#F8E7E0', 'error-700 / error-100', 'Badge error', 4.5],
+      ['#B4441F', '#FFFFFF', 'error-600 / surface-raised', 'Icono/texto error', 4.5],
+      ['#8F8D89', '#FFFFFF', 'neutral-400 / surface-raised', 'Solo UI grande / disabled', 3],
+    ];
+    const pairs = P.map(([fg, bg, label, usage, min]) => {
+      const r = this.ratio(fg, bg);
+      const req = level === 'AAA' ? (min === 3 ? 4.5 : 7) : min;
+      const pass = r >= req;
+      return {
+        fg, bg, label, usage,
+        ratioText: r.toFixed(2) + ':1',
+        badgeText: (pass ? 'PASA' : 'FALLA') + ' \u2265' + req,
+        badgeBg: pass ? '#E4EFE7' : '#F8E7E0',
+        badgeFg: pass ? '#24523A' : '#8C3312',
+      };
+    });
+    return {
+      level,
+      pairs,
+      specimenText: this.props.specimenText ?? 'La piel de tu hogar\u2026',
+      copyLabel: this.state.copied ? 'Copiado \u2713' : 'Copiar tokens CSS',
+      copyCss: () => {
+        const el = document.getElementById('css-token-block');
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          this.setState({ copied: true });
+          setTimeout(() => this.setState({ copied: false }), 1600);
+        });
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

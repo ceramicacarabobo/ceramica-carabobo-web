@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600&amp;family=Open+Sans:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+:root{--dur-reveal:320ms;--dur-mask:400ms}
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+:focus-visible{outline:2px solid #6B0F1A;outline-offset:2px}
+/* El anillo blanco es para el foco que cae SOBRE foto: el header cuando aún es transparente y
+   las tarjetas de producto. En las tarjetas el enfocable es el `a` que ENVUELVE al marco, no un
+   descendiente, así que va con :has — con `[data-marco] :focus-visible` no alcanzaba a nada. */
+[data-hdr="ghost"] :focus-visible{outline-color:#FFFFFF}
+a:has([data-marco]):focus-visible{outline-color:#FFFFFF}
+/* Carga de imagen: superficie neutra del marco, sin latido en bucle. */
+[data-img]{opacity:0;transition:opacity 320ms cubic-bezier(.37,0,.63,1), transform 180ms cubic-bezier(.4,0,.2,1)}
+[data-img][data-lista="1"]{opacity:1}
+a:hover [data-img][data-lista="1"]{transform:scale(1.03);opacity:0.92}
+/* La ficha es una sola foto grande y ya pedida: ahí el fundido largo se lee como lujo.
+   En la grilla no — 24 tarjetas escalonadas a 900ms dejan la pantalla temblando. */
+[role="dialog"] [data-img],[data-screen-label="Ficha hoja"] [data-img]{transform:none!important;transition-duration:900ms}
+@keyframes c5-barra{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes c5-scrim{from{opacity:0}to{opacity:1}}
+@keyframes c5-panel{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:1ms !important;animation-iteration-count:1 !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+
+<div ref="{{ hdrRef }}" data-screen-label="Header" data-hdr="{{ hdrEstado }}" style="position:fixed;top:0;left:0;right:0;z-index:10;transition:background 180ms cubic-bezier(.4,0,.2,1), border-color 180ms cubic-bezier(.4,0,.2,1);background:{{ hdrBg }};border-bottom:1px solid {{ hdrBorder }}">
+  <div style="max-width:1600px;margin:0 auto;padding:8px clamp(20px,5vw,72px);display:flex;align-items:center;gap:clamp(12px,2vw,32px)">
+    <a href="Propuesta 1.dc.html" aria-label="Cerámica Carabobo — inicio" style="display:flex;align-items:center;gap:12px;flex:none">
+      <span style="display:block;width:36px;height:38px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;transition:background 180ms cubic-bezier(.4,0,.2,1);background:{{ logoColor }}"></span>
+      <span style="display:block;width:86px;height:27px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center / contain;mask:url('assets/logo-wordmark.svg') no-repeat center / contain;transition:background 180ms cubic-bezier(.4,0,.2,1);background:{{ logoColor }}"></span>
+    </a>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ abrirMenu }}" aria-label="Abrir menú" style="width:44px;height:44px;margin-left:auto;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex:none">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+      </button>
+    </sc-if>
+    <nav style="display:{{ navDisplay }};align-items:center;gap:clamp(20px,2.5vw,36px);flex:1;justify-content:flex-end">
+      <a href="catalogo-c5.dc.html" style="text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;padding:12px 0;border-bottom:1px solid currentColor;color:{{ navCurrent }}">Catálogo</a>
+      <a href="contacto.html" style="text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;padding:12px 0;color:{{ navColor }}">Contacto</a>
+      <a href="donde-comprar.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;background:transparent;transition:background 80ms cubic-bezier(0.2,0,0,1), color 80ms cubic-bezier(0.2,0,0,1);border:1px solid {{ ctaBorder }};color:{{ ctaColor }}">Dónde comprar</a>
+    </nav>
+  </div>
+</div>
+
+<section data-screen-label="Hero" style="position:relative;width:100%;height:auto;min-height:max({{ heroMinH }}, {{ heroH }});overflow:hidden;background:#2E2E2E">
+  <img src="uploads/hero-poster.jpg" alt="Ambiente residencial revestido en porcelanato Cerámica Carabobo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+  <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(31,31,31,0.32) 0%,rgba(31,31,31,0.16) 30%,rgba(31,31,31,0.40) 62%,rgba(31,31,31,0.62) 100%)"></span>
+  <div style="position:relative;min-height:max({{ heroMinH }}, {{ heroH }});max-width:1600px;margin:0 auto;padding:clamp(88px,11vw,140px) clamp(20px,5vw,72px) clamp(32px,4vw,56px);display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(16px,2vw,24px)">
+    <nav aria-label="Ruta" style="display:flex;align-items:center;gap:8px;font-family:'Open Sans',sans-serif;font-size:0.8125rem;line-height:1.5;color:#C9C7C3">
+      <a href="Propuesta 1.dc.html" style="color:#FFFFFF;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.40)">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span>Catálogo</span>
+    </nav>
+    <div style="display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:clamp(20px,3vw,48px)">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:26ch">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#C9C7C3">Diseños 2026</div>
+        <h1 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(2.75rem, 1.9rem + 3.6vw, 5rem);line-height:1.06;letter-spacing:0.01em;color:#FFFFFF;text-wrap:pretty">Catálogo</h1>
+      </div>
+      <p style="margin:0;max-width:38ch;font-family:'Open Sans',sans-serif;font-size:clamp(0.9375rem,0.9rem + 0.2vw,1.0625rem);line-height:1.6;color:#FFFFFF;text-wrap:pretty">El portafolio completo: 126 productos entre la Serie Regular y la Serie Venezuela. Filtra por materia, formato, uso, textura o brillo.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Serie" style="border-bottom:1px solid #D9D9D9">
+  <div style="max-width:1600px;margin:0 auto;padding:0 clamp(20px,5vw,72px);display:flex;flex-wrap:{{ matWrap }};align-items:center;gap:clamp(20px,3vw,40px);min-width:0;overflow-x:{{ matOverflow }}">
+    <span style="flex:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56;padding:20px 0">Entra por serie</span>
+    <div style="display:flex;flex-wrap:{{ matWrap }};gap:clamp(16px,2.4vw,32px)">
+      <sc-for list="{{ serieBar }}" as="m" hint-placeholder-count="3">
+        <button onClick="{{ m.pick }}" style="flex:none;white-space:nowrap;background:transparent;border:0;border-bottom:1px solid transparent;cursor:pointer;padding:20px 0;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.875rem;letter-spacing:0.06em;text-transform:uppercase;transition:color 180ms cubic-bezier(.4,0,.2,1), border-color 180ms cubic-bezier(.4,0,.2,1);color:{{ m.color }};border-bottom-color:{{ m.linea }}" style-hover="color:#2E2E2E">{{ m.texto }}</button>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Finder" style="max-width:1600px;margin:0 auto;padding:clamp(28px,3.5vw,48px) clamp(20px,5vw,72px) clamp(72px,8vw,112px)">
+  <div style="display:grid;grid-template-columns:{{ finderCols }};gap:clamp(28px,4vw,64px);align-items:start">
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <aside data-screen-label="Facetas" style="position:sticky;top:{{ asideTop }};max-height:{{ asideMax }};overflow-y:auto;display:flex;flex-direction:column;gap:clamp(24px,3vw,32px)">
+      <sc-for list="{{ facetas }}" as="g" hint-placeholder-count="5">
+        <sc-if value="{{ g.visible }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56;padding-bottom:8px;border-bottom:1px solid #D9D9D9">{{ g.label }}</div>
+          <sc-for list="{{ g.opciones }}" as="o" hint-placeholder-count="4">
+            <label style="display:flex;align-items:center;gap:12px;min-height:24px;cursor:{{ o.cursor }}">
+              <input type="checkbox" checked="{{ o.activo }}" disabled="{{ o.vacio }}" onChange="{{ o.toggle }}" style="width:16px;height:16px;margin:0;accent-color:#6B0F1A;cursor:{{ o.cursor }}">
+              <span style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:{{ o.color }}">{{ o.label }}</span>
+              <span style="margin-left:auto;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:{{ o.colorN }}">{{ o.n }}</span>
+            </label>
+          </sc-for>
+        </div>
+        </sc-if>
+      </sc-for>
+      <sc-if value="{{ hayFiltros }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ limpiar }}" style="display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 16px;align-self:flex-start;background:transparent;border:1px solid #D9D9D9;border-radius:2px;cursor:pointer;color:#5C5A56;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.02em;transition:border-color 80ms cubic-bezier(0.2,0,0,1), color 80ms cubic-bezier(0.2,0,0,1)" style-hover="border-color:#6B0F1A;color:#6B0F1A">Limpiar filtros <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:16px;padding-top:clamp(8px,1.5vw,16px);border-top:1px solid #D9D9D9">
+        <a href="#" onClick="{{ noNav }}" style="display:inline-flex;align-items:center;gap:8px;color:#5C5A56;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.06em;text-transform:uppercase;transition:color 180ms cubic-bezier(.4,0,.2,1)" style-hover="color:#6B0F1A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg> Catálogo general PDF</a>
+        <a href="donde-comprar.html" style="display:inline-flex;align-items:center;gap:8px;color:#5C5A56;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.06em;text-transform:uppercase;transition:color 180ms cubic-bezier(.4,0,.2,1)" style-hover="color:#6B0F1A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg> Distribuidores</a>
+      </div>
+    </aside>
+    </sc-if>
+
+    <div style="min-width:0;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px)">
+      <sc-if value="{{ mostrarBotonFiltrar }}" hint-placeholder-val="{{ false }}">
+        <button ref="{{ refFiltrarEnLinea }}" onClick="{{ abrirFiltros }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:48px;padding:0 16px;background:transparent;border:1px solid #2E2E2E;border-radius:2px;cursor:pointer;color:#2E2E2E;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase">
+          <span style="display:flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg> Filtrar</span>
+          <span style="font-variant-numeric:tabular-nums;color:{{ colorConteoFiltros }}">{{ textoConteoFiltros }}</span>
+        </button>
+      </sc-if>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between;padding-bottom:clamp(12px,1.6vw,20px);border-bottom:1px solid #D9D9D9">
+        <div aria-live="polite" style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;color:#5C5A56">{{ contador }}</div>
+        <label style="display:flex;align-items:center;gap:12px;font-family:'Open Sans',sans-serif;font-size:0.8125rem;color:#5C5A56">Ordenar
+          <select value="{{ orden }}" onChange="{{ setOrden }}" style="min-height:36px;padding:0 12px;border:1px solid #D9D9D9;border-radius:2px;background:transparent;color:#2E2E2E;font-family:'Open Sans',sans-serif;font-size:0.8125rem;cursor:pointer">
+            <option value="az">A–Z</option>
+            <option value="formato">Formato mayor</option>
+            <option value="materia">Materia</option>
+          </select>
+        </label>
+      </div>
+      <sc-if value="{{ hayResultados }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:{{ gridCols }};gap:{{ gridGap }}">
+          <sc-for list="{{ series }}" as="s" hint-placeholder-count="6">
+            <a data-card="{{ s.card }}" href="{{ s.href }}" onClick="{{ s.abrir }}" aria-label="{{ s.aria }}" style="display:flex;flex-direction:column;gap:16px;text-decoration:none;color:inherit;cursor:pointer">
+              <span data-marco style="position:relative;display:block;width:100%;aspect-ratio:{{ ratio }};background:#ECE9E4;overflow:hidden">
+                <sc-if value="{{ s.tieneImg }}" hint-placeholder-val="{{ false }}">
+                  <img data-img src="{{ s.img }}" alt="{{ s.alt }}" loading="lazy" decoding="async" ref="{{ refImg }}" onLoad="{{ imgLista }}" onError="{{ imgFalla }}" style="display:block;width:100%;height:100%;object-fit:cover">
+                </sc-if>
+                <sc-if value="{{ s.sinImg }}" hint-placeholder-val="{{ true }}">
+                  <span aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#ECE9E4"><span style="display:block;width:32px;height:35px;opacity:0.14;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#55000F"></span></span>
+                </sc-if>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:8px">
+                <span style="display:flex;flex-direction:column;gap:6px;padding-bottom:8px;border-bottom:1px solid #D9D9D9">
+                  <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:1.0625rem;letter-spacing:0.02em;color:#2E2E2E">{{ s.nombre }}</span>
+                  <sc-if value="{{ s.tieneMateria }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:#5C5A56">{{ s.efecto }}</span></sc-if>
+                </span>
+                <sc-if value="{{ mostrarSpecs }}" hint-placeholder-val="{{ true }}">
+                  <span style="display:flex;flex-direction:column;gap:4px;font-family:'Open Sans',sans-serif;font-size:0.8125rem;line-height:1.5;color:#5C5A56">
+                    <span>{{ s.formatosTxt }}</span>
+                    <span>{{ s.specTxt }}</span>
+                    <sc-if value="{{ s.mostrarTonos }}" hint-placeholder-val="{{ false }}"><span style="color:#5C5A56">{{ s.tonosTxt }}</span></sc-if>
+                  </span>
+                </sc-if>
+              </span>
+            </a>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hayMas }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ verMas }}" style="display:flex;width:fit-content;margin-left:auto;margin-right:auto;align-items:center;justify-content:center;min-height:48px;padding:0 32px;margin-top:clamp(8px,1.5vw,16px);background:transparent;border:1px solid #6B0F1A;border-radius:0;cursor:pointer;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms cubic-bezier(0.2,0,0,1), color 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#6B0F1A;color:#FFFFFF" style-active="background:#55000F;border-color:#55000F;color:#FFFFFF;transform:translateY(1px)">{{ textoVerMas }}</button>
+        </sc-if>
+      </sc-if>
+      <sc-if value="{{ sinResultados }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;padding:clamp(56px,8vw,104px) clamp(20px,4vw,40px);background:#ECE9E4">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.375rem, 1.15rem + 1vw, 2rem);line-height:1.15;color:#2E2E2E">No hay productos con esta combinación</div>
+          <button onClick="{{ limpiar }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:transparent;border:1px solid #6B0F1A;cursor:pointer;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms cubic-bezier(0.2,0,0,1), color 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#6B0F1A;color:#FFFFFF">Limpiar filtros</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<section ref="{{ refCierre }}" data-screen-label="Cierre" style="background:#ECE9E4">
+  <div style="max-width:1600px;margin:0 auto;padding:clamp(56px,7vw,104px) clamp(20px,5vw,72px);display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:clamp(28px,4vw,64px)">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:34ch">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56">Siguiente paso</div>
+      <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);line-height:1.12;color:#2E2E2E;text-wrap:pretty">Vela en persona antes de decidir.</h2>
+      <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#5C5A56;text-wrap:pretty">Nuestros distribuidores tienen muestras físicas de cada diseño y te ayudan con el cálculo de metros.</p>
+    </div>
+    <a href="donde-comprar.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 32px;background:#6B0F1A;border:1px solid #6B0F1A;color:#FFFFFF;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms cubic-bezier(0.2,0,0,1), transform 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#55000F;border-color:#55000F" style-active="background:#55000F;transform:translateY(1px)">Dónde comprar</a>
+  </div>
+</section>
+
+<sc-if value="{{ barraFiltrar }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Accion inferior" style="position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:#F5F3F0;border-top:1px solid #D9D9D9;animation:c5-barra 240ms cubic-bezier(0.2,0,0,1) both">
+    <button onClick="{{ abrirFiltros }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:48px;padding:0 16px;background:#FFFFFF;border:1px solid #2E2E2E;border-radius:2px;cursor:pointer;color:#2E2E2E;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase">
+      <span style="display:flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg> Filtrar</span>
+      <span style="font-variant-numeric:tabular-nums;color:{{ colorConteoFiltros }}">{{ textoConteoFiltros }}</span>
+    </button>
+  </div>
+</sc-if>
+
+<!-- G30 · hoja de filtros a pantalla completa (móvil): facetas en acordeón + pie de acciones -->
+<sc-if value="{{ filtrosAbiertos }}" hint-placeholder-val="{{ false }}">
+  <div ref="{{ refHoja }}" data-screen-label="Filtros movil" style="position:fixed;inset:0;z-index:45;background:#F5F3F0;display:flex;flex-direction:column;animation:c5-panel 240ms cubic-bezier(0.2,0,0,1) both;touch-action:pan-y">
+    <span data-asa style="flex:none;display:flex;align-items:center;justify-content:center;height:22px;background:#FFFFFF;cursor:grab"><span style="display:block;width:40px;height:4px;border-radius:2px;background:#D9D9D9"></span></span>
+    <div data-asa style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 8px 8px 20px;background:#FFFFFF;border-bottom:1px solid #D9D9D9">
+      <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase;color:#2E2E2E">Filtrar</span>
+      <button onClick="{{ cerrarFiltros }}" aria-label="Cerrar filtros" style="width:44px;height:44px;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+    <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
+      <sc-for list="{{ facetasAcordeon }}" as="g" hint-placeholder-count="6">
+        <div style="border-bottom:1px solid #D9D9D9;background:#FFFFFF">
+          <button onClick="{{ g.toggleGrupo }}" aria-expanded="{{ g.abierta }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;padding:0 20px;background:transparent;border:none;cursor:pointer;text-align:left">
+            <span style="display:flex;align-items:baseline;gap:10px">
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;color:#2E2E2E">{{ g.label }}</span>
+              <span style="font-family:'Open Sans',sans-serif;font-size:0.8125rem;color:{{ g.resumenColor }}">{{ g.resumen }}</span>
+            </span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5C5A56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ g.chevron }}"></path></svg>
+          </button>
+          <sc-if value="{{ g.abierta }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;padding:0 20px 12px">
+              <sc-for list="{{ g.opciones }}" as="o" hint-placeholder-count="4">
+                <label style="display:flex;align-items:center;gap:14px;min-height:44px;border-top:1px solid #ECE9E4;cursor:{{ o.cursor }}">
+                  <input type="checkbox" checked="{{ o.activo }}" disabled="{{ o.vacio }}" onChange="{{ o.toggle }}" style="width:20px;height:20px;margin:0;accent-color:#6B0F1A;cursor:{{ o.cursor }}">
+                  <span style="font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.5;color:{{ o.color }}">{{ o.label }}</span>
+                  <span style="margin-left:auto;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;font-variant-numeric:tabular-nums;color:{{ o.colorN }}">{{ o.n }}</span>
+                </label>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="flex:none;display:flex;gap:12px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:#FFFFFF;border-top:1px solid #D9D9D9">
+      <button onClick="{{ limpiar }}" style="flex:none;min-height:48px;padding:0 20px;background:transparent;border:1px solid #D9D9D9;border-radius:2px;cursor:pointer;color:#5C5A56;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.06em">Limpiar</button>
+      <button onClick="{{ cerrarFiltros }}" style="flex:1;min-height:48px;padding:0 20px;background:#6B0F1A;border:1px solid #6B0F1A;cursor:pointer;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.8125rem;letter-spacing:0.14em;text-transform:uppercase">{{ textoVerResultados }}</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ menuAbierto }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Menu movil" style="position:fixed;inset:0;z-index:50;background:#F5F3F0;display:flex;flex-direction:column;padding:20px;animation:c5-scrim 240ms cubic-bezier(0.2,0,0,1) both">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between">
+      <span style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+        <span style="display:block;width:38px;height:41px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#55000F"></span>
+        <span style="display:block;width:132px;height:20px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center / contain;mask:url('assets/logo-wordmark.svg') no-repeat center / contain;background:#55000F"></span>
+      </span>
+      <button onClick="{{ cerrarMenu }}" aria-label="Cerrar menú" style="width:44px;height:44px;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-bottom:calc(8px + env(safe-area-inset-bottom))">
+      <a href="catalogo-c5.dc.html" style="color:#6B0F1A;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:1.5rem;line-height:1.2;padding:12px 0">Catálogo</a>
+      <a href="contacto.html" style="color:#2E2E2E;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:1.5rem;line-height:1.2;padding:12px 0">Contacto</a>
+      <a href="donde-comprar.html" style="color:#2E2E2E;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:1.5rem;line-height:1.2;padding:12px 0">Dónde comprar</a>
+    </nav>
+  </div>
+</sc-if>
+
+<sc-if value="{{ fichaHoja }}" hint-placeholder-val="{{ false }}">
+  <div ref="{{ refHoja }}" data-screen-label="Ficha hoja" role="dialog" aria-modal="true" aria-label="{{ ficha.aria }}" style="position:fixed;inset:0;z-index:40;background:#FFFFFF;display:flex;flex-direction:column;animation:c5-panel 240ms cubic-bezier(0.2,0,0,1) both;touch-action:pan-y">
+    <span data-asa style="flex:none;display:flex;align-items:center;justify-content:center;height:22px;background:#FFFFFF;cursor:grab"><span style="display:block;width:40px;height:4px;border-radius:2px;background:#D9D9D9"></span></span>
+    <div data-asa style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4px 0 20px;background:#FFFFFF;border-bottom:1px solid #D9D9D9">
+      <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56">Ficha técnica</span>
+      <button onClick="{{ cerrarFicha }}" aria-label="Cerrar ficha" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer;color:#2E2E2E;flex:none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+    <div style="flex:1;min-width:0;overflow-y:auto;-webkit-overflow-scrolling:touch">
+      <span data-marco style="position:relative;display:block;width:100%;aspect-ratio:4/3;background:#ECE9E4;overflow:hidden">
+        <sc-if value="{{ ficha.tieneImg }}" hint-placeholder-val="{{ false }}">
+          <img data-img data-src="{{ ficha.img }}" alt="{{ ficha.alt }}" decoding="async" ref="{{ refFichaImg }}" style="display:block;width:100%;height:100%;object-fit:cover">
+        </sc-if>
+        <sc-if value="{{ ficha.sinImg }}" hint-placeholder-val="{{ false }}">
+          <span style="display:block;width:100%;height:100%"></span>
+        </sc-if>
+      </span>
+      <sc-if value="{{ ficha.variasFotos }}" hint-placeholder-val="{{ false }}">
+        <span style="display:flex;gap:8px;padding:8px 20px 0">
+          <sc-for list="{{ ficha.miniaturas }}" as="t" hint-placeholder-count="2">
+            <button onClick="{{ t.pick }}" aria-label="{{ t.alt }}" style="flex:1;min-width:0;height:64px;padding:0;background:transparent;cursor:pointer;overflow:hidden;border:1px solid {{ t.borde }};opacity:{{ t.op }}">
+              <img src="{{ t.src }}" alt="" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover">
+            </button>
+          </sc-for>
+        </span>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:20px;padding:24px 20px 28px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56">Ficha técnica · {{ ficha.efecto }}</div>
+          <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:1.75rem;line-height:1.1;color:#2E2E2E">{{ ficha.nombre }}</h2>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ ficha.filas }}" as="f" hint-placeholder-count="6">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:12px 0;border-top:1px solid #D9D9D9">
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:#5C5A56;flex:none">{{ f.k }}</span>
+              <span style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#2E2E2E;text-align:right">{{ f.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="flex:none;display:flex;gap:12px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:#FFFFFF;border-top:1px solid #D9D9D9">
+      <span style="position:relative;flex:none">
+        <button onClick="{{ compartir }}" aria-expanded="{{ menuCompartir }}" aria-label="Compartir este diseño" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid #D9D9D9;cursor:pointer;color:#5C5A56;padding:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg></button>
+        <sc-if value="{{ menuCompartir }}" hint-placeholder-val="{{ false }}">
+          <span role="menu" style="position:absolute;bottom:calc(100% + 8px);left:0;z-index:2;min-width:210px;display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #D9D9D9;border-radius:4px;box-shadow:0 12px 32px rgba(31,31,31,0.14);animation:c5-panel 160ms cubic-bezier(0.2,0,0,1) both">
+            <button role="menuitem" onClick="{{ copiarEnlace }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 16px;background:transparent;border:0;border-bottom:1px solid #ECE9E4;cursor:pointer;text-align:left;color:#2E2E2E;font-family:'Open Sans',sans-serif;font-size:0.9375rem">{{ textoCopiar }}</button>
+            <button role="menuitem" onClick="{{ enviarWhatsApp }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 16px;background:transparent;border:0;cursor:pointer;text-align:left;color:#2E2E2E;font-family:'Open Sans',sans-serif;font-size:0.9375rem">Enviar por WhatsApp</button>
+          </span>
+        </sc-if>
+      </span>
+      <a href="donde-comprar.html" style="flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;background:#6B0F1A;border:1px solid #6B0F1A;color:#FFFFFF;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase">Ver en tienda</a>
+      <a href="contacto.html" style="flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;background:transparent;border:1px solid #D9D9D9;color:#5C5A56;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase">Consultar</a>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ fichaDialogo }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Ficha tecnica" onClick="{{ cerrarFicha }}" style="position:fixed;inset:0;z-index:40;background:rgba(31,31,31,0.50);display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);animation:c5-scrim 160ms cubic-bezier(0.2,0,0,1) both">
+    <div role="dialog" aria-modal="true" aria-label="{{ ficha.aria }}" onClick="{{ stopClick }}" style="position:relative;width:min(100%, 880px);max-height:88dvh;overflow-y:auto;background:#FFFFFF;border:1px solid #D9D9D9;display:grid;grid-template-columns:{{ fichaCols }};animation:c5-panel 240ms cubic-bezier(0.2,0,0,1) both">
+      <span style="display:flex;flex-direction:column;background:#ECE9E4;min-height:clamp(220px,32vw,420px)">
+        <span data-marco style="position:relative;display:block;flex:1;min-height:clamp(200px,28vw,340px);overflow:hidden">
+          <sc-if value="{{ ficha.tieneImg }}" hint-placeholder-val="{{ false }}">
+            <img data-img data-src="{{ ficha.img }}" alt="{{ ficha.alt }}" decoding="async" ref="{{ refFichaImg }}" style="display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          </sc-if>
+          <sc-if value="{{ ficha.sinImg }}" hint-placeholder-val="{{ false }}">
+            <span style="display:block;width:100%;height:100%"></span>
+          </sc-if>
+        </span>
+        <sc-if value="{{ ficha.variasFotos }}" hint-placeholder-val="{{ false }}">
+          <span style="flex:none;display:flex;gap:8px;padding:8px">
+            <sc-for list="{{ ficha.miniaturas }}" as="t" hint-placeholder-count="2">
+              <button onClick="{{ t.pick }}" aria-label="{{ t.alt }}" style="flex:1;min-width:0;height:68px;padding:0;background:transparent;cursor:pointer;overflow:hidden;transition:opacity 160ms cubic-bezier(0.2,0,0,1), border-color 160ms cubic-bezier(0.2,0,0,1);border:1px solid {{ t.borde }};opacity:{{ t.op }}">
+                <img src="{{ t.src }}" alt="" loading="lazy" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover">
+              </button>
+            </sc-for>
+          </span>
+        </sc-if>
+      </span>
+      <div style="display:flex;flex-direction:column;gap:clamp(16px,2vw,24px);padding:clamp(24px,3vw,40px)">
+        <button onClick="{{ cerrarFicha }}" aria-label="Cerrar ficha" style="position:absolute;top:0;right:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#FFFFFF;border:0;border-left:1px solid #D9D9D9;border-bottom:1px solid #D9D9D9;cursor:pointer;color:#5C5A56;transition:color 80ms cubic-bezier(0.2,0,0,1)" style-hover="color:#6B0F1A"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+        <div style="display:flex;flex-direction:column;gap:8px;padding-right:44px">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:#5C5A56">Ficha técnica · {{ ficha.efecto }}</div>
+          <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:300;font-size:clamp(1.75rem,1.5rem + 1.2vw,2.5rem);line-height:1.1;color:#2E2E2E">{{ ficha.nombre }}</h2>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ ficha.filas }}" as="f" hint-placeholder-count="6">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:12px 0;border-top:1px solid #D9D9D9">
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:#5C5A56;flex:none">{{ f.k }}</span>
+              <span style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#2E2E2E;text-align:right">{{ f.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:auto">
+          <span style="position:relative;flex:none">
+        <button onClick="{{ compartir }}" aria-expanded="{{ menuCompartir }}" aria-label="Compartir este diseño" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid #D9D9D9;cursor:pointer;color:#5C5A56;padding:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg></button>
+        <sc-if value="{{ menuCompartir }}" hint-placeholder-val="{{ false }}">
+          <span role="menu" style="position:absolute;bottom:calc(100% + 8px);left:0;z-index:2;min-width:210px;display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #D9D9D9;border-radius:4px;box-shadow:0 12px 32px rgba(31,31,31,0.14);animation:c5-panel 160ms cubic-bezier(0.2,0,0,1) both">
+            <button role="menuitem" onClick="{{ copiarEnlace }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 16px;background:transparent;border:0;border-bottom:1px solid #ECE9E4;cursor:pointer;text-align:left;color:#2E2E2E;font-family:'Open Sans',sans-serif;font-size:0.9375rem">{{ textoCopiar }}</button>
+            <button role="menuitem" onClick="{{ enviarWhatsApp }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 16px;background:transparent;border:0;cursor:pointer;text-align:left;color:#2E2E2E;font-family:'Open Sans',sans-serif;font-size:0.9375rem">Enviar por WhatsApp</button>
+          </span>
+        </sc-if>
+      </span>
+          <a href="donde-comprar.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#6B0F1A;border:1px solid #6B0F1A;color:#FFFFFF;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#55000F;border-color:#55000F" style-active="background:#55000F;transform:translateY(1px)">Ver en tienda</a>
+          <a href="contacto.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:transparent;border:1px solid #D9D9D9;color:#5C5A56;text-decoration:none;font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;transition:border-color 80ms cubic-bezier(0.2,0,0,1),color 80ms cubic-bezier(0.2,0,0,1)" style-hover="border-color:#2E2E2E;color:#2E2E2E">Consultar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<footer id="contacto" data-screen-label="Footer" style="background:#F5F3F0;border-top:1px solid #D9D9D9">
+  <div style="max-width:1600px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,72px) 32px;display:flex;flex-direction:column;gap:clamp(32px,4vw,48px)">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,80px);align-items:start;justify-content:space-between">
+      <span style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <span style="display:block;width:38px;height:41px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#55000F"></span>
+        <span style="display:block;width:132px;height:20px;-webkit-mask:url('assets/logo-wordmark.svg') no-repeat center / contain;mask:url('assets/logo-wordmark.svg') no-repeat center / contain;background:#55000F"></span>
+      </span>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)">
+        <a href="catalogo-c5.dc.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem" style-hover="color:#2E2E2E">Catálogo</a>
+        <a href="donde-comprar.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem" style-hover="color:#2E2E2E">Distribuidores</a>
+        <a href="contacto.html" style="color:#5C5A56;text-decoration:none;font-family:'Open Sans',sans-serif;font-size:0.875rem" style-hover="color:#2E2E2E">Contacto</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid #D9D9D9;padding-top:20px">
+      <div style="font-family:'Open Sans',sans-serif;font-size:0.75rem;line-height:1.4;color:#5C5A56">© 2026 Cerámica Carabobo, C.A. Todos los derechos reservados.</div>
+    </div>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 1000}, &quot;heroAltura&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;46dvh&quot;, &quot;58dvh&quot;, &quot;72dvh&quot;], &quot;default&quot;: &quot;58dvh&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero&quot;}, &quot;ratioMiniatura&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;4/5&quot;, &quot;4/3&quot;, &quot;1/1&quot;], &quot;default&quot;: &quot;4/5&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Grilla&quot;}, &quot;mostrarSpecs&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Grilla&quot;}, &quot;imagenesEjemplo&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Grilla&quot;}}">
+class Component extends DCLogic {
+  state = { hdrH: 63, solido: false, orden: 'materia', ficha: null, fotoIdx: 0, movil: false, filtros: false, menu: false, grupos: { materia: true }, menuCompartir: false, copiado: false, barraAbajo: false, enCierre: false, cargando: true, serieVista: 'Todas', visibles: 24, f: { materia: [], formato: [], uso: [], textura: [], brillo: [] } };
+
+  // Cinco ejes filtrables. Serie NO es faceta: es la barra de arriba (navegación), porque las
+  // dos series traen metadata distinta — Venezuela declara materia y no textura, Regular al revés.
+  // Tipo y Borde salieron del sistema: cero dato en las dos fuentes del cliente.
+  FACETAS = [
+    { key: 'materia', label: 'Materia', opciones: ['Piedra', 'Cemento', 'Madera', 'Mármol', 'Terrazo', 'Otros'] },
+    { key: 'formato', label: 'Formato', opciones: ['60×60', '60×120', '25×120'] },
+    { key: 'uso', label: 'Uso', opciones: ['Interiores', 'Alto tránsito'] },
+    { key: 'textura', label: 'Textura', opciones: ['Liso', 'Estructurado', 'Rústico'] },
+    { key: 'brillo', label: 'Brillo', opciones: ['Brillante', 'Mate', 'Satinado'] },
+  ];
+
+  // Los 126 productos viven en data/catalogo.json, no acá: el dato es del cliente y se recarga solo.
+  PRODUCTOS = [];
+
+  componentDidMount() {
+    fetch('data/catalogo.json')
+      .then((r) => r.json())
+      .then((d) => { this.PRODUCTOS = d.productos || []; this.setState({ cargando: false }); })
+      .catch(() => this.setState({ cargando: false }));
+
+    this.measure = () => {
+      const el = this.hdrEl;
+      if (!el) return;
+      const h = Math.round(el.getBoundingClientRect().height);
+      if (Math.abs(h - this.state.hdrH) > 1) this.setState({ hdrH: h });
+    };
+    this.onScroll = () => {
+      const limite = Math.max(240, window.innerHeight * 0.42);
+      const s = window.scrollY > limite;
+      if (s !== this.state.solido) this.setState({ solido: s });
+    };
+    this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // El reacomodo se dispara solo: se mide antes del clic y se compara después del re-render.
+    // Si nada se movió, no hace nada — así sirve para filtros, orden, materia y "Limpiar" sin tocar sus handlers.
+    this.antesDeMutar = () => {
+      const antes = new Map();
+      if (!this.reduce.matches) document.querySelectorAll('[data-card]').forEach((el) => antes.set(el.dataset.card, el.getBoundingClientRect()));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!this.reduce.matches) this.reacomodar(antes);
+        this.sincronizarURL();
+      }));
+      // La dirección no puede depender del ritmo de cuadros: en un iframe en segundo plano
+      // requestAnimationFrame se frena. sincronizarURL es idempotente, así que llamarla dos veces no cuesta.
+      setTimeout(() => this.sincronizarURL(), 0);
+    };
+    document.addEventListener('click', this.antesDeMutar, true);
+    // El menú de compartir se cierra al tocar fuera. Va en fase de burbuja para que el
+    // clic en el propio botón lo abra antes de que este listener lo vea.
+    this.clicFuera = (e) => {
+      if (!this.state.menuCompartir) return;
+      const t = e.target;
+      if (t && t.closest && (t.closest('[role="menu"]') || t.closest('[aria-label="Compartir este diseño"]'))) return;
+      this.setState({ menuCompartir: false });
+    };
+    document.addEventListener('click', this.clicFuera);
+    document.addEventListener('change', this.antesDeMutar, true);
+
+    // Responsividad v0: móvil < 760px.
+    this.mq = window.matchMedia('(max-width: 759px)');
+    this.onMq = () => this.setState({ movil: this.mq.matches });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+    window.addEventListener('resize', this.measure, { passive: true });
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    requestAnimationFrame(this.measure);
+    this.onScroll();
+    // La dirección manda: al entrar, al volver atrás y al llegar desde un enlace compartido.
+    this.desdeURL = () => {
+      if ((location.hash || '') === this._ultimoHash) return;
+      this._ultimoHash = location.hash || '';
+      const nuevo = this.estadoDeHash();
+      // Atrás CIERRA la capa; no deshace el filtro. Las facetas, el orden y la serie sólo se
+      // escriben con replaceState, así que el historial nunca guarda un paso de filtro: si la
+      // entrada anterior trae menos filtros es porque es de antes de abrir la capa. Reconstruir
+      // el estado entero desde ese hash vaciaba la selección al cerrar la hoja en teléfono.
+      const cierra = !nuevo.filtros && !nuevo.menu && !nuevo.ficha &&
+        (this.state.filtros || this.state.menu || this.state.ficha);
+      if (cierra) {
+        this.setState({ filtros: false, menu: false, ficha: null, menuCompartir: false },
+          () => this.sincronizarURL());
+        return;
+      }
+      this.setState(nuevo);
+    };
+    const inicial = this.estadoDeHash();
+    this._ultimoHash = location.hash || '';
+    if (this._ultimoHash) this.setState(inicial);
+    window.addEventListener('popstate', this.desdeURL);
+    window.addEventListener('hashchange', this.desdeURL);
+    this.onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      if (this.state.menuCompartir) { this.setState({ menuCompartir: false }); return; }
+      if (this.state.menu) this.cerrarCapa({ menu: false });
+      else if (this.state.filtros) this.cerrarCapa({ filtros: false });
+      else if (this.state.ficha) this.cerrarCapa({ ficha: null });
+    };
+    document.addEventListener('keydown', this.onKey);
+  }
+
+
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener('change', this.onMq);
+    document.removeEventListener('click', this.antesDeMutar, true);
+    document.removeEventListener('click', this.clicFuera);
+    document.removeEventListener('change', this.antesDeMutar, true);
+    window.removeEventListener('resize', this.measure);
+    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('popstate', this.desdeURL);
+    window.removeEventListener('hashchange', this.desdeURL);
+  }
+
+  // Un producto sin dato en un eje no matchea ese filtro: queda fuera en vez de aparecer
+  // como si cumpliera. Por eso Textura no se ofrece en la vista Venezuela, donde nadie lo tiene.
+  match(p, f) {
+    return (!f.materia.length || f.materia.indexOf(p.materia) > -1) &&
+      (!f.formato.length || f.formato.indexOf(p.formato) > -1) &&
+      (!f.uso.length || f.uso.indexOf(p.uso) > -1) &&
+      (!f.textura.length || f.textura.indexOf(p.textura) > -1) &&
+      (!f.brillo.length || f.brillo.some((b) => (p.brillo || []).indexOf(b) > -1));
+  }
+
+  // ── Direcciones ─────────────────────────────────────────────
+  // Los filtros cambian la dirección pero NO agregan entrada al historial: nadie quiere
+  // apretar atrás quince veces por quince clics. Lo que se abre encima (ficha, hoja de
+  // filtros, menú) sí la agrega, para que el botón atrás del teléfono lo cierre.
+  CLAVES = { materia: 'materia', formato: 'formato', uso: 'uso', textura: 'textura', brillo: 'brillo' };
+
+  norm(v) { return String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+
+  // Firma de "lo que está abierto encima", leída del texto de la dirección y no de una copia
+  // del estado: comparar la URL vieja con la nueva es autocorrectivo — no hay variable que derive.
+  capaDeHash(h) {
+    const leer = (k) => { const m = new RegExp('(?:^|[#&])' + k + '=([^&]*)').exec(h || ''); return m ? m[1] : ''; };
+    return leer('diseno') + '|' + leer('capa');
+  }
+
+  hashDeEstado(st) {
+    const partes = [];
+    if (st.serieVista && st.serieVista !== 'Todas') partes.push('serie=' + encodeURIComponent(st.serieVista));
+    Object.keys(this.CLAVES).forEach((k) => {
+      const v = st.f[k];
+      if (v && v.length) partes.push(this.CLAVES[k] + '=' + v.map(encodeURIComponent).join(','));
+    });
+    if (st.orden && st.orden !== 'materia') partes.push('orden=' + st.orden);
+    // El bloque visible NO viaja en la dirección: un enlace compartido abre siempre el primero.
+    if (st.ficha) partes.push('diseno=' + encodeURIComponent(st.ficha));
+    if (st.filtros) partes.push('capa=filtros');
+    else if (st.menu) partes.push('capa=menu');
+    return partes.length ? '#' + partes.join('&') : '';
+  }
+
+  estadoDeHash() {
+    const h = (location.hash || '').replace(/^#/, '');
+    const f = { materia: [], formato: [], uso: [], textura: [], brillo: [] };
+    const vacio = { f: f, orden: 'materia', ficha: null, filtros: false, menu: false, serieVista: 'Todas', visibles: 24 };
+    if (!h) return vacio;
+    // Compatibilidad con el enlace viejo del home: #materia-madera
+    if (h.indexOf('materia-') === 0 && h.indexOf('=') < 0) {
+      const m = this.FACETAS[0].opciones.find((o) => this.norm(o) === this.norm(h.slice(8)));
+      if (m) f.materia = [m];
+      return { f: f, orden: 'materia', ficha: null, filtros: false, menu: false, serieVista: 'Todas', visibles: 24 };
+    }
+    const out = { f: f, orden: 'materia', ficha: null, filtros: false, menu: false, serieVista: 'Todas', visibles: 24 };
+    h.split('&').forEach((par) => {
+      const i = par.indexOf('=');
+      if (i < 0) return;
+      const clave = par.slice(0, i);
+      const valor = decodeURIComponent(par.slice(i + 1));
+      if (clave === 'orden') { if (['az', 'formato', 'materia'].indexOf(valor) > -1) out.orden = valor; return; }
+      if (clave === 'serie') { if (['Regular', 'Venezuela'].indexOf(valor) > -1) out.serieVista = valor; return; }
+      // La ficha viaja por id, no por nombre: hay 13 nombres repetidos en dos formatos.
+      if (clave === 'diseno') { out.ficha = valor; return; }
+      if (clave === 'capa') { out.filtros = valor === 'filtros'; out.menu = valor === 'menu'; return; }
+      const eje = Object.keys(this.CLAVES).find((k) => this.CLAVES[k] === clave);
+      if (!eje) return;
+      const grupo = this.FACETAS.find((g) => g.key === eje);
+      valor.split(',').forEach((v) => {
+        const op = grupo && grupo.opciones.find((o) => this.norm(o) === this.norm(v));
+        if (op && f[eje].indexOf(op) < 0) f[eje].push(op);
+      });
+    });
+    return out;
+  }
+
+  sincronizarURL() {
+    const h = this.hashDeEstado(this.state);
+    const actual = location.hash || '';
+    if (h === actual) return;
+    const antes = this.capaDeHash(actual);
+    const ahora = this.capaDeHash(h);
+    const destino = h || (location.pathname + location.search);
+    // Se abrió algo encima: entrada propia, para que atrás la cierre.
+    if (ahora !== '|' && ahora !== antes) history.pushState({ omCapa: true }, '', destino);
+    // Cambió un filtro: se reescribe conservando la marca, así atrás sigue cerrando
+    // la capa que estuviera abierta en vez de deshacer el filtro.
+    else history.replaceState(history.state, '', destino);
+    this._ultimoHash = h;
+  }
+
+  // Cerrar es volver atrás cuando la capa dejó una entrada propia: así el historial no
+  // se llena de pares abrir/cerrar y el gesto del sistema coincide con el del botón.
+  cerrarCapa(cambio) {
+    if (history.state && history.state.omCapa) { history.back(); return; }
+    this.setState(cambio);
+  }
+
+  enlaceDeFicha() {
+    const nombre = this.state.ficha;
+    if (!nombre) return '';
+    return location.origin + location.pathname + location.search + '#diseno=' + encodeURIComponent(nombre);
+  }
+
+  textoDeFicha() {
+    const p = this.PRODUCTOS.find((x) => x.id === this.state.ficha);
+    return (p ? p.nombre + ' ' + p.formato + ' cm' : 'Catálogo') + ' — Cerámica Carabobo';
+  }
+
+  compartir = () => {
+    if (!this.state.ficha) return;
+    // En táctil no inventamos interfaz: la hoja del sistema es mejor que la nuestra
+    // y deja al usuario elegir el medio, que era justo el problema.
+    const tactil = window.matchMedia('(pointer: coarse)').matches;
+    if (navigator.share && tactil) {
+      navigator.share({ title: this.textoDeFicha(), text: this.textoDeFicha(), url: this.enlaceDeFicha() }).catch(() => {});
+      return;
+    }
+    this.setState((st) => ({ menuCompartir: !st.menuCompartir, copiado: false }));
+  };
+
+  copiarEnlace = () => {
+    const url = this.enlaceDeFicha();
+    const listo = () => { this.setState({ copiado: true }); clearTimeout(this._copiaT); this._copiaT = setTimeout(() => this.setState({ copiado: false, menuCompartir: false }), 1400); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(listo, listo); return; }
+    const ta = document.createElement('textarea');
+    ta.value = url; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    listo();
+  };
+
+  enviarWhatsApp = () => {
+    window.open('https://wa.me/?text=' + encodeURIComponent(this.textoDeFicha() + ' ' + this.enlaceDeFicha()), '_blank', 'noopener');
+    this.setState({ menuCompartir: false });
+  };
+
+  // ── Zona del pulgar ─────────────────────────────────────────
+  // La acción principal del catálogo no puede irse de pantalla al bajar por la grilla.
+  // Se observa el botón en línea: cuando sale de cuadro, la misma acción aparece abajo.
+  refFiltrarEnLinea = (el) => {
+    if (this._obsF) { this._obsF.disconnect(); this._obsF = null; }
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    this._obsF = new IntersectionObserver((ents) => {
+      const visible = !!(ents[0] && ents[0].isIntersecting);
+      if (visible === !this.state.barraAbajo) return;
+      this.setState({ barraAbajo: !visible });
+    });
+    this._obsF.observe(el);
+  };
+
+  // Arrastrar hacia abajo cierra la hoja: cerrar deja de exigir llegar al aspa, arriba.
+  // El área de arrastre es el asa y la barra de título, nunca el cuerpo — ahí manda el scroll.
+  refCierre = (el) => {
+    if (this._obsC) { this._obsC.disconnect(); this._obsC = null; }
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    this._obsC = new IntersectionObserver((ents) => {
+      const dentro = !!(ents[0] && ents[0].isIntersecting);
+      if (dentro === !!this.state.enCierre) return;
+      this.setState({ enCierre: dentro });
+    });
+    this._obsC.observe(el);
+  };
+
+  refHoja = (el) => {
+    if (!el || el._arr) return;
+    el._arr = true;
+    let y0 = null, dy = 0, t0 = 0;
+    const dur = () => (this.reduce && this.reduce.matches ? 1 : 220);
+    const abajo = (e) => {
+      const t = e.target;
+      if (!t || !t.closest || !t.closest('[data-asa]')) return;
+      if (t.closest('button') || t.closest('a')) return;
+      y0 = e.clientY; dy = 0; t0 = Date.now();
+      el.style.transition = 'none';
+      try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    };
+    const mover = (e) => {
+      if (y0 === null) return;
+      dy = Math.max(0, e.clientY - y0);
+      el.style.transform = 'translateY(' + dy + 'px)';
+    };
+    const soltar = () => {
+      if (y0 === null) return;
+      const rapido = dy > 28 && (Date.now() - t0) < 260;
+      y0 = null;
+      if (dy > 96 || rapido) {
+        el.style.transition = 'transform ' + dur() + 'ms cubic-bezier(0.2, 0, 0, 1)';
+        el.style.transform = 'translateY(100%)';
+        setTimeout(() => { el.style.transition = ''; el.style.transform = ''; this.cerrarHojaActiva(); }, dur());
+        return;
+      }
+      el.style.transition = 'transform ' + dur() + 'ms cubic-bezier(0.2, 0, 0, 1)';
+      el.style.transform = 'none';
+    };
+    el.addEventListener('pointerdown', abajo);
+    el.addEventListener('pointermove', mover);
+    el.addEventListener('pointerup', soltar);
+    el.addEventListener('pointercancel', soltar);
+  };
+
+  cerrarHojaActiva() {
+    if (this.state.ficha) this.cerrarCapa({ ficha: null });
+    else if (this.state.filtros) this.cerrarCapa({ filtros: false });
+  }
+
+  reacomodar(antes) {
+    const cards = [...document.querySelectorAll('[data-card]')];
+    if (!cards.length) return;
+    // Margen generoso: una pantalla entera arriba y abajo. Se descarta solo lo que está
+// lejos de verse, y se mira la posición ANTES y DESPUÉS — una tarjeta que entra o sale
+// del cuadro durante el movimiento también tiene que animarse.
+    const alto = window.innerHeight;
+    const margen = alto;
+    // Umbral de "trayecto largo": más de fila y media. Arriba de eso el desplazamiento
+    // se lee como que la tarjeta vuela por la pantalla, así que se funde en su lugar.
+    const filaAprox = (cards[0].getBoundingClientRect().height || 320) * 1.5;
+    let i = 0;
+    cards.forEach((el) => {
+      const a = antes.get(el.dataset.card);
+      const d = el.getBoundingClientRect();
+      // Fuera de pantalla no se anima: no se ve y cuesta.
+      const lejos = (r) => !r || r.bottom < -margen || r.top > alto + margen;
+      if (lejos(d) && lejos(a)) {
+        el.style.transition = 'none';
+        el.style.transform = 'none';
+        el.style.opacity = '1';
+        return;
+      }
+      const demora = Math.min(i * 22, 176) + 'ms';
+      i++;
+      const dx = a ? a.left - d.left : 0;
+      const dy = a ? a.top - d.top : 0;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (!a || dist > filaAprox) {
+        // Entra en su lugar nuevo, sin desplazarse: vale para las que vuelven al
+        // resultado y para las que cambiaron de fila de un extremo al otro.
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = a ? 'none' : 'translateY(10px)';
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity 320ms cubic-bezier(0.2, 0, 0, 1) ' + demora + ', transform 320ms cubic-bezier(0.2, 0, 0, 1) ' + demora;
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+        return;
+      }
+      if (!dx && !dy) return;
+      // Trayecto corto: se asienta. La duración crece con la distancia para que la
+      // velocidad quede pareja — es lo que hace que no se sienta un latigazo.
+      const dur = Math.round(Math.min(240 + dist * 0.45, 420));
+      el.style.transition = 'none';
+      el.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+      el.style.willChange = 'transform';
+      requestAnimationFrame(() => {
+        el.style.transition = 'transform ' + dur + 'ms cubic-bezier(0.4, 0, 0.2, 1) ' + demora;
+        el.style.transform = 'none';
+      });
+    });
+    clearTimeout(this._flipT);
+    this._flipT = setTimeout(() => {
+      document.querySelectorAll('[data-card]').forEach((el) => {
+        el.style.willChange = 'auto';
+        el.style.transition = '';
+        el.style.opacity = '';
+      });
+    }, 800);
+  }
+
+  // La foto se marca cargada aunque venga de caché y el evento no llegue a dispararse.
+  refImg = (el) => { if (el && el.complete && el.naturalWidth) el.dataset.lista = '1'; };
+
+  // Las imágenes de la ficha viven en markup crudo, fuera de todo sc-for: el navegador las
+  // parsea ANTES de que el runtime resuelva los holes. Con src="{{ }}" pedía la URL literal
+  // y evaluaba el onerror literal como JS. Así que la ruta viaja en data-src y el src se
+  // asigna acá, cuando ya hay valor, con los handlers puestos por addEventListener.
+  // OJO: no puede ser una propiedad de clase estable. React solo llama al ref cuando cambia su
+  // identidad, así que un ref fijo se ejecuta una vez al montar la ficha y nunca más — la
+  // miniatura se marcaba como elegida y la foto grande no cambiaba. renderVals devuelve un
+  // cierre nuevo por render con la foto actual, y eso es lo que fuerza la reasignación.
+  aplicarFotoFicha(el, src) {
+    if (!el) return;
+    const s = src || el.dataset.src || '';
+    if (!s || s.indexOf('{{') > -1) return;
+    if (!el._c5) {
+      el._c5 = true;
+      el.addEventListener('load', () => { el.dataset.lista = '1'; });
+      el.addEventListener('error', () => {
+        el.style.display = 'none';
+        if (el.parentElement) el.parentElement.dataset.lista = '1';
+      });
+    }
+    if (el._c5src !== s) {
+      el._c5src = s;
+      el.dataset.lista = '';
+      el.style.display = 'block';
+      el.src = s;
+    }
+    if (el.complete && el.naturalWidth) el.dataset.lista = '1';
+  }
+  imgLista = (e) => { e.currentTarget.dataset.lista = '1'; };
+  imgFalla = (e) => {
+    const el = e.currentTarget;
+    el.style.display = 'none';
+    const marco = el.parentElement;
+    if (marco) marco.dataset.lista = '1';
+  };
+
+  renderVals() {
+    const f = this.state.f;
+    const serie = this.state.serieVista;
+    const solido = this.state.solido;
+    const activos = Object.keys(f).reduce((n, k) => n + f[k].length, 0);
+    const TODOS = this.PRODUCTOS;
+    // La serie es navegación: recorta el universo antes de que las facetas cuenten.
+    const enSerie = TODOS.filter((p) => serie === 'Todas' || p.serie === serie);
+    let res = enSerie.filter((p) => this.match(p, f));
+    const orden = this.state.orden;
+    const porNombre = (a, b) => a.nombre.localeCompare(b.nombre) || a.formato.localeCompare(b.formato);
+    if (orden === 'formato') res = res.slice().sort((a, b) => b.formato.localeCompare(a.formato) || porNombre(a, b));
+    else if (orden === 'materia') res = res.slice().sort((a, b) => String(a.materia || 'zzz').localeCompare(String(b.materia || 'zzz')) || porNombre(a, b));
+    else res = res.slice().sort(porNombre);
+
+    // La grilla entrega de a 24. Cualquier cambio de filtro, serie u orden vuelve al primer
+    // bloque: filtrar es empezar de nuevo, no seguir donde estabas.
+    const tope = this.state.visibles || 24;
+    const mostrados = res.slice(0, tope);
+
+    const toggle = (key, val) => this.setState((st) => {
+      const arr = st.f[key].slice();
+      const i = arr.indexOf(val);
+      if (i > -1) arr.splice(i, 1); else arr.push(val);
+      return { f: { ...st.f, [key]: arr }, visibles: 24 };
+    });
+    const countFor = (key, val) => {
+      const probe = { ...f, [key]: [val] };
+      return enSerie.filter((p) => this.match(p, probe)).length;
+    };
+    // Un eje que nadie tiene en la vista actual se oculta solo, en vez de ofrecer un filtro
+    // que lleva todo a cero: es el caso de Textura dentro de Serie Venezuela.
+    const conDato = (key) => enSerie.some((p) => (Array.isArray(p[key]) ? p[key].length > 0 : p[key] != null));
+
+    // Una opción en cero se muestra APAGADA, no se oculta: el cero informa que el valor existe
+    // en el catálogo pero no en lo que estás viendo, y apagarla evita el clic al resultado vacío.
+    // Ocultarlas haría que las opciones aparezcan y desaparezcan al filtrar, y en el acordeón
+    // del teléfono eso hace saltar el alto del panel.
+    const opcionesDe = (key) => {
+      const sel = f[key];
+      const g = this.FACETAS.find((x) => x.key === key);
+      return g.opciones.map((o) => {
+        const n = countFor(key, o);
+        const activo = sel.indexOf(o) > -1;
+        const vacio = n === 0 && !activo;
+        return {
+          label: o, n: n, activo: activo, vacio: vacio,
+          color: vacio ? '#BFBDB9' : (activo ? '#2E2E2E' : '#5C5A56'),
+          colorN: vacio ? '#BFBDB9' : '#5C5A56',
+          cursor: vacio ? 'default' : 'pointer',
+          toggle: vacio ? (() => {}) : (() => toggle(key, o)),
+        };
+      });
+    };
+
+    const ratios = { '4/5': '4 / 5', '4/3': '4 / 3', '1/1': '1 / 1' };
+    const ratioKey = this.props.ratioMiniatura || '4/5';
+    const alturas = { '46dvh': '46dvh', '58dvh': '58dvh', '72dvh': '72dvh' };
+    const heroKey = this.props.heroAltura || '58dvh';
+    const mostrarSpecs = this.props.mostrarSpecs !== false;
+    const conEjemplo = this.props.imagenesEjemplo !== false;
+    const fotosDe = (p) => (conEjemplo ? (p.fotos || []) : (p.fotos || []).filter((x) => !x.ejemplo)).slice(0, 4);
+
+    const movil = this.state.movil;
+
+    const fp = this.state.ficha ? TODOS.find((x) => x.id === this.state.ficha) : null;
+    let ficha = null;
+    if (fp) {
+      // Una fila sin dato DESAPARECE: no se muestra vacía ni con "no especificado".
+      const filas = [];
+      const add = (k, v) => {
+        if (v === null || v === undefined || v === '') return;
+        if (Array.isArray(v) && !v.length) return;
+        filas.push({ k: k, v: Array.isArray(v) ? v.join(' · ') : String(v) });
+      };
+      add('Materia', fp.materia);
+      add('Serie', 'Serie ' + fp.serie);
+      add('Formato', fp.formato + ' cm');
+      add('Medida real', fp.formatoReal);
+      add('Brillo', fp.brillo);
+      add('Textura', fp.textura);
+      add('Uso', fp.uso);
+      add('Resistencia PEI', fp.pei);
+      add('Dureza MOHS', fp.mohs);
+      add('Rendimiento', fp.mtsCaja);
+      const fotos = fotosDe(fp);
+      const iF = Math.min(this.state.fotoIdx || 0, Math.max(0, fotos.length - 1));
+      const act = fotos[iF];
+      ficha = {
+        nombre: fp.nombre,
+        efecto: fp.materia || (fp.formato + ' cm'),
+        aria: 'Ficha técnica de ' + fp.nombre + ' ' + fp.formato,
+        tieneImg: !!act,
+        sinImg: !act,
+        img: act ? act.src : '',
+        alt: act ? act.alt : (fp.nombre + ' ' + fp.formato),
+        variasFotos: fotos.length > 1,
+        miniaturas: fotos.map((x, j) => ({
+          src: x.src,
+          alt: x.alt,
+          borde: j === iF ? '#6B0F1A' : '#D9D9D9',
+          op: j === iF ? '1' : '0.6',
+          pick: () => this.setState({ fotoIdx: j }),
+        })),
+        filas: filas,
+      };
+    }
+
+    return {
+      hdrRef: (el) => { this.hdrEl = el; },
+      refFiltrarEnLinea: this.refFiltrarEnLinea,
+      refCierre: this.refCierre,
+      refHoja: this.refHoja,
+      // La barra baja solo cuando no hay nada abierto encima: las hojas son dueñas del pie.
+      barraFiltrar: movil && !!this.state.barraAbajo && !this.state.enCierre && !this.state.filtros && !this.state.ficha && !this.state.menu,
+      refImg: this.refImg,
+      refFichaImg: (el) => this.aplicarFotoFicha(el, ficha ? ficha.img : ''),
+      imgLista: this.imgLista,
+      imgFalla: this.imgFalla,
+      isMobile: movil,
+      isDesktop: !movil,
+      navDisplay: movil ? 'none' : 'flex',
+      heroMinH: movil ? '400px' : '440px',
+      // Tres pestañas, y una de ellas es la navegación principal del catálogo: envuelven a dos
+      // líneas en móvil en vez de esconder la tercera detrás de un desplazamiento horizontal.
+      matWrap: 'wrap',
+      matOverflow: 'visible',
+      gridGap: movil ? '20px 12px' : 'clamp(24px,3vw,44px) clamp(20px,2.4vw,32px)',
+      menuAbierto: this.state.menu,
+      abrirMenu: () => this.setState({ menu: true }),
+      cerrarMenu: () => this.cerrarCapa({ menu: false }),
+      mostrarBotonFiltrar: movil,
+      filtrosAbiertos: movil && this.state.filtros,
+      abrirFiltros: () => this.setState({ filtros: true }),
+      cerrarFiltros: () => this.cerrarCapa({ filtros: false }),
+      textoConteoFiltros: activos > 0 ? activos + (activos === 1 ? ' activo' : ' activos') : 'Todos',
+      colorConteoFiltros: activos > 0 ? '#6B0F1A' : '#5C5A56',
+      textoVerResultados: 'Ver ' + res.length + (res.length === 1 ? ' producto' : ' productos'),
+      facetasAcordeon: this.FACETAS.filter((g) => conDato(g.key)).map((g) => {
+        const abierta = !!this.state.grupos[g.key];
+        const sel = f[g.key];
+        return {
+          label: g.label,
+          abierta: abierta,
+          chevron: abierta ? 'm6 15 6-6 6 6' : 'm6 9 6 6 6-6',
+          resumen: sel.length ? sel.join(', ') : 'Todos',
+          resumenColor: sel.length ? '#6B0F1A' : '#5C5A56',
+          toggleGrupo: () => this.setState((st) => ({ grupos: { ...st.grupos, [g.key]: !st.grupos[g.key] } })),
+          opciones: opcionesDe(g.key),
+        };
+      }),
+      fichaHoja: movil && !!ficha,
+      fichaDialogo: !movil && !!ficha,
+      fichaAbierta: !!ficha,
+      ficha: ficha,
+      fichaCols: movil ? '1fr' : 'minmax(0,0.9fr) minmax(0,1.1fr)',
+      cerrarFicha: () => { this.setState({ menuCompartir: false }); this.cerrarCapa({ ficha: null }); },
+      compartir: this.compartir,
+      copiarEnlace: this.copiarEnlace,
+      enviarWhatsApp: this.enviarWhatsApp,
+      menuCompartir: !!this.state.menuCompartir,
+      textoCopiar: this.state.copiado ? 'Enlace copiado' : 'Copiar enlace',
+      stopClick: (e) => e.stopPropagation(),
+      asideTop: (this.state.hdrH + 24) + 'px',
+      asideMax: 'calc(100dvh - ' + (this.state.hdrH + 48) + 'px)',
+      heroH: movil ? '46dvh' : (alturas[heroKey] || '58dvh'),
+      ratio: ratios[ratioKey] || '4 / 5',
+      mostrarSpecs,
+      // En móvil el header es siempre sólido: no hay variante transparente (Responsividad v0 · 03).
+      // El estado del header viaja también como atributo, no sólo como color: el CSS no puede
+      // leer un color escrito por un hole, y el anillo de foco blanco depende de saberlo.
+      hdrEstado: solido || movil ? 'solid' : 'ghost',
+      hdrBg: solido || movil ? '#F5F3F0' : 'transparent',
+      hdrBorder: solido || movil ? '#D9D9D9' : 'transparent',
+      logoColor: solido || movil ? '#55000F' : '#FFFFFF',
+      navColor: solido ? '#2E2E2E' : 'rgba(255,255,255,0.85)',
+      navCurrent: solido ? '#6B0F1A' : '#FFFFFF',
+      ctaBorder: solido ? '#6B0F1A' : 'rgba(255,255,255,0.65)',
+      ctaColor: solido ? '#6B0F1A' : '#FFFFFF',
+      finderCols: movil ? '1fr' : 'minmax(220px, 260px) 1fr',
+      gridCols: movil ? '1fr 1fr' : 'repeat(auto-fill, minmax(300px, 1fr))',
+      noNav: (e) => e.preventDefault(),
+      orden: orden,
+      setOrden: (e) => this.setState({ orden: e.target.value, visibles: 24 }),
+      hayMas: !this.state.cargando && res.length > tope,
+      textoVerMas: 'Ver 24 más — quedan ' + (res.length - tope),
+      verMas: () => this.setState((st) => ({ visibles: st.visibles + 24 })),
+      contador: this.state.cargando ? 'Cargando catálogo' : (res.length === enSerie.length ? enSerie.length + ' productos' : res.length + ' de ' + enSerie.length + ' productos'),
+      hayFiltros: activos > 0,
+      limpiar: () => this.setState({ f: { materia: [], formato: [], uso: [], textura: [], brillo: [] }, visibles: 24 }),
+      serieBar: ['Todas', 'Regular', 'Venezuela'].map((s) => {
+        const n = s === 'Todas' ? TODOS.length : TODOS.filter((p) => p.serie === s).length;
+        const activo = serie === s;
+        return {
+          texto: s + ' (' + n + ')',
+          color: activo ? '#6B0F1A' : '#5C5A56',
+          linea: activo ? '#6B0F1A' : 'transparent',
+          pick: () => this.setState({ serieVista: s, visibles: 24 }),
+        };
+      }),
+      facetas: this.FACETAS.map((g) => ({
+        label: g.label,
+        visible: conDato(g.key),
+        opciones: opcionesDe(g.key),
+      })),
+      hayResultados: !this.state.cargando && res.length > 0,
+      sinResultados: !this.state.cargando && res.length === 0,
+      series: mostrados.map((p) => {
+        const fotos = fotosDe(p);
+        return {
+          // La clave del reacomodo es el id, no el nombre: hay 13 nombres en dos formatos.
+          card: p.id,
+          nombre: p.nombre,
+          efecto: p.materia || '',
+          formatosTxt: p.formato + ' cm',
+          specTxt: ['Serie ' + p.serie].concat(p.brillo || []).concat(p.textura ? [p.textura] : []).join(' · '),
+          tonosTxt: '',
+          mostrarTonos: false,
+          tieneImg: !!fotos.length,
+          sinImg: !fotos.length,
+          img: fotos.length ? fotos[0].src : '',
+          alt: fotos.length ? fotos[0].alt : (p.nombre + ' ' + p.formato),
+          abrir: (e) => { e.preventDefault(); this.setState({ ficha: p.id, fotoIdx: 0 }); },
+          // El href tiene que llevar a la ficha: pestaña nueva y clic medio no pasan por onClick,
+          // y con el catálogo pelado como destino se perdía el producto.
+          href: 'catalogo-c5.dc.html#diseno=' + encodeURIComponent(p.id),
+          tieneMateria: !!p.materia,
+          slot: 'c5-' + p.id,
+          ph: p.nombre + ' · ' + p.formato + ' cm',
+          aria: p.nombre + ' ' + p.formato + ' cm',
+        };
+      }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

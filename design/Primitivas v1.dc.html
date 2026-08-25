@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;600;700&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<!-- ============ HEADER ============ -->
+<header data-screen-label="Header" style="background:#2E2E2E;color:#FFFFFF;padding:48px 24px 40px">
+  <div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="display:block;width:41px;height:44px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#FFFFFF"></span>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#E6C0A8">Cerámica Carabobo · Design System</div>
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#E6C0A8;color:#2E2E2E">v0.1 — Etapa 1.1</span>
+    </div>
+    <h1 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.05;letter-spacing:-0.01em">Primitivas — v1</h1>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:17px;line-height:1.6;color:#C9C7C3;max-width:680px">Button, Input, ProductCard, FilterGroup, Card, Modal y SpecsTable — construidos consumiendo únicamente <a href="Tokens v0.dc.html" style="color:#E6C0A8">Tokens v0</a>. Los valores que faltaron están flaggeados al final, sin resolver en silencio.</p>
+  </div>
+</header>
+
+<!-- ============ 01 BUTTON ============ -->
+<section data-screen-label="Button" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">01 · Button</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">4 variantes × 5 estados</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Work Sans 600 · 15px · min-height 44px · radius-none · transición dur-instant + ease-out. La columna "default" tiene hover/active reales. Active = hover (brand-900) + translateY(1px) — decisión documentada, <a href="#gaps" style="font-weight:600">G1</a>.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:920px">
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:12px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Variante</div><div>Default (live)</div><div>Hover</div><div>Active</div><div>Disabled</div><div>Loading</div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:12px;align-items:center;padding:18px 20px;border-top:1px solid #ECE9E4">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">Primary</div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#55000F" style-active="background:#55000F;transform:translateY(1px)">Ver catálogo</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#55000F;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Ver catálogo</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#55000F;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;transform:translateY(1px)">Ver catálogo</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#ECE9E4;color:#8F8D89;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:not-allowed">Ver catálogo</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:wait"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#FFFFFF;border-radius:50%;animation:spin 800ms linear infinite"></span>Cargando…</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:12px;align-items:center;padding:18px 20px;border-top:1px solid #ECE9E4">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">Secondary</div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border:1.5px solid #6B0F1A;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#F2E5D8" style-active="background:#F2E5D8;border-color:#55000F;color:#55000F">Ficha técnica</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border:1.5px solid #6B0F1A;background:#F2E5D8;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Ficha técnica</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border:1.5px solid #55000F;background:#F2E5D8;color:#55000F;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Ficha técnica</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;border:1.5px solid #D9D9D9;color:#8F8D89;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:not-allowed">Ficha técnica</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;border:1.5px solid #6B0F1A;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:wait"><span style="width:16px;height:16px;border:2px solid #F2E5D8;border-top-color:#6B0F1A;border-radius:50%;animation:spin 800ms linear infinite"></span>Cargando…</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:12px;align-items:center;padding:18px 20px;border-top:1px solid #ECE9E4">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">Ghost</div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#ECE9E4" style-active="background:#D9D9D9">Ver todos</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#ECE9E4;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Ver todos</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#D9D9D9;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Ver todos</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;color:#8F8D89;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:not-allowed">Ver todos</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:wait"><span style="width:16px;height:16px;border:2px solid #ECE9E4;border-top-color:#6B0F1A;border-radius:50%;animation:spin 800ms linear infinite"></span>Cargando…</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px repeat(5,1fr);gap:12px;align-items:center;padding:18px 20px;border-top:1px solid #ECE9E4">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:13px;color:#2E2E2E">Destructive</div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#B4441F;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#8C3312" style-active="background:#8C3312;transform:translateY(1px)">Eliminar</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#8C3312;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem">Eliminar</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#8C3312;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;transform:translateY(1px)">Eliminar</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#ECE9E4;color:#8F8D89;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:not-allowed">Eliminar</span></div>
+        <div><span style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 24px;background:#B4441F;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:wait"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#FFFFFF;border-radius:50%;animation:spin 800ms linear infinite"></span>Cargando…</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 INPUT ============ -->
+<section data-screen-label="Input" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">02 · Input</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Text, with-icon, select × 4 estados</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Altura 44px · border-strong (#BFBDB9) · radius-sm · Open Sans 400 15px · placeholder text-disabled. Focus: outline focus-ring-width (2px) border-focus con focus-ring-offset (2px) — tokenizado, <a href="#gaps" style="font-weight:600">G2</a>. La primera columna acepta foco real (Tab o click).</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">Default (live focus)</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Nombre</label>
+        <input type="text" placeholder="Ej. María Pérez" style="height:44px;padding:0 12px;border:1px solid #BFBDB9;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:none;box-sizing:border-box;width:100%" style-focus="border-color:#6B0F1A;outline:2px solid #6B0F1A;outline-offset:2px" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Buscar</label>
+        <div style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6C68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:12px;top:14px;pointer-events:none"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Línea o formato…" style="height:44px;padding:0 12px 0 40px;border:1px solid #BFBDB9;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:none;box-sizing:border-box;width:100%" style-focus="border-color:#6B0F1A;outline:2px solid #6B0F1A;outline-offset:2px" />
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Estado</label>
+        <div style="position:relative">
+          <select style="height:44px;padding:0 40px 0 12px;border:1px solid #BFBDB9;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:none;box-sizing:border-box;width:100%;appearance:none;cursor:pointer" style-focus="border-color:#6B0F1A;outline:2px solid #6B0F1A;outline-offset:2px"><option>Carabobo</option><option>Aragua</option><option>Distrito Capital</option></select>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:12px;top:14px;pointer-events:none"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">Focus (forzado)</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Nombre</label>
+        <div style="height:44px;padding:0 12px;border:1px solid #6B0F1A;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:2px solid #6B0F1A;outline-offset:2px;display:flex;align-items:center;box-sizing:border-box">María Pé<span style="width:1px;height:20px;background:#2E2E2E;margin-left:1px"></span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Buscar</label>
+        <div style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6C68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:12px;top:14px"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <div style="height:44px;padding:0 12px 0 40px;border:1px solid #6B0F1A;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:2px solid #6B0F1A;outline-offset:2px;display:flex;align-items:center;box-sizing:border-box">porcel<span style="width:1px;height:20px;background:#2E2E2E;margin-left:1px"></span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Estado</label>
+        <div style="position:relative">
+          <div style="height:44px;padding:0 40px 0 12px;border:1px solid #6B0F1A;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;outline:2px solid #6B0F1A;outline-offset:2px;display:flex;align-items:center;box-sizing:border-box">Carabobo</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:12px;top:14px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">Error</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Nombre</label>
+        <div style="height:44px;padding:0 12px;border:1.5px solid #B4441F;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#2E2E2E;display:flex;align-items:center;box-sizing:border-box">M</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.75rem;color:#8C3312">Ingresá tu nombre completo.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Buscar</label>
+        <div style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6C68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:12px;top:14px"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <div style="height:44px;padding:0 12px 0 40px;border:1.5px solid #B4441F;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#8F8D89;display:flex;align-items:center;box-sizing:border-box">xz##9</div>
+        </div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.75rem;color:#8C3312">Sin resultados para esa búsqueda.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#2E2E2E">Estado</label>
+        <div style="position:relative">
+          <div style="height:44px;padding:0 40px 0 12px;border:1.5px solid #B4441F;border-radius:2px;background:#FFFFFF;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#8F8D89;display:flex;align-items:center;box-sizing:border-box">Seleccionar…</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:12px;top:14px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.75rem;color:#8C3312">Elige un estado para ver distribuidores.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">Disabled</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#8F8D89">Nombre</label>
+        <div style="height:44px;padding:0 12px;border:1px solid #D9D9D9;border-radius:2px;background:#ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#8F8D89;display:flex;align-items:center;box-sizing:border-box;cursor:not-allowed">María Pérez</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#8F8D89">Buscar</label>
+        <div style="position:relative">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8F8D89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:12px;top:14px"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <div style="height:44px;padding:0 12px 0 40px;border:1px solid #D9D9D9;border-radius:2px;background:#ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#8F8D89;display:flex;align-items:center;box-sizing:border-box;cursor:not-allowed">Línea o formato…</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#8F8D89">Estado</label>
+        <div style="position:relative">
+          <div style="height:44px;padding:0 40px 0 12px;border:1px solid #D9D9D9;border-radius:2px;background:#ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.9375rem;color:#8F8D89;display:flex;align-items:center;box-sizing:border-box;cursor:not-allowed">Carabobo</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8F8D89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:12px;top:14px"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 PRODUCTCARD ============ -->
+<section data-screen-label="ProductCard" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">03 · ProductCard</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">La primitiva crítica — 2 densidades · 2 variantes</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Imagen dominante, radius-none, elevation-0. Compacta: grilla móvil de 2 columnas con gutter space-3. Ampliada: destacados de home. El estado de stock es tweakeable (panel Tweaks) y cambia el badge. Aspect ratios tokenizados: ratio-product 4/3, ratio-feature 3/2 — <a href="#gaps" style="font-weight:600">G5</a>.</p>
+    <div style="background:#F2E5D8;border-left:none;padding:14px 18px;margin-top:4px">
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#6B0F1A">Enmienda v0.1.1</span>
+      <span style="font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#5C5A56"> — La aplicación en el catálogo (Etapa 1.2, Dirección A) reveló que la anatomía única leía retail en cuadrante luxury. ProductCard se extiende con dos variantes de presentación, misma anatomía y tokens: <strong style="color:#2E2E2E">info</strong> (la actual: borde + superficie, hover = border-strong) para contextos funcionales con specs visibles; <strong style="color:#2E2E2E">media</strong> (imagen sin contenedor + caption debajo sobre el fondo de página, hover = solo atenuación de imagen) para contextos expresivos/galería. Ratio: hereda ratio-product; ratio-portrait 4/5 disponible como opción (pendiente probar en grilla real). El patrón G13 completo (caption con degradado sobre imagen) queda como imagery-tile de home, fuera de esta primitiva. Variante default: pendiente de evaluar contra Dirección B. Esta enmienda comparte el gate de aprobación abierto de v0.1.</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+    <div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Compacta — grid catálogo (2 col · 375px)</div>
+      <div style="width:351px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:#FFFFFF;border:1px solid #D9D9D9;cursor:pointer;transition:border-color 80ms cubic-bezier(0.2,0,0,1)" style-hover="border-color:#BFBDB9">
+          <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#F5F3F0 12px 24px);display:flex;align-items:center;justify-content:center">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68;text-align:center">[ foto producto ]</span>
+            <span style="position:absolute;top:8px;left:8px;background:#2E2E2E;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px">Rectificado</span>
+          </div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;line-height:1.4;color:#2E2E2E">{{ productName }}</div>
+            <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#5C5A56">60×60 cm · Pulido</div>
+            <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:4px 8px;background:{{ stockBg }};font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.75rem;color:{{ stockFg }}">● {{ stockText }}</span>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #D9D9D9;cursor:pointer;transition:border-color 80ms cubic-bezier(0.2,0,0,1)" style-hover="border-color:#BFBDB9">
+          <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#F5F3F0 12px 24px);display:flex;align-items:center;justify-content:center">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68;text-align:center">[ foto producto ]</span>
+          </div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;line-height:1.4;color:#2E2E2E">Gres Valencia</div>
+            <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#5C5A56">45×45 cm · Mate</div>
+            <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:4px 8px;background:#E4EFE7;font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.75rem;color:#24523A">● Disponible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Variante media (v0.1.1) — expresivo / galería</div>
+      <div style="width:351px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="cursor:pointer">
+          <div style="aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#F5F3F0 12px 24px);display:flex;align-items:center;justify-content:center;transition:opacity 240ms cubic-bezier(0.2,0,0,1)" style-hover="opacity:0.85">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68;text-align:center">[ ratio-product ]</span>
+          </div>
+          <div style="padding:12px 0 0;display:flex;flex-direction:column;gap:4px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;line-height:1.4;color:#2E2E2E">Caura</div>
+            <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#6E6C68">Serie · Porcelanato</div>
+          </div>
+        </div>
+        <div style="cursor:pointer">
+          <div style="aspect-ratio:4/5;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#F5F3F0 12px 24px);display:flex;align-items:center;justify-content:center;transition:opacity 240ms cubic-bezier(0.2,0,0,1)" style-hover="opacity:0.85">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68;text-align:center">[ ratio-portrait ]</span>
+          </div>
+          <div style="padding:12px 0 0;display:flex;flex-direction:column;gap:4px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;line-height:1.4;color:#2E2E2E">Zeus</div>
+            <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#6E6C68">Serie · Porcelanato</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:12px;line-height:1.55;color:#6E6C68;margin-top:10px;max-width:351px">Sin borde ni superficie: la imagen ocupa el área y el caption cuelga sobre el fondo de página. Hover = atenuación de imagen (opacity 0.85, dur-base). Sin badge de stock.</div>
+    </div>
+    <div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Ampliada — ficha / contextos funcionales</div>
+      <div style="width:400px;max-width:100%;background:#FFFFFF;border:1px solid #D9D9D9;cursor:pointer;transition:border-color 80ms cubic-bezier(0.2,0,0,1)" style-hover="border-color:#BFBDB9">
+        <div style="position:relative;aspect-ratio:3/2;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#F5F3F0 12px 24px);display:flex;align-items:center;justify-content:center">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68">[ foto ambiente: sala con porcelanato ]</span>
+          <span style="position:absolute;top:12px;left:12px;background:#2E2E2E;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px">Rectificado</span>
+        </div>
+        <div style="padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:clamp(1.125rem, 1.07rem + 0.22vw, 1.25rem);line-height:1.3;color:#2E2E2E">{{ productName }}</div>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:{{ stockBg }};font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.75rem;color:{{ stockFg }}">● {{ stockText }}</span>
+          </div>
+          <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#5C5A56">60×60 cm · Pulido · PEI IV</div>
+          <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.5;color:#5C5A56">Porcelanato rectificado de alto tránsito, junta mínima de 2 mm. Ideal para áreas comerciales y residenciales.</div>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#55000F">Ver ficha técnica</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;transition:background 80ms cubic-bezier(0.2,0,0,1)" style-hover="background:#ECE9E4">Dónde comprar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 FILTERGROUP ============ -->
+<section data-screen-label="FilterGroup" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">04 · FilterGroup</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Filtros facetados — funcional, estado compartido</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Tildá checkboxes en cualquiera de las dos versiones: chips, contador y CTA móvil comparten el mismo estado. Desktop: sidebar 280px. Móvil: bottom sheet (elevation-3 + scrim, dur-base + ease-out). Anchos de contenedor ad-hoc documentados, se revisan en 1.2 — <a href="#gaps" style="font-weight:600">G6</a>.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <!-- Desktop sidebar -->
+    <div style="flex:1;min-width:560px;max-width:720px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Desktop — sidebar</div>
+      <div style="display:flex;background:#FFFFFF;border:1px solid #D9D9D9">
+        <div style="width:280px;flex:none;border-right:1px solid #ECE9E4;padding:20px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;color:#2E2E2E">Filtros</div>
+            <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+              <span onClick="{{ clearAll }}" style="font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#6B0F1A;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Limpiar todo</span>
+            </sc-if>
+          </div>
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin:0 0 8px">Tipo</div>
+          <sc-for list="{{ facetTipo }}" as="f" hint-placeholder-count="3">
+            <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;gap:12px;min-height:36px;cursor:pointer">
+              <span style="width:20px;height:20px;flex:none;border:1.5px solid {{ f.boxBorder }};border-radius:2px;background:{{ f.boxBg }};display:flex;align-items:center;justify-content:center;transition:background 80ms cubic-bezier(0.2,0,0,1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ f.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span style="flex:1;font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#2E2E2E">{{ f.label }}</span>
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:#6E6C68">{{ f.count }}</span>
+            </div>
+          </sc-for>
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin:16px 0 8px">Formato</div>
+          <sc-for list="{{ facetFormato }}" as="f" hint-placeholder-count="3">
+            <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;gap:12px;min-height:36px;cursor:pointer">
+              <span style="width:20px;height:20px;flex:none;border:1.5px solid {{ f.boxBorder }};border-radius:2px;background:{{ f.boxBg }};display:flex;align-items:center;justify-content:center;transition:background 80ms cubic-bezier(0.2,0,0,1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ f.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span style="flex:1;font-family:'Open Sans',sans-serif;font-size:0.875rem;font-variant-numeric:tabular-nums;color:#2E2E2E">{{ f.label }}</span>
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:#6E6C68">{{ f.count }}</span>
+            </div>
+          </sc-for>
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin:16px 0 8px">Acabado</div>
+          <sc-for list="{{ facetAcabado }}" as="f" hint-placeholder-count="3">
+            <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;gap:12px;min-height:36px;cursor:pointer">
+              <span style="width:20px;height:20px;flex:none;border:1.5px solid {{ f.boxBorder }};border-radius:2px;background:{{ f.boxBg }};display:flex;align-items:center;justify-content:center;transition:background 80ms cubic-bezier(0.2,0,0,1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ f.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span style="flex:1;font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#2E2E2E">{{ f.label }}</span>
+              <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:#6E6C68">{{ f.count }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex:1;padding:20px;display:flex;flex-direction:column;gap:14px;background:#F5F3F0">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;font-variant-numeric:tabular-nums;color:#2E2E2E">{{ resultText }}</div>
+          </div>
+          <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
+                <span onClick="{{ c.remove }}" style="display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;background:#F2E5D8;border:1px solid #6B0F1A;border-radius:2px;font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#6B0F1A;cursor:pointer">{{ c.label }} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B0F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#FFFFFF 12px 24px);border:1px solid #D9D9D9;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68">[ resultado ]</span></div>
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#FFFFFF 12px 24px);border:1px solid #D9D9D9;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem;color:#6E6C68">[ resultado ]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile bottom sheet -->
+    <div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Móvil — bottom sheet (mismo estado)</div>
+      <div style="width:320px;height:580px;position:relative;background:#F5F3F0;border:1px solid #D9D9D9;overflow:hidden">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:44px;background:#FFFFFF;border:1px solid #BFBDB9;border-radius:2px"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#FFFFFF 12px 24px);border:1px solid #D9D9D9"></div>
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#ECE9E4 0 12px,#FFFFFF 12px 24px);border:1px solid #D9D9D9"></div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(31,31,31,0.50)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;max-height:85%;background:#FFFFFF;box-shadow:0 12px 32px rgba(31,31,31,0.22);display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #ECE9E4">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;color:#2E2E2E">Filtros</div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </div>
+          <div style="padding:16px 20px;overflow-y:auto;flex:1">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin:0 0 8px">Tipo</div>
+            <sc-for list="{{ facetTipo }}" as="f" hint-placeholder-count="3">
+              <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer">
+                <span style="width:20px;height:20px;flex:none;border:1.5px solid {{ f.boxBorder }};border-radius:2px;background:{{ f.boxBg }};display:flex;align-items:center;justify-content:center;transition:background 80ms cubic-bezier(0.2,0,0,1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ f.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span style="flex:1;font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#2E2E2E">{{ f.label }}</span>
+                <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:#6E6C68">{{ f.count }}</span>
+              </div>
+            </sc-for>
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin:12px 0 8px">Formato</div>
+            <sc-for list="{{ facetFormato }}" as="f" hint-placeholder-count="3">
+              <div onClick="{{ f.toggle }}" style="display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer">
+                <span style="width:20px;height:20px;flex:none;border:1.5px solid {{ f.boxBorder }};border-radius:2px;background:{{ f.boxBg }};display:flex;align-items:center;justify-content:center;transition:background 80ms cubic-bezier(0.2,0,0,1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ f.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <span style="flex:1;font-family:'Open Sans',sans-serif;font-size:0.875rem;font-variant-numeric:tabular-nums;color:#2E2E2E">{{ f.label }}</span>
+                <span style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.75rem;font-variant-numeric:tabular-nums;color:#6E6C68">{{ f.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:12px;padding:14px 20px;border-top:1px solid #ECE9E4;background:#FFFFFF">
+            <span onClick="{{ clearAll }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;cursor:pointer" style-hover="background:#ECE9E4">Limpiar</span>
+            <span style="flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.875rem;cursor:pointer" style-hover="background:#55000F">Ver {{ resultText }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 CARD & MODAL ============ -->
+<section data-screen-label="Card y Modal" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">05 · Card genérica + Modal</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Contenedores base</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Card: surface-raised + border-default, radius-none, elevation-0. Modal: radius-none (es bloqueante, mantiene la arista dura — radius-md queda para flotantes anclados), elevation-3 + scrim, entra con dur-base + ease-out. Max-width 480px ad-hoc documentado — <a href="#gaps" style="font-weight:600">G6</a>.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+    <div style="flex:1;min-width:280px;max-width:400px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Card genérica</div>
+      <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+        <div style="padding:16px 20px;border-bottom:1px solid #ECE9E4;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;color:#2E2E2E">Header opcional</div>
+          <span style="font-family:'Open Sans',sans-serif;font-weight:600;font-size:0.875rem;color:#6B0F1A;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Acción</span>
+        </div>
+        <div style="padding:20px;font-family:'Open Sans',sans-serif;font-size:1rem;line-height:1.6;color:#2E2E2E">Cuerpo con body-md. Padding interno space-5 (20px); header y footer separados con border neutral-100.</div>
+        <div style="padding:12px 20px;border-top:1px solid #ECE9E4;background:#F5F3F0;font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Footer opcional — surface-base</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:320px;max-width:560px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56;margin-bottom:12px">Modal básico (sobre scrim)</div>
+      <div style="background:rgba(31,31,31,0.50);padding:40px 24px;display:flex;align-items:center;justify-content:center">
+        <div style="width:100%;max-width:480px;background:#FFFFFF;box-shadow:0 12px 32px rgba(31,31,31,0.22)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 24px 0">
+            <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:clamp(1.375rem, 1.22rem + 0.66vw, 1.75rem);line-height:1.2;color:#2E2E2E">¿Enviar consulta al distribuidor?</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;cursor:pointer;margin-top:4px"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </div>
+          <div style="padding:12px 24px 0;font-family:'Open Sans',sans-serif;font-size:1rem;line-height:1.6;color:#5C5A56">Tu consulta sobre <strong style="color:#2E2E2E">Porcelanato Terracota 60×60</strong> se enviará a Materiales La Viña, Valencia. Te contactarán al teléfono indicado.</div>
+          <div style="display:flex;justify-content:flex-end;gap:12px;padding:24px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;color:#6B0F1A;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#ECE9E4">Cancelar</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#6B0F1A;color:#FFFFFF;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;cursor:pointer" style-hover="background:#55000F">Enviar consulta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 SPECSTABLE ============ -->
+<section data-screen-label="SpecsTable" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">06 · SpecsTable</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Especificaciones técnicas</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Etiquetas en Open Sans; valores en text-data (Work Sans 500, tabular-nums) para que las cifras alineen en columna. Zebra con surface-sunken, borde exterior border-default, radius-none.</p>
+  </div>
+  <div style="max-width:640px;background:#FFFFFF;border:1px solid #D9D9D9">
+    <div style="padding:16px 20px;border-bottom:1px solid #D9D9D9;display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;color:#2E2E2E">Ficha técnica — {{ productName }}</div>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#6E6C68">SKU CC-6060-TER-04</div>
+    </div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px;background:#ECE9E4"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Formato</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#2E2E2E">60 × 60 cm</div></div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Acabado</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;color:#2E2E2E">Pulido rectificado</div></div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px;background:#ECE9E4"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Resistencia (PEI)</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#2E2E2E">PEI IV — tránsito alto</div></div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Absorción de agua</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#2E2E2E">≤ 0.5 %</div></div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px;background:#ECE9E4"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Uso recomendado</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;color:#2E2E2E">Pisos interiores, áreas comerciales</div></div>
+    <div style="display:grid;grid-template-columns:180px 1fr;padding:12px 20px"><div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;color:#5C5A56">Rendimiento</div><div style="font-family:'Work Sans',sans-serif;font-weight:500;font-size:0.9375rem;font-variant-numeric:tabular-nums;color:#2E2E2E">1.44 m²/caja · 4 pzas</div></div>
+  </div>
+</section>
+
+<!-- ============ 07 GAPS ============ -->
+<section id="gaps" data-screen-label="Gaps" style="max-width:1120px;margin:0 auto;padding:48px 24px 64px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#24523A">07 · Gaps de tokens — resueltos</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">7 promovidos a token · 1 ad-hoc documentado</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:760px">Los promovidos ya están en el bloque CSS de <a href="Tokens v0.dc.html">Tokens v0</a>. G6 queda como valores locales documentados hasta probarse contra el catálogo real en Etapa 1.2 (anotado en el TODO del proyecto).</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #B4441F">
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:12px 20px;background:#F8E7E0;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#8C3312"><div>ID</div><div>Gap</div><div>Resolución</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G1</div><div><strong>Paso active de acciones.</strong> No hay color más profundo que brand-900: hover y active comparten #55000F.</div><div><strong style="color:#24523A">✓ Decidido, sin token nuevo:</strong> active = hover (brand-900) + translateY(1px). Un paso más oscuro que #55000F es imperceptible y no verificable contra el kit. Documentado en Tokens v0.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G2</div><div><strong>Focus ring.</strong> Existe border-focus (color) pero no ancho ni offset del ring.</div><div><strong style="color:#24523A">✓ Promovido:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--focus-ring-width: 2px; --focus-ring-offset: 2px</span>. Criterio automático: accesibilidad.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G3</div><div><strong>Superficies disabled.</strong> Existe text-disabled pero no fondo ni borde disabled semánticos.</div><div><strong style="color:#24523A">✓ Promovido como alias:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--color-bg-disabled → neutral-100; --color-border-disabled → neutral-200</span>. El alias permite ajustar disabled sin tocar la escala neutral.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G4</div><div><strong>Altura de controles.</strong> El 44px de buttons/inputs y el 36px de chips/checkbox-rows no están tokenizados.</div><div><strong style="color:#24523A">✓ Promovido:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--control-height-md: 44px; --control-height-sm: 36px; --control-box: 20px</span>. El 44 es hit target — propagación pura.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G5</div><div><strong>Aspect ratio de imagen de producto.</strong> La escala de motion/spacing no cubre proporciones de media.</div><div><strong style="color:#24523A">✓ Promovido:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--ratio-product: 4/3; --ratio-feature: 3/2</span>. Se ajustará globalmente al ver imagery real en 1.2.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G6</div><div><strong>Anchos de contenedor.</strong> Sidebar de filtros, modal y bottom sheet no tienen tokens de tamaño.</div><div><strong style="color:#8C3312">○ Ad-hoc documentado — NO tokenizar todavía:</strong> 280px / 480px / 85dvh son decisiones de layout sin presión de contenido real. Si en 1.2 se repiten sin cambios, se promueven ahí. Anotado en el TODO del proyecto.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G7</div><div><strong>Animación continua (spinner).</strong> La escala de duraciones termina en 480ms y no cubre loops.</div><div><strong style="color:#24523A">✓ Promovido:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--dur-spin: 800ms</span> + regla: loops siempre linear. Cierra la matriz de motion.</div></div>
+    <div style="display:grid;grid-template-columns:56px 1fr 1.2fr;gap:16px;padding:14px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;color:#2E2E2E"><div style="font-family:'Work Sans',sans-serif;font-weight:600;color:#8C3312">G8</div><div><strong>Escala z-index.</strong> Sticky, dropdown, scrim, modal y toast apilan sin sistema.</div><div><strong style="color:#24523A">✓ Promovido:</strong> <span style="font-family:ui-monospace,Menlo,monospace;font-size:0.75rem">--z-sticky: 10; --z-dropdown: 20; --z-scrim: 30; --z-modal: 40; --z-toast: 50</span>. Evita el toast-bajo-modal de 1.2.</div></div>
+  </div>
+</section>
+
+
+<!-- ============ 08 NOMENCLATURA ============ -->
+<section id="nomenclatura" data-screen-label="Nomenclatura" style="max-width:1120px;margin:0 auto;padding:48px 24px 80px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">08 · Nomenclatura</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Componentes nuevos, con nombre</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:780px;text-wrap:pretty">Los códigos G eran números de pendiente, no nombres: útiles para rastrear el historial, inservibles para hablar del sistema. Estos son los nombres definitivos. De acá en adelante la documentación usa el nombre y el código queda solo como referencia histórica.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+    <div style="min-width:860px">
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;padding:12px 20px;background:#ECE9E4;font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:#5C5A56">
+        <div>Nombre</div><div>Era</div><div>Qué es</div><div>Dónde vive</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Hoja</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G30<br>G31</div>
+        <div style="color:#5C5A56">Panel a pantalla completa que entra desde el borde, con barra de cierre fija arriba, un cuerpo que es lo único que scrollea y acciones ancladas al pie. Es la variante móvil del Modal, no un tamaño suyo: cambia la anatomía.</div>
+        <div style="color:#5C5A56">Filtros y ficha del catálogo en teléfono</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Ficha de diseño</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">—</div>
+        <div style="color:#5C5A56">Imagen del material más SpecsTable con los datos del diseño y dos acciones al pie. Se presenta como Modal en escritorio y como Hoja en teléfono; el contenido es el mismo.</div>
+        <div style="color:#5C5A56">Catálogo, al tocar una tarjeta</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Acordeón de faceta</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G30</div>
+        <div style="color:#5C5A56">Un FilterGroup plegado: cabecera de 56px con el nombre del eje y el resumen de lo elegido, y las opciones con su conteo al desplegarse.</div>
+        <div style="color:#5C5A56">Dentro de la Hoja de filtros</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Megapanel</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G14</div>
+        <div style="color:#5C5A56">Panel del ancho de la ventana que baja desde el header con las cuatro materias y su miniatura. Convive con el header transparente: al abrirse lo vuelve sólido.</div>
+        <div style="color:#5C5A56">Opción Catálogo del menú</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Índice con panel</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G18</div>
+        <div style="color:#5C5A56">Lista de títulos en tipografía grande y un panel de imagen al lado que hace fundido al recorrerla. En teléfono se deshace: cada fila lleva su imagen debajo.</div>
+        <div style="color:#5C5A56">Proyectos del home</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Mapa de cobertura</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G23</div>
+        <div style="color:#5C5A56">Mapa de los estados pintados según cuántos distribuidores tienen, con acercamiento al elegir uno. Define su propia escala de rellenos geográficos.</div>
+        <div style="color:#5C5A56">Dónde comprar</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Ficha de distribuidor</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">G24</div>
+        <div style="color:#5C5A56">Nombre, dirección, horario y tres acciones de contacto directo de 44px: llamar, WhatsApp y correo.</div>
+        <div style="color:#5C5A56">Dónde comprar, panel de resultados</div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Estado vacío</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">nuevo</div>
+        <div style="color:#5C5A56">Lo que ocupa el lugar del contenido cuando no hay contenido: rótulo, una línea de explicación y una sola acción de salida. Dos tamaños, en bloque y de página.</div>
+        <div style="color:#5C5A56">Ver <a href="Estados v0.dc.html">Estados v0</a></div>
+      </div>
+      <div style="display:grid;grid-template-columns:190px 60px 1.2fr 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-top:1px solid #ECE9E4;font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.55;color:#2E2E2E">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600">Marcador de imagen</div>
+        <div style="font-family:'Work Sans',sans-serif;font-size:0.75rem;color:#8F8D89">nuevo</div>
+        <div style="color:#5C5A56">La superficie que reserva el lugar de una foto con su proporción exacta, antes de que cargue o cuando no existe. Evita que la página salte.</div>
+        <div style="color:#5C5A56">Ver <a href="Estados v0.dc.html">Estados v0</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;stockState&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;disponible&quot;, &quot;ultimas&quot;, &quot;agotado&quot;], &quot;default&quot;: &quot;disponible&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;ProductCard&quot;}, &quot;productName&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Porcelanato Terracota&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;ProductCard&quot;}, &quot;resultsTotal&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 24, &quot;min&quot;: 3, &quot;max&quot;: 200, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;FilterGroup&quot;}}">
+class Component extends DCLogic {
+  state = { selected: {} };
+
+  mkFacet(arr) {
+    const sel = this.state.selected;
+    return arr.map(([id, label, count]) => ({
+      label,
+      count,
+      checked: !!sel[id],
+      boxBg: sel[id] ? '#6B0F1A' : '#FFFFFF',
+      boxBorder: sel[id] ? '#6B0F1A' : '#BFBDB9',
+      checkOpacity: sel[id] ? 1 : 0,
+      toggle: () => {
+        const s = { ...this.state.selected };
+        if (s[id]) delete s[id]; else s[id] = label;
+        this.setState({ selected: s });
+      },
+    }));
+  }
+
+  renderVals() {
+    const facetTipo = this.mkFacet([
+      ['tipo-porc', 'Porcelanato', 12],
+      ['tipo-pared', 'Cerámica pared', 8],
+      ['tipo-ext', 'Exterior', 4],
+    ]);
+    const facetFormato = this.mkFacet([
+      ['fmt-6060', '60×60 cm', 9],
+      ['fmt-4545', '45×45 cm', 7],
+      ['fmt-3060', '30×60 cm', 8],
+    ]);
+    const facetAcabado = this.mkFacet([
+      ['acb-pulido', 'Pulido', 10],
+      ['acb-mate', 'Mate', 11],
+      ['acb-anti', 'Antideslizante', 3],
+    ]);
+    const sel = this.state.selected;
+    const chips = Object.keys(sel).map((id) => ({
+      label: sel[id],
+      remove: () => {
+        const s = { ...this.state.selected };
+        delete s[id];
+        this.setState({ selected: s });
+      },
+    }));
+    const total = this.props.resultsTotal ?? 24;
+    const n = chips.length;
+    const count = n === 0 ? total : Math.max(3, total - n * 5);
+    const stockState = this.props.stockState ?? 'disponible';
+    const stockMap = {
+      disponible: { stockBg: '#E4EFE7', stockFg: '#24523A', stockText: 'Disponible' },
+      ultimas: { stockBg: '#F6EDD9', stockFg: '#6E4600', stockText: '\u00daltimas unidades' },
+      agotado: { stockBg: '#F8E7E0', stockFg: '#8C3312', stockText: 'Agotado' },
+    };
+    return {
+      facetTipo,
+      facetFormato,
+      facetAcabado,
+      chips,
+      hasFilters: n > 0,
+      resultText: count + ' productos',
+      clearAll: () => this.setState({ selected: {} }),
+      productName: this.props.productName ?? 'Porcelanato Terracota',
+      ...(stockMap[stockState] || stockMap.disponible),
+    };
+  }
+}
+</script>
+</body>
+</html>

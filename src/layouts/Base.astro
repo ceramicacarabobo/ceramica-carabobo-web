@@ -1,0 +1,73 @@
+---
+/**
+ * Cáscara compartida del sitio (requisito nº1 del handoff):
+ * una sola app, header y pie que NO se remontan al navegar, sin destello
+ * blanco, con URL propia por página.
+ *   - ClientRouter  → navegación con View Transitions (mejora progresiva).
+ *   - transition:persist → la cáscara sobrevive el cambio de página.
+ */
+import {ClientRouter} from 'astro:transitions'
+import {VisualEditing} from '@sanity/astro/visual-editing'
+
+import '@fontsource-variable/work-sans'
+import '@fontsource-variable/open-sans'
+import '~/theme/tokens.css'
+import '~/theme/base.css'
+
+import Header from '~/components/shell/Header.astro'
+import Footer from '~/components/shell/Footer.astro'
+import {getAjustes, visualEditingHabilitado} from '~/lib/data'
+
+interface Props {
+  titulo: string
+  descripcion?: string
+  imagenOG?: string
+  noIndex?: boolean
+}
+
+const {titulo, descripcion, imagenOG, noIndex = false} = Astro.props
+
+const ajustes = await getAjustes()
+const tituloPagina = titulo === ajustes.titulo ? titulo : `${titulo} — ${ajustes.titulo}`
+const meta = descripcion ?? ajustes.descripcion
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
+---
+
+<!doctype html>
+<html lang="es-VE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloPagina}</title>
+    {meta && <meta name="description" content={meta} />}
+    <link rel="canonical" href={canonical} />
+    {noIndex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={ajustes.titulo} />
+    <meta property="og:title" content={tituloPagina} />
+    {meta && <meta property="og:description" content={meta} />}
+    <meta property="og:url" content={canonical} />
+    {imagenOG && <meta property="og:image" content={new URL(imagenOG, canonical).href} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#55000F" />
+    <link rel="icon" href="/assets/logo-iso.svg" type="image/svg+xml" />
+
+    <ClientRouter />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+    <Header transition:persist />
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <Footer ajustes={ajustes} transition:persist />
+
+    <VisualEditing enabled={visualEditingHabilitado} />
+  </body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F3F0;-webkit-font-smoothing:antialiased}
+a{color:#6B0F1A}
+a:hover{color:#55000F}
+</style>
+</helmet>
+
+<header data-screen-label="Header" style="background:#2E2E2E;color:#FFFFFF;padding:48px 24px 40px">
+  <div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="display:block;width:41px;height:44px;-webkit-mask:url('assets/logo-iso.svg') no-repeat center / contain;mask:url('assets/logo-iso.svg') no-repeat center / contain;background:#FFFFFF"></span>
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#E6C0A8">Cerámica Carabobo · Design System</div>
+      <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.04em;padding:3px 10px;background:#E6C0A8;color:#2E2E2E">v0 — para desarrollo</span>
+    </div>
+    <h1 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(2.25rem, 1.73rem + 2.21vw, 3.5rem);line-height:1.05;letter-spacing:-0.01em">Requisitos técnicos</h1>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:17px;line-height:1.6;color:#C9C7C3;max-width:800px;text-wrap:pretty">Lo que el diseño necesita del desarrollo para funcionar como está pensado. No es una lista de deseos: cada punto sostiene una decisión de diseño que ya se tomó, y los marcados como bloqueantes cambian el presupuesto si se descubren tarde.</p>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#A8A6A2;max-width:800px;text-wrap:pretty"><strong style="color:#E6C0A8">Advertencia sobre el prototipo:</strong> los archivos de diseño resuelven algunas cosas de un modo que NO hay que replicar — cada página es un archivo suelto, los rangos de pantalla se conmutan en JavaScript y las imágenes son PNG de 8 MB. Son artefactos de la herramienta con la que se prototipó. Donde aparece, este documento lo aclara.</p>
+  </div>
+</header>
+
+<section data-screen-label="Arquitectura" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">01 · Arquitectura</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Una aplicación, cuatro direcciones</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.7;color:#5C5A56;max-width:70ch;text-wrap:pretty">Es la decisión más cara de revertir, así que va primera. El sitio son cuatro páginas —inicio, catálogo, contacto, dónde comprar— y tienen que construirse como <strong>una sola aplicación con una cáscara compartida</strong>: el encabezado y el pie no se vuelven a montar al navegar, no hay recarga ni destello blanco, y cada página conserva su dirección propia y su lugar en los buscadores.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:{{ colsDos }};gap:1px;background:#D9D9D9;border:1px solid #D9D9D9">
+    <div style="background:#FFFFFF;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#2E2E2E">Por qué importa</div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.65;color:#5C5A56;text-wrap:pretty">Con imágenes de ambiente pesadas, cada recarga vuelve a descargar el encabezado, las fuentes y el fondo. En un teléfono con datos móviles eso es la diferencia entre un sitio que se siente una aplicación y uno que parpadea en cada toque. También es lo que habilita la transición entre páginas y el que las hojas y las modales entren en el historial.</div>
+    </div>
+    <div style="background:#FFFFFF;padding:20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#6B0F1A">El riesgo concreto</div>
+      <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.65;color:#5C5A56;text-wrap:pretty">El cliente va a administrar el contenido, así que es probable que se evalúe un tema clásico de gestor de contenidos. En ese camino cada clic recarga la página por defecto y el destello blanco vuelve. <strong>No es imposible, pero no es gratis</strong>: si se elige ese camino hay que presupuestar la navegación sin recarga aparte, o aceptar explícitamente que el sitio se sienta más lento.</div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Requisitos" style="max-width:1120px;margin:0 auto;padding:48px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">02 · Requisitos</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Punto por punto</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:780px;text-wrap:pretty"><strong>Bloqueante</strong> significa que sin eso una decisión de diseño ya aprobada no se sostiene. <strong>Recomendado</strong> es mejora clara con costo acotado.</p>
+  </div>
+  <sc-for list="{{ grupos }}" as="g" hint-placeholder-count="6">
+    <div style="margin-bottom:28px">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px">
+        <span style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:1.0625rem;color:#2E2E2E">{{ g.titulo }}</span>
+        <span style="font-family:'Open Sans',sans-serif;font-size:0.8125rem;color:#5C5A56">{{ g.nota }}</span>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #D9D9D9;overflow-x:auto">
+        <div style="min-width:820px">
+          <sc-for list="{{ g.filas }}" as="r" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;padding:16px 20px;border-top:1px solid #ECE9E4">
+              <div><span style="{{ r.badgeStyle }}">{{ r.badge }}</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#2E2E2E">{{ r.k }}</div>
+                <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.65;color:#5C5A56;text-wrap:pretty">{{ r.v }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="No hacer" style="max-width:1120px;margin:0 auto;padding:24px 24px 8px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">03 · Lo que no hay que hacer</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Errores que ya cometimos</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:780px;text-wrap:pretty">Todos estos aparecieron durante el diseño y están corregidos o documentados. Se listan para que no vuelvan por la puerta de atrás.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:1px;background:#D9D9D9;border:1px solid #D9D9D9">
+    <sc-for list="{{ noHacer }}" as="x" hint-placeholder-count="8">
+      <div style="background:#FFFFFF;padding:18px 20px;display:grid;grid-template-columns:{{ colsNo }};gap:16px;align-items:baseline">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.9375rem;color:#2E2E2E">{{ x.k }}</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.875rem;line-height:1.65;color:#5C5A56;text-wrap:pretty">{{ x.v }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Aceptacion" style="max-width:1120px;margin:0 auto;padding:48px 24px 80px">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+    <div style="font-family:'Work Sans',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#6B0F1A">04 · Aceptación</div>
+    <h2 style="margin:0;font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(1.75rem, 1.44rem + 1.33vw, 2.5rem);line-height:1.1;color:#2E2E2E">Cómo se revisa la entrega</h2>
+    <p style="margin:0;font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.6;color:#6E6C68;max-width:780px;text-wrap:pretty">Diez pruebas que se hacen en un teléfono real, no en el escritorio con la ventana angosta. Si las diez pasan, la implementación respeta el diseño.</p>
+  </div>
+  <div style="background:#FFFFFF;border:1px solid #D9D9D9">
+    <sc-for list="{{ aceptacion }}" as="a" hint-placeholder-count="10">
+      <div style="display:grid;grid-template-columns:36px 1fr;gap:16px;align-items:baseline;padding:14px 20px;border-top:1px solid #ECE9E4">
+        <div style="font-family:'Work Sans',sans-serif;font-weight:700;font-size:0.875rem;color:#E6C0A8;font-variant-numeric:tabular-nums">{{ a.n }}</div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:0.9375rem;line-height:1.6;color:#2E2E2E;text-wrap:pretty">{{ a.v }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1180, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = { estrecho: false };
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 760px)');
+    this.onMq = () => this.setState({ estrecho: this.mq.matches });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+  }
+
+  componentWillUnmount() { if (this.mq) this.mq.removeEventListener('change', this.onMq); }
+
+  renderVals() {
+    const badge = (txt) => ({
+      badge: txt,
+      badgeStyle: {
+        display: 'inline-flex', alignItems: 'center', padding: '3px 10px', whiteSpace: 'nowrap',
+        fontFamily: "'Work Sans', sans-serif", fontWeight: 600, fontSize: '0.75rem',
+        letterSpacing: '0.06em', textTransform: 'uppercase',
+        background: txt === 'Bloqueante' ? '#6B0F1A' : '#ECE9E4',
+        color: txt === 'Bloqueante' ? '#FFFFFF' : '#5C5A56',
+      },
+    });
+    const bloq = (k, v) => Object.assign({ k: k, v: v }, badge('Bloqueante'));
+    const rec = (k, v) => Object.assign({ k: k, v: v }, badge('Recomendado'));
+
+    return {
+      colsDos: this.state.estrecho ? '1fr' : 'repeat(2, 1fr)',
+      colsNo: this.state.estrecho ? '1fr' : '260px 1fr',
+
+      grupos: [
+        {
+          titulo: 'Rangos de pantalla',
+          nota: 'detalle en Responsividad v0',
+          filas: [
+            bloq('Media queries CSS, no JavaScript', 'Los tres rangos —móvil por debajo de 760px, tablet hasta 1023, escritorio desde 1024— se resuelven con media queries y estilos móvil primero. El prototipo los conmuta con JavaScript porque el entorno en que se construyó no admite media queries en estilos en línea: es una limitación de la herramienta, no una especificación. Un diseño que depende de JavaScript parpadea en la primera carga y no funciona con el HTML sin procesar.'),
+            bloq('Los dos valores, sin variantes', 'Un solo par de números en todo el sitio: 760 y 1024. Verificado el 23/08 — las cinco páginas conmutan ahí; el 1000px heredado ya no existe en ningún archivo.'),
+            rec('Consultas de contenedor donde el componente se reutiliza', 'La tarjeta de diseño aparece en la grilla del catálogo y en las fichas del inicio, a anchos distintos. Si adapta por el ancho de su contenedor en vez del de la ventana, deja de necesitar excepciones.'),
+          ],
+        },
+        {
+          titulo: 'Direcciones e historial',
+          nota: 'implementado en el prototipo del catálogo; replicar el criterio',
+          filas: [
+            bloq('Los filtros y la ficha viven en la dirección', 'El estado del catálogo se puede compartir y volver a abrir: qué filtros están puestos, con qué orden y qué diseño está abierto. Sin eso no se puede compartir un diseño, que es la acción principal en el teléfono.'),
+            bloq('Filtros sí, historial no', 'Cambiar un filtro reescribe la dirección sin agregar entrada al historial. Nadie quiere apretar atrás quince veces por quince clics. Lo que se abre encima —ficha, hoja de filtros, menú— sí agrega entrada.'),
+            bloq('El botón atrás cierra lo que está encima', 'En un teléfono Android el gesto de volver tiene que cerrar la hoja o la modal abierta, no salir del sitio. Cerrar con el aspa vuelve atrás en el historial, para que no se acumulen pares de abrir y cerrar.'),
+            rec('Nada de espejos del historial', 'Aprendizaje caro: dos intentos de llevar la cuenta de las entradas propias con una variable fallaron, porque se desincronizan en cuanto el usuario cierra con el botón del sistema. La pertenencia se marca en la entrada misma del historial y se lee de ahí.'),
+          ],
+        },
+        {
+          titulo: 'Imágenes y peso',
+          nota: 'detalle en Contenido v0 · 06',
+          filas: [
+            bloq('Varios tamaños por imagen, servidos según pantalla', 'Un teléfono no puede recibir la imagen de escritorio. Cada foto se sirve en varios anchos y el navegador elige. Sin esto, el inicio pide más de 20 MB antes de la segunda pantalla. Es el MISMO recorte en varios anchos, no versiones distintas por pantalla: decidido que no hay arte por rango, pero eso no elimina el requisito —lo simplifica.'),
+            bloq('Formato moderno y tope de peso', 'WebP o AVIF con respaldo JPG, lado largo 2560px en el original y por debajo de 400 KB en lo que se sirve. Nunca PNG para fotografía: pesa entre cinco y diez veces más sin verse mejor. Las imágenes del prototipo son PNG de 7 a 9 MB, a modo de ejemplo de lo que no hay que hacer.'),
+            bloq('El espacio se reserva antes de cargar', 'Cada imagen declara su proporción, así el hueco existe desde el principio y la página no salta cuando llega la foto. Fundido corto al aparecer y, si tarda más de 400ms, el marcador late. Nunca un indicador giratorio.'),
+            bloq('Carga diferida salvo la primera pantalla', 'Todo lo que está debajo del pliegue se carga cuando se acerca. La imagen del encabezado, en cambio, se precarga: es la que define la sensación de velocidad.'),
+            bloq('Un punto focal por foto en el dato', 'Cerrado: no hay recorte propio por pantalla —una sola foto sirve a todos los rangos, para no duplicar el material que el cliente tiene que producir. La consecuencia es que el mismo archivo se recorta a 4/5 en la grilla y a 4/3 en la ficha, y varias fotos pierden el piso —que es el producto— al recortarse al centro. Por eso cada foto lleva un punto focal opcional que corre el recorte; sin ese campo, la única salida a una foto mal recortada es pedir otra foto.'),
+            rec('El video no se descarga con conexión limitada', 'Si el navegador informa conexión lenta o ahorro de datos, el encabezado se queda en la imagen de reserva y el carrusel sigue con fotos. El usuario no paga megas que no pidió.'),
+          ],
+        },
+        {
+          titulo: 'Movimiento',
+          nota: 'detalle en Tokens v0 y Responsividad v0 · 04',
+          filas: [
+            bloq('Respetar la preferencia de menos movimiento', 'Con esa preferencia activa todo colapsa a 1ms. No es opcional: es accesibilidad.'),
+            bloq('Solo opacidad y transformación', 'Ninguna animación toca el diseño de la página. Las dos excepciones están declaradas: la máscara de recorte en la entrada de imágenes y el dibujado de las líneas de un píxel.'),
+            bloq('Nada conducido por el scroll en móvil', 'El parallax y el fijado de secciones no existen por debajo de 760px. En un teléfono compiten con el gesto de desplazarse.'),
+            rec('El reacomodo de la grilla al filtrar', 'Cuando cambia el resultado, las tarjetas se acomodan en vez de saltar: es funcional, hace visible qué quedó. Las que se mueven poco se desplazan con la duración atada a la distancia; las que cambiarían de fila se funden en su lugar. Cascada de 22ms y nada se anima fuera de pantalla.'),
+          ],
+        },
+        {
+          titulo: 'Metadatos y semántica',
+          nota: 'salió de la auditoría del home (21/08): fuera del alcance del diseño, dentro del de desarrollo',
+          filas: [
+            bloq('Idioma declarado en el documento', 'El elemento raíz declara español de Venezuela. Sin eso el lector de pantalla pronuncia el contenido en inglés y el navegador ofrece traducir una página que ya está en el idioma del visitante.'),
+            bloq('Una dirección canónica por página', 'Cada página declara su dirección definitiva. El prototipo se sirve como archivos `.dc.html`; en producción las direcciones son limpias y la misma página no puede quedar accesible por dos rutas.'),
+            bloq('Tarjeta de enlace al compartir', 'Título, descripción e imagen por página para cuando el enlace se pega en WhatsApp, que es por donde va a circular. Sin esto el enlace llega como texto pelado.'),
+            bloq('Datos estructurados de la empresa', 'La ficha de la empresa y, sobre todo, los puntos de venta: nombre, dirección y teléfono de cada distribuidor en formato legible por buscadores. Es lo que hace que "cerámica en Maracaibo" encuentre al distribuidor.'),
+            bloq('Un solo título de primer nivel y jerarquía sin saltos', 'Cada página tiene un título principal y los subtítulos bajan de nivel sin saltarse ninguno. Hoy el home pasa de segundo a cuarto nivel: para quien navega por encabezados, el índice de la página queda roto.'),
+            bloq('Roles para los controles que no son enlaces', 'El selector de materia del hero y las pestañas de Ambientes se ven como grupos de opciones pero no lo declaran, así que con lector de pantalla no se sabe cuántas opciones hay ni cuál está activa. Cada grupo declara su rol y su estado.'),
+            rec('Enlace de salto al contenido', 'Primer elemento enfocable de cada página, visible al recibir el foco. Con teclado, llegar al contenido del catálogo hoy cuesta pasar por todo el menú.'),
+          ],
+        },
+        {
+          titulo: 'Sensación de aplicación',
+          nota: 'depende de la arquitectura del punto 01',
+          filas: [
+            rec('Transición entre páginas', 'Con la cáscara compartida, el cambio de página se cruza en lugar de destellar. Se probó adelantarlo en el prototipo con una regla de CSS y no funciona sin esa arquitectura: solo dejaba un error en consola.'),
+            rec('Las páginas visitadas abren sin conexión', 'Guardar en caché lo ya visto es la mejora más grande por peso de trabajo en un país con conexión intermitente. El catálogo consultado una vez debería poder mostrarse en la tienda sin señal.'),
+            rec('Instalable en la pantalla de inicio', 'Un archivo de manifiesto con nombre, ícono y color. Barato, y hace que el sitio se abra sin la barra del navegador.'),
+            bloq('Áreas seguras del sistema', 'Toda barra fija —encabezado, botón de filtrar, acciones al pie de las hojas— respeta los márgenes del sistema para no quedar debajo de la barra del teléfono.'),
+          ],
+        },
+        {
+          titulo: 'Accesibilidad y contenido',
+          nota: 'detalle en Contenido v0 y Estados v0',
+          filas: [
+            bloq('Área tocable de 44 píxeles', 'Todo lo que se toca. Si el dibujo es más chico, se agranda el área con relleno, no el dibujo.'),
+            bloq('Nada depende de pasar el cursor', 'Lo que en escritorio aparece al pasar por encima tiene que ser visible o accesible por toque en el teléfono. Un estado que solo existe con cursor es contenido inexistente en móvil.'),
+            bloq('Teclado y foco', 'Escape cierra en orden: menú, después filtros, después la ficha. El foco se ve siempre y queda atrapado dentro de las hojas y las modales mientras están abiertas.'),
+            bloq('Los límites de texto se hacen cumplir en el administrador', 'El administrador avisa cuando un texto pasa su tope. No hace falta que lo bloquee, pero sí que lo advierta: un titular de más da tres líneas y tapa la imagen que estaba presentando.'),
+            bloq('Los avisos internos no llegan al visitante', 'El rótulo de foto faltante se ve solo con la sesión del administrador abierta. El visitante ve la superficie neutra, sin texto.'),
+            bloq('Una sección por debajo de su mínimo se oculta entera', 'Los mínimos están en Estados v0 · 06: hero 2 estados, Ambientes 3 fichas por pestaña, Proyectos 2 obras, Historia 3 hitos. El prototipo no lo demuestra porque su contenido está escrito a mano y siempre está completo: acá hace falta contar lo que el administrador cargó. Una sección a medio llenar se ve peor que ausente.'),
+            rec('Las páginas ya visitadas abren sin conexión', 'Y el video del hero no se descarga con conexión limitada: queda el póster y el carrusel sigue con fotos. Es lo único de la tabla de estados vacíos que no se puede resolver desde el diseño.'),
+          ],
+        },
+      ],
+
+      noHacer: [
+        { k: 'Copiar el breakpoint en JavaScript', v: 'El prototipo lo hace por limitación de la herramienta. En producción son media queries.' },
+        { k: 'Copiar el archivo por página', v: 'Que cada pantalla sea un archivo suelto es cómo se prototipó, no una decisión de diseño.' },
+        { k: 'Servir PNG como fotografía', v: 'Las imágenes de prueba pesan de 7 a 9 MB cada una. Son de ejemplo y se reemplazan todas.' },
+        { k: 'Indicadores giratorios', v: 'El estado de carga es el marcador con la proporción reservada y un latido de opacidad.' },
+        { k: 'Inventar valores de filtro', v: 'Los seis ejes tienen listas cerradas. Un valor fuera de la lista deja al diseño fuera de todos los filtros.' },
+        { k: 'Mostrar filas vacías en la ficha', v: 'La fila sin dato desaparece. Ni en blanco, ni con "no especificado".' },
+        { k: 'Datos estructurados de producto', v: 'Descartados por decisión: sólo rinden con precio y disponibilidad, que el sitio no maneja. Se reconsideran si el catálogo pasa a vender.' },
+        { k: 'Arte distinto por pantalla', v: 'Una sola foto por uso, recortada por CSS. Pedir dos versiones duplicaría el material que el cliente tiene que producir.' },
+        { k: 'Secciones a medio llenar', v: 'Por debajo de su mínimo de contenido, la sección se oculta. Media sección se ve peor que ninguna.' },
+        { k: 'Pedir perdón en los estados vacíos', v: 'Se dice qué pasó y se ofrece una salida. Sin disculpas ni signos de admiración.' },
+      ],
+
+      aceptacion: [
+        { n: '01', v: 'El mapa de dónde comprar dibuja los 26 estados sin depender de ningún servidor ajeno: la geometría se sirve desde el propio sitio. Se prueba desconectando cualquier CDN externo — el mapa tiene que seguir apareciendo.' },
+        { n: '02', v: 'Escribir una dirección que no existe muestra la página 404 del sitio —con su encabezado, su explicación y el botón al catálogo—, no el error genérico del servidor. Es configuración de servidor: la página ya está diseñada y no se invoca sola.' },
+        { n: '03', v: 'En un teléfono con datos móviles, la primera pantalla del inicio aparece completa en menos de tres segundos.' },
+        { n: '04', v: 'Navegar del inicio al catálogo no produce destello blanco ni vuelve a montar el encabezado.' },
+        { n: '05', v: 'Filtrar el catálogo quince veces y apretar atrás una vez devuelve a la página anterior, no al filtro anterior.' },
+        { n: '06', v: 'Con un diseño abierto, el gesto de volver del sistema cierra la ficha y conserva los filtros que estaban puestos.' },
+        { n: '07', v: 'Compartir un diseño y abrir ese enlace en otro teléfono muestra el catálogo con la ficha abierta.' },
+        { n: '08', v: 'Ninguna imagen provoca que el contenido salte al terminar de cargar.' },
+        { n: '09', v: 'Con la preferencia de menos movimiento activa, nada se anima en ninguna página.' },
+        { n: '10', v: 'Con el catálogo vacío, con una sola foto faltante y con una ficha sin datos, ninguna pantalla se ve rota.' },
+        { n: '11', v: 'Todo lo que se puede tocar mide 44 píxeles, y en el teléfono nada queda debajo de la barra del sistema.' },
+        { n: '12', v: 'Recorrer las cuatro páginas solo con el teclado permite abrir y cerrar cada hoja y cada modal, con el foco siempre visible.' },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

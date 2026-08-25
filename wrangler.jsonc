@@ -1,0 +1,14 @@
+{
+  // Configuración base de Cloudflare Workers. El adaptador de Astro la lee y
+  // escribe la versión final en `dist/client/wrangler.json` (build estático de
+  // producción) o `dist/server/wrangler.json` (build de preview con SSR).
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ceramica-carabobo-web",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    // Requisito nº11 del handoff: el 404 del servidor sirve la página 404 del sitio.
+    "not_found_handling": "404-page"
+  },
+  "observability": {"enabled": true}
+}

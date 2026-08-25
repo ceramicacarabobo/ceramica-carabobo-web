@@ -1,0 +1,80 @@
+---
+/**
+ * Cáscara compartida — pie. Persiste entre navegaciones.
+ * Estructura fija; los datos vienen de Ajustes del sitio (CMS).
+ */
+import type {Ajustes} from '~/lib/data'
+
+interface Props {
+  ajustes: Ajustes
+}
+
+const {ajustes} = Astro.props
+const anio = new Date().getFullYear()
+---
+
+<footer class="pie">
+  <div class="contenedor pie__interior">
+    <nav class="pie__bloque" aria-label="Pie de página">
+      <h2 class="overline pie__titulo">Navegación</h2>
+      <ul class="pie__lista">
+        <li><a class="pie__enlace" href="/catalogo">Catálogo</a></li>
+        <li><a class="pie__enlace" href="/donde-comprar">Distribuidores</a></li>
+        <li><a class="pie__enlace" href="/contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="pie__bloque">
+      <h2 class="overline pie__titulo">Contacto</h2>
+      <ul class="pie__lista">
+        {ajustes.telefono && <li><a class="pie__enlace" href={`tel:${ajustes.telefono.replace(/\s/g, '')}`}>{ajustes.telefono}</a></li>}
+        {ajustes.correo && <li><a class="pie__enlace" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>}
+      </ul>
+    </div>
+  </div>
+
+  <p class="contenedor pie__legal">
+    © {anio} Cerámica Carabobo, C.A. Todos los derechos reservados.
+  </p>
+</footer>
+
+<style>
+  .pie {
+    margin-top: var(--space-section);
+    background: var(--color-surface-inverse);
+    color: var(--color-text-on-dark);
+    padding-block: var(--space-16) var(--space-8);
+    padding-bottom: max(var(--space-8), env(safe-area-inset-bottom));
+  }
+
+  .pie__interior {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+  }
+
+  .pie__titulo {
+    color: var(--color-text-on-dark-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .pie__lista {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .pie__enlace {
+    color: var(--color-text-on-dark);
+    font: var(--text-body-base);
+  }
+
+  .pie__enlace:hover {
+    color: var(--color-text-link-on-dark);
+  }
+
+  .pie__legal {
+    margin-top: var(--space-12);
+    color: var(--color-text-on-dark-secondary);
+    font: var(--text-caption);
+  }
+</style>

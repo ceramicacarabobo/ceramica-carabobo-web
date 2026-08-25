@@ -1,0 +1,102 @@
+/* ============================================================================
+   Base — reset mínimo + aplicación de tokens
+   Solo lo que la cáscara compartida necesita. Los estilos de cada bloque viven
+   con su componente (Fase 2).
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font: var(--text-body-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-text-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-brand-900);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Enlace de salto — requisito de accesibilidad del handoff (§6 SEO/semántica) */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  z-index: var(--z-toast);
+  transform: translateY(-200%);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-strong);
+  font: var(--text-ui-sm);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Contenedor de página — ancho máximo y gutter del sistema */
+.contenedor {
+  width: 100%;
+  max-width: var(--size-content-max);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter-page);
+}
+
+.overline {
+  font: var(--text-overline);
+  letter-spacing: var(--tracking-uppercase-lg);
+  text-transform: uppercase;
+}

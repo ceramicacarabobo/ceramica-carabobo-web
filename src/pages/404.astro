@@ -1,0 +1,48 @@
+---
+/**
+ * 404 del sitio. El 404 del servidor apunta acá desde wrangler
+ * (`assets.not_found_handling: "404-page"`), requisito nº11 del handoff.
+ */
+import Base from '~/layouts/Base.astro'
+---
+
+<Base titulo="Página no encontrada" noIndex>
+  <section class="error contenedor">
+    <p class="overline error__codigo">Error 404</p>
+    <h1 class="error__titulo">Esta dirección no existe.</h1>
+    <p class="error__texto">Puede que el enlace esté mal escrito o que la página haya cambiado de sitio.</p>
+    <p class="error__acciones">
+      <a href="/">Volver al inicio</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .error {
+    padding-block: var(--space-section);
+    max-width: 44ch;
+    margin-inline: auto;
+  }
+
+  .error__codigo {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .error__titulo {
+    font: var(--text-heading-xl);
+  }
+
+  .error__texto {
+    margin-top: var(--space-6);
+    font: var(--text-body-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .error__acciones {
+    margin-top: var(--space-8);
+    font: var(--text-ui-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-uppercase-md);
+  }
+</style>
