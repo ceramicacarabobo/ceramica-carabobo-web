@@ -238,6 +238,18 @@ const etiquetaBoton = video?.titulo
     pointer-events: none;
   }
 
+  /* El envoltorio de imagen reserva la proporción del archivo (16:9) y dejaba
+     el sobrante inferior al fondo oscuro: de ahí la franja negra. Acá tiene que
+     estirarse a toda la caja. */
+  .profesionales__relleno :global(.imagen) {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+
   .profesionales__relleno :global(img) {
     width: 100%;
     height: 100%;
