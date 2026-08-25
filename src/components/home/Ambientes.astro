@@ -99,18 +99,25 @@ const pestanas = ambientes.pestanas
               data-amb-panel
             >
               <div class="ambientes__track" data-amb-track>
-                {pestana.fichas.map((ficha) => (
-                  <div class="ambientes__ficha">
-                    <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
-                    <span class="ambientes__velo" aria-hidden="true" />
-                    {(ficha.nombre || ficha.spec) && (
-                      <span class="ambientes__datos">
-                        {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
-                        {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
-                      </span>
-                    )}
-                  </div>
-                ))}
+                {pestana.fichas.map((ficha) => {
+                  // El prototipo dibuja cada ficha como <a> al catálogo (tag `data-tile`).
+                  // Sin producto enlazado (referencia rota o despublicada) no hay a dónde
+                  // llevar: se deja como div, con los mismos datos, en vez de un enlace roto.
+                  const Envoltura = ficha.slug ? 'a' : 'div'
+                  const props = ficha.slug ? {href: `/catalogo/${ficha.slug}`} : {}
+                  return (
+                    <Envoltura class="ambientes__ficha" {...props}>
+                      <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
+                      <span class="ambientes__velo" aria-hidden="true" />
+                      {(ficha.nombre || ficha.spec) && (
+                        <span class="ambientes__datos">
+                          {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
+                          {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
+                        </span>
+                      )}
+                    </Envoltura>
+                  )
+                })}
               </div>
             </div>
           ))}
@@ -295,10 +302,19 @@ const pestanas = ambientes.pestanas
 
   .ambientes__ficha {
     position: relative;
+    display: block;
     flex: none;
     scroll-snap-align: start;
     width: 78vw;
     background: var(--color-surface-sunken);
+    color: inherit;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .ambientes__ficha:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-border-focus);
+    outline-offset: calc(var(--focus-ring-offset) * -1);
   }
 
   .ambientes__foto {

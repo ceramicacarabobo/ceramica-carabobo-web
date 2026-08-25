@@ -1,8 +1,36 @@
 ---
+/**
+ * Contacto — una de las cinco páginas del sitio.
+ *
+ * La página es delgada a propósito: trae los datos por el adaptador y compone
+ * hero, bloque de visita (datos + mapa de sedes), formulario y acción al pulgar.
+ * Nada de esto sabe que detrás hay Sanity.
+ *
+ * Dos decisiones que están documentadas en el componente donde viven, no acá:
+ *   · el mapa NO usa Leaflet ni teselas de terceros — ver `MapaSedes.astro`;
+ *   · el envío del formulario entra y sale por `envio.ts`, el único archivo que
+ *     se toca cuando se defina el receptor (decisión abierta, §5.3 del modelo).
+ */
 import Base from '~/layouts/Base.astro'
-import EnConstruccion from '~/components/EnConstruccion.astro'
+import Formulario from '~/components/contacto/Formulario.astro'
+import HeroContacto from '~/components/contacto/HeroContacto.astro'
+import PulgarLlamar from '~/components/contacto/PulgarLlamar.astro'
+import Visita from '~/components/contacto/Visita.astro'
+import {getAjustes, getContacto} from '~/lib/data'
+
+const [contacto, ajustes] = await Promise.all([getContacto(), getAjustes()])
+
+// "Contacto" es el nombre de la página en la navegación: estructura fija, no
+// copy de marca. El titular editorial, si lo hay, lo pone el CMS.
+const NOMBRE = 'Contacto'
+
+// La acción al pulgar llama a la primera sede cargada: es la principal.
+const telefonoPrincipal = contacto.sedes.find((sede) => sede.telefonoMarcar)?.telefonoMarcar
 ---
 
-<Base titulo="Contacto" noIndex>
-  <EnConstruccion titulo="Contacto" fase="Pendiente · Fase 5" />
+<Base titulo={contacto.hero.titular || NOMBRE} descripcion={contacto.hero.bajada} sobreHero>
+  <HeroContacto hero={contacto.hero} nombrePagina={NOMBRE} />
+  <Visita contacto={contacto} correoSitio={ajustes.correo} />
+  <Formulario formulario={contacto.formulario} correo={contacto.correo || ajustes.correo} />
+  <PulgarLlamar telefono={telefonoPrincipal} />
 </Base>

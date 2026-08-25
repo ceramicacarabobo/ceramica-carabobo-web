@@ -1,8 +1,73 @@
 ---
+/**
+ * Dónde comprar — la red de distribuidores.
+ *
+ * La página es delgada: trae los datos por el adaptador y compone hero,
+ * localizador (mapa + panel) y banda de cierre. El mapa, el índice, las
+ * tarjetas y el contrato de dirección viven en `~/components/donde-comprar/`.
+ *
+ * JSON-LD: un `LocalBusiness` por punto de venta, que el modelo de contenido
+ * marca como bloqueante de SEO (§1.2). Sale de los mismos datos que dibujan las
+ * tarjetas, así que no puede desincronizarse.
+ */
 import Base from '~/layouts/Base.astro'
-import EnConstruccion from '~/components/EnConstruccion.astro'
+import AccionPulgar from '~/components/donde-comprar/AccionPulgar.astro'
+import Cierre from '~/components/donde-comprar/Cierre.astro'
+import Hero from '~/components/donde-comprar/Hero.astro'
+import Localizador from '~/components/donde-comprar/Localizador.astro'
+import {getAjustes, getDistribuidores, getDondeComprar, visualEditingHabilitado} from '~/lib/data'
+
+const [pagina, distribuidores, ajustes] = await Promise.all([getDondeComprar(), getDistribuidores(), getAjustes()])
+
+// "Dónde comprar" es el nombre de la página en la navegación: estructura fija,
+// no copy de marca. El titular editorial, si lo hay, lo pone el CMS.
+const NOMBRE = 'Dónde comprar'
+
+// El número central de esta página manda sobre el global del sitio; sin
+// ninguno de los dos no se ofrece la salida por WhatsApp en ninguna parte.
+const numeroWhatsapp = (pagina.whatsappCentral || ajustes.whatsapp || '').replace(/\D/g, '')
+const whatsapp = numeroWhatsapp ? `https://wa.me/${numeroWhatsapp}` : undefined
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href
+
+const negocios = distribuidores.map((punto) => ({
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: punto.nombre,
+  address: {
+    '@type': 'PostalAddress',
+    ...(punto.direccion ? {streetAddress: punto.direccion} : {}),
+    addressLocality: punto.ciudad,
+    addressRegion: punto.estado,
+    addressCountry: 'VE',
+  },
+  ...(punto.telefono ? {telephone: punto.telefono} : {}),
+  ...(punto.correo ? {email: punto.correo} : {}),
+  ...(punto.ubicacion
+    ? {geo: {'@type': 'GeoCoordinates', latitude: punto.ubicacion.lat, longitude: punto.ubicacion.lng}}
+    : {}),
+  // El horario del CMS es texto libre ("Lun–Vie 8:00–17:00 · Sáb 9:00–13:00"):
+  // no encaja en `openingHours`, que exige un formato cerrado, así que va como
+  // descripción en vez de publicarse mal tipado.
+  ...(punto.horario ? {description: punto.horario} : {}),
+  url: canonical,
+}))
 ---
 
-<Base titulo="Dónde comprar" noIndex>
-  <EnConstruccion titulo="Dónde comprar" fase="Pendiente · Fase 5" />
+<Base titulo={pagina.hero.titular || NOMBRE} descripcion={pagina.hero.bajada} sobreHero>
+  <Hero hero={pagina.hero} nombrePagina={NOMBRE} />
+  <Localizador
+    distribuidores={distribuidores}
+    pagina={pagina}
+    whatsapp={whatsapp}
+    avisoEjemplo={visualEditingHabilitado}
+  />
+  <Cierre cierre={pagina.cierre ?? {}} whatsapp={whatsapp} />
+  {whatsapp && <AccionPulgar whatsapp={whatsapp} />}
+
+  {
+    negocios.length > 0 && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(negocios)} />
+    )
+  }
 </Base>

@@ -1,0 +1,643 @@
+/**
+ * Ficha de diseño — `Primitivas v1` §08 ("Ficha de diseño") y §06 (SpecsTable),
+ * con el reflow de `Responsividad v0` §03.
+ *
+ * Estas reglas son GLOBALES a propósito, y es la única desviación de estilo del
+ * proyecto. La misma ficha se dibuja en dos sitios: la página propia del
+ * producto (`/catalogo/<slug>`) y el overlay del catálogo, que la trae por
+ * `fetch` de esa misma página y la inserta con `innerHTML`. El marcado insertado
+ * no lleva el atributo de scope que Astro le pone al que compila, así que un
+ * `<style>` con scope no lo alcanzaría. Con clases `ficha__*` propias no hay
+ * riesgo de colisión.
+ *
+ * Reflow, siempre por media query y nunca por un breakpoint en JavaScript:
+ *   < 760px   hoja a pantalla completa: imagen arriba, tabla debajo, acciones
+ *             ancladas al pie y scroll interno (lo pone `.capa-ficha`)
+ *   ≥ 760px   diálogo centrado de 880px: imagen a la izquierda, tabla a la
+ *             derecha y acciones al pie de esa columna
+ */
+
+/* ── Caja: la superficie que contiene la ficha ─────────────────────────────
+   La comparten el diálogo del overlay y la página propia. El borde aparece
+   recién en el diálogo (en la hoja de teléfono la ficha ES la pantalla). */
+.ficha-caja {
+  background: var(--color-surface-raised);
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ── Columna de imagen ─────────────────────────────────────────────────── */
+/* En teléfono la tira de miniaturas cae sobre el fondo de la hoja (blanco) y
+   solo la foto lleva la superficie hundida; en el diálogo, la columna entera es
+   la superficie hundida. Es lo que dibuja el prototipo en cada caso. */
+.ficha__media {
+  display: flex;
+  flex-direction: column;
+}
+
+.ficha__marco {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ratio-product);
+  overflow: hidden;
+  background: var(--color-surface-sunken);
+}
+
+/* Las fotos se apilan y solo cambia la opacidad: cambiar de foto no vuelve a
+   pedir nada a la red ni mueve un pixel de la caja (solo opacity y transform). */
+.ficha__foto {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.ficha__foto[data-activa] {
+  opacity: 1;
+}
+
+.ficha__foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 50%);
+}
+
+/* Sin foto no se inventa una: queda la superficie hundida con el isotipo
+   apenas insinuado, igual que en la tarjeta de la grilla. */
+.ficha__sinfoto {
+  position: absolute;
+  inset: 0;
+  background: var(--color-brand-900);
+  opacity: 0.14;
+  -webkit-mask: url('/assets/logo-iso.svg') no-repeat center / 48px 52px;
+  mask: url('/assets/logo-iso.svg') no-repeat center / 48px 52px;
+}
+
+/* Aviso interno: SOLO existe en el HTML del preview del admin. En producción no
+   se dibuja porque no se renderiza (ver Ficha.astro), no porque se esconda. */
+.ficha__ejemplo {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 1;
+  padding: 4px var(--space-2);
+  background: var(--color-surface-inverse);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-sm);
+  font: 500 0.6875rem/1.4 var(--font-heading);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+}
+
+.ficha__miniaturas {
+  flex: none;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5) 0;
+}
+
+.ficha__mini {
+  flex: 1;
+  min-width: 0;
+  height: 64px;
+  padding: 0;
+  background: transparent;
+  border: var(--border-width) solid var(--color-border-hairline);
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.6;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.ficha__mini[aria-pressed='true'] {
+  border-color: var(--color-brand-700);
+  opacity: 1;
+}
+
+.ficha__mini img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Columna de texto ──────────────────────────────────────────────────── */
+.ficha__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5) 28px;
+}
+
+.ficha__encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* `/normal`, no el line-height del token: es el valor que dibuja el prototipo
+   y el residuo de fidelidad que arrastra el defecto 11 de la fase 2. */
+.ficha__antetitulo {
+  margin: 0;
+  font: 500 0.75rem/normal var(--font-heading);
+  letter-spacing: var(--tracking-uppercase-lg);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.ficha__nombre {
+  margin: 0;
+  font: 300 1.75rem/1.1 var(--font-heading);
+  color: var(--color-text-primary);
+}
+
+/* ── Tabla de specs (`Primitivas v1` §06) ──────────────────────────────────
+   Etiqueta a la izquierda, valor a la derecha, hairline por fila. Una fila sin
+   dato no llega hasta acá: la descarta `filasDeFicha` (ficha.ts). */
+.ficha__tabla {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.ficha__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-3) 0;
+  border-top: var(--border-width) solid var(--color-border-hairline);
+}
+
+.ficha__k {
+  flex: none;
+  font: 500 0.75rem/normal var(--font-heading);
+  letter-spacing: var(--tracking-uppercase-md);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.ficha__v {
+  margin: 0;
+  font: 400 0.875rem/1.5 var(--font-body);
+  text-align: right;
+  color: var(--color-text-primary);
+}
+
+/* Cuando la etiqueta ya no cabe en una línea junto al valor, la fila se parte
+   en dos: etiqueta arriba, valor abajo (`Responsividad v0` §03, "Tabla de
+   specs"). Nunca scroll horizontal. */
+@media (max-width: 380px) {
+  .ficha__fila {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+  }
+
+  .ficha__v {
+    text-align: left;
+  }
+}
+
+/* ── Acciones ──────────────────────────────────────────────────────────────
+   No usan la primitiva `Boton`: la ficha viaja como HTML suelto al overlay y
+   no puede depender de que el CSS con scope de otro componente esté en la
+   página que la recibe. Los valores son los del prototipo. */
+.ficha__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5) calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--color-surface-raised);
+  border-top: var(--border-width) solid var(--color-border-hairline);
+}
+
+.ficha__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-height: var(--control-height-lg);
+  padding-inline: var(--space-5);
+  border: var(--border-width) solid var(--color-border-hairline);
+  text-decoration: none;
+  font: 500 0.75rem/1.4 var(--font-heading);
+  letter-spacing: var(--tracking-uppercase-md);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  transition:
+    background-color var(--dur-instant) var(--ease-out),
+    border-color var(--dur-instant) var(--ease-out),
+    color var(--dur-instant) var(--ease-out);
+}
+
+.ficha__cta:hover {
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.ficha__cta--fill {
+  flex: 1;
+  background: var(--color-action-primary);
+  border-color: var(--color-action-primary);
+  color: var(--color-action-on-primary);
+}
+
+.ficha__cta--fill:hover {
+  background: var(--color-action-primary-hover);
+  border-color: var(--color-action-primary-hover);
+  color: var(--color-action-on-primary);
+}
+
+.ficha__cta:active {
+  transform: translateY(1px);
+}
+
+/* ── Compartir ─────────────────────────────────────────────────────────── */
+.ficha__compartir {
+  position: relative;
+  flex: none;
+}
+
+.ficha__compartir-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height-lg);
+  height: var(--control-height-lg);
+  padding: 0;
+  background: transparent;
+  border: var(--border-width) solid var(--color-border-hairline);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color var(--dur-instant) var(--ease-out);
+}
+
+.ficha__compartir-boton:hover {
+  color: var(--color-text-primary);
+}
+
+.ficha__menu {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 0;
+  z-index: 2;
+  min-width: 210px;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-2);
+  animation: ficha-menu var(--dur-fast) var(--ease-out) both;
+}
+
+.ficha__menu[hidden] {
+  display: none;
+}
+
+@keyframes ficha-menu {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ficha__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-4);
+  background: transparent;
+  border: 0;
+  border-bottom: var(--border-width) solid var(--color-surface-sunken);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font: 400 0.9375rem/1.4 var(--font-body);
+}
+
+.ficha__menu-item:last-child {
+  border-bottom: 0;
+}
+
+.ficha__menu-item:hover {
+  color: var(--color-brand-700);
+}
+
+/* ── Diálogo: ≥ 760px ──────────────────────────────────────────────────────
+   Imagen a la izquierda, tabla a la derecha y acciones al pie de esa columna.
+   La proporción de columnas es la del prototipo (`fichaCols`). */
+@media (min-width: 760px) {
+  .ficha-caja {
+    border: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: 1fr auto;
+  }
+
+  .ficha__media {
+    grid-area: 1 / 1 / 3 / 2;
+    min-height: clamp(220px, 32vw, 420px);
+    background: var(--color-surface-sunken);
+  }
+
+  .ficha__marco {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: clamp(200px, 28vw, 340px);
+  }
+
+  .ficha__miniaturas {
+    padding: var(--space-2);
+  }
+
+  .ficha__mini {
+    height: 68px;
+  }
+
+  /* El padding vertical se reparte entre panel y acciones para que la separación
+     entre la tabla y los botones sea el gap del prototipo, no la suma de dos
+     paddings. */
+  .ficha__panel {
+    grid-area: 1 / 2 / 2 / 3;
+    gap: clamp(16px, 2vw, 24px);
+    padding: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px) 0;
+  }
+
+  .ficha__encabezado {
+    /* El aspa de cerrar vive en la esquina de la caja: el texto no pasa por ahí. */
+    padding-right: var(--control-height-md);
+  }
+
+  .ficha__nombre {
+    font-size: clamp(1.75rem, 1.5rem + 1.2vw, 2.5rem);
+  }
+
+  .ficha__acciones {
+    grid-area: 2 / 2 / 3 / 3;
+    flex-wrap: wrap;
+    padding: clamp(16px, 2vw, 24px) clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px);
+    border-top: 0;
+  }
+
+  .ficha__cta {
+    flex: none;
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-6);
+  }
+
+  .ficha__compartir-boton {
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+  }
+}
+
+/* ── La página propia del producto ─────────────────────────────────────────
+   La ficha no es una capa: no hay pie anclado ni scroll interno. */
+.producto {
+  max-width: 880px;
+  margin-inline: auto;
+  padding: clamp(24px, 4vw, 48px) var(--space-gutter-page) clamp(72px, 8vw, 112px);
+}
+
+.producto__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height-md);
+  margin-bottom: var(--space-4);
+  text-decoration: none;
+  font: 500 0.75rem/1.4 var(--font-heading);
+  letter-spacing: var(--tracking-uppercase-md);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  transition: color var(--dur-instant) var(--ease-out);
+}
+
+.producto__volver:hover {
+  color: var(--color-brand-700);
+}
+
+/* ── Capa: el overlay del catálogo ─────────────────────────────────────────
+   Bajo 760px es una Hoja (pantalla completa, cierre arriba a la derecha,
+   acciones ancladas al pie, scroll interno); de 760 para arriba, un diálogo
+   centrado sobre scrim. Es la misma ficha en los dos casos. */
+.capa-ficha {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+}
+
+.capa-ficha[hidden] {
+  display: none;
+}
+
+.capa-ficha__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-scrim);
+  opacity: 0;
+}
+
+.capa-ficha__caja {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: pan-y;
+  /* `backwards` y no `both`: con `forwards` los valores del último fotograma
+     siguen aplicándose cuando la animación termina, y una animación gana sobre
+     el `style` en línea — el arrastre movería el elemento sin que se viera. */
+  animation: capa-ficha-entra var(--dur-base) var(--ease-out) backwards;
+}
+
+@keyframes capa-ficha-entra {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.capa-ficha__asa {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  cursor: grab;
+}
+
+.capa-ficha__asa-linea {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-border-hairline);
+}
+
+.capa-ficha__barra {
+  flex: none;
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height-md);
+  padding: 0 calc(var(--control-height-md) + var(--space-2)) 0 var(--space-5);
+  border-bottom: var(--border-width) solid var(--color-border-hairline);
+}
+
+.capa-ficha__titulo {
+  font: 500 0.75rem/normal var(--font-heading);
+  letter-spacing: var(--tracking-uppercase-lg);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* Cierre de 44px fijo arriba a la derecha (`Responsividad v0` §03). Es un solo
+   botón en el marcado: cambia de sitio por media query, no por JavaScript. */
+.capa-ficha__cerrar {
+  position: absolute;
+  top: 22px;
+  right: var(--space-1);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height-md);
+  height: var(--control-height-md);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+
+.capa-ficha__cuerpo {
+  /* `1 1 auto` y no `1`: con `flex-basis: 0` el diálogo de escritorio, que tiene
+     alto automático, se apoyaría en una contribución de tamaño nula. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Las acciones quedan a la vista mientras se recorre la tabla. `sticky` y no un
+   pie aparte: así el marcado de la ficha es UNO solo y sirve igual en la página
+   propia, donde las acciones simplemente cierran el contenido. */
+.capa-ficha .ficha__acciones {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+}
+
+/* El latido del Marcador de imagen es cómo se comunica la espera — nunca un
+   indicador giratorio (`Tokens v0`, nota del retiro de `--dur-spin`). */
+.capa-ficha__cargando {
+  width: 100%;
+  aspect-ratio: var(--ratio-product);
+  background: var(--color-surface-sunken);
+  animation: capa-ficha-latido 1200ms var(--ease-in-out) infinite;
+}
+
+@keyframes capa-ficha-latido {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (min-width: 760px) {
+  .capa-ficha__scrim {
+    opacity: 1;
+    animation: capa-ficha-scrim var(--dur-fast) var(--ease-out) both;
+  }
+
+  @keyframes capa-ficha-scrim {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .capa-ficha__caja {
+    inset: auto;
+    position: relative;
+    width: min(100%, 880px);
+    max-height: 88dvh;
+    margin: auto;
+    overflow-y: auto;
+    touch-action: auto;
+  }
+
+  .capa-ficha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 4vw, 48px);
+  }
+
+  .capa-ficha__asa,
+  .capa-ficha__barra {
+    display: none;
+  }
+
+  .capa-ficha__cerrar {
+    top: 0;
+    right: 0;
+    background: var(--color-surface-raised);
+    border-left: var(--border-width) solid var(--color-border-hairline);
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+    color: var(--color-text-secondary);
+  }
+
+  .capa-ficha__cerrar:hover {
+    color: var(--color-brand-700);
+  }
+
+  .capa-ficha .ficha__acciones {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capa-ficha__caja,
+  .capa-ficha__scrim,
+  .ficha__menu {
+    animation: none;
+  }
+
+  .capa-ficha__cargando {
+    animation: none;
+  }
+
+  .ficha__foto {
+    transition: none;
+  }
+}

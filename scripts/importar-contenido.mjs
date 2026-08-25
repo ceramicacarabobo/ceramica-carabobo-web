@@ -13,7 +13,8 @@
  *      trae el JSON, ver design/publicar/LEEME.md.
  *   3. home (singleton): hero, ambientes, cita, proyectos, historia, profesionales, encuentranos
  *   4. ajustes (singleton): metadatos, datos de contacto globales y redes
- *   5. distribuidor ×24 (la red del prototipo, marcada como dato de ejemplo)
+ *   5. catalogo (singleton): hero y banda de cierre de la página de Catálogo
+ *   6. distribuidor ×24 (la red del prototipo, marcada como dato de ejemplo)
  *
  * Además del bundle de diseño, el bloque VIDEO_PROFESIONALES trae el dato que
  * entregó el cliente sobre el video de instalación alojado en su canal. Su
@@ -685,6 +686,35 @@ function construirAjustes() {
 }
 
 // ---------------------------------------------------------------------------
+// 5. Catálogo (singleton) — los textos editoriales de la página, transcritos
+// del prototipo (design/publicar/catalogo-c5.dc.html, bloques del hero y de la
+// banda de cierre). La grilla, los filtros y sus conteos NO viven acá: se
+// derivan de los productos. Sin este documento el hero se queda con la ruta y
+// el h1 y la banda de cierre no se dibuja (contenido defensivo).
+// ---------------------------------------------------------------------------
+async function construirCatalogo() {
+  return {
+    _id: 'catalogo',
+    _type: 'catalogo',
+    hero: {
+      eyebrow: 'Diseños 2026',
+      titular: 'Catálogo',
+      bajada:
+        'El portafolio completo: 126 productos entre la Serie Regular y la Serie Venezuela. ' +
+        'Filtra por materia, formato, uso, textura o brillo.',
+      // La misma foto de ambiente que abre el home: es la que usa el prototipo.
+      imagen: await imagen('uploads/hero-poster.jpg', 'Ambiente con revestimiento cerámico'),
+    },
+    cierre: {
+      etiqueta: 'Siguiente paso',
+      titulo: 'Vela en persona antes de decidir.',
+      texto:
+        'Nuestros distribuidores tienen muestras físicas de cada diseño y te ayudan con el cálculo de metros.',
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Ejecución
 // ---------------------------------------------------------------------------
 async function main() {
@@ -744,7 +774,11 @@ async function main() {
   const ajustesDoc = construirAjustes()
   await client.createOrReplace(ajustesDoc)
 
-  // 5. Distribuidores
+  // 5. Catálogo (singleton)
+  const catalogoDoc = await construirCatalogo()
+  await client.createOrReplace(catalogoDoc)
+
+  // 6. Distribuidores
   for (const d of DISTRIBUIDORES) {
     await client.createOrReplace(construirDistribuidor(d))
   }
@@ -762,6 +796,7 @@ async function main() {
   )
   console.log('home: actualizado (_id "home")')
   console.log(`  profesionales: video de YouTube ${VIDEO_PROFESIONALES.id} + portada propia, etiqueta "${VIDEO_PROFESIONALES.etiqueta}"`)
+  console.log('catalogo: actualizado (_id "catalogo") — hero y banda de cierre')
   console.log('ajustes: actualizado (_id "ajustes")')
   console.log(`  redes (${REDES_CLIENTE.length}): ${REDES_CLIENTE.map((r) => r.nombre).join(', ')}`)
   const estadosRed = new Set(DISTRIBUIDORES.map((d) => d.estado))

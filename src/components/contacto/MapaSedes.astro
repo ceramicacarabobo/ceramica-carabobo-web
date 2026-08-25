@@ -1,0 +1,397 @@
+---
+/**
+ * Mapa de las sedes — página de Contacto.
+ *
+ * DECISIÓN DE ARQUITECTURA (Fase 2). El prototipo dibuja este mapa con
+ * **Leaflet traído de unpkg.com y teselas de tile.openstreetmap.org**. Las dos
+ * cosas son CDN ajeno en tiempo de ejecución, y la condición de autosuficiencia
+ * del plan (§3) lo prohíbe sin matices: "ningún CDN externo en producción".
+ * Las salidas posibles eran tres:
+ *
+ *   1. Leaflet desde npm + teselas de OSM. Resuelve la librería y NO resuelve
+ *      lo que importa: cada tesela sigue siendo una petición a un servidor
+ *      ajeno, sin la cual el mapa queda en blanco.
+ *   2. Leaflet desde npm + teselas nuestras. Habría que descargar y versionar
+ *      cientos de PNG por sede y por nivel de zoom, con su licencia encima, para
+ *      ilustrar dos puntos cuyas coordenadas TODAVÍA SON APROXIMADAS
+ *      (docs/modelo-de-contenido.md §2.3 y pedido 6 al cliente). Un plano de
+ *      calles que apunta a la cuadra equivocada engaña más que orienta.
+ *   3. Geometría real proyectada por nosotros. Es lo que el propio handoff ya
+ *      eligió para el mapa de "Dónde comprar" (d3.geoMercator sobre el GeoJSON
+ *      servido desde el sitio, zoom por transform): misma técnica, mismo
+ *      GeoJSON, cero librería de mapas, cero terceros.
+ *
+ * Se eligió la 3. Este mapa ubica las plantas en Carabobo con la costa y los
+ * estados vecinos de referencia, y la tarea real —llegar— la resuelve el enlace
+ * a Google Maps, que solo sale del sitio cuando el visitante lo pulsa.
+ *
+ * CAMINO ABIERTO: la geometría está aislada en `geometria.ts` (generada por
+ * `scripts/generar-geometria-carabobo.mjs`) y los pines salen de las
+ * coordenadas del CMS. Cuando lleguen las coordenadas exactas basta cargarlas;
+ * si en la Fase 5 el mapa nacional trae un motor propio, este componente puede
+ * adoptarlo sin tocar ni los datos ni la maqueta.
+ *
+ * Crédito obligatorio: la geometría es de Apache Superset (linaje Natural
+ * Earth), Apache-2.0 — lo mismo que ya declaraba el prototipo de Dónde comprar.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Mapa de sedes"): en teléfono el
+ * conmutador va ARRIBA del mapa —nunca dentro— y el mapa baja a 280px; en
+ * tablet, 420px apilado; en escritorio, columna pegajosa con el mapa en 4/3.
+ * El orden del documento ya es el de móvil: el escritorio no reordena nada.
+ */
+import type {Sede} from '~/lib/data'
+import {ALTO, ANCHO, ESTADOS, dentro, proyectar} from './geometria'
+
+interface Props {
+  sedes: Sede[]
+  /** Nota editorial bajo el mapa (CMS). Vacía, no se dibuja. */
+  nota?: string
+}
+
+const {sedes, nota} = Astro.props
+
+/** Clave estable para el conmutador y la dirección (#sede=…). */
+const clave = (sede: Sede, indice: number) =>
+  (sede.ciudad || sede.nombre || `sede-${indice + 1}`)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
+// Solo entran al dibujo las sedes con coordenadas que caen dentro del lienzo:
+// un pin inventado o fuera de Carabobo no se dibuja (contenido defensivo).
+const puntos = sedes
+  .map((sede, indice) => {
+    if (!sede.ubicacion) return null
+    const {x, y} = proyectar(sede.ubicacion.lng, sede.ubicacion.lat)
+    if (!dentro(x, y)) return null
+    return {clave: clave(sede, indice), etiqueta: sede.ciudad || sede.nombre, x, y}
+  })
+  .filter((punto) => punto !== null)
+
+const opciones = sedes.map((sede, indice) => ({
+  clave: clave(sede, indice),
+  nombre: sede.nombre,
+  enlaceMapa: sede.enlaceMapa,
+}))
+
+const activa = opciones[0]
+
+// Descripción del mapa para quien no lo ve: es una ilustración, y todo lo que
+// dice ya está escrito en la columna de datos.
+const descripcion =
+  puntos.length > 0
+    ? `Mapa del estado Carabobo con la ubicación aproximada de ${puntos.map((p) => p.etiqueta).join(' y ')}.`
+    : 'Mapa del estado Carabobo.'
+---
+
+{
+  opciones.length > 0 && (
+    <div class="mapa" data-mapa data-activa={activa?.clave}>
+      {opciones.length > 1 && (
+        <div class="mapa__sedes" role="group" aria-label="Sedes">
+          {opciones.map((opcion) => (
+            <button
+              type="button"
+              class="mapa__sede"
+              data-sede={opcion.clave}
+              data-ruta={opcion.enlaceMapa}
+              aria-pressed={opcion.clave === activa?.clave ? 'true' : 'false'}
+            >
+              {opcion.nombre}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div class="mapa__lienzo">
+        <svg viewBox={`0 0 ${ANCHO} ${ALTO}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label={descripcion}>
+          <g class="mapa__tierra">
+            {ESTADOS.map((estado) => (
+              <path d={estado.d} class:list={['mapa__estado', estado.destacado && 'mapa__estado--foco']} />
+            ))}
+          </g>
+          <g class="mapa__pines">
+            {puntos.map((punto) => (
+              <g
+                class="mapa__pin"
+                data-pin={punto.clave}
+                data-activo={punto.clave === activa?.clave ? '' : undefined}
+                transform={`translate(${punto.x} ${punto.y})`}
+              >
+                <circle class="mapa__halo" r="16" />
+                <circle class="mapa__punto" r="8" />
+                <text class="mapa__rotulo" x="22" y="6">
+                  {punto.etiqueta}
+                </text>
+              </g>
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      {activa?.enlaceMapa && (
+        <p class="mapa__acciones">
+          <a class="mapa__ruta" data-ruta href={activa.enlaceMapa} target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            Abrir la ruta en Google Maps
+          </a>
+        </p>
+      )}
+
+      <p class="mapa__nota">
+        {nota}
+        {nota && ' '}
+        <span class="mapa__credito">Geometría: Apache Superset (Natural Earth), Apache-2.0.</span>
+      </p>
+    </div>
+  )
+}
+
+<style>
+  .mapa {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* ── Conmutador ─────────────────────────────────────────────────────────
+     Arriba del mapa y fuera de él, como pide la fila "Mapa de sedes" de
+     Responsividad v0: dentro del mapa sería un control sobre una superficie
+     que se arrastra, y en teléfono compite con el gesto de scroll. */
+  .mapa__sedes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .mapa__sede {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--control-height-lg);
+    padding-inline: var(--space-4);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font: var(--text-ui-sm);
+    letter-spacing: var(--tracking-badge);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-instant) var(--ease-out),
+      border-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out);
+  }
+
+  .mapa__sede:hover {
+    border-color: var(--color-action-secondary-border);
+    color: var(--color-action-secondary-text);
+  }
+
+  /* El estado seleccionado se ve solo (no depende de hover): fondo tinta. */
+  .mapa__sede[aria-pressed='true'] {
+    background: var(--color-surface-inverse);
+    border-color: var(--color-surface-inverse);
+    color: var(--color-text-on-dark);
+  }
+
+  /* ── Lienzo ─────────────────────────────────────────────────────────────
+     Sin librería de mapas: un SVG proyectado en el build. El fondo del cajón es
+     el mar; la tierra la dibujan las trazas. */
+  .mapa__lienzo {
+    height: 280px;
+    background: var(--color-surface-sunken);
+    border: var(--border-width) solid var(--color-border-hairline);
+    overflow: hidden;
+  }
+
+  .mapa__lienzo svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mapa__estado {
+    fill: var(--color-neutral-0);
+    stroke: var(--color-border-hairline);
+    stroke-width: 1;
+  }
+
+  .mapa__estado--foco {
+    fill: var(--color-brand-300);
+    stroke: var(--color-neutral-0);
+  }
+
+  /* Los pines son ilustración, no control: lo que se toca es el conmutador de
+     arriba, que hace exactamente lo mismo y llega a 48px. */
+  .mapa__pines {
+    pointer-events: none;
+  }
+
+  .mapa__halo {
+    fill: var(--color-brand-700);
+    opacity: 0;
+    transition: opacity var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .mapa__punto {
+    fill: var(--color-brand-700);
+    stroke: var(--color-neutral-0);
+    stroke-width: 2.5;
+  }
+
+  .mapa__rotulo {
+    fill: var(--color-text-primary);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 19px;
+    paint-order: stroke;
+    stroke: var(--color-neutral-0);
+    stroke-width: 4;
+    stroke-linejoin: round;
+  }
+
+  /* Sede activa: la que no lo está se atenúa. Solo opacity (Tokens v0 §07). */
+  .mapa__pin {
+    opacity: 0.45;
+    transition: opacity var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .mapa[data-activa] .mapa__pin[data-activo] {
+    opacity: 1;
+  }
+
+  .mapa[data-activa] .mapa__pin[data-activo] .mapa__halo {
+    opacity: 0.16;
+  }
+
+  /* Sin JS todas las sedes se ven por igual: nada queda escondido. */
+  .mapa:not([data-listo]) .mapa__pin {
+    opacity: 1;
+  }
+
+  /* ── Enlace de ruta y nota ──────────────────────────────────────────────── */
+  .mapa__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mapa__ruta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height-md);
+    color: var(--color-text-secondary);
+    font: var(--text-nav);
+    letter-spacing: var(--tracking-uppercase-sm);
+    text-transform: uppercase;
+    transition: color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .mapa__ruta:hover {
+    color: var(--color-action-secondary-text);
+  }
+
+  .mapa__nota {
+    max-width: 76ch;
+    font: var(--text-caption-lg);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  .mapa__credito {
+    color: var(--color-text-muted);
+  }
+
+  /* ── Tablet: apilado, mapa de 420px (Responsividad v0 §03) ─────────────── */
+  @media (min-width: 760px) {
+    .mapa__sedes {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .mapa__sede {
+      min-height: var(--control-height-md);
+    }
+
+    .mapa__lienzo {
+      height: 420px;
+    }
+  }
+
+  /* ── Escritorio: el mapa toma la proporción del diseño ─────────────────── */
+  @media (min-width: 1024px) {
+    .mapa__lienzo {
+      height: auto;
+      aspect-ratio: 4 / 3;
+      min-height: 380px;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Conmutador de sedes. Lo único que hace es marcar cuál está activa, atenuar
+   * el pin de la otra y apuntar el enlace de ruta a la correcta.
+   *
+   * La sede vive en la dirección (#sede=guacara) y se REESCRIBE la entrada del
+   * historial en vez de empujar una nueva —criterio del prototipo—: son dos
+   * vistas de lo mismo, no una capa encima, y con pushState "atrás" recorrería
+   * pestañas en lugar de salir de la página.
+   */
+  function activarMapa() {
+    const mapa = document.querySelector<HTMLElement>('[data-mapa]')
+    if (!mapa || mapa.dataset.enganchado === '') return
+    mapa.dataset.enganchado = ''
+
+    const botones = [...mapa.querySelectorAll<HTMLButtonElement>('[data-sede]')]
+    const pines = [...mapa.querySelectorAll<SVGGElement>('[data-pin]')]
+    const ruta = mapa.querySelector<HTMLAnchorElement>('[data-ruta]')
+    const rutas = new Map(botones.map((b) => [b.dataset.sede!, b.dataset.ruta ?? '']))
+    const claves = botones.map((b) => b.dataset.sede!)
+    const primera = claves[0]
+    if (!primera) return
+
+    mapa.dataset.listo = ''
+
+    function pintar(clave: string) {
+      mapa!.dataset.activa = clave
+      for (const boton of botones) boton.setAttribute('aria-pressed', String(boton.dataset.sede === clave))
+      for (const pin of pines) pin.toggleAttribute('data-activo', pin.dataset.pin === clave)
+      const destino = rutas.get(clave)
+      if (ruta && destino) ruta.href = destino
+    }
+
+    function enLaDireccion(): string | null {
+      const encontrado = /(?:^|[#&])sede=([^&]*)/.exec(location.hash || '')
+      const clave = encontrado && decodeURIComponent(encontrado[1])
+      return clave && claves.includes(clave) ? clave : null
+    }
+
+    function elegir(clave: string, escribirDireccion: boolean) {
+      pintar(clave)
+      if (!escribirDireccion) return
+      const hash = clave === primera ? '' : `#sede=${clave}`
+      if ((location.hash || '') === hash) return
+      history.replaceState(history.state, '', hash || location.pathname + location.search)
+    }
+
+    for (const boton of botones) {
+      boton.addEventListener('click', () => elegir(boton.dataset.sede!, true))
+    }
+    window.addEventListener('popstate', () => elegir(enLaDireccion() ?? primera, false))
+
+    elegir(enLaDireccion() ?? primera, false)
+  }
+
+  activarMapa()
+  document.addEventListener('astro:page-load', activarMapa)
+</script>

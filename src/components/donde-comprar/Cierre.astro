@@ -1,0 +1,92 @@
+---
+/**
+ * Banda de cierre de "Dónde comprar": la salida para quien no encontró su
+ * ciudad. Sin título en el CMS la banda no se dibuja (sección bajo su mínimo se
+ * oculta entera) y sin WhatsApp central no se ofrece el botón: no se publica un
+ * enlace a ninguna parte.
+ */
+import Boton from '~/components/base/Boton.astro'
+import type {DondeComprar} from '~/lib/data'
+
+interface Props {
+  cierre: NonNullable<DondeComprar['cierre']>
+  whatsapp?: string
+}
+
+const {cierre, whatsapp} = Astro.props
+---
+
+{
+  cierre.titulo && (
+    <section class="cierre-dc" aria-labelledby="cierre-donde-comprar">
+      <div class="cierre-dc__caja">
+        <div class="cierre-dc__texto">
+          {cierre.etiqueta && <p class="overline cierre-dc__eyebrow">{cierre.etiqueta}</p>}
+          <h2 class="cierre-dc__titulo" id="cierre-donde-comprar">
+            {cierre.titulo}
+          </h2>
+          {cierre.texto && <p class="cierre-dc__bajada">{cierre.texto}</p>}
+        </div>
+        {whatsapp && (
+          <Boton class="cierre-dc__cta" href={whatsapp} target="_blank" rel="noopener" data-cta-cierre>
+            Escríbenos por WhatsApp
+          </Boton>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .cierre-dc {
+    background: var(--color-surface-sunken);
+  }
+
+  .cierre-dc__caja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(28px, 4vw, 64px);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: clamp(56px, 7vw, 104px) var(--space-gutter-page);
+  }
+
+  .cierre-dc__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 34ch;
+  }
+
+  .cierre-dc__eyebrow {
+    color: var(--color-text-secondary);
+  }
+
+  .cierre-dc__titulo {
+    font: var(--text-heading-xl);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .cierre-dc__bajada {
+    font: 400 0.9375rem/1.6 var(--font-body);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .cierre-dc :global(.cierre-dc__cta) {
+    padding-inline: var(--space-8);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+  }
+
+  /* En teléfono la barra al pulgar se apoya sobre el pie: hace falta el aire. */
+  @media (max-width: 759px) {
+    .cierre-dc__caja {
+      padding-bottom: calc(clamp(56px, 7vw, 104px) + env(safe-area-inset-bottom));
+    }
+  }
+</style>

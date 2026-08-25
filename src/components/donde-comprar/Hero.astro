@@ -1,0 +1,134 @@
+---
+/**
+ * Hero de "Dónde comprar": ruta, antetítulo, h1 y bajada sobre foto a sangre.
+ * Valores tomados del prototipo (`design/publicar/donde-comprar.html`, reglas
+ * `.hero*`), que en esta página son propios: alto `max(460px, 54dvh)`, titular
+ * hasta 4,75rem y bajada de 40ch. No son los de la página de Catálogo — cada
+ * hero interno del diseño trae su propia calibración.
+ *
+ * Contenido defensivo: antetítulo, bajada y foto salen del CMS y, si faltan, no
+ * se dibujan. El h1 sí tiene respaldo: "Dónde comprar" es el nombre de la página
+ * en la navegación (estructura, no texto de marca) y la página necesita
+ * exactamente un h1.
+ */
+import Imagen from '~/components/base/Imagen.astro'
+import type {DondeComprar} from '~/lib/data'
+
+interface Props {
+  hero: DondeComprar['hero']
+  /** Nombre de la página en la navegación: respaldo del titular. */
+  nombrePagina: string
+}
+
+const {hero, nombrePagina} = Astro.props
+---
+
+<section class="hero-dc">
+  {hero.imagen && <Imagen class="hero-dc__foto" imagen={hero.imagen} prioridad sizes="100vw" />}
+  <span class="hero-dc__velo" aria-hidden="true"></span>
+
+  <div class="hero-dc__caja">
+    <nav class="ruta" aria-label="Ruta">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span>{nombrePagina}</span>
+    </nav>
+
+    <div class="hero-dc__fila">
+      <div class="hero-dc__texto">
+        {hero.eyebrow && <p class="overline hero-dc__eyebrow">{hero.eyebrow}</p>}
+        <h1 class="hero-dc__titular">{hero.titular || nombrePagina}</h1>
+      </div>
+      {hero.bajada && <p class="hero-dc__bajada">{hero.bajada}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-dc {
+    position: relative;
+    width: 100%;
+    min-height: max(460px, 54dvh);
+    overflow: hidden;
+    background: var(--color-surface-inverse);
+  }
+
+  .hero-dc :global(.hero-dc__foto) {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .hero-dc__velo {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim-hero);
+  }
+
+  .hero-dc__caja {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: clamp(16px, 2vw, 24px);
+    min-height: max(460px, 54dvh);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    padding: clamp(96px, 11vw, 140px) var(--space-gutter-page) clamp(32px, 4vw, 56px);
+  }
+
+  /* La ruta de esta página va en blanco pleno, no en el gris on-dark: es lo que
+     declara el prototipo (`.crumb{color:#FFFFFF}`). */
+  .ruta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font: 400 0.8125rem/normal var(--font-body);
+    color: var(--color-text-on-dark);
+  }
+
+  .ruta a {
+    color: var(--color-text-on-dark);
+    border-bottom: var(--border-width) solid var(--color-border-on-dark);
+  }
+
+  .hero-dc__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 48px);
+  }
+
+  .hero-dc__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 24ch;
+  }
+
+  .hero-dc__eyebrow {
+    color: var(--color-text-on-dark);
+  }
+
+  .hero-dc__titular {
+    font: 300 clamp(2.5rem, 1.7rem + 3.4vw, 4.75rem) / 1.06 var(--font-heading);
+    letter-spacing: var(--tracking-display-light);
+    color: var(--color-text-on-dark);
+    text-wrap: pretty;
+  }
+
+  .hero-dc__bajada {
+    max-width: 40ch;
+    font: 400 clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem) / 1.6 var(--font-body);
+    color: var(--color-text-on-dark);
+    text-wrap: pretty;
+  }
+
+  /* Anillo de foco sobre imagen: el vinotinto no se lee ahí (regla del
+     prototipo, `:focus-visible` dentro de `.hero`). */
+  .hero-dc :focus-visible {
+    outline-color: var(--color-text-on-dark);
+  }
+</style>

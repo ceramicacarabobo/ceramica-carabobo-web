@@ -91,18 +91,30 @@ const hayMegamenu = materias.length >= 4
         <div class="megamenu__interior">
           <div class="megamenu__indice">
             <p class="overline megamenu__titulo">Catálogo</p>
+            {
+              /* El prototipo (panel taxonómico, `index.html`) lleva estos cuatro
+                 enlaces —y los dos que no reproducimos, "Por tipo" y "Ficha
+                 técnica"— al catálogo general SIN filtrar: los seis repiten el
+                 mismo `href="catalogo-c5.dc.html"`. No filtran nada porque no hay
+                 un único valor de eje que represente "por uso" o "acabados"
+                 (son categorías, no valores); el `#uso`/`#formato`/`#brillo`
+                 sueltos que llevaba esta lista no traían `=valor`, así que
+                 `direccion.ts` los ignoraba y el catálogo abría igual sin
+                 filtro, solo que con una URL con un ancla muerta. Se enlaza
+                 directo, como el prototipo. */
+            }
             <ul class="megamenu__enlaces">
               <li>
                 <a href="/catalogo">Todos los diseños</a>
               </li>
               <li>
-                <a href="/catalogo#uso">Por uso</a>
+                <a href="/catalogo">Por uso</a>
               </li>
               <li>
-                <a href="/catalogo#formato">Formatos</a>
+                <a href="/catalogo">Formatos</a>
               </li>
               <li>
-                <a href="/catalogo#brillo">Acabados</a>
+                <a href="/catalogo">Acabados</a>
               </li>
             </ul>
           </div>
@@ -110,7 +122,7 @@ const hayMegamenu = materias.length >= 4
           <ul class="megamenu__materias">
             {materias.map((materia) => (
               <li>
-                <a class="materia" href={`/catalogo#materia-${materia.nombre.toLowerCase()}`}>
+                <a class="materia" href={`/catalogo#materia-${encodeURIComponent(materia.nombre.toLowerCase())}`}>
                   <span class="materia__foto">
                     <Imagen imagen={materia.fotoTextura} ratio="1 / 1" sizes="200px" ancho={400} />
                   </span>

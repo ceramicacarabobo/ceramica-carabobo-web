@@ -114,10 +114,42 @@ export const getHome = async (): Promise<Home> => {
 export const getPaginaCatalogo = () =>
   consultar<PaginaCatalogo>(Q.CATALOGO, {}, {hero: {}, cierre: {}})
 
-export const getContacto = () =>
-  consultar<Contacto>(Q.CONTACTO, {}, {hero: {}, sedes: [], formulario: {}})
+/**
+ * Teléfono venezolano tal como se muestra → el que se marca.
+ * "0241-8134131" y "0245-571.52.62" → "+582418134131" / "+582455715262".
+ * Vive acá y no en el componente (patrón adaptador, §3.1 del plan): el CMS
+ * guarda UN solo teléfono, el que se lee, y la forma de marcarlo se deriva.
+ */
+export function telefonoMarcable(telefono?: string): string | undefined {
+  if (!telefono) return undefined
+  const digitos = telefono.replace(/[^\d+]/g, '')
+  if (digitos.startsWith('+')) return digitos
+  if (digitos.startsWith('58')) return `+${digitos}`
+  if (digitos.startsWith('0')) return `+58${digitos.slice(1)}`
+  return digitos ? `+58${digitos}` : undefined
+}
 
-export const getDondeComprar = () => consultar<DondeComprar>(Q.DONDE_COMPRAR, {}, {hero: {}})
+/** Búsqueda en Google Maps por dirección — el respaldo cuando el CMS no trae el enlace exacto. */
+const busquedaEnMapa = (consulta: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}`
+
+/**
+ * Página de Contacto. Las sedes salen normalizadas: teléfono para marcar y
+ * enlace de ruta ya resueltos, para que el componente no haga cuentas.
+ */
+export const getContacto = async (): Promise<Contacto> => {
+  const contacto = await consultar<Contacto>(Q.CONTACTO, {}, {hero: {}, sedes: [], formulario: {}})
+  return {
+    ...contacto,
+    sedes: (contacto.sedes ?? []).map((sede) => ({
+      ...sede,
+      telefonoMarcar: telefonoMarcable(sede.telefono),
+      enlaceMapa: sede.enlaceMapa || busquedaEnMapa([sede.direccion, sede.ciudad, 'Venezuela'].filter(Boolean).join(', ')),
+    })),
+  }
+}
+
+export const getDondeComprar = () => consultar<DondeComprar>(Q.DONDE_COMPRAR, {}, {hero: {}, cierre: {}})
 
 export const getAjustes = async () => {
   const ajustes = await consultar<Ajustes | null>(Q.AJUSTES, {}, null)

@@ -16,10 +16,10 @@
  * build y los bytes servidos sin ganar un pixel de nitidez. Mismos formatos y
  * calidades que la primitiva (AVIF 60 · WebP 78 · JPG 52 de respaldo).
  */
-import {getImage} from 'astro:assets'
-import type {GetImageResult} from 'astro'
 import type {Producto} from '~/lib/data'
-import {dimensiones, posicionFocal, urlOrigen} from '~/lib/imagenes'
+import {posicionFocal} from '~/lib/imagenes'
+import {juegoDeFoto, srcset} from './fotos'
+import type {JuegoDeFoto} from './fotos'
 
 interface Props {
   producto: Producto
@@ -37,28 +37,12 @@ const SIZES = '(min-width: 1024px) 340px, (min-width: 760px) 30vw, 45vw'
 // La foto de la card es la primera declarada. Los avisos de "foto de ejemplo"
 // son cosa del preview del admin, nunca de producción (regla del handoff).
 const foto = producto.fotos[0]
-const dims = foto ? dimensiones(foto) : null
 
-let avif: GetImageResult | undefined
-let webp: GetImageResult | undefined
-let jpg: GetImageResult | undefined
-
-if (foto) {
-  const base = {
-    src: urlOrigen(foto, ANCHOS[ANCHOS.length - 1]),
-    width: dims?.ancho ?? 800,
-    height: dims?.alto ?? 1000,
-    widths: ANCHOS,
-    sizes: SIZES,
-  }
-  ;[avif, webp, jpg] = await Promise.all([
-    getImage({...base, format: 'avif', quality: 60}),
-    getImage({...base, format: 'webp', quality: 78}),
-    getImage({...base, format: 'jpg', quality: 52}),
-  ])
-}
-
-const srcset = (r: GetImageResult) => (r.srcSet.values.length > 0 ? r.srcSet.attribute : r.src)
+// Los anchos siguen siendo los chicos, pero la FUENTE es la misma que pide la
+// ficha (`fotos.ts`): así el build baja el archivo una vez y las variantes de
+// 400 y 800 se generan una vez para las dos, en vez de dos juegos completos.
+let juego: JuegoDeFoto | undefined
+if (foto) juego = await juegoDeFoto(foto, ANCHOS, SIZES)
 
 // Las dos líneas de spec del diseño: formato y "Serie · brillo · textura".
 const lineaFormato = `${producto.formato} cm`
@@ -76,18 +60,18 @@ const alt = foto?.alt || `${producto.nombre} ${producto.formato}`
 >
   <span class="tarjeta__marco" style={foto ? `--focal: ${posicionFocal(foto)}` : undefined}>
     {
-      foto && avif && webp && jpg ? (
+      foto && juego ? (
         <picture>
-          <source srcset={srcset(avif)} sizes={SIZES} type="image/avif" />
-          <source srcset={srcset(webp)} sizes={SIZES} type="image/webp" />
+          <source srcset={srcset(juego.avif)} sizes={SIZES} type="image/avif" />
+          <source srcset={srcset(juego.webp)} sizes={SIZES} type="image/webp" />
           <img
             class="tarjeta__img"
-            src={jpg.src}
-            srcset={jpg.srcSet.values.length > 0 ? jpg.srcSet.attribute : undefined}
+            src={juego.jpg.src}
+            srcset={juego.jpg.srcSet.values.length > 0 ? juego.jpg.srcSet.attribute : undefined}
             sizes={SIZES}
             alt={alt}
-            width={jpg.attributes.width}
-            height={jpg.attributes.height}
+            width={juego.jpg.attributes.width}
+            height={juego.jpg.attributes.height}
             loading={prioridad ? 'eager' : 'lazy'}
             decoding="async"
           />

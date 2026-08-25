@@ -1,0 +1,475 @@
+---
+/**
+ * Bloque del formulario — página de Contacto.
+ *
+ * EL ENVÍO NO SE DECIDE ACÁ. Entra y sale por `envio.ts`, que es el único
+ * archivo que hay que tocar cuando se defina el receptor (decisión abierta,
+ * `docs/modelo-de-contenido.md` §5.3). Este componente solo recoge, valida y
+ * muestra el desenlace.
+ *
+ * El diseño trae tres campos (nombre, asunto, mensaje) y ningún modo de
+ * responder. Se agregan **correo** (obligatorio) y **teléfono** (opcional):
+ * la fila "Formulario" de `Responsividad v0` §03 pide explícitamente "teclado
+ * correcto por tipo de campo (email, tel)", y el propio copy del diseño promete
+ * responder al correo. Un formulario de contacto sin dirección de vuelta está
+ * roto, no minimalista.
+ *
+ * Reflow (misma fila de la spec): base = una columna, campos a ancho completo,
+ * 48px de alto y botón de envío a ancho completo; dos columnas recién en
+ * escritorio (≥1024px, el breakpoint del sistema que reemplaza al 1000
+ * hardcodeado del prototipo).
+ *
+ * Los 16px de los campos en teléfono no son estética: por debajo de eso iOS
+ * hace zoom al enfocar y descuadra la página (nota del propio prototipo).
+ *
+ * Contenido defensivo: sin ningún texto del CMS, la sección no se dibuja. Las
+ * etiquetas de campo y los mensajes de validación SÍ viven en el código: son
+ * rótulos de interfaz, como "Estado" o "Ciudad" en las fichas, no textos de
+ * marca.
+ */
+import Boton from '~/components/base/Boton.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import type {Contacto} from '~/lib/data'
+
+interface Props {
+  formulario: Contacto['formulario']
+  /** Vía directa que se ofrece si el envío no está disponible. */
+  correo?: string
+}
+
+const {formulario, correo} = Astro.props
+
+const hayTextos = Boolean(formulario.etiqueta || formulario.titulo || formulario.texto)
+
+const CAMPOS = [
+  {
+    id: 'nombre',
+    etiqueta: 'Nombre',
+    tipo: 'text',
+    autocomplete: 'name',
+    marcador: 'Tu nombre',
+    obligatorio: true,
+    error: 'Escribe tu nombre.',
+  },
+  {
+    id: 'correo',
+    etiqueta: 'Correo',
+    tipo: 'email',
+    // `inputmode` no es decorativo: es el teclado que pide la spec de móvil.
+    inputmode: 'email',
+    autocomplete: 'email',
+    marcador: 'tunombre@correo.com',
+    obligatorio: true,
+    error: 'Escribe un correo al que podamos responderte.',
+  },
+  {
+    id: 'telefono',
+    etiqueta: 'Teléfono (opcional)',
+    tipo: 'tel',
+    inputmode: 'tel',
+    autocomplete: 'tel',
+    marcador: '0412-0000000',
+    obligatorio: false,
+    error: '',
+  },
+  {
+    id: 'asunto',
+    etiqueta: 'Asunto',
+    tipo: 'text',
+    marcador: 'Motivo de tu mensaje',
+    obligatorio: true,
+    error: 'Dinos el motivo de tu mensaje.',
+  },
+] as const
+---
+
+{
+  hayTextos && (
+    <Seccion como="section" class="formulario" fondo="sunken" cierre aria-labelledby={formulario.titulo ? 'formulario-titulo' : undefined}>
+      <div class="formulario__grid">
+        <div class="formulario__intro">
+          {formulario.etiqueta && <p class="overline formulario__eyebrow">{formulario.etiqueta}</p>}
+          {formulario.titulo && (
+            <h2 id="formulario-titulo" class="formulario__titulo">
+              {formulario.titulo}
+            </h2>
+          )}
+          {formulario.texto && <p class="formulario__texto">{formulario.texto}</p>}
+        </div>
+
+        <Reveal como="div" class="formulario__caja" indice={1} paso={60}>
+          <form class="formulario__form" data-formulario novalidate data-gracias={formulario.gracias} data-correo={correo}>
+            {CAMPOS.map((campo) => (
+              <div class="campo">
+                <label class="campo__etiqueta" for={campo.id}>
+                  {campo.etiqueta}
+                </label>
+                <input
+                  class="campo__control"
+                  id={campo.id}
+                  name={campo.id}
+                  type={campo.tipo}
+                  inputmode={'inputmode' in campo ? campo.inputmode : undefined}
+                  autocomplete={'autocomplete' in campo ? campo.autocomplete : undefined}
+                  placeholder={campo.marcador}
+                  required={campo.obligatorio || undefined}
+                  aria-describedby={campo.error ? `${campo.id}-error` : undefined}
+                />
+                {campo.error && (
+                  <p class="campo__error" id={`${campo.id}-error`} data-error-de={campo.id} hidden>
+                    {campo.error}
+                  </p>
+                )}
+              </div>
+            ))}
+
+            <div class="campo campo--ancho">
+              <label class="campo__etiqueta" for="mensaje">
+                Mensaje
+              </label>
+              <textarea
+                class="campo__control campo__control--area"
+                id="mensaje"
+                name="mensaje"
+                required
+                placeholder="Cuéntanos qué necesitas"
+                aria-describedby="mensaje-error"
+              />
+              <p class="campo__error" id="mensaje-error" data-error-de="mensaje" hidden>
+                Escribe tu mensaje.
+              </p>
+            </div>
+
+            {/* Aviso de envío: solo aparece cuando algo sale mal. Vive fuera de
+                los campos porque no habla de un campo, sino del envío entero. */}
+            <p class="aviso" data-aviso role="alert" hidden />
+
+            <div class="formulario__envio">
+              {formulario.privacidad && <p class="formulario__privacidad">{formulario.privacidad}</p>}
+              <Boton class="formulario__boton" variante="primary" tipo="submit" data-enviar>
+                Enviar
+              </Boton>
+            </div>
+          </form>
+
+          {/* Estado de éxito. Nace oculto y reemplaza al formulario cuando el
+              mensaje llegó de verdad — nunca antes. */}
+          <div class="exito" data-exito role="status" hidden />
+
+          <noscript>
+            <p class="aviso aviso--nota">
+              El formulario necesita JavaScript para enviarse.
+              {correo && <> Escríbenos a <a href={`mailto:${correo}`}>{correo}</a>.</>}
+            </p>
+          </noscript>
+        </Reveal>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  /* ── Composición ────────────────────────────────────────────────────────── */
+  .formulario__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 72px);
+    align-items: start;
+  }
+
+  .formulario__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .formulario__eyebrow {
+    color: var(--color-text-secondary);
+  }
+
+  .formulario__titulo {
+    font: 300 clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem) / 1.12 var(--font-heading);
+    text-wrap: pretty;
+  }
+
+  .formulario__texto {
+    font: var(--text-body-base);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .formulario__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .formulario__form[hidden] {
+    display: none;
+  }
+
+  /* ── Campos — primitiva Input de `Primitivas v1` §02 ───────────────────── */
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .campo__etiqueta {
+    font: var(--text-nav);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .campo__control {
+    width: 100%;
+    min-height: var(--control-height-lg);
+    padding: 14px 16px;
+    background: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    /* 16px en teléfono: por debajo de eso iOS hace zoom al enfocar. */
+    font: 400 1rem/1.5 var(--font-body);
+    color: var(--color-text-primary);
+    transition: border-color var(--dur-instant) var(--ease-out);
+  }
+
+  .campo__control::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .campo__control:focus {
+    border-color: var(--color-border-focus);
+  }
+
+  .campo__control--area {
+    min-height: 132px;
+    resize: vertical;
+  }
+
+  /* ── Error de campo — tokens semánticos de `Tokens v0` §01 ─────────────── */
+  .campo__control[aria-invalid='true'] {
+    border-width: 1.5px;
+    border-color: var(--color-error-600);
+  }
+
+  .campo__error {
+    font: var(--text-caption);
+    color: var(--color-error-700);
+  }
+
+  .campo__error[hidden] {
+    display: none;
+  }
+
+  /* ── Aviso de envío y estado de éxito ──────────────────────────────────── */
+  .aviso {
+    padding: var(--space-4);
+    background: var(--color-error-100);
+    border: var(--border-width) solid var(--color-error-600);
+    border-radius: var(--radius-sm);
+    font: var(--text-body-sm);
+    color: var(--color-error-700);
+  }
+
+  .aviso[hidden] {
+    display: none;
+  }
+
+  .aviso :global(a) {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .exito {
+    padding: var(--space-5);
+    background: var(--color-success-100);
+    border: var(--border-width) solid var(--color-success-600);
+    border-radius: var(--radius-sm);
+    font: var(--text-body-base);
+    color: var(--color-success-700);
+  }
+
+  .exito[hidden] {
+    display: none;
+  }
+
+  /* ── Fila de envío ─────────────────────────────────────────────────────── */
+  .formulario__envio {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-5);
+    padding-top: var(--space-1);
+  }
+
+  .formulario__privacidad {
+    order: 2;
+    font: var(--text-caption-lg);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  /* El <a>/<button> que dibuja `Boton` no lleva el scope de esta sección
+     (mismo caso que el hallazgo 13 del QA): la regla va con :global(). */
+  .formulario__envio :global(.formulario__boton) {
+    width: 100%;
+    min-height: var(--control-height-lg);
+  }
+
+  /* ── Escritorio: dos columnas, como el diseño ──────────────────────────── */
+  @media (min-width: 1024px) {
+    .formulario__grid {
+      grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+    }
+
+    .formulario__form {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .campo--ancho,
+    .aviso,
+    .formulario__envio {
+      grid-column: 1 / -1;
+    }
+
+    .campo__control--area {
+      min-height: 180px;
+    }
+
+    .formulario__envio {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .formulario__privacidad {
+      order: 0;
+      max-width: 44ch;
+    }
+
+    .formulario__envio :global(.formulario__boton) {
+      width: auto;
+    }
+  }
+</style>
+
+<script>
+  import {SinReceptor, enviar} from './envio'
+
+  /**
+   * Validación y envío.
+   *
+   * Se valida al enviar, y a partir de ahí también al salir de cada campo: antes
+   * del primer intento nadie ha hecho nada mal todavía, y marcar en rojo lo que
+   * el visitante aún está escribiendo es regañarlo por adelantado.
+   *
+   * `novalidate` apaga los globos del navegador para que los mensajes sean los
+   * nuestros, en español y con los tokens de error del sistema. La validación
+   * de verdad la hace igual el receptor: esto es cortesía, no seguridad.
+   */
+  function activarFormulario() {
+    const form = document.querySelector<HTMLFormElement>('[data-formulario]')
+    if (!form || form.dataset.enganchado === '') return
+    form.dataset.enganchado = ''
+
+    const exito = document.querySelector<HTMLElement>('[data-exito]')
+    const aviso = form.querySelector<HTMLElement>('[data-aviso]')
+    const boton = form.querySelector<HTMLButtonElement>('[data-enviar]')
+    let yaIntento = false
+
+    const controles = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.campo__control')]
+
+    /** Un correo con nombre, arroba, dominio y punto. Ni más estricto ni menos. */
+    const correoValido = (valor: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor)
+
+    function esValido(control: HTMLInputElement | HTMLTextAreaElement) {
+      const valor = control.value.trim()
+      if (control.required && valor === '') return false
+      if (control.type === 'email' && valor !== '' && !correoValido(valor)) return false
+      return true
+    }
+
+    function pintar(control: HTMLInputElement | HTMLTextAreaElement) {
+      const bien = esValido(control)
+      const error = form!.querySelector<HTMLElement>(`[data-error-de="${control.name}"]`)
+      control.setAttribute('aria-invalid', bien ? 'false' : 'true')
+      if (error) error.hidden = bien
+      return bien
+    }
+
+    for (const control of controles) {
+      control.addEventListener('blur', () => {
+        if (yaIntento) pintar(control)
+      })
+      control.addEventListener('input', () => {
+        if (yaIntento && control.getAttribute('aria-invalid') === 'true') pintar(control)
+      })
+    }
+
+    function mostrarAviso(texto: string, enlaceCorreo?: string) {
+      if (!aviso) return
+      aviso.textContent = texto
+      if (enlaceCorreo) {
+        const enlace = document.createElement('a')
+        enlace.href = `mailto:${enlaceCorreo}`
+        enlace.textContent = enlaceCorreo
+        aviso.append(' ', enlace)
+      }
+      aviso.hidden = false
+    }
+
+    form.addEventListener('submit', async (evento) => {
+      evento.preventDefault()
+      yaIntento = true
+      if (aviso) aviso.hidden = true
+
+      const invalidos = controles.filter((control) => !pintar(control))
+      if (invalidos.length > 0) {
+        invalidos[0].focus()
+        return
+      }
+
+      const datos = new FormData(form)
+      const leer = (clave: string) => String(datos.get(clave) ?? '').trim()
+
+      if (boton) boton.disabled = true
+      try {
+        await enviar({
+          nombre: leer('nombre'),
+          correo: leer('correo'),
+          telefono: leer('telefono') || undefined,
+          asunto: leer('asunto'),
+          mensaje: leer('mensaje'),
+        })
+
+        // Éxito: el formulario se retira y en su lugar queda el acuse. El
+        // {nombre} de la plantilla del CMS se reemplaza por el primer nombre.
+        if (exito) {
+          const plantilla = form.dataset.gracias || 'Gracias. Recibimos tu mensaje.'
+          exito.textContent = plantilla.replace('{nombre}', leer('nombre').split(' ')[0])
+          exito.hidden = false
+          exito.setAttribute('tabindex', '-1')
+          exito.focus()
+        }
+        form.hidden = true
+      } catch (fallo) {
+        if (boton) boton.disabled = false
+        if (fallo instanceof SinReceptor) {
+          mostrarAviso(
+            'El envío del formulario todavía no está conectado. Escríbenos directamente a',
+            form.dataset.correo,
+          )
+        } else {
+          mostrarAviso('No pudimos enviar el mensaje. Inténtalo otra vez en un momento.')
+        }
+      }
+    })
+  }
+
+  activarFormulario()
+  document.addEventListener('astro:page-load', activarFormulario)
+</script>

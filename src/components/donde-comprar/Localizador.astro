@@ -1,0 +1,423 @@
+---
+/**
+ * Buscador de puntos de venta: mapa por estados + panel de resultados
+ * (`.finder` del prototipo).
+ *
+ * TODO SE DIBUJA EN EL BUILD. El prototipo arma el panel con `innerHTML` al
+ * cargar; acá el índice y las 24 tarjetas ya vienen en el HTML, y el script
+ * solo muestra u oculta. Tres razones: sin JavaScript la página sigue sirviendo
+ * (el índice enlaza a cada grupo por `id` y los grupos se ven), el JSON-LD de
+ * cada punto de venta acompaña a su tarjeta, y no hay un solo fotograma con el
+ * panel vacío.
+ *
+ * DIRECCIÓN. El estado elegido vive en el hash (`#estado=carabobo`, la misma
+ * clave normalizada que usa el prototipo) y cada fila del índice es un enlace
+ * de verdad a ese hash: entrar en un estado baja un nivel, así que deja entrada
+ * en el historial y el botón atrás del sistema devuelve al mapa del país. El
+ * enlace apunta al `id` del grupo de tarjetas, de modo que sin JavaScript hace
+ * exactamente lo que promete.
+ *
+ * REFLOW (`Responsividad v0` §03). Escritorio: mapa 2/3 + panel pegajoso 1/3.
+ * Teléfono: el panel va PRIMERO —se entra por el buscador y el índice— y el
+ * mapa queda debajo como ilustración; el zoom se dispara al elegir en la lista.
+ */
+import Boton from '~/components/base/Boton.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Mapa from './Mapa.astro'
+import Tarjeta from './Tarjeta.astro'
+import {agruparPorEstado, ciudadesConPin, plural} from './datos'
+import type {Distribuidor, DondeComprar} from '~/lib/data'
+
+interface Props {
+  distribuidores: Distribuidor[]
+  pagina: DondeComprar
+  /** Enlace de WhatsApp central, ya armado. Sin él no se ofrece esa salida. */
+  whatsapp?: string
+  avisoEjemplo?: boolean
+}
+
+const {distribuidores, pagina, whatsapp, avisoEjemplo = false} = Astro.props
+
+const grupos = agruparPorEstado(distribuidores)
+const totales = new Map(grupos.map((g) => [g.clave, g.puntos.length]))
+const ciudades = ciudadesConPin(distribuidores)
+
+const conteoBase = `${plural(distribuidores.length, 'distribuidor', 'distribuidores')} en ${plural(grupos.length, 'estado', 'estados')}`
+---
+
+<section class="localizador" aria-label="Buscador de puntos de venta">
+  <div
+    class="localizador__caja"
+    data-localizador
+    data-total={distribuidores.length}
+    data-conteo-base={conteoBase}
+  >
+    <Reveal como="div" class="localizador__mapa">
+      <Mapa totales={totales} ciudades={ciudades} avisoEjemplo={avisoEjemplo} />
+    </Reveal>
+
+    <Reveal como="div" indice={1} paso={60} class="localizador__panel">
+      <label class="buscador">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input type="search" class="buscador__campo" data-busqueda placeholder="Busca por ciudad o estado" aria-label="Busca por ciudad o estado" />
+      </label>
+
+      <div class="localizador__barra">
+        <p class="localizador__conteo" aria-live="polite" data-conteo>{conteoBase}</p>
+        <button type="button" class="localizador__volver" data-volver hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          Todos los estados
+        </button>
+      </div>
+
+      <div class="localizador__resultados" data-resultados data-modo="estados">
+        <ul class="indice" data-indice>
+          {
+            grupos.map((grupo, i) => (
+              <li>
+                <a class="fila" href={`#estado=${grupo.clave}`} data-fila={grupo.clave}>
+                  <span class="fila__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="fila__nombres">
+                    <span class="fila__estado">{grupo.nombre}</span>
+                    <span class="fila__ciudades">{grupo.ciudades.join(' · ')}</span>
+                  </span>
+                  <span class="fila__conteo">{plural(grupo.puntos.length, 'punto', 'puntos')}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        {
+          grupos.map((grupo) => (
+            <div class="grupo" id={`estado=${grupo.clave}`} data-grupo={grupo.clave} hidden>
+              {grupo.puntos.map((punto) => (
+                <Tarjeta punto={punto} />
+              ))}
+            </div>
+          ))
+        }
+
+        {/* Estado vacío: se dice qué pasa y se ofrece UNA salida. Sin disculpas
+            ni signos de admiración; el texto lo pone el CMS y, si no está, se
+            muestra solo el rótulo y la salida. */}
+        <div class="vacio" data-vacio hidden>
+          <p class="vacio__titulo" data-vacio-titulo></p>
+          {pagina.textoEstadoVacio && <p class="vacio__texto" data-vacio-texto>{pagina.textoEstadoVacio}</p>}
+          {whatsapp && (
+            <Boton class="vacio__cta" href={whatsapp} target="_blank" rel="noopener">
+              Escríbenos por WhatsApp
+            </Boton>
+          )}
+        </div>
+      </div>
+    </Reveal>
+  </div>
+</section>
+
+<noscript>
+  <style is:inline>
+    /* Sin JavaScript no hay panel que conmutar: se muestran los puntos de venta
+       de todos los estados, y el índice queda arriba como atajo a cada grupo. */
+    .grupo[hidden] {
+      display: flex !important;
+    }
+  </style>
+</noscript>
+
+<style>
+  .localizador__caja {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: clamp(28px, 4vw, 64px);
+    max-width: var(--size-content-max);
+    margin-inline: auto;
+    /* El ritmo de esta primera banda es el del prototipo, no --space-section:
+       arranca pegada al hero, como en Catálogo. */
+    padding: clamp(32px, 4vw, 56px) var(--space-gutter-page) clamp(72px, 8vw, 112px);
+  }
+
+  /* ── Reflow de teléfono ──────────────────────────────────────────────────
+     El mapa no se puede usar con el dedo —los estados quedan de milímetros—,
+     así que la tarea la resuelven el buscador y el índice, y el mapa ilustra
+     debajo. Es orden de JERARQUÍA, no de ancho. */
+  .localizador__panel {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 2.4vw, 28px);
+    min-width: 0;
+  }
+
+  .localizador__mapa {
+    order: 2;
+  }
+
+  /* ── Buscador ───────────────────────────────────────────────────────────── */
+  .buscador {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+    padding-inline: var(--space-4);
+    min-height: var(--control-height-lg);
+    color: var(--color-text-muted);
+  }
+
+  /* El anillo va en la caja, no en el campo: el campo apaga su contorno y una
+     regla de clase le ganaría al `:focus-visible` de base.css. */
+  .buscador:focus-within {
+    outline: var(--focus-ring-width) solid var(--color-border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .buscador > svg {
+    flex: none;
+  }
+
+  .buscador__campo {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    /* 16px en teléfono: por debajo, iOS hace zoom al enfocar. */
+    font: 400 1rem/1.5 var(--font-body);
+    color: var(--color-text-primary);
+  }
+
+  .buscador__campo::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  /* ── Barra de conteo ────────────────────────────────────────────────────── */
+  .localizador__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .localizador__conteo {
+    font: 500 0.8125rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .localizador__volver {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    /* El dibujo del prototipo es un texto suelto; el piso de toque es 44px. */
+    min-height: var(--control-height-md);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font: var(--text-nav);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .localizador__volver:hover {
+    color: var(--color-brand-700);
+  }
+
+  .localizador__volver[hidden] {
+    display: none;
+  }
+
+  /* ── Índice de estados ──────────────────────────────────────────────────── */
+  .indice {
+    display: flex;
+    flex-direction: column;
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .indice[hidden] {
+    display: none;
+  }
+
+  .fila {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3);
+    min-height: 56px;
+    padding: 14px 4px 14px 10px;
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+    border-left: 2px solid transparent;
+    color: var(--color-text-primary);
+    text-align: left;
+    transition:
+      background-color var(--dur-respuesta) var(--ease-respuesta),
+      border-color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .fila:hover,
+  .fila:focus-visible {
+    background: var(--color-surface-sunken);
+    border-left-color: var(--color-brand-700);
+    color: var(--color-text-primary);
+  }
+
+  .fila:hover .fila__num,
+  .fila:hover .fila__ciudades,
+  .fila:hover .fila__conteo,
+  .fila:focus-visible .fila__num,
+  .fila:focus-visible .fila__ciudades,
+  .fila:focus-visible .fila__conteo {
+    color: var(--color-brand-700);
+  }
+
+  .fila__num {
+    font: 400 0.75rem/normal var(--font-heading);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-secondary);
+    transition: color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .fila__nombres {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .fila__estado {
+    font: 300 clamp(1.125rem, 1rem + 0.5vw, 1.5rem) / 1.15 var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .fila__ciudades {
+    font: 500 0.6875rem/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .fila__conteo {
+    font: 400 0.8125rem/normal var(--font-body);
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+    transition: color var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  /* ── Tarjetas ───────────────────────────────────────────────────────────── */
+  .localizador__resultados[data-modo='puntos'] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .grupo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .grupo[hidden] {
+    display: none;
+  }
+
+  /* ── Estado vacío ───────────────────────────────────────────────────────── */
+  .vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: clamp(40px, 6vw, 72px) var(--space-6);
+    background: var(--color-surface-sunken);
+    text-align: center;
+  }
+
+  .vacio[hidden] {
+    display: none;
+  }
+
+  .vacio__titulo {
+    max-width: 30ch;
+    font: 300 clamp(1.125rem, 1rem + 0.6vw, 1.625rem) / 1.15 var(--font-heading);
+    color: var(--color-text-primary);
+  }
+
+  .vacio__texto {
+    max-width: 44ch;
+    font: 400 0.9375rem/1.6 var(--font-body);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* `:global` porque el destino es el <a> que dibuja `Boton` y no lleva el
+     scope de esta sección. */
+  .localizador :global(.vacio__cta) {
+    padding-inline: var(--space-8);
+    letter-spacing: var(--tracking-uppercase-md);
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Tablet: una columna, sin pegajoso ──────────────────────────────────── */
+  @media (min-width: 760px) {
+    .localizador__panel {
+      order: 0;
+    }
+
+    .localizador__mapa {
+      order: 0;
+    }
+
+    .fila {
+      grid-template-columns: 38px 1fr auto;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-1) var(--space-4) var(--space-3);
+    }
+
+    .buscador__campo {
+      font-size: 0.9375rem;
+    }
+
+    /* Sin scroll dentro del scroll en teléfono: ahí las listas fluyen con la
+       página. Desde tablet el panel es una columna al lado del mapa y sí se
+       desplaza por dentro. */
+    .indice,
+    .localizador__resultados[data-modo='puntos'] {
+      max-height: min(58dvh, 620px);
+      overflow-y: auto;
+    }
+  }
+
+  /* ── Escritorio: mapa 2/3 + panel pegajoso 1/3 ──────────────────────────── */
+  @media (min-width: 1024px) {
+    .localizador__caja {
+      grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+    }
+
+    .localizador__mapa {
+      position: sticky;
+      /* La banda compacta de la cabecera mide 63px (docs/fase-2-qa-fidelidad.md);
+         el prototipo deja el mapa a 96px del tope. */
+      top: calc(63px + var(--space-8));
+    }
+
+  }
+</style>
+
+<script>
+  import {iniciarLocalizador} from './localizador'
+
+  iniciarLocalizador()
+  document.addEventListener('astro:page-load', iniciarLocalizador)
+</script>

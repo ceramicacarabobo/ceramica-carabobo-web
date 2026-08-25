@@ -139,24 +139,41 @@ export interface PaginaCatalogo {
 
 export interface Sede {
   nombre: string
+  /** Rotula el bloque de dirección y el pin del mapa. */
+  ciudad?: string
   direccion: string
+  /** Tal como se lee, ej. "0241-8134131". */
   telefono?: string
+  /** Listo para un `href="tel:"`: normalizado a +58… en la capa de datos. */
+  telefonoMarcar?: string
+  /** Ruta en Google Maps: la del CMS o, si no hay, una búsqueda por dirección. */
+  enlaceMapa?: string
   ubicacion?: {lat: number; lng: number}
 }
 
 export interface Contacto {
-  hero: {titular?: string; bajada?: string; imagen?: Imagen}
+  hero: {eyebrow?: string; titular?: string; bajada?: string; imagen?: Imagen}
+  /** Encabeza la columna de datos. */
+  visitaTitulo?: string
+  /** Puede traer varias líneas: se respetan los saltos. */
   horario?: string
+  /** La línea que introduce la dirección de correo. */
+  correoTexto?: string
   correo?: string
   sedes: Sede[]
-  formulario: {titulo?: string; texto?: string; gracias?: string}
+  /** Aclaración bajo el mapa; vacía, no se dibuja. */
+  mapaNota?: string
+  formulario: {etiqueta?: string; titulo?: string; texto?: string; privacidad?: string; gracias?: string}
 }
 
 export interface DondeComprar {
-  hero: {titular?: string; bajada?: string; imagen?: Imagen}
+  hero: {eyebrow?: string; titular?: string; bajada?: string; imagen?: Imagen}
+  /** Solo dígitos con código de país. Manda sobre `ajustes.whatsapp`. */
   whatsappCentral?: string
+  /** Explicación única del estado vacío: sirve al estado sin puntos y a la
+   *  búsqueda sin resultados; el rótulo de arriba lo escribe la página. */
   textoEstadoVacio?: string
-  cierre?: string
+  cierre?: {etiqueta?: string; titulo?: string; texto?: string}
 }
 
 /** Perfil de red social del cliente. `nombre` sale de la lista cerrada del CMS. */

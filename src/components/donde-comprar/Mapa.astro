@@ -1,0 +1,320 @@
+---
+/**
+ * Mapa de Venezuela por estados — prueba nº1 del checklist de aceptación:
+ * "dibuja los 26 estados sin depender de ningún servidor ajeno".
+ *
+ * SIN LIBRERÍA Y SIN PETICIÓN. El prototipo carga d3 y topojson desde unpkg y
+ * el GeoJSON desde jsDelivr; los tres son terceros y el propio prototipo anota
+ * que uno de ellos ya se rompió solo. Como la proyección es fija (Mercator
+ * ajustada a un viewBox de 800×505), el cálculo se hizo UNA VEZ en
+ * `scripts/generar-mapa.mjs` y sus 26 trazados viven en `geometria.ts`, que
+ * entra al HTML. En producción no hay ni librería de mapas ni archivo de
+ * geometría que pedir: el mapa está dibujado antes de que corra un solo script.
+ *
+ * El zoom por estado es la misma cuenta del prototipo (`zoomTo`), pero con las
+ * cajas envolventes ya calculadas en el generador.
+ *
+ * Móvil: `Responsividad v0` §03 dice que acá el mapa "deja de ser el control
+ * principal" y queda como ilustración de alto fijo. Por eso bajo 760px no
+ * recibe el puntero —quien manda es el índice, con filas de 56px— y así no
+ * queda ningún blanco de toque por debajo de 44px sobre formas que, siendo
+ * polígonos vecinos, no se pueden agrandar sin taparse entre sí.
+ */
+import {ALTO_MAPA, ANCHO_MAPA, ESTADOS, proyectar} from './geometria'
+import {clave, plural} from './datos'
+import type {Ciudad} from './datos'
+
+interface Props {
+  /** Estados con puntos de venta: clave → cuántos. */
+  totales: Map<string, number>
+  ciudades: Ciudad[]
+  /** El aviso de dato de ejemplo solo se dibuja en el preview del admin. */
+  avisoEjemplo?: boolean
+}
+
+const {totales, ciudades, avisoEjemplo = false} = Astro.props
+
+// "VE-X01~" es el código con que el GeoJSON identifica el territorio en
+// reclamación: se dibuja como el resto (son los 26 rasgos del archivo) pero no
+// se le pone nombre, porque no lo trae.
+const conNombre = (nombre: string) => !/^VE-/.test(nombre)
+
+const marcas = ciudades.map((c) => {
+  const [x, y] = proyectar(c.lng, c.lat)
+  return {...c, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100}
+})
+---
+
+<div class="mapa">
+  <div class="mapa__lienzo">
+    <svg
+      class="mapa__svg"
+      viewBox={`0 0 ${ANCHO_MAPA} ${ALTO_MAPA}`}
+      role="group"
+      aria-label="Mapa de Venezuela con la cobertura de distribuidores por estado"
+      data-mapa
+    >
+      <g data-zoom>
+        {
+          ESTADOS.map((estado) => {
+            const k = clave(estado.nombre)
+            const total = totales.get(k)
+            const nombrado = conNombre(estado.nombre)
+            return total ? (
+              <path
+                class="estado estado--con"
+                d={estado.d}
+                vector-effect="non-scaling-stroke"
+                data-estado={k}
+                data-nombre={estado.nombre}
+                data-caja={estado.caja.join(' ')}
+                tabindex="0"
+                role="button"
+                aria-label={`${estado.nombre} — ${plural(total, 'distribuidor', 'distribuidores')}`}
+              />
+            ) : (
+              <path
+                class="estado"
+                d={estado.d}
+                vector-effect="non-scaling-stroke"
+                data-estado={k}
+                data-nombre={nombrado ? estado.nombre : undefined}
+                data-caja={estado.caja.join(' ')}
+                aria-hidden="true"
+              >
+                {nombrado && <title>{estado.nombre} — sin cobertura aún</title>}
+              </path>
+            )
+          })
+        }
+      </g>
+      {/* Las marcas de ciudad son rótulos, no controles: rotulan lo que ya se
+          eligió. Por eso no reciben el puntero ni el foco — dos de ellas
+          (Caracas y Baruta) caen a menos de dos unidades una de otra y ningún
+          blanco de toque las separaría. */}
+      <g data-pines aria-hidden="true">
+        {
+          marcas.map((m) => (
+            <g class="pin" data-estado={m.claveEstado} data-x={m.x} data-y={m.y} transform={`translate(${m.x},${m.y})`}>
+              <circle r="4" />
+              <text x="10" y="4" opacity="0">{m.nombre}</text>
+            </g>
+          ))
+        }
+      </g>
+    </svg>
+  </div>
+
+  <div class="mapa__herramientas">
+    <p class="leyenda">
+      <span class="leyenda__clave"><i class="leyenda__muestra leyenda__muestra--con"></i> Con distribuidores</span>
+      <span class="leyenda__clave"><i class="leyenda__muestra leyenda__muestra--sin"></i> Sin cobertura aún</span>
+      <span class="leyenda__clave"><i class="leyenda__muestra leyenda__muestra--ciudad"></i> Ciudad</span>
+    </p>
+    <button type="button" class="mapa__reiniciar" data-ver-pais hidden>Ver todo el país</button>
+  </div>
+
+  <p class="mapa__nota">
+    Geometría de estados: datos públicos Natural Earth / Apache Superset (Apache-2.0).{
+      avisoEjemplo && (
+        <> Red de distribuidores, direcciones y teléfonos: <strong>dato de ejemplo pendiente de validar</strong>.</>
+      )
+    }
+  </p>
+</div>
+
+<style>
+  /* El lienzo existe para el reflow de móvil: acá el mapa es ilustración de
+     alto fijo (mínimo 320px, `Responsividad v0` §03) y el dibujo se centra
+     dentro. En escritorio no impone nada y manda la proporción del viewBox. */
+  .mapa__lienzo {
+    display: flex;
+    align-items: center;
+    min-height: 320px;
+  }
+
+  .mapa__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+    /* Bajo 760px el mapa no es el control: no recibe el puntero. */
+    pointer-events: none;
+  }
+
+  .estado {
+    fill: var(--color-surface-sunken);
+    stroke: var(--color-surface-base);
+    stroke-width: 1;
+    cursor: default;
+    transition: fill var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .estado--con {
+    fill: var(--color-brand-300);
+    cursor: pointer;
+  }
+
+  /* `--geo-hover` del prototipo: el nude un paso más saturado. No tiene token
+     —es un color propio del mapa— así que se declara acá, una sola vez. */
+  .mapa {
+    --mapa-realce: #DCAF9A;
+  }
+
+  @media (hover: hover) {
+    .estado--con:hover {
+      fill: var(--mapa-realce);
+    }
+  }
+
+  /* Lo que el prototipo hace con el cursor lo hace acá también el foco y el
+     recorrido por el índice: nada del mapa depende de hover. */
+  .estado--con[data-realce] {
+    fill: var(--mapa-realce);
+  }
+
+  .estado[data-elegido] {
+    fill: var(--color-brand-700);
+  }
+
+  .estado[data-atenuado] {
+    opacity: 0.35;
+  }
+
+  .estado:focus {
+    outline: none;
+  }
+
+  .estado:focus-visible {
+    outline: none;
+    stroke: var(--color-brand-900);
+    stroke-width: 1.5;
+  }
+
+  [data-zoom] {
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .pin {
+    transition:
+      transform var(--dur-slow) var(--ease-out),
+      opacity var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .pin circle {
+    fill: var(--color-brand-900);
+    stroke: var(--color-neutral-0);
+    stroke-width: 1.5;
+  }
+
+  .pin[data-en-elegido] circle {
+    fill: var(--color-neutral-0);
+    stroke: var(--color-border-on-dark-strong);
+  }
+
+  .pin text {
+    font: 500 11px/normal var(--font-heading);
+    letter-spacing: var(--tracking-uppercase-xs);
+    text-transform: uppercase;
+    fill: var(--color-text-primary);
+    paint-order: stroke;
+    stroke: var(--color-surface-base);
+    stroke-width: 3px;
+  }
+
+  .mapa__herramientas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font: var(--text-caption-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .leyenda__clave {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .leyenda__muestra {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+
+  .leyenda__muestra--con {
+    background: var(--color-brand-300);
+  }
+
+  .leyenda__muestra--sin {
+    background: var(--color-surface-sunken);
+  }
+
+  .leyenda__muestra--ciudad {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-brand-900);
+  }
+
+  .mapa__reiniciar {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    /* 36px es el alto del prototipo y también un token (--control-height-sm),
+       pero en teléfono no llega al piso de 44px de área tocable: ahí manda la
+       regla de toque y desde 760px, el dibujo. */
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-4);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font: var(--text-ui-sm);
+    transition:
+      border-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out);
+  }
+
+  .mapa__reiniciar:hover {
+    border-color: var(--color-brand-700);
+    color: var(--color-brand-700);
+  }
+
+  .mapa__reiniciar[hidden] {
+    display: none;
+  }
+
+  .mapa__nota {
+    margin-top: var(--space-4);
+    max-width: 76ch;
+    font: 400 0.8125rem/1.55 var(--font-body);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 760px) {
+    .mapa__lienzo {
+      min-height: 0;
+    }
+
+    .mapa__svg {
+      pointer-events: auto;
+    }
+
+    .mapa__reiniciar {
+      min-height: var(--control-height-sm);
+    }
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/**
+ * Página propia de cada producto — bloque 3.4 de la fase 3.
+ *
+ * Es decisión cerrada del proyecto (anexo §3 y §4 de `modelo-de-contenido.md`):
+ * una fila del cliente = un producto = **una página indexable**, con su
+ * dirección, sus fotos, su ficha técnica, su canonical y su tarjeta de OG. Son
+ * 126, y hasta ahora las 126 tarjetas de la grilla enlazaban a un vacío.
+ *
+ * La página es delgada: el contenido es el mismo componente `Ficha` que abre el
+ * overlay del catálogo. No hay dos fichas que mantener — el overlay se trae
+ * ESTA página y se queda con su bloque `[data-ficha]` (ver `CapaFicha.astro`).
+ */
+import Base from '~/layouts/Base.astro'
+import Ficha from '~/components/catalogo/Ficha.astro'
+import {descripcionDeFicha, nombreLargo} from '~/components/catalogo/ficha'
+import {juegoDeFoto} from '~/components/catalogo/fotos'
+import {getAjustes, getProductos} from '~/lib/data'
+import type {Producto} from '~/lib/data'
+
+export async function getStaticPaths() {
+  const productos = await getProductos()
+  return productos.map((producto) => ({params: {slug: producto.slug}, props: {producto}}))
+}
+
+const {producto} = Astro.props as {producto: Producto}
+const ajustes = await getAjustes()
+
+// Tarjeta de OG propia: la macro del diseño, ya procesada por el build. El
+// respaldo JPG es el formato que entienden todas las redes. Si el producto no
+// tiene foto —29 todavía no la tienen— hereda la imagen de OG del sitio.
+const portada = producto.fotos[0]
+const imagenOG = portada ? (await juegoDeFoto(portada, [1200], '1200px')).jpg.src : undefined
+---
+
+<Base
+  titulo={nombreLargo(producto)}
+  descripcion={descripcionDeFicha(producto)}
+  imagenOG={imagenOG}
+>
+  <section class="producto">
+    <a class="producto__volver" href="/catalogo">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m12 19-7-7 7-7"></path>
+        <path d="M19 12H5"></path>
+      </svg>
+      Volver al catálogo
+    </a>
+    <div class="ficha-caja">
+      <Ficha producto={producto} nombreSitio={ajustes.titulo} prioridad />
+    </div>
+  </section>
+</Base>

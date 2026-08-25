@@ -140,21 +140,29 @@ export const CATALOGO = /* groq */ `
 export const CONTACTO = /* groq */ `
 *[_type == "contacto"][0] {
   "hero": {
+    "eyebrow": hero.eyebrow,
     "titular": hero.titular,
     "bajada": hero.bajada,
     "imagen": hero.imagen${IMAGEN}
   },
+  visitaTitulo,
   horario,
+  correoTexto,
   correo,
   "sedes": coalesce(sedes[]{
     nombre,
+    ciudad,
     direccion,
     telefono,
+    enlaceMapa,
     "ubicacion": select(defined(ubicacion) => {"lat": ubicacion.lat, "lng": ubicacion.lng})
   }, []),
+  mapaNota,
   "formulario": {
+    "etiqueta": formulario.etiqueta,
     "titulo": formulario.titulo,
     "texto": formulario.texto,
+    "privacidad": formulario.privacidad,
     "gracias": formulario.gracias
   }
 }
@@ -163,13 +171,18 @@ export const CONTACTO = /* groq */ `
 export const DONDE_COMPRAR = /* groq */ `
 *[_type == "dondeComprar"][0] {
   "hero": {
+    "eyebrow": hero.eyebrow,
     "titular": hero.titular,
     "bajada": hero.bajada,
     "imagen": hero.imagen${IMAGEN}
   },
   whatsappCentral,
   textoEstadoVacio,
-  cierre
+  "cierre": {
+    "etiqueta": cierre.etiqueta,
+    "titulo": cierre.titulo,
+    "texto": cierre.texto
+  }
 }
 `
 

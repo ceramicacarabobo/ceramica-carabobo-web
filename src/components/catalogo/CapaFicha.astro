@@ -1,0 +1,254 @@
+---
+/**
+ * Overlay de la ficha de producto — bloque 3.4 de la fase 3.
+ *
+ * **De dónde sale el contenido.** De ninguna parte nueva: la capa pide por
+ * `fetch` la página propia del producto (`/catalogo/<slug>`, que el build ya
+ * genera para los 126) y se queda con su bloque `[data-ficha]`. Es la decisión
+ * que evita las dos salidas malas:
+ *   · dibujar las 126 fichas escondidas en el HTML del catálogo —que ya pesa
+ *     256 KB— sumaría más de 300 KB y 5.000 nodos para mostrar uno;
+ *   · dibujarlas en el navegador con JavaScript exigiría URLs de imagen del CMS
+ *     en el cliente, y `cdn.sanity.io` no puede aparecer en producción.
+ * De paso, la ficha del overlay y la de la página propia son *el mismo HTML*:
+ * no pueden divergir.
+ *
+ * La petición es a nuestro propio origen y a un archivo estático, así que no
+ * rompe la autosuficiencia. Si falla, la capa se rinde y deja que el enlace
+ * navegue a la página del producto, que es exactamente lo que pasa sin
+ * JavaScript.
+ *
+ * El contrato de historial ya estaba hecho: esta capa NO lo toca. Se limita a
+ * escuchar `catalogo:capa` y a pedirle a `window.catalogo` que abra o cierre
+ * (ver `direccion.ts`).
+ */
+import './ficha.css'
+---
+
+<div class="capa-ficha" data-capa-ficha hidden>
+  <div class="capa-ficha__scrim" data-cierra-ficha></div>
+
+  <div
+    class="capa-ficha__caja ficha-caja"
+    data-caja-ficha
+    role="dialog"
+    aria-modal="true"
+    aria-label="Ficha técnica"
+  >
+    {/* Asa y barra existen solo bajo 760px (ficha.css): son el área de arrastre. */}
+    <span class="capa-ficha__asa" data-asa-ficha aria-hidden="true">
+      <span class="capa-ficha__asa-linea"></span>
+    </span>
+    <div class="capa-ficha__barra" data-asa-ficha>
+      <span class="capa-ficha__titulo">Ficha técnica</span>
+    </div>
+
+    <button type="button" class="capa-ficha__cerrar" data-cierra-ficha aria-label="Cerrar ficha">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+
+    <div class="capa-ficha__cuerpo" data-capa-cuerpo></div>
+  </div>
+</div>
+
+<script>
+  import {habilitarArrastre} from './arrastre'
+  import {iniciarGaleria, prepararFicha} from './galeria'
+
+  /** La capa viva de esta página. Los oyentes globales la consultan. */
+  let vivo: {
+    capa: HTMLElement
+    abierta(): boolean
+    cerrar(): void
+    aplicar(id: string | null): void
+  } | null = null
+
+  /** El HTML de cada ficha ya traída, por id. Sobrevive a abrir y cerrar. */
+  const cache = new Map<string, string>()
+
+  function iniciar() {
+    const encontrada = document.querySelector<HTMLElement>('[data-capa-ficha]')
+    if (!encontrada || encontrada.dataset.enganchada !== undefined) return
+    const catalogo = document.querySelector<HTMLElement>('[data-catalogo]')
+    if (!catalogo) return
+    encontrada.dataset.enganchada = ''
+    // Alias no nulo: TypeScript pierde el estrechamiento dentro de los cierres.
+    const capa = encontrada
+
+    const caja = capa.querySelector<HTMLElement>('[data-caja-ficha]')!
+    const cuerpo = capa.querySelector<HTMLElement>('[data-capa-cuerpo]')!
+    const cerrarBoton = capa.querySelector<HTMLElement>('button[data-cierra-ficha]')!
+
+    // La dirección de cada producto sale de su propia tarjeta: la grilla se
+    // renderiza entera en el build, así que están todas, incluso las escondidas.
+    const direcciones = new Map<string, string>()
+    catalogo.querySelectorAll<HTMLAnchorElement>('a[data-abre-ficha]').forEach((enlace) => {
+      const id = enlace.dataset.abreFicha
+      if (id) direcciones.set(id, enlace.getAttribute('href') || '')
+    })
+
+    let actual: string | null = null
+    let foco: HTMLElement | null = null
+
+    const cerrar = () => window.catalogo?.cerrar()
+
+    // ── Traer la ficha ─────────────────────────────────────────────────────
+    function traer(id: string): Promise<string> {
+      const guardada = cache.get(id)
+      if (guardada) return Promise.resolve(guardada)
+      const href = direcciones.get(id)
+      if (!href) return Promise.reject(new Error('sin dirección'))
+      return fetch(href, {headers: {Accept: 'text/html'}})
+        .then((r) => (r.ok ? r.text() : Promise.reject(new Error(String(r.status)))))
+        .then((texto) => {
+          const ficha = new DOMParser().parseFromString(texto, 'text/html').querySelector('[data-ficha]')
+          if (!ficha) throw new Error('sin ficha')
+          const html = ficha.outerHTML
+          cache.set(id, html)
+          return html
+        })
+    }
+
+    function pintar(id: string, html: string) {
+      if (actual !== id) return
+      cuerpo.innerHTML = html
+      cuerpo.scrollTop = 0
+      prepararFicha(cuerpo)
+      const ficha = cuerpo.querySelector<HTMLElement>('[data-ficha]')
+      if (ficha?.dataset.fichaAria) caja.setAttribute('aria-label', ficha.dataset.fichaAria)
+    }
+
+    function cargar(id: string) {
+      const guardada = cache.get(id)
+      if (guardada) {
+        pintar(id, guardada)
+        return
+      }
+      // El latido del Marcador de imagen es cómo se comunica la espera.
+      cuerpo.innerHTML = '<div class="capa-ficha__cargando"></div>'
+      traer(id)
+        .then((html) => pintar(id, html))
+        .catch(() => {
+          // Sin ficha que mostrar, la capa se aparta: el enlace de la tarjeta
+          // lleva a la página del producto, que es la degradación honesta.
+          const href = direcciones.get(id)
+          if (actual === id && href) location.href = href
+          else cerrar()
+        })
+    }
+
+    // ── Abrir y cerrar ─────────────────────────────────────────────────────
+    function aplicar(id: string | null) {
+      if (id === actual) return
+      if (id && !direcciones.has(id)) {
+        // Dirección manipulada o producto que ya no está: se cierra la capa en
+        // vez de dejar el catálogo bloqueado con un diálogo vacío.
+        cerrar()
+        return
+      }
+      if (id) {
+        if (!actual) foco = document.activeElement as HTMLElement
+        actual = id
+        capa.hidden = false
+        caja.setAttribute('aria-label', 'Ficha técnica')
+        cargar(id)
+        cerrarBoton.focus()
+        return
+      }
+      actual = null
+      capa.hidden = true
+      cuerpo.replaceChildren()
+      if (foco) {
+        foco.focus()
+        foco = null
+      }
+    }
+
+    // ── El clic de la tarjeta ──────────────────────────────────────────────
+    // Sin JavaScript, con clic medio o con "abrir en pestaña nueva", el mismo
+    // enlace lleva a la página propia del producto, que es la indexable.
+    catalogo.addEventListener('click', (evento) => {
+      if (evento.defaultPrevented || evento.button !== 0) return
+      if (evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.altKey) return
+      const enlace = (evento.target as Element | null)?.closest<HTMLElement>('a[data-abre-ficha]')
+      const id = enlace?.dataset.abreFicha
+      if (!id || !window.catalogo) return
+      evento.preventDefault()
+      window.catalogo.abrirFicha(id)
+    })
+
+    // Adelantar la ficha: la petición sale antes que el clic y la ficha suele
+    // estar lista cuando se abre.
+    const adelantar = (evento: Event) => {
+      const enlace = (evento.target as Element | null)?.closest<HTMLElement>('a[data-abre-ficha]')
+      const id = enlace?.dataset.abreFicha
+      if (id && !cache.has(id)) traer(id).catch(() => {})
+    }
+    // Con el puntero se espera a que se quede: barrer el ratón por la grilla
+    // dispararía `pointerover` en las 126 tarjetas y pediría el catálogo entero.
+    // Un toque, en cambio, ya es intención: ahí se adelanta de una.
+    let intencion = 0
+    catalogo.addEventListener('pointerover', (evento) => {
+      clearTimeout(intencion)
+      intencion = window.setTimeout(() => adelantar(evento), 140)
+    })
+    catalogo.addEventListener('pointerout', () => clearTimeout(intencion))
+    catalogo.addEventListener('touchstart', adelantar, {passive: true})
+
+    capa.querySelectorAll<HTMLElement>('[data-cierra-ficha]').forEach((el) => {
+      el.addEventListener('click', cerrar)
+    })
+
+    habilitarArrastre(caja, {asa: '[data-asa-ficha]', cerrar})
+
+    vivo = {capa, abierta: () => actual !== null, cerrar, aplicar}
+
+    // El catálogo puede haber aplicado su estado antes de que este módulo
+    // cargara (dirección con `#diseno=…`): se sincroniza al enganchar.
+    aplicar(window.catalogo?.estado().ficha ?? null)
+  }
+
+  // Los dos oyentes de abajo viven en `document`, que sobrevive al cambio de
+  // página: se registran UNA vez y consultan la capa viva. Registrarlos dentro
+  // de `iniciar()` los duplicaría al volver al catálogo (defecto 14 de la fase 2).
+  document.addEventListener('catalogo:capa', (evento) => {
+    vivo?.aplicar((evento as CustomEvent<{ficha: string | null}>).detail.ficha)
+  })
+
+  // La capa ocupa la pantalla entera: tabular no puede llevar el foco al
+  // contenido de atrás, que no se ve. Un solo oyente para toda la sesión.
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Tab' || !vivo || !vivo.abierta()) return
+    const focales = [
+      ...vivo.capa.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled])'),
+    ].filter((el) => !el.closest('[hidden]'))
+    if (!focales.length) return
+    const primero = focales[0]
+    const ultimo = focales[focales.length - 1]
+    const activo = document.activeElement
+    if (!vivo.capa.contains(activo)) {
+      evento.preventDefault()
+      primero.focus()
+    } else if (!evento.shiftKey && activo === ultimo) {
+      evento.preventDefault()
+      primero.focus()
+    } else if (evento.shiftKey && activo === primero) {
+      evento.preventDefault()
+      ultimo.focus()
+    }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    vivo = null
+  })
+
+  iniciarGaleria()
+  iniciar()
+  document.addEventListener('astro:page-load', () => {
+    iniciarGaleria()
+    iniciar()
+  })
+</script>

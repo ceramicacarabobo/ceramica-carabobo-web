@@ -146,3 +146,24 @@ que introduce la ejecución (registrados acá como manda §9):
    el video. Si están las dos, gana el `.mp4` propio, porque lo servimos nosotros y no mete a un
    tercero en la página. El adaptador resuelve cuál aplica y entrega `video.tipo`; el componente no
    parsea URLs ni conoce YouTube más allá de ese valor.
+
+## 12. Registro de ejecución — Fase 3 (2026-08-25)
+
+1. **El overlay de la ficha no dibuja una segunda ficha: se trae la página del producto.** Cada
+   producto tiene página propia estática e indexable (`/catalogo/<slug>`, decisión cerrada del anexo
+   §3-4 de `modelo-de-contenido.md`), y el overlay del catálogo pide esa página por `fetch` y se
+   queda con su bloque `[data-ficha]`. Es una petición a nuestro propio origen y a un archivo
+   estático: no toca la autosuficiencia (§3.3) ni mete `cdn.sanity.io` en el cliente. Las
+   alternativas eran incrustar las 126 fichas en el HTML del catálogo (+300 KB y ~5.000 nodos sobre
+   una página que ya pesa 256 KB) o dibujarlas en el navegador, que habría exigido URLs del CMS en
+   el cliente. Efecto de fondo: overlay y página propia **son el mismo HTML** y no pueden divergir.
+   Si el `fetch` falla, la capa se aparta y el enlace navega — la misma degradación que sin
+   JavaScript. Detalle y alternativas descartadas en `docs/fase-3-catalogo.md`, decisión 12.
+2. **El estilo de la ficha es CSS global** (`src/components/catalogo/ficha.css`), única excepción a
+   los estilos con scope del proyecto: el marcado que entra por `innerHTML` no lleva el atributo de
+   scope que Astro le pone al que compila. Por lo mismo, las acciones de la ficha no usan la
+   primitiva `Boton`.
+3. **Nunca se le pide a `astro:assets` un ancho mayor que el del archivo.** Agrandar no gana nitidez
+   y multiplica el build: en el catálogo, el recorte bajó el build de 1.411 imágenes a 967. La
+   primitiva `base/Imagen.astro` sigue sin ese recorte y le aplica el mismo defecto — anotado como
+   pendiente de la cáscara.

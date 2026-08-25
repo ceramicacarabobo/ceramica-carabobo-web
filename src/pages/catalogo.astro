@@ -6,11 +6,12 @@
  * hero, buscador y cierre. Toda la lógica de filtros, orden, bloques de 24 y
  * contrato de dirección vive en `~/components/catalogo/`.
  *
- * La ficha de producto (bloque 3.4) NO se dibuja acá: el catálogo deja el
- * enganche listo —cada tarjeta enlaza a `/catalogo/<slug>` y `window.catalogo`
- * expone `abrirFicha(id)`— documentado en `components/catalogo/direccion.ts`.
+ * La ficha de producto (bloque 3.4) llega en dos formas: la página propia de
+ * cada producto (`pages/catalogo/[slug].astro`, indexable) y `CapaFicha`, el
+ * overlay que la abre sobre la grilla trayendo esa misma página.
  */
 import Base from '~/layouts/Base.astro'
+import CapaFicha from '~/components/catalogo/CapaFicha.astro'
 import Catalogo from '~/components/catalogo/Catalogo.astro'
 import Cierre from '~/components/catalogo/Cierre.astro'
 import HeroCatalogo from '~/components/catalogo/HeroCatalogo.astro'
@@ -27,4 +28,5 @@ const NOMBRE = 'Catálogo'
   <HeroCatalogo hero={pagina.hero} nombrePagina={NOMBRE} />
   <Catalogo productos={productos} />
   <Cierre cierre={pagina.cierre} />
+  <CapaFicha />
 </Base>

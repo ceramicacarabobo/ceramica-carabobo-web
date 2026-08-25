@@ -178,9 +178,11 @@ const iconoFiltrar = [
           <p class="barra__contador" aria-live="polite" data-contador>{plural(resultado.length, 'producto', 'productos')}</p>
           <label class="barra__orden">
             Ordenar
-            <select data-orden aria-label="Ordenar el catálogo">
-              {ORDENES.map((o) => <option value={o.valor} selected={o.valor === ORDEN_INICIAL}>{o.label}</option>)}
-            </select>
+            <span class="barra__caja">
+              <select data-orden aria-label="Ordenar el catálogo">
+                {ORDENES.map((o) => <option value={o.valor} selected={o.valor === ORDEN_INICIAL}>{o.label}</option>)}
+              </select>
+            </span>
           </label>
         </div>
 
@@ -550,11 +552,39 @@ const iconoFiltrar = [
     color: var(--color-text-secondary);
   }
 
+  /* Área tocable de 44px sin mover la maqueta (`Responsividad v0` §04: "si el
+     elemento visible es más chico, se extiende el área con padding, no se
+     agranda el dibujo"). El dibujo del control sigue midiendo los 36px de
+     `--control-height-sm` que pide el prototipo y lo pinta este contenedor; el
+     `<select>` mide 44 y se sale 4px por arriba y por abajo con margen negativo,
+     así que ocupa lo mismo en el flujo. Mismo criterio que las pestañas de
+     Ambientes, con contenedor en vez de `::after` porque un elemento
+     reemplazado no admite pseudo-elementos. */
+  .barra__caja {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: var(--control-height-sm);
+  }
+
+  .barra__caja::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: var(--border-width) solid var(--color-border-hairline);
+    border-radius: var(--radius-sm);
+    pointer-events: none;
+  }
+
   .barra__orden select {
-    min-height: var(--control-height-sm);
+    height: var(--control-height-md);
+    margin-block: calc((var(--control-height-sm) - var(--control-height-md)) / 2);
     padding-inline: var(--space-3);
     background: transparent;
-    border: var(--border-width) solid var(--color-border-hairline);
+    /* Transparente y no `0`: el borde sigue ocupando su pixel, así que la caja
+       del control mide exactamente lo mismo que antes y la barra no se mueve.
+       El que se ve lo pinta `.barra__caja::before`. */
+    border: var(--border-width) solid transparent;
     border-radius: var(--radius-sm);
     color: var(--color-text-primary);
     font: 400 0.8125rem/normal var(--font-body);
@@ -660,7 +690,11 @@ const iconoFiltrar = [
     display: flex;
     flex-direction: column;
     background: var(--color-surface-base);
-    animation: hoja-entra var(--dur-base) var(--ease-out) both;
+    /* `backwards` y no `both`: la animación con relleno hacia adelante seguiría
+       aplicando su último fotograma al terminar, y una animación gana sobre el
+       `style` en línea — el arrastre para cerrar movería la hoja sin que se
+       viera. Mismo motivo en `ficha.css`. */
+    animation: hoja-entra var(--dur-base) var(--ease-out) backwards;
     touch-action: pan-y;
   }
 
@@ -927,6 +961,7 @@ const iconoFiltrar = [
     totalSeleccionado,
   } from './filtrar'
   import type {Eje, Orden, ProductoFiltrable} from './filtrar'
+  import {habilitarArrastre} from './arrastre'
   import {cerrarPorHistorial, estadoDeHash, estadoInicial, sincronizarURL} from './direccion'
   import type {Capa, EstadoCatalogo} from './direccion'
 
@@ -1228,52 +1263,9 @@ const iconoFiltrar = [
     document.querySelectorAll<HTMLElement>('[data-abre-filtros]').forEach((b) => b.addEventListener('click', abrirFiltros))
     document.querySelectorAll<HTMLElement>('[data-cierra-filtros]').forEach((b) => b.addEventListener('click', cerrar))
 
-    // Arrastrar hacia abajo cierra la hoja (`Responsividad v0` §03, "Cierre de las
-    // hojas"): cerrar deja de exigir llegar al aspa, arriba. El área de arrastre es
-    // el asa y la barra de título, nunca el cuerpo — ahí manda el scroll — ni un
-    // botón. Umbral 96px o gesto rápido; si no llega, vuelve a su lugar.
-    {
-      let y0: number | null = null
-      let dy = 0
-      let t0 = 0
-      const dur = () => (reduce.matches ? 1 : 220)
-      hoja.addEventListener('pointerdown', (evento) => {
-        const objetivo = evento.target as HTMLElement
-        if (!objetivo?.closest('[data-asa]') || objetivo.closest('button, a')) return
-        y0 = evento.clientY
-        dy = 0
-        t0 = Date.now()
-        hoja.style.transition = 'none'
-        try {
-          hoja.setPointerCapture(evento.pointerId)
-        } catch {
-          /* el navegador puede negarse: el arrastre sigue funcionando sin captura */
-        }
-      })
-      hoja.addEventListener('pointermove', (evento) => {
-        if (y0 === null) return
-        dy = Math.max(0, evento.clientY - y0)
-        hoja.style.transform = `translateY(${dy}px)`
-      })
-      const soltar = () => {
-        if (y0 === null) return
-        const rapido = dy > 28 && Date.now() - t0 < 260
-        y0 = null
-        hoja.style.transition = `transform ${dur()}ms var(--ease-out)`
-        if (dy > 96 || rapido) {
-          hoja.style.transform = 'translateY(100%)'
-          window.setTimeout(() => {
-            hoja.style.transition = ''
-            hoja.style.transform = ''
-            cerrar()
-          }, dur())
-          return
-        }
-        hoja.style.transform = 'none'
-      }
-      hoja.addEventListener('pointerup', soltar)
-      hoja.addEventListener('pointercancel', soltar)
-    }
+    // Arrastrar hacia abajo cierra la hoja. El gesto vive en `arrastre.ts` porque
+    // la hoja de la ficha (bloque 3.4) usa exactamente el mismo.
+    habilitarArrastre(hoja, {asa: '[data-asa]', cerrar})
 
     // ── Acción al pulgar ───────────────────────────────────────────────────
     let fueraDeCuadro = false

@@ -1,0 +1,211 @@
+---
+/**
+ * "Para reservar una visita" — datos de contacto y mapa de sedes.
+ *
+ * Reflow (`Responsividad v0` §03, fila "Mapa de sedes"): en teléfono los DATOS
+ * van primero y el mapa después; en escritorio, datos a la izquierda y mapa en
+ * una columna pegajosa a la derecha. El orden del documento ya es el de móvil
+ * —la regla de la spec es que el reflow no reordena el DOM— y el escritorio se
+ * limita a recomponerlo en dos columnas.
+ *
+ * Teléfonos y correo son controles de 44px, no enlaces de texto: en teléfono
+ * son la acción real de esta página, y la spec los pide así.
+ *
+ * Contenido defensivo: cada bloque sale solo si su dato está en el CMS, y las
+ * sedes se dibujan tal como vengan (una, dos o ninguna).
+ */
+import Reveal from '~/components/base/Reveal.astro'
+import Seccion from '~/components/base/Seccion.astro'
+import MapaSedes from './MapaSedes.astro'
+import type {Contacto} from '~/lib/data'
+
+interface Props {
+  contacto: Contacto
+  /** Correo de Ajustes: respaldo del de la página. */
+  correoSitio?: string
+}
+
+const {contacto, correoSitio} = Astro.props
+
+const correo = contacto.correo || correoSitio
+const horario = (contacto.horario ?? '').split('\n').filter((linea) => linea.trim() !== '')
+const sedes = contacto.sedes ?? []
+
+const hayDatos = horario.length > 0 || Boolean(correo) || sedes.length > 0
+---
+
+{
+  hayDatos && (
+    <Seccion como="section" class="visita" aria-labelledby={contacto.visitaTitulo ? 'visita-titulo' : undefined}>
+      <div class="visita__grid">
+        <div class="datos">
+          {contacto.visitaTitulo && (
+            <h2 id="visita-titulo" class="datos__titulo">
+              {contacto.visitaTitulo}
+            </h2>
+          )}
+
+          {horario.length > 0 && (
+            <Reveal como="div" class="bloque" indice={0} paso={60}>
+              <p class="overline bloque__rotulo">Horario</p>
+              <p class="bloque__texto">
+                {horario.map((linea, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {linea}
+                  </>
+                ))}
+              </p>
+            </Reveal>
+          )}
+
+          {correo && (
+            <Reveal como="div" class="bloque" indice={1} paso={60}>
+              <p class="overline bloque__rotulo">Correo</p>
+              {contacto.correoTexto && <p class="bloque__texto">{contacto.correoTexto}</p>}
+              <a class="correo" href={`mailto:${correo}`}>
+                {correo}
+              </a>
+            </Reveal>
+          )}
+
+          {sedes.map((sede, indice) => (
+            <Reveal como="div" class="bloque" indice={indice + 2} paso={60}>
+              <p class="overline bloque__rotulo">Dirección {sede.ciudad || sede.nombre}</p>
+              <p class="bloque__texto">{sede.direccion}</p>
+              {sede.telefonoMarcar && (
+                <a class="telefono" href={`tel:${sede.telefonoMarcar}`} data-telefono={indice === 0 ? '' : undefined}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                  </svg>
+                  {sede.telefono}
+                </a>
+              )}
+            </Reveal>
+          ))}
+        </div>
+
+        {/* El pegajoso va en su propia caja: `Reveal` anima con transform y un
+            transform en el mismo elemento le pelea al `position: sticky`. */}
+        <div class="visita__mapa">
+          <Reveal como="div" indice={1} paso={60}>
+            <MapaSedes sedes={sedes} nota={contacto.mapaNota} />
+          </Reveal>
+        </div>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .visita__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 72px);
+    align-items: start;
+  }
+
+  .datos {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .datos__titulo {
+    margin-bottom: clamp(20px, 2.4vw, 28px);
+    font: 300 clamp(1.75rem, 1.45rem + 1.4vw, 2.5rem) / 1.1 var(--font-heading);
+    text-wrap: pretty;
+  }
+
+  /* Filas separadas por hairline: la última cierra el bloque por abajo. */
+  .bloque {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding-block: clamp(18px, 2.2vw, 24px);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .bloque:last-child {
+    border-bottom: var(--border-width) solid var(--color-border-hairline);
+  }
+
+  .bloque__rotulo {
+    color: var(--color-text-secondary);
+  }
+
+  .bloque__texto {
+    font: var(--text-body-base);
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  /* ── Correo y teléfonos: controles, no enlaces de texto ────────────────────
+     `Responsividad v0` §03 los pide como botones de 44px en teléfono, que es
+     donde son la acción de la página. En escritorio el correo recupera la
+     escala editorial del diseño y el teléfono se queda como botón outline. */
+  .correo,
+  .telefono {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height-md);
+    padding-inline: var(--space-4);
+    margin-top: var(--space-1);
+    border: var(--border-width) solid var(--color-action-secondary-border);
+    color: var(--color-action-secondary-text);
+    transition:
+      background-color var(--dur-instant) var(--ease-out),
+      color var(--dur-instant) var(--ease-out);
+  }
+
+  .correo {
+    font: var(--text-body-base);
+    word-break: break-word;
+  }
+
+  .telefono {
+    font: var(--text-nav);
+    letter-spacing: var(--tracking-uppercase-sm);
+    text-transform: uppercase;
+  }
+
+  .correo:hover,
+  .telefono:hover {
+    background: var(--color-action-primary);
+    color: var(--color-action-on-primary);
+  }
+
+  @media (min-width: 760px) {
+    /* El correo vuelve a ser el dato grande del diseño: sin caja, en Work Sans
+       light, con el filete que ya usa el resto del sitio para los enlaces. */
+    .correo {
+      min-height: 0;
+      padding-inline: 0;
+      margin-top: 0;
+      border: 0;
+      border-bottom: var(--border-width) solid rgb(107 15 26 / 0.4);
+      font: 300 clamp(1.125rem, 1rem + 0.5vw, 1.5rem) / 1.25 var(--font-heading);
+      color: var(--color-text-primary);
+    }
+
+    .correo:hover {
+      background: transparent;
+      color: var(--color-text-link);
+      border-bottom-color: var(--color-brand-900);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .visita__grid {
+      grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    /* La columna del mapa acompaña la lectura de los datos. 96px es la altura
+       de la cabecera compacta más aire. */
+    .visita__mapa {
+      position: sticky;
+      top: 96px;
+    }
+  }
+</style>

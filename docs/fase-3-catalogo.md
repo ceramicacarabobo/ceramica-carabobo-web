@@ -10,7 +10,7 @@ y el sitio lo muestra filtrable.*
 | 3.1 | Los 126 productos cargados en Sanity con sus fotos y marcas de ejemplo | ✅ |
 | 3.2 | Página de catálogo: grilla de 24 en 24, cinco filtros combinables, orden y estados vacíos | ✅ |
 | 3.3 | Contrato de URL e historial (filtros sin ensuciar historial, ficha con entrada propia, atrás cierra lo de encima) | ✅ (la ficha, enganchada) |
-| 3.4 | Ficha de producto: overlay en el catálogo y página propia indexable por producto | pendiente |
+| 3.4 | Ficha de producto: overlay en el catálogo y página propia indexable por producto | ✅ |
 | 3.5 | Megamenú de Catálogo enlazando por materia, y las tarjetas del home enlazando a su producto | pendiente |
 | 3.6 | QA: pruebas 05, 06, 07 y 10 del checklist, sumadas a `scripts/qa/aceptacion.mjs` | pendiente |
 
@@ -139,11 +139,78 @@ PLANO=1 PROTO=http://localhost:4500/catalogo-c5.dc.html NUESTRO=http://localhost
 
 #### Abierto para el bloque 3.6
 
-- **El `select` de "Ordenar" mide 36px de alto en teléfono**, que es lo que dibuja el prototipo y lo
-  que `Tokens v0` llama `--control-height-sm`. La prueba 11 exige 44px de banda tocable y hoy solo
-  corre sobre el home, así que no falla. Subirlo a 44 mueve la grilla 8px y rompe la comparación
-  con el prototipo: se decide con dato, no acá.
-- Plegar `scripts/qa/prueba-05.mjs` a `scripts/qa/aceptacion.mjs`.
+- Plegar `scripts/qa/prueba-05.mjs` y `scripts/qa/prueba-06-07.mjs` a `scripts/qa/aceptacion.mjs`.
+
+**Cerrado el 2026-08-25 — el `select` de "Ordenar" ya mide 44px tocables.** Medía 36 de alto, que es
+lo que dibuja el prototipo y lo que `Tokens v0` llama `--control-height-sm`, y subirlo a 44 movía la
+grilla 8px. La regla de `Responsividad v0` §04 no pide agrandarlo: *"si el elemento visible es más
+chico, se extiende el área con padding, no se agranda el dibujo"*. El dibujo (borde y radio) pasó a
+un contenedor `.barra__caja` de 36px y el `<select>` mide 44 con margen vertical negativo de 4px, así
+que se sale del contenedor sin ocupar nada en el flujo. Es el mismo criterio que ya usaban las
+pestañas de Ambientes, con contenedor en vez de `::after` porque un elemento reemplazado no admite
+pseudo-elementos. La maqueta no se movió: el diff siguió en 0,09% / 0,11%.
+
+### Bloque 3.4 — la ficha de producto, en sus dos formas (2026-08-25)
+
+**Dónde vive cada cosa.** `src/pages/catalogo/[slug].astro` (las 126 páginas propias) y, en
+`src/components/catalogo/`: `Ficha.astro` (el marcado de la ficha, uno solo para las dos formas),
+`ficha.ts` (las filas de la tabla y la regla de la fila vacía), `ficha.css` (todo el estilo, global),
+`fotos.ts` (procesado de imagen compartido con la tarjeta), `CapaFicha.astro` (el overlay),
+`galeria.ts` (galería y compartir, delegado) y `arrastre.ts` (el gesto de cerrar, que ahora comparten
+la hoja de filtros y la de la ficha).
+
+12. **El overlay se trae la página propia; no hay una segunda ficha** (2026-08-25). La capa pide por
+    `fetch` `/catalogo/<slug>` —que el build ya genera— y se queda con su bloque `[data-ficha]`. Las
+    dos alternativas eran peores: dibujar las 126 fichas escondidas en el catálogo le sumaba más de
+    300 KB y unos 5.000 nodos a un HTML que ya pesa 256 KB, y dibujarlas en el navegador exigía URLs
+    de imagen del CMS en el cliente, que es justo lo que `cdn.sanity.io` nunca en producción prohíbe.
+    Como efecto de fondo, la ficha del overlay y la de la página propia **no pueden divergir**: son
+    el mismo HTML, y la prueba lo comprueba comparando los dos `outerHTML`. La petición es a nuestro
+    origen y a un archivo estático, así que no toca la autosuficiencia; si falla, la capa se aparta y
+    deja que el enlace navegue, que es exactamente lo que pasa sin JavaScript. Para que no se note la
+    espera, la ficha se adelanta al posarse el puntero (con 140ms de intención, para que barrer el
+    ratón por la grilla no pida las 126) o al primer toque.
+13. **El estilo de la ficha es CSS global, y es la única excepción del proyecto** (2026-08-25). El
+    marcado que entra por `innerHTML` no lleva el atributo de scope que Astro le pone al que compila,
+    así que un `<style>` con scope no lo alcanzaría. Por la misma razón la ficha no usa la primitiva
+    `Boton`: sus acciones son `.ficha__cta`, con los valores del prototipo, y no dependen de que el
+    CSS de otro componente esté presente en la página que recibe el HTML.
+14. **Una sola anatomía para el Modal y la Hoja, conmutada por media query** (2026-08-25).
+    `Responsividad v0` §03 pide dos anatomías distintas (diálogo de 880px con split imagen+tabla;
+    hoja a pantalla completa con acciones ancladas al pie), pero el marcado es uno: bajo 760px es un
+    flex en columna con las acciones en `position: sticky; bottom: 0`, y de 760 para arriba un grid
+    de dos columnas donde las acciones caen al pie de la segunda. El aspa de 44px es **el mismo
+    botón** en los dos casos y solo cambia de sitio. Sin esto habría que mover nodos con JavaScript
+    al cruzar el breakpoint, que es exactamente lo que el handoff manda no hacer.
+15. **"Rendimiento" se escribe con la unidad del sitio, no con la de la planilla** (2026-08-25). El
+    prototipo muestra "1,77 MT2" porque repite el texto crudo del archivo del cliente; el modelo
+    guarda `mtsCaja` como número, así que la ficha formatea "1,77 m²" con el separador decimal de
+    es-VE. Es la única fila donde el texto se aparta del prototipo, y es a propósito.
+16. **Las miniaturas no tienen imagen propia** (2026-08-25). Reusan el `srcset` de la foto grande con
+    otro `sizes`, así que el navegador elige el candidato chico — el mismo archivo que ya bajó para
+    la foto. Con ancho propio habrían sido 216 imágenes más en el build para un cuadro de 100px.
+17. **Nunca se le pide a `astro:assets` un ancho mayor que el archivo** (2026-08-25). Agrandar no
+    agrega un pixel de nitidez y sí multiplica el build: de los 72 archivos distintos del catálogo,
+    38 miden menos de 800px de ancho, y se les estaban generando variantes de 800 y 1200 agrandadas.
+    Con el recorte, el build pasó de 1.411 imágenes a 967. La tarjeta y la ficha además comparten la
+    URL de origen (`FUENTE = 1200` en `fotos.ts`), así que los anchos que tienen en común se generan
+    una sola vez en vez de dos. **La primitiva `base/Imagen.astro` sigue sin este recorte**: es de la
+    cáscara y quedó fuera del alcance de este bloque, pero le aplica el mismo defecto.
+
+#### Coste de build de las 126 páginas (medido 2026-08-25)
+
+| | Imágenes generadas | Páginas |
+|---|---|---|
+| Antes del bloque 3.4 | 760 | 6 |
+| Primer intento (sin recortar anchos) | 1.411 | 132 |
+| Con la decisión 16 y la 17 | **967** | **132** |
+
+Las 126 páginas nuevas suman **207 imágenes** al build, no las 651 del primer intento: el recorte de
+anchos y el reuso del juego de la foto grande en las miniaturas se comen casi todo el crecimiento.
+Los números de tiempo están más abajo, con su advertencia: **la máquina donde se midió tiene 2
+núcleos y 3,9 GB de RAM**, y el codificador de AVIF llega a tardar 20 segundos en una sola foto de
+2400px. Los 33 segundos que registraba la fase 3 eran de un build con la caché de imágenes CALIENTE
+— nunca fueron el coste de generar las 760.
 
 ## Estado del dato cargado (2026-08-25)
 

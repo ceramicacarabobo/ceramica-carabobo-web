@@ -1,0 +1,117 @@
+---
+/**
+ * Acción al pulgar de la página de Contacto (`Responsividad v0` §03, fila
+ * "Acción al pulgar"): **Llamar**.
+ *
+ * Solo en teléfono, y solo mientras el botón de llamar del contenido está fuera
+ * de cuadro: aparece cuando la acción original se fue de pantalla y se retira al
+ * llegar al pie, donde el mismo botón vuelve a estar a la vista. Nunca es
+ * navegación — los destinos siguen en el menú.
+ *
+ * Que se muestre o no depende de un IntersectionObserver, no de un breakpoint
+ * en JS: el rango lo decide la media query de acá abajo, como manda la spec.
+ */
+import Boton from '~/components/base/Boton.astro'
+
+interface Props {
+  /** Teléfono ya normalizado para marcar (+58…). Sin él no hay barra. */
+  telefono?: string
+}
+
+const {telefono} = Astro.props
+---
+
+{
+  telefono && (
+    <div class="pulgar" data-pulgar hidden>
+      <Boton class="pulgar__boton" variante="primary" href={`tel:${telefono}`} ancho>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+        </svg>
+        Llamar a la planta
+      </Boton>
+    </div>
+  )
+}
+
+<style>
+  /* En tablet y escritorio la acción vive en el contenido y en la cabecera:
+     la barra no existe (fila "Acción al pulgar" de Responsividad v0). */
+  .pulgar {
+    display: none;
+  }
+
+  @media (max-width: 759px) {
+    .pulgar {
+      display: block;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: var(--z-scrim);
+      /* Área segura del sistema: la barra no puede quedar bajo el gesto de iOS. */
+      padding: var(--space-3) var(--space-5) calc(var(--space-3) + env(safe-area-inset-bottom));
+      background: var(--color-surface-base);
+      border-top: var(--border-width) solid var(--color-border-hairline);
+      animation: pulgar-entra var(--dur-base) var(--ease-out) both;
+    }
+
+    .pulgar[hidden] {
+      display: none;
+    }
+
+    .pulgar :global(.pulgar__boton) {
+      min-height: var(--control-height-lg);
+    }
+  }
+
+  @keyframes pulgar-entra {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulgar {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function activarPulgar() {
+    const barra = document.querySelector<HTMLElement>('[data-pulgar]')
+    const enLinea = document.querySelector<HTMLElement>('[data-telefono]')
+    const pie = document.querySelector('footer')
+    if (!barra || !enLinea || barra.dataset.enganchada === '') return
+    barra.dataset.enganchada = ''
+
+    if (!('IntersectionObserver' in window)) return
+
+    let fueraDeCuadro = false
+    let enElPie = false
+    const aplicar = () => {
+      barra.hidden = !(fueraDeCuadro && !enElPie)
+    }
+
+    new IntersectionObserver((entradas) => {
+      fueraDeCuadro = !entradas[0].isIntersecting
+      aplicar()
+    }).observe(enLinea)
+
+    if (pie) {
+      new IntersectionObserver((entradas) => {
+        enElPie = entradas[0].isIntersecting
+        aplicar()
+      }).observe(pie)
+    }
+  }
+
+  activarPulgar()
+  document.addEventListener('astro:page-load', activarPulgar)
+</script>

@@ -1,0 +1,203 @@
+---
+/**
+ * Ficha de diseño — bloque 3.4 de la fase 3.
+ *
+ * Un solo marcado para las DOS formas que exige el proyecto:
+ *   · la página propia `/catalogo/<slug>`, indexable, con canonical y OG suyos;
+ *   · el overlay que el catálogo abre sobre la grilla sin recargar.
+ *
+ * El overlay no vuelve a dibujar nada: pide por `fetch` la página del producto y
+ * se queda con este bloque (ver `CapaFicha.astro`). Por eso el marcado tiene que
+ * bastarse solo —sin estilos con scope y sin scripts propios— y por eso los
+ * datos que el navegador necesita viajan en `data-*`: el texto para compartir se
+ * arma acá, con el nombre del sitio que da el CMS, y nunca en el script.
+ *
+ * El reflow (imagen arriba y acciones al pie en teléfono; split de 880px en
+ * escritorio) es todo de `ficha.css`, por media query.
+ */
+import type {Producto} from '~/lib/data'
+import {visualEditingHabilitado} from '~/lib/data'
+import {posicionFocal} from '~/lib/imagenes'
+import {ANCHOS_FICHA, SIZES_FICHA, SIZES_MINIATURA, juegoDeFoto, srcset} from './fotos'
+import {antetituloDeFicha, filasDeFicha, nombreLargo} from './ficha'
+import './ficha.css'
+
+interface Props {
+  producto: Producto
+  /** Nombre del sitio (del CMS). Es lo único de marca que entra a la ficha. */
+  nombreSitio: string
+  /** La página propia titula con `h1`; el overlay dibuja un diálogo aparte. */
+  nivel?: 1 | 2
+  /** En la página propia la foto es lo primero que se ve. */
+  prioridad?: boolean
+}
+
+const {producto, nombreSitio, nivel = 1, prioridad = false} = Astro.props as Props
+
+const filas = filasDeFicha(producto)
+const largo = nombreLargo(producto)
+const Titulo = nivel === 1 ? 'h1' : 'h2'
+
+// Máximo cuatro fotos, como el prototipo: la galería de la ficha no es un
+// carrusel infinito y el quinto ambiente no aporta.
+const fotos = producto.fotos.slice(0, 4)
+
+const juegos = await Promise.all(
+  fotos.map(async (foto) => ({foto, grande: await juegoDeFoto(foto, ANCHOS_FICHA, SIZES_FICHA)})),
+)
+
+const compartir = `${largo} — ${nombreSitio}`
+---
+
+<article
+  class="ficha"
+  data-ficha
+  data-ficha-id={producto.id}
+  data-ficha-titulo={compartir}
+  data-ficha-aria={`Ficha técnica de ${largo}`}
+>
+  <div class="ficha__media">
+    <span class="ficha__marco">
+      {
+        juegos.length === 0 ? (
+          /* Sin foto no se inventa una: 29 productos del catálogo real todavía
+             no tienen ninguna, y es un hueco de material, no un error. */
+          <span class="ficha__sinfoto" aria-hidden="true" />
+        ) : (
+          juegos.map(({foto, grande}, i) => (
+            <span
+              class="ficha__foto"
+              data-foto={String(i)}
+              data-activa={i === 0 ? '' : undefined}
+              style={`--focal: ${posicionFocal(foto)}`}
+            >
+              <picture>
+                <source srcset={srcset(grande.avif)} sizes={SIZES_FICHA} type="image/avif" />
+                <source srcset={srcset(grande.webp)} sizes={SIZES_FICHA} type="image/webp" />
+                <img
+                  src={grande.jpg.src}
+                  srcset={grande.jpg.srcSet.values.length > 0 ? grande.jpg.srcSet.attribute : undefined}
+                  sizes={SIZES_FICHA}
+                  alt={foto.alt || `${largo}`}
+                  width={grande.jpg.attributes.width}
+                  height={grande.jpg.attributes.height}
+                  loading={prioridad && i === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={prioridad && i === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                />
+              </picture>
+              {
+                /* Aviso interno. Solo se RENDERIZA en el build de preview del
+                   admin (el único con visual editing encendido): en producción
+                   no está escondido, no existe en el HTML. */
+                visualEditingHabilitado && foto.esEjemplo && (
+                  <span class="ficha__ejemplo">Foto de ejemplo</span>
+                )
+              }
+            </span>
+          ))
+        )
+      }
+    </span>
+
+    {
+      juegos.length > 1 && (
+        <div class="ficha__miniaturas" role="group" aria-label="Fotos del diseño">
+          {juegos.map(({foto, grande}, i) => (
+            <button
+              type="button"
+              class="ficha__mini"
+              data-mini={String(i)}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              aria-label={foto.alt || `Foto ${i + 1} de ${largo}`}
+            >
+              {/* Mismo juego que la foto grande, con otro `sizes`: el navegador
+                  elige el candidato chico y, si ya lo bajó para la foto, ni
+                  siquiera vuelve a pedirlo. */}
+              <picture>
+                <source srcset={srcset(grande.avif)} sizes={SIZES_MINIATURA} type="image/avif" />
+                <source srcset={srcset(grande.webp)} sizes={SIZES_MINIATURA} type="image/webp" />
+                <img
+                  src={grande.jpg.src}
+                  srcset={grande.jpg.srcSet.values.length > 0 ? grande.jpg.srcSet.attribute : undefined}
+                  sizes={SIZES_MINIATURA}
+                  alt=""
+                  width={grande.jpg.attributes.width}
+                  height={grande.jpg.attributes.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </button>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="ficha__panel">
+    <div class="ficha__encabezado">
+      <p class="ficha__antetitulo">Ficha técnica · {antetituloDeFicha(producto)}</p>
+      <Titulo class="ficha__nombre">{producto.nombre}</Titulo>
+    </div>
+
+    {/* Tabla de specs (`Primitivas v1` §06). Las filas sin dato no llegan acá. */}
+    <dl class="ficha__tabla">
+      {
+        filas.map((fila) => (
+          <div class="ficha__fila">
+            <dt class="ficha__k">{fila.k}</dt>
+            <dd class="ficha__v">{fila.v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="ficha__acciones">
+    {/* El compartir nace oculto y lo destapa el script (`galeria.ts`): sin
+        JavaScript no hay portapapeles ni hoja del sistema, y un control que no
+        hace nada es peor que ninguno. */}
+    <span class="ficha__compartir" data-compartir-caja hidden>
+      <button
+        type="button"
+        class="ficha__compartir-boton"
+        data-compartir
+        aria-expanded="false"
+        aria-label="Compartir este diseño"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+        </svg>
+      </button>
+      <span class="ficha__menu" role="menu" data-menu-compartir hidden>
+        <button type="button" class="ficha__menu-item" role="menuitem" data-copiar data-copiado="Enlace copiado">
+          Copiar enlace
+        </button>
+        <a class="ficha__menu-item" role="menuitem" data-whatsapp href="https://wa.me/" target="_blank" rel="noopener">
+          Enviar por WhatsApp
+        </a>
+      </span>
+    </span>
+
+    <a class="ficha__cta ficha__cta--fill" href="/donde-comprar">Ver en tienda</a>
+    <a class="ficha__cta" href="/contacto">Consultar</a>
+  </div>
+</article>
+
+<script>
+  /**
+   * La galería y el compartir de la ficha, cuando la ficha es la PÁGINA PROPIA.
+   * En el catálogo el mismo módulo lo carga `CapaFicha.astro`: los oyentes son
+   * delegados en `document` y se registran una sola vez, así que da igual quién
+   * de los dos llegue primero.
+   */
+  import {iniciarGaleria} from './galeria'
+
+  iniciarGaleria()
+  document.addEventListener('astro:page-load', iniciarGaleria)
+</script>
