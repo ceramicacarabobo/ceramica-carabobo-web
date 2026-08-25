@@ -118,6 +118,13 @@ const etiquetaBoton = video?.titulo
       <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
         {portada && (
           <Reveal como="div" class="profesionales__marco" data-portada={esPortadaDeVideo ? 'video' : undefined}>
+            {
+              esPortadaDeVideo && (
+                <div class="profesionales__relleno" aria-hidden="true">
+                  <Imagen imagen={portada} sizes="(min-width: 760px) 50vw, 100vw" ancho={760} />
+                </div>
+              )
+            }
             <Imagen imagen={portada} sizes="(min-width: 760px) 50vw, 100vw" class="profesionales__foto" />
             {video && (
               <button
@@ -215,6 +222,28 @@ const etiquetaBoton = video?.titulo
    */
   .profesionales :global(.profesionales__marco[data-portada='video']) {
     background: var(--color-surface-inverse-deep);
+  }
+
+  /*
+   * Relleno desenfocado: una copia del mismo fotograma, ampliada y borrosa,
+   * ocupa el sobrante en vez de dejar bandas negras. Es el recurso que usan los
+   * reproductores cuando la proporción del video no calza con su caja, y aquí
+   * evita las dos cosas malas: recortar el fotograma o enmarcarlo en negro.
+   * Es decorativo, así que va oculto para lectores de pantalla.
+   */
+  .profesionales__relleno {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .profesionales__relleno :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.15);
+    filter: blur(28px) saturate(1.1) brightness(0.62);
   }
 
   .profesionales :global(.profesionales__marco[data-portada='video'] .profesionales__foto) {
