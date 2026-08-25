@@ -193,6 +193,7 @@ const pestanas = ambientes.pestanas
     display: inline-flex;
     align-items: center;
     padding-block: 4px;
+    padding-inline: 0;
     background: transparent;
     border: 0;
     border-bottom: 1px solid transparent;
@@ -204,8 +205,8 @@ const pestanas = ambientes.pestanas
     text-transform: uppercase;
     color: var(--color-text-muted);
     transition:
-      color var(--dur-base) var(--ease-out),
-      border-color var(--dur-base) var(--ease-out);
+      color var(--dur-respuesta) var(--ease-respuesta),
+      border-color var(--dur-respuesta) var(--ease-respuesta);
   }
 
   /* Área tocable mínima 44px sin inflar la fila: el prototipo mide ~24px de
