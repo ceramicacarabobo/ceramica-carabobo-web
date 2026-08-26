@@ -1,0 +1,4013 @@
+{
+  "fuente": "https://ceramica-carabobo.com",
+  "ubicado": "2026-08-26T04:42:22.404Z",
+  "resumen": {
+    "total": 247,
+    "cargables": 226,
+    "parciales": 21,
+    "conCoordenada": 106,
+    "porPlusCode": 80,
+    "porDireccion": 26,
+    "sinCoordenada": 120,
+    "descartadas": 52,
+    "pedidosANominatim": 77
+  },
+  "descartadas": [
+    {
+      "nombre": "CERAMICONI AYACUCHO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av las Casuarinas 111, Ayacucho 05001, Perú"
+    },
+    {
+      "nombre": "INVERSIONES ROSDANY, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui"
+    },
+    {
+      "nombre": "CERAMICMANIA, C.A.",
+      "motivo": "Plus Code sin ciudad de referencia",
+      "q": "58HF+P9H, Av. Intercomunal, Lechería 6016, Anzoátegui"
+    },
+    {
+      "nombre": "FERRETERIA EPA C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Intercomunal Jorge Rodríguez, Lechería 6016, Anzoátegui"
+    },
+    {
+      "nombre": "IMPORTLLANO CERAMICAS, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui"
+    },
+    {
+      "nombre": "CERAMIPLUS, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Nro. 09 4ta Avenida, Maracay 2101, Aragua"
+    },
+    {
+      "nombre": "KSA HOME CENTER,C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "PARCELA 22A, LOTE 1 Av. Intercomunal Santiago Mariño, Turmero 2115, Aragua"
+    },
+    {
+      "nombre": "CADELMA BARINAS C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida 23 de Enero, al frente del Parque La Federación, Barinas 5201, Barinas"
+    },
+    {
+      "nombre": "MAQUINARIAS DOMO, S.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "sector, Carretera Nacional Vía Guanare, Barinas 5213, Barinas"
+    },
+    {
+      "nombre": "CENTRO CERAMICO REYFECA 3 C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar"
+    },
+    {
+      "nombre": "CENTRO CERAMICO REYFECA 2 C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar"
+    },
+    {
+      "nombre": "FERRETERIA PRINCIPAL PZO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Carril de Servicio, Ciudad Guayana 8051, Bolívar"
+    },
+    {
+      "nombre": "FERRE-MAX, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Frente al Comando de la Guardia Nacional, Av. Caracas, Ciudad Guayana 8050, Bolívar"
+    },
+    {
+      "nombre": "JADEL CONSTRUYE, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo"
+    },
+    {
+      "nombre": "INVERSIONES GALPE 2021, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "via principal el roble, Los Guayos, Valencia, Los Guayos, Carabobo"
+    },
+    {
+      "nombre": "K.B. CERAMICAS, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "C. Córdova, Puerto Cabello 2050, Carabobo"
+    },
+    {
+      "nombre": "JADEL, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo"
+    },
+    {
+      "nombre": "ACEROHIERRO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "local 112-91, calle N 7 Avenida Enrique Tejera, Valencia 2001, Carabobo"
+    },
+    {
+      "nombre": "CERAMICAS EL MORRO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Distribuidor San Blas, Finalizando la Avenida Lara, Nro 84-85. Locales 1 y 2. A 200 metros del, Valencia 2001, Carabobo"
+    },
+    {
+      "nombre": "DISTRIBUIDORA MSG 77, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "CARABOBO VALENCIA Avenida 104 Soublette, Valencia 2001, Valencia 0241, Carabobo"
+    },
+    {
+      "nombre": "EL MAR DE LA CERAMICA, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Intercomunal de San Diego, Sector 2do. Semáforo del Big Low Center, Edificio Celta, locales 1 y 2. San Diego Estado Carabobo. Venezuela. Teléfonos: 58 241 871.68.94 - 49.17 - 54.47 - 75.96 - 72.65 - 45.95, Avenida 71, San Diego, Carabobo"
+    },
+    {
+      "nombre": "FERRE-VENTE, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "C.C. Mañongo, Urb. Valencia,, Av. 168 Salvador Feo La Cruz Este - Oeste Naguanagua, Valencia 2005, Carabobo"
+    },
+    {
+      "nombre": "FERREPISCINA, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Sector La Luz Autopista Barbula Guacara, cerca del dist La Cumaca, San Diego 2005, Carabobo"
+    },
+    {
+      "nombre": "FERRETERIA EPA C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo"
+    },
+    {
+      "nombre": "PROSEVIÑEDO, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Monseñor Adams, calle 161 Casa 104-61 (PROSEIN)"
+    },
+    {
+      "nombre": "AGROCONSTRUCCIONES YAGUA 2000, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Autop. Bárbula - Guacara, Guacara 2015, Carabobo"
+    },
+    {
+      "nombre": "CERAMIESPACIO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda"
+    },
+    {
+      "nombre": "COMERCIAL DECOLORIS,C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Entre la estación del Metro Capuchinos y el elevado de la, urbanización San Juan, Av. San Martín, Caracas 1020, Distrito Capital"
+    },
+    {
+      "nombre": "COMERCIALIZADORA CIMA 261 CA",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "calle Panamerican entre Chile y Bolivia (Nro 28-45). Sector, Caracas 1030, Distrito Capital"
+    },
+    {
+      "nombre": "DISTRIBUIDORA MARACANA S.R.L.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Embajada y Consulado de Austria en Caracas, 1060, Avenida Orinoco, Caracas 1060, Distrito Capital"
+    },
+    {
+      "nombre": "FERRETERIA EPA C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. San Martín, Caracas 2338, Aragua"
+    },
+    {
+      "nombre": "FERRETERIA EPA C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo"
+    },
+    {
+      "nombre": "HABITAT PORCELANATO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida Francisco De Miranda entre calles Barquisimeto, y Valencia, Carora 3050, Lara"
+    },
+    {
+      "nombre": "MEGACERAMICAS Y ALGO MÁS, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "2DA AVEVIDA, ENTRE CALLES CHILE Y C. México, Caracas 1030, Distrito Capital"
+    },
+    {
+      "nombre": "PROSEIN EL BOSQUE",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av Principal del Bosque, Caracas 1060, Distrito Capital"
+    },
+    {
+      "nombre": "PROSEIN EL PARAISO",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "QTA BERTHA, AV. PAEZ, ENTRE PLAZA WASHINGTON Y AV. LOS ESTADIOS, C. Ocho, Caracas, Distrito Capital"
+    },
+    {
+      "nombre": "RUSTICAS TACHIRA, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda"
+    },
+    {
+      "nombre": "EXPO CENTRO CERAMICAS, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av las Casuarinas 111, Ayacucho 05001, Perú"
+    },
+    {
+      "nombre": "FERRECERAMIK 26, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Final Av. Rómulo Gallegos, Caracas 1071, Miranda"
+    },
+    {
+      "nombre": "BENZ CORPORATION, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Torre Valorlta, Av. Rómulo Gallegos, Caracas 1071, Distrito Capital"
+    },
+    {
+      "nombre": "EUROSTONE C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Prolongación 4 de Mayo, Edif Eurostone Piso P/B a 100mts del Semáforo de, Av. La Auyama, Porlamar 6301, Nueva Esparta"
+    },
+    {
+      "nombre": "CERAMICAS CRISTAL, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Centro Comercial Makro, Urb Puerto Madero 4 Sector, Porlamar 6301, Nueva Esparta, Calle El Colegio, Porlamar 6301, Nueva Esparta"
+    },
+    {
+      "nombre": "INVERSIONES ARAGUANEY, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "a media cuadra del terminal, Av. Eduardo Chollet, con Av. Gonzalo Barrios, Acarigua, Portuguesa"
+    },
+    {
+      "nombre": "PROSEIN ACARIGUA C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Av. Cv Sur, Acarigua 3301, Portuguesa"
+    },
+    {
+      "nombre": "CASA DAM, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida Francisco de Caceres, local 10 41, La Grita 5022, Táchira"
+    },
+    {
+      "nombre": "HIERROMO, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "y la Paz, Av. Mexico, entre C. Buenos Aires, Valera 3101, Trujillo"
+    },
+    {
+      "nombre": "PURACERAMICA LITORAL, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "pb. local Nª 9, Av. La Armada, Catia La Mar, La Guaira"
+    },
+    {
+      "nombre": "EL OFERTON GROUP, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "CR 18 entre calles 2 Y 3. Via de servicio Sector pilco Mayo, Yaritagua 3203, Yaracuy"
+    },
+    {
+      "nombre": "CERAMICAS DON BARATON C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Barrio La Sonrisa Puente St. Clara 1, Maracaibo, Zulia"
+    },
+    {
+      "nombre": "DISTRIBUIDORA VERONA 2000, C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Sector el Pescadito, Circunvalación 2, Av 58, Local 99A 31, Maracaibo 4001, Zulia"
+    },
+    {
+      "nombre": "FERRETERIA EPA C.A.",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "Avenida Guajira, Zona Industrial Norte, Maracaibo 4001, Zulia"
+    },
+    {
+      "nombre": "CERAMICAS C1, C.A",
+      "motivo": "la dirección no se encontró en Venezuela",
+      "q": "101 Autop. 1, Maracaibo 4001, Zulia"
+    }
+  ],
+  "distribuidores": [
+    {
+      "slug": "agro-ferremateriales-moroni-c-a",
+      "nombre": "AGRO FERREMATERIALES MORONI C.A)",
+      "direccion": "Quebrada Seca Puertao Ayacucho Amazonas Av Orinoco Local S/N Sector Puerto Ayacucho",
+      "estado": "AMAZONAS",
+      "ciudad": "PUERTO AYACUCHO",
+      "telefono": "0416-6439955 /",
+      "mapa": "M96F+29V, Puerto Ayacucho 7101, Amazonas",
+      "url": "https://ceramica-carabobo.com/agro-ferremateriales-moroni-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 5.660112500000011,
+        "lng": -67.62657812500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramiconi-ayacucho-c-a",
+      "nombre": "CERAMICONI AYACUCHO, C.A.",
+      "direccion": "Calle Cataniapo No. S/N Sector Barrio Cataniapo",
+      "estado": "AMAZONAS",
+      "ciudad": "PUERTO AYACUCHO",
+      "telefono": "0414-4868009 / 0248-5214401",
+      "mapa": "Av las Casuarinas 111, Ayacucho 05001, Perú",
+      "url": "https://ceramica-carabobo.com/ceramiconi-ayacucho-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-ceramica-c-a",
+      "nombre": "DISTRIBUIDORA CERAMICA C A",
+      "direccion": "Av Jorge Rodriguez Cc Vittoria Center Nivel Pb Local 1 Sector Colinas De Neveri",
+      "estado": "ANZOATEGUI",
+      "ciudad": "BARCELONA",
+      "telefono": "0412-8754885 /",
+      "mapa": "58C8+PVC, Av. Intercomunal, Barcelona 6001, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/distribuidora-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.171812500000003,
+        "lng": -64.68285937499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "grupo-decogres-2012-c-a",
+      "nombre": "GRUPO DECOGRES 2012, C.A.",
+      "direccion": "Zona Industrial Los Montones, Av. Raul Leon Galpon Puraceramica",
+      "estado": "ANZOATEGUI",
+      "ciudad": "BARCELONA",
+      "telefono": "0212-3324860 /",
+      "mapa": "Barcelona 6001, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/grupo-decogres-2012-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1325951,
+        "lng": -64.6819583
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "himalaya-baths-tiles-c-a",
+      "nombre": "HIMALAYA BATHS & TILES, C.A",
+      "direccion": "Av Jorge Rodriguez Local Parcela Nro A Sector Las Garzas",
+      "estado": "ANZOATEGUI",
+      "ciudad": "BARCELONA",
+      "telefono": "0424-8132572 / 0281-286993",
+      "mapa": "Av. Intercomunal, Lechería 6016, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/himalaya-baths-tiles-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1815286,
+        "lng": -64.6644798
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferreteria-celma-c-a",
+      "nombre": "FERRETERIA CELMA, C.A.",
+      "direccion": "Av.Francisco De Miranda N°132 Celma Ii Prosein Tigre",
+      "estado": "ANZOATEGUI",
+      "ciudad": "EL TIGRE",
+      "telefono": "0283-2352260 / 0283-2416431",
+      "mapa": "Av. Jesús Subero, El Tigre 6050, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/ferreteria-celma-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.8874128,
+        "lng": -64.2033914
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "inversiones-rosdany-c-a",
+      "nombre": "INVERSIONES ROSDANY, C.A.",
+      "direccion": "Cr 3 Carrera Sur Entre Calles 23 Y 24 Edif Los Chaguaramos Piso P/Baja Local Sin Numero Sector Pueblo Nuevo",
+      "estado": "ANZOATEGUI",
+      "ciudad": "EL TIGRE",
+      "telefono": "0283-2416395 / 0283-2410124",
+      "mapa": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/inversiones-rosdany-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramica-guayana-orientec-a",
+      "nombre": "CERAMICA GUAYANA ORIENTE,C.A.",
+      "direccion": "Av. Intercomunal El Tigre San Jose Guanipa,Zona Industrial Edif. Balestre,Local S/N",
+      "estado": "ANZOATEGUI",
+      "ciudad": "GUANIPA",
+      "telefono": "0283-2415305 / 0283-2412002",
+      "mapa": "VQWH+PGH, Av. Intercomunal, El Tigre 6050, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/ceramica-guayana-orientec-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.896812499999998,
+        "lng": -64.221140625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicmania-c-a",
+      "nombre": "CERAMICMANIA, C.A.",
+      "direccion": "Av Intercomunal Cc Centro Sector Las Garzas",
+      "estado": "ANZOATEGUI",
+      "ciudad": "LECHERIAS",
+      "telefono": "0414-3023609 / 0412-9450454",
+      "mapa": "58HF+P9H, Av. Intercomunal, Lechería 6016, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/ceramicmania-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-18",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av. Intercomunal Sector Las Garzas Frente A La Univ. Santa Maria Pto. La Cruz",
+      "estado": "ANZOATEGUI",
+      "ciudad": "PTO. LA CRUZ",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. Intercomunal Jorge Rodríguez, Lechería 6016, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-18/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "importllano-c-a",
+      "nombre": "IMPORTLLANO C A",
+      "direccion": "Av Caracas Cruce Con Calle Carlos Rodriguez Rincones Edif Imporllano Pios Pb Local 1 Sector Centro",
+      "estado": "APURE",
+      "ciudad": "SAN FERNANDO DE APURE",
+      "telefono": "0414 4169646 /",
+      "mapa": "VGMG+CM6, Av. Caracas, San Fernando de Apure 7001, Apure",
+      "url": "https://ceramica-carabobo.com/importllano-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.883537499999997,
+        "lng": -67.47335937499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "punto-ceramicas-c-a",
+      "nombre": "PUNTO CERAMICAS. C.A.",
+      "direccion": "Av.Carabobo C/C 24 De Julio Local Nro 1 No Aplica Zona Casco Central Edo.Apure",
+      "estado": "APURE",
+      "ciudad": "SAN FERNANDO DE APURE",
+      "telefono": "0247-3410548 / 0247-3412715",
+      "mapa": "VGRH+2P5, Avenida Carabobo, San Fernando de Apure 7001, Apure",
+      "url": "https://ceramica-carabobo.com/punto-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.890012500000001,
+        "lng": -67.47064062499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "importllano-ceramicas-c-a",
+      "nombre": "IMPORTLLANO CERAMICAS, C.A.",
+      "direccion": "Av.Caracas Cc Villa Center Nivel P/B Local 05 Sector Centro San Fernando De Apure Apure",
+      "estado": "APURE",
+      "ciudad": "SAN FERNANDO",
+      "telefono": "0247-3413193 / 0247-3425475",
+      "mapa": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui",
+      "url": "https://ceramica-carabobo.com/importllano-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramiplus-c-a",
+      "nombre": "CERAMIPLUS, C.A.",
+      "direccion": "Calle Mariño Norte Edif Auto Repuestos Victoria Piso Pb Local 103-01- 03 Sector Centro, Cagua Edo. Ara",
+      "estado": "ARAGUA",
+      "ciudad": "ARAGUA",
+      "telefono": "0414-4673356 / 0244-3955795",
+      "mapa": "Nro. 09 4ta Avenida, Maracay 2101, Aragua",
+      "url": "https://ceramica-carabobo.com/ceramiplus-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-rusticas-cagua-c-a",
+      "nombre": "CERAMICAS RUSTICAS CAGUA, C.A.",
+      "direccion": "Calle Mariño Norte Local Nro 103 Sector Centro",
+      "estado": "ARAGUA",
+      "ciudad": "CAGUA",
+      "telefono": "0412-4447564 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-rusticas-cagua-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "mega-precio-2001c-a",
+      "nombre": "MEGA-PRECIO 2001,C.A.",
+      "direccion": "Calle Mariño Casa Nro 1-10-B-1 Sector Barracon",
+      "estado": "ARAGUA",
+      "ciudad": "CAGUA",
+      "telefono": "0424-3230348 /",
+      "mapa": "5GQP+JQH, C. Mariño, Cagua 2122, Aragua",
+      "url": "https://ceramica-carabobo.com/mega-precio-2001c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.189062499999993,
+        "lng": -67.463015625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "distribuidora-de-hierro-el-vigia",
+      "nombre": "DISTRIBUIDORA DE HIERRO EL VIGIA",
+      "direccion": "Av Principal Local Galpon Nro 5 Zona Industrial La Chapa",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0424-7058011 /",
+      "mapa": "Av. Soco, La Victoria 2121, Aragua",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-hierro-el-vigia/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2171832,
+        "lng": -67.3325141
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "migo-charallave-c-a",
+      "nombre": "MIGO CHARALLAVE, C.A.",
+      "direccion": "Calle Paez, Este, Edificio Grupo Migo Local Nro 143-3 Sector El Avion, La Victoria Edo. Aragua",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0244-3214611 / 0244-3225823",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
+      "url": "https://ceramica-carabobo.com/migo-charallave-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.253812499999997,
+        "lng": -67.169515625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "migo-lago-c-a",
+      "nombre": "MIGO LAGO, C.A.",
+      "direccion": "Calle Paez Este Edif Migo No. 143-3 Urb. Las Mercedes Sector 1",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0271-7721527 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/migo-lago-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-lara-c-a",
+      "nombre": "MIGO LARA, C.A.",
+      "direccion": "Calle Paez Este Edif Migo No. 143-3 Urb. Las Mercedes Sector 1",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0251-4451423 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/migo-lara-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-palonegro-c-a",
+      "nombre": "MIGO PALONEGRO, C.A.",
+      "direccion": "Calle Paez Este Edf. Grupo Migo No. 143-3 Sector El Avion",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0244 3214611 /",
+      "mapa": "6MHG+Q9M, La Victoria 2121, Aragua",
+      "url": "https://ceramica-carabobo.com/migo-palonegro-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.229462500000004,
+        "lng": -67.324078125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "migo-sabana-c-a",
+      "nombre": "MIGO SABANA, C.A.",
+      "direccion": "Calle Paez Este Edif Migo No. 143-3 Urb. Las Mercedes Sector 1",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0271-6690040 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/migo-sabana-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-tejerias-c-a",
+      "nombre": "MIGO TEJERIAS, C.A.",
+      "direccion": "Calle Paez Este Sector El Avion",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0244-3343131 / 0244-3343889",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
+      "url": "https://ceramica-carabobo.com/migo-tejerias-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.253812499999997,
+        "lng": -67.169515625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "migo-torondoy-c-a",
+      "nombre": "MIGO TORONDOY, C.A.",
+      "direccion": "Calle Paez Sector Este No. 143-3",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0271-7721357 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/migo-torondoy-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-victoria-c-a",
+      "nombre": "MIGO VICTORIA C.A.",
+      "direccion": "Calle Paez Este Local Edif. Migo Nro 143 Urb Las Mercedes Sector 1 La Victoria",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0424-1006446 /",
+      "mapa": "6MHG+VF8, C. Páez, La Victoria 2121, Aragua",
+      "url": "https://ceramica-carabobo.com/migo-victoria-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.229662500000014,
+        "lng": -67.32379687499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "migoceramicas-c-a",
+      "nombre": "MIGOCERAMICAS, C.A.",
+      "direccion": "Calle Paez Edif.Migo La Victoria",
+      "estado": "ARAGUA",
+      "ciudad": "LA VICTORIA",
+      "telefono": "0244-3213777 / 0244-3225421",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/migoceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-paez-c-a",
+      "nombre": "CERAMICAS PAEZ, C.A",
+      "direccion": "Calle Los Cedros Local Nro 124 Barrio La Libertad",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0243-2474491 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-paez-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "euroceramicas-marino-c-a",
+      "nombre": "EUROCERAMICAS MARIÑO, C.A",
+      "direccion": "Calle Calle Mariño Sur Casa Nro 79",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0243-2461210 / 0243-2452350",
+      "mapa": "69VW+JV5, C. Mariño, Maracay 2103, Aragua",
+      "url": "https://ceramica-carabobo.com/euroceramicas-marino-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2440125,
+        "lng": -67.60276562499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "expo-centro-ceramicas-c-a-2",
+      "nombre": "EXPO CENTRO CERAMICAS, C.A.",
+      "direccion": "Calle Paez Local Nro 41 Sector, Centro",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0412-6102161 / 0412-9669692",
+      "mapa": "6CX2+H4R, C. Paez, Maracay 2101, Aragua",
+      "url": "https://ceramica-carabobo.com/expo-centro-ceramicas-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.248987499999998,
+        "lng": -67.599734375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-17",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av. Intercomunal Santiago Mariño #15 Zona Industrial La Providencia. Maracay",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. Intercomunal Santiago Mariño, Turmero 2115, Aragua",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-17/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2163023,
+        "lng": -67.4928867
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "hierro-santana-c-a",
+      "nombre": "HIERRO SANTANA, C.A.",
+      "direccion": "Calle Independencia Cruce Con Calle Los Rosales Local Galpon Nro 177-A Sector Santa Ana",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0412-8851062/ 0412-8853424 / 0424-3126376/3129534",
+      "mapa": "6CR6+JV6, Calle independencia crucé con Rosales sector santa Ana, Maracay 2103, Aragua",
+      "url": "https://ceramica-carabobo.com/hierro-santana-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.241537500000003,
+        "lng": -67.58785937499998
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "hyperceramica-c-a",
+      "nombre": "HYPERCERAMICA, C.A.",
+      "direccion": "Av.Los Cedros Nro.154",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0243-2357478/2359356 / 0243-2357478",
+      "mapa": "6CR5+49V, Maracay 2103, Aragua",
+      "url": "https://ceramica-carabobo.com/hyperceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.240362500000003,
+        "lng": -67.59157812500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "importadora-menfi-c-a",
+      "nombre": "IMPORTADORA MENFI, C.A",
+      "direccion": "Calle Paez Local Nro 32 Sector",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/importadora-menfi-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "porcelanic-c-a",
+      "nombre": "PORCELANIC, C.A.",
+      "direccion": "Av Los Cedros Local Nro 203 Y 205 Urb Santa Ana",
+      "estado": "ARAGUA",
+      "ciudad": "MARACAY",
+      "telefono": "0414-5876736/04144929772 / 0243-2358243",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/porcelanic-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-tejerias-c-a-2",
+      "nombre": "MIGO TEJERIAS, C.A.",
+      "direccion": "Carretera Panamericana, Sector La Pradera Calle El Palmar Las Tejerias",
+      "estado": "ARAGUA",
+      "ciudad": "TEJERIAS",
+      "telefono": "0244-3341710 / 0244-3343889",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
+      "url": "https://ceramica-carabobo.com/migo-tejerias-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.253812499999997,
+        "lng": -67.169515625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-y-transporte-aragua-c-a",
+      "nombre": "FERRETERIA Y TRANSPORTE ARAGUA C.A",
+      "direccion": "Calle Prolongacion De La Avenida Aragua Casa Nro 39 Zona La Morita I",
+      "estado": "ARAGUA",
+      "ciudad": "TURMERO",
+      "telefono": "0424-3088150 /",
+      "mapa": "6FC3+543, Sector Farenachi, Maracay 2107, Aragua",
+      "url": "https://ceramica-carabobo.com/ferreteria-y-transporte-aragua-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.220387500000005,
+        "lng": -67.54720312500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "inversiones-marmolgres-c-a",
+      "nombre": "INVERSIONES MARMOLGRES, C.A.",
+      "direccion": "Calle Principal Cc El Portal De Valle Lindo Nivel P.B Local 1b Y 4 Urb Valle Lindo",
+      "estado": "ARAGUA",
+      "ciudad": "TURMERO",
+      "telefono": "0424-3230348 /",
+      "mapa": "6G8F+JRQ, Turmero 2115, Aragua",
+      "url": "https://ceramica-carabobo.com/inversiones-marmolgres-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.216587499999996,
+        "lng": -67.47539062500002
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ksa-home-centerc-a",
+      "nombre": "KSA HOME CENTER,C.A.",
+      "direccion": "Av Intercomunal Turmero Casa Parcela 22-A Lote 01 Sector Asentamiento Campesino Villegas",
+      "estado": "ARAGUA",
+      "ciudad": "TURMERO",
+      "telefono": "0412-8685467 /",
+      "mapa": "PARCELA 22A, LOTE 1 Av. Intercomunal Santiago Mariño, Turmero 2115, Aragua",
+      "url": "https://ceramica-carabobo.com/ksa-home-centerc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "simpolo-c-a",
+      "nombre": "SIMPOLO, C.A.",
+      "direccion": "Interco. Santiago Mariño. Parc. 38 C.C. Parcela Nro. 38 Nivel 1 Ofic. 01",
+      "estado": "ARAGUA",
+      "ciudad": "TURMERO",
+      "telefono": "0414-4635286 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/simpolo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "techomat-metropolitano-c-a",
+      "nombre": "TECHOMAT METROPOLITANO, C.A.",
+      "direccion": "Av. Intercomunal Santiago Mariño Parcela 24 Providencia",
+      "estado": "ARAGUA",
+      "ciudad": "TURMERO",
+      "telefono": "0243-2691180 / 0243-2693227",
+      "mapa": "6FJ5+8M4, Turmero 2115, Aragua",
+      "url": "https://ceramica-carabobo.com/techomat-metropolitano-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2307625,
+        "lng": -67.540796875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "cadelma-barinas-c-a",
+      "nombre": "CADELMA BARINAS C.A.",
+      "direccion": "Av 23 De Enero Urb La Floresta Parcela 182 Y 183",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273-5309600 /",
+      "mapa": "Avenida 23 de Enero, al frente del Parque La Federación, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/cadelma-barinas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "decoracion-ceramica-c-a",
+      "nombre": "DECORACION CERAMICA, C.A.",
+      "direccion": "Decoceca Av.Industrial Planta Baja, S/N Zona Industrial",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273-5309720-743 / 0273-5309600",
+      "mapa": "MQ24+GXH, Av Industrial, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/decoracion-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.651312500000005,
+        "lng": -70.24251562500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "domosa-decoraciones-c-a",
+      "nombre": "DOMOSA DECORACIONES, C.A.",
+      "direccion": "Ctra Nacional Galpon Cadelma Nro. P.B. Sector Los Guasimitos",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273 5309720 / 0273 5309721",
+      "mapa": "MQ33+FRJ, Av Industrial, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/domosa-decoraciones-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.653712500000005,
+        "lng": -70.245484375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "expoceramica-barinas-c-a",
+      "nombre": "EXPOCERAMICA BARINAS C.A.",
+      "direccion": "Av. Libertad 16-92 A 50 Mts. Av. Br.Elias Cordero Barinas Edo. Barinas",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273-5523050 / 0273-5526622",
+      "mapa": "JQGH+RJG, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/expoceramica-barinas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.627062499999996,
+        "lng": -70.220921875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "expoceramica-c-a",
+      "nombre": "EXPOCERAMICA C.A.",
+      "direccion": "Av Tachira Entre Av Venezuela Y Calle Suiza Edif Adt Piso Pb Local Nro 01 Urb Alto Barinas Sur",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273 5526622 /",
+      "mapa": "JQGH+RJG, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/expoceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.627062499999996,
+        "lng": -70.220921875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "maquinarias-domo-s-a-3",
+      "nombre": "MAQUINARIAS DOMO, S.A.",
+      "direccion": "Carretera Nacional, Casa No. S/N Sector Los Guasimitos Barinas",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273-5309720 /",
+      "mapa": "sector, Carretera Nacional Vía Guanare, Barinas 5213, Barinas",
+      "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a-3/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "mileceramica-barinas",
+      "nombre": "MILECERAMICA BARINAS",
+      "direccion": "Av Carabobo Cruce Calle Cedeño 10-19 Edif Milcebarca Urb Coromoto Barinas",
+      "estado": "BARINAS",
+      "ciudad": "BARINAS",
+      "telefono": "0273-5525965 / 0273-5523035",
+      "mapa": "JQMH+WHW, Av. Carabobo, Barinas 5201, Barinas",
+      "url": "https://ceramica-carabobo.com/mileceramica-barinas/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.634862499999997,
+        "lng": -70.221046875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferro-materiales-piar-c-a",
+      "nombre": "FERRO-MATERIALES PIAR, C.A.",
+      "direccion": "Av Raul Leoni Con Alberto Ravell Edif Ferro-Materiales Piar Piso 1 Local S/N Zona Upata – Edo Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "BOLIVAR",
+      "telefono": "0288 2212782 / 0288 2212608",
+      "mapa": "2J53+JJF, Av Raúl Leoni, Upata 8052, Bolívar",
+      "url": "https://ceramica-carabobo.com/ferro-materiales-piar-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.009062499999986,
+        "lng": -63.39595312500002
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "orilet-c-a",
+      "nombre": "ORILET, C.A.",
+      "direccion": "Av Libertador Edif Orilet Piso Planta Baja Local 1 Sector La Paragua",
+      "estado": "BOLIVAR",
+      "ciudad": "BOLIVAR",
+      "telefono": "0285 6549861 /",
+      "mapa": "3FHF+VJ2 mil cerámicas, Av libertador diagonal al CICPC al lado de, Cdad. Bolívar 8001, Bolívar",
+      "url": "https://ceramica-carabobo.com/orilet-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.079637500000008,
+        "lng": -63.52598437500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "grealc-a",
+      "nombre": "GREAL,C.A",
+      "direccion": "Av.Libertador,Al Lado De La Empresa Materiales Y Equipo De La Fuente Ciudad Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "CIUDAD BOLIVAR",
+      "telefono": "0285-6549861 / 0285-6316204",
+      "mapa": "3FHF+MJH, Cdad. Bolívar 8001, Bolívar",
+      "url": "https://ceramica-carabobo.com/grealc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.079187500000005,
+        "lng": -63.52589062500002
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "metroceramicas-c-a",
+      "nombre": "METROCERAMICAS, C.A.",
+      "direccion": "Av.Antonio Berrio C/C Urica Edif Mil Ceramicas Piso Pb Local 01 Urb Manuel Piar Sector El Gallo San Felix",
+      "estado": "BOLIVAR",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0286-9711848 / 0286-9713309",
+      "mapa": "877R+PWV, Ciudad Guayana 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/metroceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.314362500000001,
+        "lng": -62.707703124999995
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "mundo-ceramico-principal-c-a",
+      "nombre": "MUNDO CERAMICO PRINCIPAL, C.A",
+      "direccion": "Av. Manuel Piar Mundo Ceramico Principal No. S/N Urb Primero De Mayo",
+      "estado": "BOLIVAR",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0414-3860199 / 0286-9344352",
+      "mapa": "9977+22F, Carril de Servicio, Ciudad Guayana 8051, Bolívar",
+      "url": "https://ceramica-carabobo.com/mundo-ceramico-principal-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.362562499999997,
+        "lng": -62.63745312500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "riogresc-a",
+      "nombre": "RIOGRES,C.A",
+      "direccion": "Av Cisneros Cc Cisneros Nivel Pb Local 2 Sector Vista Al Sol",
+      "estado": "BOLIVAR",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0286 9345678 /",
+      "mapa": "89R8+X9M, Av. Cisneros, Ciudad Guayana 8051, Bolívar",
+      "url": "https://ceramica-carabobo.com/riogresc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.342462500000003,
+        "lng": -62.634078125000016
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "surgresc-a-surgresc-a",
+      "nombre": "SURGRES,C.A (SURGRES,C.A )",
+      "direccion": "Av. Atlantico, Local Inveratlantico Urb El Tiamo, Ud -310, Parcelas 39 Y 43 Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0414-8672913 / 0412-8355833",
+      "mapa": "8050, Ciudad Guayana, Bolívar",
+      "url": "https://ceramica-carabobo.com/surgresc-a-surgresc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.3223763,
+        "lng": -62.6896622
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "centro-ceramico-reyfeca-3-c-a",
+      "nombre": "CENTRO CERAMICO REYFECA 3 C.A.",
+      "direccion": "Calle Neveri Con Av.Principal De Unare Ii Pto.Ordaz Edo. Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "PTO ORDAZ",
+      "telefono": "0414-8759120 /",
+      "mapa": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-3-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-7",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Av. Paseo Caroni,Zona Ind. Unare Ii Pto. Ordaz, Edo. Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "PTO ORDAZ",
+      "telefono": "0414-8984997 / 0286-9512034",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-7/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-ceramigres-c-a",
+      "nombre": "DISTRIBUIDORA CERAMIGRES, C.A.",
+      "direccion": "Paseo Caroni, Al Lado Del C.C. Gran Sabana, Edif. Disgreca",
+      "estado": "BOLIVAR",
+      "ciudad": "PTO ORDAZ",
+      "telefono": "0414-4336133 / 0286-9528784/9529450",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-ceramigres-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "centro-ceramico-la-fuerte-c-a",
+      "nombre": "CENTRO CERAMICO LA FUERTE, C.A",
+      "direccion": "Av Principal De Castillito Local Local S/N Castillito",
+      "estado": "BOLIVAR",
+      "ciudad": "PUERTO ORDAZ",
+      "telefono": "0286 9236416 /",
+      "mapa": "877R+PWV, Ciudad Guayana 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-la-fuerte-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.314362500000001,
+        "lng": -62.707703124999995
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "centro-ceramico-reyfeca-2-c-a",
+      "nombre": "CENTRO CERAMICO REYFECA 2 C.A.",
+      "direccion": "Av.Moreno De Mendoza Centro Chirica San Felix, Edo. Bolivar",
+      "estado": "BOLIVAR",
+      "ciudad": "SAN FELIX",
+      "telefono": "0414-3861378 /",
+      "mapa": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-2-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "centro-ceramico-reyfeca-c-a",
+      "nombre": "CENTRO CERAMICO REYFECA, C.A.",
+      "direccion": "Av. Manuel Piar, Nro.304 Chirica",
+      "estado": "BOLIVAR",
+      "ciudad": "SAN FELIX",
+      "telefono": "0286-9323477 / 0286-9345035",
+      "mapa": "9949+G2Q, Av Manuel Piar, Ciudad Guayana 8051, Bolívar",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.356337499999988,
+        "lng": -62.63239062500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-6",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Av. Guanaguare, Diagonal A Ferreteria 1ero De Mayo, Municipio Autonomo",
+      "estado": "BOLIVAR",
+      "ciudad": "SAN FELIX",
+      "telefono": "0424-9611305 / 0286-9340160",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-6/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferremateriales-la-fuerte-compania",
+      "nombre": "FERREMATERIALES LA FUERTE, COMPAÑIA",
+      "direccion": "Av Principal Local P.B Nro 1 Sector Castillito, Puerto Ordaz",
+      "estado": "BOLIVIA",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0286-9235461/0424-9487578 / 0286-9235461",
+      "mapa": "877R+QRF, Avenida Principal, Ciudad Guayana 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/ferremateriales-la-fuerte-compania/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.314437499999999,
+        "lng": -62.707953125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-principal-pzo-c-a",
+      "nombre": "FERRETERIA PRINCIPAL PZO, C.A.",
+      "direccion": "Calle Ventuari Con Carrera Nekuima Edif Don Regalon Piso 1 Local Edificio Don Regalon Sector Alta Vista",
+      "estado": "BOLIVIA",
+      "ciudad": "CIUDAD GUAYANA",
+      "telefono": "0286-9344352 /",
+      "mapa": "Carril de Servicio, Ciudad Guayana 8051, Bolívar",
+      "url": "https://ceramica-carabobo.com/ferreteria-principal-pzo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferre-max-c-a",
+      "nombre": "FERRE-MAX, C.A.",
+      "direccion": "Av Caracas Manzana 10 Local Parcela 40 Zona Industrial Matanzas Sur, Unidad De Desarollo 321",
+      "estado": "BOLIVIA",
+      "ciudad": "CIUDAD GUYANA",
+      "telefono": "0286-9973131 /",
+      "mapa": "Frente al Comando de la Guardia Nacional, Av. Caracas, Ciudad Guayana 8050, Bolívar",
+      "url": "https://ceramica-carabobo.com/ferre-max-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "grupo-iso-home-c-a-2",
+      "nombre": "GRUPO ISO HOME, C.A",
+      "direccion": "Ctra Nacional Los Guayos Cc Traki Nivel S/N Local L-20 Sector S/N",
+      "estado": "CARABOBO",
+      "ciudad": "GUACARA",
+      "telefono": "0412-2205598",
+      "mapa": "Guacara 2015, Carabobo",
+      "url": "https://ceramica-carabobo.com/grupo-iso-home-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2172127,
+        "lng": -67.8836179
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "jadel-construye-c-a",
+      "nombre": "JADEL CONSTRUYE, C.A",
+      "direccion": "Calle Sucre Local Lotes A Y B Nro 187 Sector La Yaguara",
+      "estado": "CARABOBO",
+      "ciudad": "LA YAGUARA",
+      "telefono": "0241-6151715 /",
+      "mapa": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo",
+      "url": "https://ceramica-carabobo.com/jadel-construye-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "inversiones-galpe-2021-c-a",
+      "nombre": "INVERSIONES GALPE 2021, C.A",
+      "direccion": "Av Ppal El Roble Local Galpon Nro 212 Sector El Roble",
+      "estado": "CARABOBO",
+      "ciudad": "LOS GUAYOS",
+      "telefono": "0412-9321856/9321863/9321864 / 0414-1485907",
+      "mapa": "via principal el roble, Los Guayos, Valencia, Los Guayos, Carabobo",
+      "url": "https://ceramica-carabobo.com/inversiones-galpe-2021-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-materiales-puerto",
+      "nombre": "FERRETERIA MATERIALES PUERTO",
+      "direccion": "Vda H 1 Local Parcela Nro 01 Urb Travieso Paul La Llaves",
+      "estado": "CARABOBO",
+      "ciudad": "PUERTO CABELLO",
+      "telefono": "0424-4054600 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-materiales-puerto/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "k-b-ceramicas-c-a",
+      "nombre": "K.B. CERAMICAS, C.A.",
+      "direccion": "Calle Rondon Edif Representaciones Petit Piso Pb Local 3 Sector Casco Central",
+      "estado": "CARABOBO",
+      "ciudad": "PUERTO CABELLO",
+      "telefono": "0412-1440573 /",
+      "mapa": "C. Córdova, Puerto Cabello 2050, Carabobo",
+      "url": "https://ceramica-carabobo.com/k-b-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-insumaca-ca",
+      "nombre": "CERAMICAS INSUMACA CA",
+      "direccion": "Av Julio Centeno Cc Boulevar Castillito Nivel A Local C,D Y E Zona San Diego",
+      "estado": "CARABOBO",
+      "ciudad": "SAN DIEGO",
+      "telefono": "0241 3168540 / 0241 8312076",
+      "mapa": "5237+P2P, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ceramicas-insumaca-ca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.154337500000004,
+        "lng": -67.987421875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-california-2018-c-a",
+      "nombre": "CERAMICAS CALIFORNIA 2018, C.A.",
+      "direccion": "Calle Colombia Casa Nro 85-8 Valencia",
+      "estado": "CARABOBO",
+      "ciudad": "SECTOR SAN BLAS VALENCIA",
+      "telefono": "0412-4400609 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-california-2018-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "jadel-c-a",
+      "nombre": "JADEL, C.A",
+      "direccion": "Calle Sucre Via Autopista Campo De Carabobo Casa Lotes A Y B Nro 187 Sector La Yaguara",
+      "estado": "CARABOBO",
+      "ciudad": "TOCUYITO",
+      "telefono": "0241-6151715 /",
+      "mapa": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo",
+      "url": "https://ceramica-carabobo.com/jadel-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "acerohierro-c-a-2",
+      "nombre": "ACEROHIERRO, C.A.",
+      "direccion": "Nro 112-91 Barrio El Prado, Av Enrique Tejera, Local 7 Calle",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0424-3668702",
+      "mapa": "local 112-91, calle N 7 Avenida Enrique Tejera, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/acerohierro-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "alfa-gres-c-a-2",
+      "nombre": "ALFA GRES C.A.",
+      "direccion": "Av Lisandro Alvarado Local, Nro 114-318 Sector La Guacamaya",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "",
+      "mapa": "2001, Valencia, Carabobo",
+      "url": "https://ceramica-carabobo.com/alfa-gres-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1132584,
+        "lng": -68.0282708
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ceramicas-el-morro-c-a",
+      "nombre": "CERAMICAS EL MORRO, C.A.",
+      "direccion": "Av Lara No. 84-85",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0412-2324810/ 0241-8572832 / 0241-8575232/8593139",
+      "mapa": "Distribuidor San Blas, Finalizando la Avenida Lara, Nro 84-85. Locales 1 y 2. A 200 metros del, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ceramicas-el-morro-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramimport-2010-c-a-2",
+      "nombre": "CERAMIMPORT 2010 C.A.",
+      "direccion": "Av Lara Calle 95 Nº 87-26, Sector San Blas Valencia",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0424-4282251",
+      "mapa": "5XHX+FJW, C. 95A Lara, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ceramimport-2010-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.178737500000011,
+        "lng": -68.000921875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramioferta-c-a-2",
+      "nombre": "CERAMIOFERTA, C.A.",
+      "direccion": "Av. Lisandro Alvarado No. 105-101, Sector Galpon 3 Y 4",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0424-4303198",
+      "mapa": "105 Av. Lisandro Alvarado, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ceramioferta-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1609173,
+        "lng": -68.0279253
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "dimo-c-a",
+      "nombre": "DIMO, C.A.",
+      "direccion": "Av. Las Ferias Local Local Nro 57-65 Sector Plaza De Toros",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "",
+      "mapa": "Av. Bolívar Sur, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/dimo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1705396,
+        "lng": -68.0017891
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "distribuidora-msg-77-c-a",
+      "nombre": "DISTRIBUIDORA MSG 77, C.A",
+      "direccion": "Casa Nro 98-61 Zona Casco Central Valencia Av Soublette Entre Paez Y Comercio Valencia. Estado Carabobo",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0412-7846828 /",
+      "mapa": "CARABOBO VALENCIA Avenida 104 Soublette, Valencia 2001, Valencia 0241, Carabobo",
+      "url": "https://ceramica-carabobo.com/distribuidora-msg-77-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "el-mar-de-la-ceramica-c-a",
+      "nombre": "EL MAR DE LA CERAMICA, C.A.",
+      "direccion": "Edif.Celta Locales 1y2 2do Semaforo Del Big Low Center Av Intercomunal San Diego",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8717265 / 0241-8714595",
+      "mapa": "Av. Intercomunal de San Diego, Sector 2do. Semáforo del Big Low Center, Edificio Celta, locales 1 y 2. San Diego Estado Carabobo. Venezuela. Teléfonos: 58 241 871.68.94 - 49.17 - 54.47 - 75.96 - 72.65 - 45.95, Avenida 71, San Diego, Carabobo",
+      "url": "https://ceramica-carabobo.com/el-mar-de-la-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferre-vente-c-a",
+      "nombre": "FERRE-VENTE, C.A.",
+      "direccion": "Calle 115 E Av. San Juan Vianney Y Cll El Roble Casa Nro 86-71 Urb Los Caobos",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0412-8333773 / 0414-8383683",
+      "mapa": "C.C. Mañongo, Urb. Valencia,, Av. 168 Salvador Feo La Cruz Este - Oeste Naguanagua, Valencia 2005, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferre-vente-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferrepiscina-c-a",
+      "nombre": "FERREPISCINA, C.A",
+      "direccion": "Ctra Variante Yagua – San Diego Casa Parcela Sin Numero Sector La Luz, Al Lado Del Cdi",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-4373795 /",
+      "mapa": "Sector La Luz Autopista Barbula Guacara, cerca del dist La Cumaca, San Diego 2005, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferrepiscina-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-15",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av. Norte 1, C/C Transversal 5 Zona Industrial Carabobo, Edif. Epa Valencia Edo. Carabobo",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-15/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-14",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Cuatricentenario C/C Paseo Vzla C.C. La Granja , Via Naguanagua. Valencia.",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-4371599 /",
+      "mapa": "La Granja, Av. 102 Universidad, Naguanagua 2005, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-14/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2407767,
+        "lng": -68.0116771
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-13",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Uslar C/C Michelena Nro. 89-72 Urb Michelena Valencia Edo. Carabobo",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8560145 / 0241-8560100",
+      "mapa": "C. 91 Michelena, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-13/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1727661,
+        "lng": -68.0113056
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-16",
+      "nombre": "FERRETERIA EPA, C.A.",
+      "direccion": "San Diego",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-16/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferroceramica-valcro-c-a",
+      "nombre": "FERROCERAMICA VALCRO, C.A.",
+      "direccion": "Ctra.Autopista Campo Carabobo Galpon No.B-17 Sector Socorro Entre Estacion De Hidro Y Cementerio",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8353231 / 0241-8340032",
+      "mapa": "4WMV+5X7, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferroceramica-valcro-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1329125,
+        "lng": -68.055078125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "inversiones-deco-tiles-2023-c-a-2",
+      "nombre": "INVERSIONES DECO TILES 2023, C.A",
+      "direccion": "Avenida Bolivar Norte, Centro Comercial Guaparo Local Pb 32",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0412-4400691",
+      "mapa": "6XHQ+GCG, Av. 100 Bolívar Nte., Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/inversiones-deco-tiles-2023-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.228812500000005,
+        "lng": -68.011421875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "kaleos-1008-c-a",
+      "nombre": "KALEOS 1008, C.A.",
+      "direccion": "Ctra Los Guayos – Guacara, Av Araguita Complejo Comercial Luxor Local 3 Y 4 Sector Guacara",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414 4209439 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/kaleos-1008-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "la-feria-de-la-ceramica-c-a-2",
+      "nombre": "LA FERIA DE LA CERAMICA C.A.",
+      "direccion": "Av Lisandro Alvarado, Local Nro 114-89 Sector La Guacamaya",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8357473 / 8356667",
+      "mapa": "2001, Valencia, Carabobo",
+      "url": "https://ceramica-carabobo.com/la-feria-de-la-ceramica-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1132584,
+        "lng": -68.0282708
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "megahierro-naguanagua-c-a",
+      "nombre": "MEGAHIERRO NAGUANAGUA, C.A.",
+      "direccion": "7444 Zona Avenida Universidad Cruce Con Calle 191- B Av Universidad Local Nro 7442-744 Naguanagua Estado Carabobo",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0424-5274950 /",
+      "mapa": "Av. Universidad, Naguanagua 2005, Carabobo",
+      "url": "https://ceramica-carabobo.com/megahierro-naguanagua-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.2492637,
+        "lng": -68.0140999
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "porcemetal-c-a-2",
+      "nombre": "PORCEMETAL C.A",
+      "direccion": "Av. Carlos Sanda, Calle 138. Valencia",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-7517209",
+      "mapa": "6X6Q+GRC, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/porcemetal-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.211312500000007,
+        "lng": -68.010484375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosevinedo-c-a",
+      "nombre": "PROSEVIÑEDO, C.A",
+      "direccion": "Av.Monseñor Adam Local Nro 104-61 Urb El Viñedo Valencia Carabobo",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8211992 / 0241-8256470",
+      "mapa": "Av. Monseñor Adams, calle 161 Casa 104-61 (PROSEIN)",
+      "url": "https://ceramica-carabobo.com/prosevinedo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "valceramic-lisandro-alvarado-c-a",
+      "nombre": "VALCERAMIC LISANDRO ALVARADO C.A.",
+      "direccion": "Av Lisandro Alvarado Local No. 114-128 Sector Cementerio",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241 8355827 / 0241 8355827",
+      "mapa": "5XQQ+GGF, Calle Fernando Figueredo, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/valceramic-lisandro-alvarado-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1888125,
+        "lng": -68.01120312500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "valcro-los-colorados-c-a-2",
+      "nombre": "VALCRO LOS COLORADOS, C.A.",
+      "direccion": "Calle 112 Guzman Blanco Casa, Nro. 103-140. Urb Los Colorados",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0241-8586685",
+      "mapa": "5XVR+F5G, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/valcro-los-colorados-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.193687500000012,
+        "lng": -68.00954687499998
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "valim-c-a",
+      "nombre": "VALIM, C.A.",
+      "direccion": "Calle 91 (Av Michelena) Nro Civico 64-504 Local Parcela 72 Zona Industrial Norte",
+      "estado": "CARABOBO",
+      "ciudad": "VALENCIA",
+      "telefono": "0414-5964919 /",
+      "mapa": "52HV+72C, Av. Prol. Michelena, Valencia 2003, Carabobo",
+      "url": "https://ceramica-carabobo.com/valim-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.178187500000009,
+        "lng": -67.95748437499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "agroconstrucciones-yagua-2000-c-a",
+      "nombre": "AGROCONSTRUCCIONES YAGUA 2000, C.A.",
+      "direccion": "Ctra Variante Yagua San Diego Local Galpon Nro 69 Sector La Lovereña",
+      "estado": "CARABOBO",
+      "ciudad": "YAGUA",
+      "telefono": "0424-3668702 /",
+      "mapa": "Autop. Bárbula - Guacara, Guacara 2015, Carabobo",
+      "url": "https://ceramica-carabobo.com/agroconstrucciones-yagua-2000-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "centro-ceramico-garcia-i-c-a",
+      "nombre": "CENTRO CERAMICO GARCIA I C.A.",
+      "direccion": "Av San Martin Albañales A Cruz De La Vega Parroquia San Juan N°284,Caracas Venezuela",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-2088098/0424-1869496 / 0212-4812972/4812972",
+      "mapa": "F3XF+67J, Caracas 1020, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-garcia-i-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.498087500000004,
+        "lng": -66.926859375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-5",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Av. El Empalme C/Calle Las Trinitar Torre D,Nivel 840 S1 Ck3yk4 Caracas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0424-1047820 / 0212-7315556",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-5/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-rustiestrella-c-a",
+      "nombre": "CERAMICAS RUSTIESTRELLA, C.A.",
+      "direccion": "Av Avila Qta Trebol Nro 9 Urb San Bernandino",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0412-2023970 / 0212–5778268/5764908",
+      "mapa": "G34X+J7P, Av. Ávila, Caracas 1011, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/ceramicas-rustiestrella-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.506587499999988,
+        "lng": -66.901796875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-valladares-c-a",
+      "nombre": "CERAMICAS VALLADARES C.A.",
+      "direccion": "Av.Arturo Michelena Qta. Hispana, Sta. Monica. Caracas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "",
+      "mapa": "F4G5+83F, Calle Arturo Michelena, Caracas 1041, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/ceramicas-valladares-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.475812500000005,
+        "lng": -66.892328125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramiespacio-c-a",
+      "nombre": "CERAMIESPACIO, C.A.",
+      "direccion": "Av La Estancia Cc C.C.C.T Nivel C1 Of 60 Sector Centro Profesional Tamana Co",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-2560055 / 0212 9599809",
+      "mapa": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda",
+      "url": "https://ceramica-carabobo.com/ceramiespacio-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "comercial-decolorisc-a",
+      "nombre": "COMERCIAL DECOLORIS,C.A",
+      "direccion": "Av San Martin Entre Esq. Cruz De La Vega A Palo Grande Local 296 Piso Nro 3 Sector San Martin",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-462-13-17 /",
+      "mapa": "Entre la estación del Metro Capuchinos y el elevado de la, urbanización San Juan, Av. San Martín, Caracas 1020, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/comercial-decolorisc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "comercializadora-cima-261-ca",
+      "nombre": "COMERCIALIZADORA CIMA 261 CA",
+      "direccion": "Calle Panamericana Entre Chile Y Bolivìa Casa Nro 2845 Sector Catia Nuevas Caracas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0424-2075578 / 0212- 8718528",
+      "mapa": "calle Panamerican entre Chile y Bolivia (Nro 28-45). Sector, Caracas 1030, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/comercializadora-cima-261-ca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-maracana-s-r-l",
+      "nombre": "DISTRIBUIDORA MARACANA S.R.L.",
+      "direccion": "Esquina De Alcabala A Peligro La Candelaria Local 3, Caracas Caracas Distt.Federal",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-2225910/04142223624 / 0212-5761297",
+      "mapa": "Embajada y Consulado de Austria en Caracas, 1060, Avenida Orinoco, Caracas 1060, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/distribuidora-maracana-s-r-l/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-chapellin-c-a",
+      "nombre": "FERRETERIA CHAPELLIN, C.A.",
+      "direccion": "Calle Real De Chapellin Casa S/N Nro 88 Sector Chapellin",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-0260917 / 0412-9051585",
+      "mapa": "G42H+MX4, Caracas 1050, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/ferreteria-chapellin-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.501637500000005,
+        "lng": -66.870046875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-12",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av. San Martin Entre Nabisco Y Edf Carola Frente A Cc San Martin Caracas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. San Martín, Caracas 2338, Aragua",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-12/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-11",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Los Cortijos De Lourdes Edif Map Local Ii, Pb. Caracas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-4371599 /",
+      "mapa": "C. Adriana Johanna, Caracas 1071, Miranda",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-11/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4820367,
+        "lng": -66.8289904
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-10",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av. Los Ilustres Sector Ipsfa. Urb. Santa Monica. Caracas.",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-4371599 /",
+      "mapa": "F4C3+8RQ, CC IPSFA, P.º Los Próceres, Caracas, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-10/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.470837499999995,
+        "lng": -66.895390625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-9",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av.Ppal El Bosque,C Sta Isabel Sur Nro.89-72 Valencia Edo. Carabobo",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-9/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "habitat-porcelanato-c-a",
+      "nombre": "HABITAT PORCELANATO, C.A.",
+      "direccion": "Piso P.B. Local N°1 Y 2 Santa Fe Av. Jose Maria Vargas Edif Artico",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "",
+      "mapa": "Avenida Francisco De Miranda entre calles Barquisimeto, y Valencia, Carora 3050, Lara",
+      "url": "https://ceramica-carabobo.com/habitat-porcelanato-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "inversiones-mastergres-c-a",
+      "nombre": "INVERSIONES MASTERGRES , C.A.",
+      "direccion": "Av Nueva Granada Calle Branger Local C Urb Santa Rosalia",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212 6331822 / 0212 6325870",
+      "mapa": "F3MW+53C, Av. Nueva Granada, Caracas 1041, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/inversiones-mastergres-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.482937500000007,
+        "lng": -66.904859375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "materiales-guayabal-ca",
+      "nombre": "MATERIALES GUAYABAL CA",
+      "direccion": "Av Santa Ana Local Flavia Boleita Caracas, Dto Federal",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212 – 2346345 / 0212-2345839",
+      "mapa": "Caracas 1071, Miranda",
+      "url": "https://ceramica-carabobo.com/materiales-guayabal-ca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.497338,
+        "lng": -66.8414055
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "megaceramicas-y-algo-mas-c-a",
+      "nombre": "MEGACERAMICAS Y ALGO MÁS, C.A",
+      "direccion": "Av Principal Entre Chile",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0414-2554109 /",
+      "mapa": "2DA AVEVIDA, ENTRE CALLES CHILE Y C. México, Caracas 1030, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/megaceramicas-y-algo-mas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "prosein-el-bosque",
+      "nombre": "PROSEIN EL BOSQUE",
+      "direccion": "Av. Ppal. Bosque Entre Av. Libertador Y C.C. Chacaito, El Bosque",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-7625678 / 0212-7631190",
+      "mapa": "Av Principal del Bosque, Caracas 1060, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-el-bosque/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "prosein-el-bosque-c-a",
+      "nombre": "PROSEIN EL BOSQUE, C.A.",
+      "direccion": "Av Sanatorio Avila Cc Ciudad Center Nivel 1-A1 Local 1-A1 Urb",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-7625678 / 0212-7631190",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-el-bosque-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4975625,
+        "lng": -66.82331249999999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-el-paraiso",
+      "nombre": "PROSEIN EL PARAISO",
+      "direccion": "Av. Paez Entre Plaza Washington Y Av. Los Estadios, El Paraiso",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-4517753 / 0212-4517317",
+      "mapa": "QTA BERTHA, AV. PAEZ, ENTRE PLAZA WASHINGTON Y AV. LOS ESTADIOS, C. Ocho, Caracas, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-el-paraiso/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "prosein-el-paraiso-c-a",
+      "nombre": "PROSEIN EL PARAISO, C.A.",
+      "direccion": "Av Sanatorio Avila Cc Ciudad Center Nivel 1-A1 Local 1-A1 Urb",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-4517753 / 0212-4517317",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-el-paraiso-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4975625,
+        "lng": -66.82331249999999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-la-castellana-c-a-2",
+      "nombre": "PROSEIN LA CASTELLANA, C.A.",
+      "direccion": "Av. Ppal. La Castellana Entre Calle El Bosque Y Jose A. Lamas",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-2613261 / 0212-2665678",
+      "mapa": "F4XW+PWW de, Avenida Principal, Caracas 1060, Miranda",
+      "url": "https://ceramica-carabobo.com/prosein-la-castellana-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.499362500000004,
+        "lng": -66.852671875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-la-castellana-c-a",
+      "nombre": "PROSEIN LA CASTELLANA, C.A.",
+      "direccion": "Av Sanatorio Avila Cc Ciudad Center Nivel 1-A1 Local 1-A1 Urb",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-2613261 / 0212-2665678",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-la-castellana-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4975625,
+        "lng": -66.82331249999999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-las-mercedes",
+      "nombre": "PROSEIN LAS MERCEDES",
+      "direccion": "Calle Paris Entre Calle New York Y Caroni",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-9930864 / 0212-9911421",
+      "mapa": "F4JR+JW2, C. París, Caracas Metropolitan District 1080, Miranda",
+      "url": "https://ceramica-carabobo.com/prosein-las-mercedes/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.481512499999997,
+        "lng": -66.85773437499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-las-mercedes-c-a",
+      "nombre": "PROSEIN LAS MERCEDES, C.A.",
+      "direccion": "Av Sanatorio Avila Cc Ciudad Center Nivel 1-A1 Local 1-A1 Urb",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-9930864 / 0212-9911421",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-las-mercedes-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4975625,
+        "lng": -66.82331249999999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prosein-proveeduria-y-servicio",
+      "nombre": "PROSEIN, PROVEEDURIA Y SERVICIO",
+      "direccion": "Av Sanatorio Avila Cc Ciudad Center Nivel 1-A1 Local 1-A1 Urb Boleita Norte",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-8231100 / 0212-2399460",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/prosein-proveeduria-y-servicio/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4975625,
+        "lng": -66.82331249999999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "rusticas-tachira-c-a",
+      "nombre": "RUSTICAS TACHIRA, C.A.",
+      "direccion": "Av.La Estancia C.C.C. Tamanaco Nivel C1, Of. C.P.T., Piso 1, Ofc. 60 Urb. Chuao",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0212-9599809 /",
+      "mapa": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda",
+      "url": "https://ceramica-carabobo.com/rusticas-tachira-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "vene-materiales-c-a",
+      "nombre": "VENE-MATERIALES, C.A.",
+      "direccion": "Av. Panamerican Entre Calle Bolivar Y Chile No. 30 Sector Catia",
+      "estado": "CARACAS",
+      "ciudad": "CARACAS",
+      "telefono": "0424-2723741/ 0212-8700042 / 0212-8703951",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/vene-materiales-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "grupo-jed-ceramicas-c-a",
+      "nombre": "GRUPO JED CERAMICAS, C.A",
+      "direccion": "Av Pichincha Cc Centro De Muebles Rosal Nivel Planta Baja Local 10 Sector El Rosal",
+      "estado": "CARACAS",
+      "ciudad": "CHACAO",
+      "telefono": "0412-0379747 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/grupo-jed-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "expo-centro-ceramicas-c-a",
+      "nombre": "EXPO CENTRO CERAMICAS, C.A.",
+      "direccion": "Calle Paez Local Nro 41 Sector Centro",
+      "estado": "CARACAS",
+      "ciudad": "MARACAY",
+      "telefono": "0412-6102161 / 0412-9669692",
+      "mapa": "Av las Casuarinas 111, Ayacucho 05001, Perú",
+      "url": "https://ceramica-carabobo.com/expo-centro-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "decoceramica-c-a",
+      "nombre": "DECOCERAMICA, C.A.",
+      "direccion": "Av.Bolivar Nro 20-484 Sector La Yaguara",
+      "estado": "COJEDES",
+      "ciudad": "SAN CARLOS",
+      "telefono": "0414-4967169 / 0258-2518504/4338799",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/decoceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-importadas-falcon-ca",
+      "nombre": "CERAMICAS IMPORTADAS FALCON CA",
+      "direccion": "Av Francisco De Miranda Edif. Prosein Piso N/A Local Prosein Sector Parcelamiento El Jardin Punto Fijo",
+      "estado": "FALCON",
+      "ciudad": "PUNTO FIJO",
+      "telefono": "0269-2464113 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-importadas-falcon-ca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-de-ceramicas-elemas",
+      "nombre": "DISTRIBUIDORA DE CERAMICAS ELEMAS",
+      "direccion": "Av.Tamarusa, E/C Zamora Y Garces Edif. Don Eduardo Piso Pb Local Pb Urb Santa Irene",
+      "estado": "FALCON",
+      "ciudad": "PUNTO FIJO",
+      "telefono": "0414-6583621/ 0269-2464643 / 0269-2451763",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas-elemas/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-8",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Municipio Carirubana",
+      "estado": "FALCON",
+      "ciudad": "PUNTO FIJO",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-8/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-7",
+      "nombre": "FERRETERIA EPA, C.A.",
+      "direccion": "C.C. Las Virtudes Punto Fijo, Edo. Falcon",
+      "estado": "FALCON",
+      "ciudad": "PUNTO FIJO",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-7/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferro-materiales-falcon-c-a",
+      "nombre": "FERRO MATERIALES FALCON C.A.",
+      "direccion": "Calle Bolivar Local Nro 90-190 Sector Centro",
+      "estado": "FALCON",
+      "ciudad": "PUNTO FIJO",
+      "telefono": "0424-6288343 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferro-materiales-falcon-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "mercantil-la-solucionc-a",
+      "nombre": "MERCANTIL LA SOLUCION,C.A",
+      "direccion": "Carretera 13,No.1 Calabozo Edo, Guarico",
+      "estado": "GUARICO",
+      "ciudad": "CALABOZO",
+      "telefono": "0246-8719064 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/mercantil-la-solucionc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-de-materiales-la-oferta",
+      "nombre": "DISTRIBUIDORA DE MATERIALES LA OFERTA",
+      "direccion": "Av.Los Llanos Nro.129",
+      "estado": "GUARICO",
+      "ciudad": "SAN JUAN DE LOS MORROS",
+      "telefono": "0246-4317453 / 0246-4318686",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-materiales-la-oferta/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferre-ceramica-c-a",
+      "nombre": "FERRE CERAMICA.., C.A",
+      "direccion": "Av Las Industrias Local Nro S/N Sector Las Industrias",
+      "estado": "GUARICO",
+      "ciudad": "VALLE DE LA PASCUA",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferre-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "inversiones-todo-ceramica-c-a",
+      "nombre": "INVERSIONES TODO CERAMICA, C.A.",
+      "direccion": "Av Las Industrias Edif Don Carmelo Piso Pb Local S/N Zona Industrial",
+      "estado": "GUARICO",
+      "ciudad": "VALLE DE LA PASCUA",
+      "telefono": "0424-3500087 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/inversiones-todo-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramikass-center-c-a",
+      "nombre": "CERAMIKASS CENTER, C.A.",
+      "direccion": "Av Las Industrias Casa Nro S/N Sector Las Industrias",
+      "estado": "GUARICO",
+      "ciudad": "VALLE LA PASCUA",
+      "telefono": "0414 4745395 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramikass-center-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "valle-ceramica-c-a",
+      "nombre": "VALLE CERAMICA, C.A.",
+      "direccion": "Av. Las Industrias Sector La Rodriguera, Galpon Valle Ceramica Valle La Pascua",
+      "estado": "GUARICO",
+      "ciudad": "VALLE LA PASCUA",
+      "telefono": "0235-3422209 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/valle-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "arcosan-barquisimeto-c-a",
+      "nombre": "ARCOSAN BARQUISIMETO C.A.",
+      "direccion": "Calle 30 Entre Carrera 23 Y 24 Centro Comercial El Manteco Local 3 Barquisimeto",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0414-3503654 / 0251-2323311/ 232370",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/arcosan-barquisimeto-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "baldolara-c-a-barquisimeto",
+      "nombre": "BALDOLARA C.A. (BARQUISIMETO)",
+      "direccion": "Calle 7 Entre Avenida Lara Y Carrera 1 Urb.Nueva Segovia Barquisimeto Edo. Lara",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0412-3284763 / 0251-2615827/2534923",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/baldolara-c-a-barquisimeto/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "delitodo-express-c-a",
+      "nombre": "DELITODO EXPRESS C.A.",
+      "direccion": "Cr 1 Entre Calles 3 Y 5",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0414-5028434 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/delitodo-express-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-de-ceramicas",
+      "nombre": "DISTRIBUIDORA DE CERAMICAS",
+      "direccion": "Carrera 23,Esquina Calle 31",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0424-5058058 / 0251-2331987",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-6",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Las Indust. Entrada Zona Ind 2 Barquisimeto.",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-6/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-5",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Los Leones Cc Trinitarias Frente Al Monumento Del Sol. Bqto.",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-5/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "migo-lara-c-a-2",
+      "nombre": "MIGO LARA, C.A.",
+      "direccion": "Prolongacion Calle 37 Entre Av. Libertador Y Carrera 4, Zona Industrial 1",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0424-1006446",
+      "mapa": "3MMC+57W, Carrera 4, Barquisimeto 3001, Lara",
+      "url": "https://ceramica-carabobo.com/migo-lara-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.082987500000002,
+        "lng": -69.329296875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "proceramic-c-a",
+      "nombre": "PROCERAMIC, C.A.",
+      "direccion": "Cr 23 Calles 30 Y 31 Nro 30-116 Zona Centro",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0251-2324005/0424-5058058 / 0251 2319010",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/proceramic-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "segoceramic-c-a",
+      "nombre": "SEGOCERAMIC, C.A.",
+      "direccion": "Carrera 01 Entre 6 Y 7,Urb.Nueva Segovia,Barquisimeto,Estado Lara Lara",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0251-2549737 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/segoceramic-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "tienda-mosaico-c-a",
+      "nombre": "TIENDA MOSAICO, C.A",
+      "direccion": "Av Galipan Con Av Caracas Local Nro 444, Urb. Fundalara Barquisimeto",
+      "estado": "LARA",
+      "ciudad": "BARQUISIMETO",
+      "telefono": "0424-5802431",
+      "mapa": "Barquisimeto 3001, Lara",
+      "url": "https://ceramica-carabobo.com/tienda-mosaico-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.0774374,
+        "lng": -69.3222293
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "distribuidora-megaceramicas-c-a",
+      "nombre": "DISTRIBUIDORA MEGACERAMICAS, C.A.",
+      "direccion": "Calle La Vega Con Calle Monseñor Acacio Chacon Edif Megaceramicas Piso Pb Local",
+      "estado": "MERIDA",
+      "ciudad": "EDIDO",
+      "telefono": "0424-7470917 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-megaceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "el-roble-ceramicas-c-a",
+      "nombre": "EL ROBLE CERAMICAS C.A",
+      "direccion": "Av Bolivar Nº 219 Sector Montalban Ejido – Merida",
+      "estado": "MERIDA",
+      "ciudad": "EJIDO",
+      "telefono": "0416-0557759 / 0274-2212197/0274-2215433",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/el-roble-ceramicas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-4",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Galpon Industrial No. 13-443 Avenida 15, Barrio Bolivar",
+      "estado": "MERIDA",
+      "ciudad": "EL VIGIA, EDO. MERIDA.",
+      "telefono": "0424-7763149 / 0275-8813293",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-4/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-el-vigia-c-a",
+      "nombre": "CERAMICAS EL VIGIA, C.A.",
+      "direccion": "Av. Don Pepe Rojas Sector La Creole Local No. 927-A",
+      "estado": "MERIDA",
+      "ciudad": "EL VIGIA",
+      "telefono": "0424-7058011 / 0275-8816545",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-el-vigia-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "administradora-de-inmuebles-c-a",
+      "nombre": "ADMINISTRADORA DE INMUEBLES, C.A.",
+      "direccion": "Av Don Tulio Febres Cordero Quinta Nº 30-40 Sector El Llano",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/administradora-de-inmuebles-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-e-importaciones",
+      "nombre": "CERAMICAS E IMPORTACIONES",
+      "direccion": "Av.Los Proceres Local Galpon Nro 8 Sector La Pedregosa",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0414-7466899 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-e-importaciones/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-y-decoraciones-ca",
+      "nombre": "CERAMICAS Y DECORACIONES, CA",
+      "direccion": "Calle 2 Local Galpon Nro A-2 Zona Industrial Los Curos",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0424-7470917 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-y-decoraciones-ca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "decosanitarios-c-a",
+      "nombre": "DECOSANITARIOS C.A.",
+      "direccion": "Ctra Panamericana Local Galpon Nro 2 Sector El Llano Del Anis",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0414-7466899/ 0424-7470917 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/decosanitarios-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-de-arcosan",
+      "nombre": "DISTRIBUIDORA DE ARCOSAN",
+      "direccion": "Av. Alberto Carnevalli Casa Nro 5-60 Sector La Hechicera",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0414-7466899/ 0424-7470917 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-arcosan/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "home-deco-c-a",
+      "nombre": "HOME DECO, C.A",
+      "direccion": "Calle Principal Parcela N° A-2 Y A-3 Casa Nro S/N Sector Los Curos",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0414-9766069 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/home-deco-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "vitroceramikos-c-a",
+      "nombre": "VITROCERAMIKOS, C.A",
+      "direccion": "Av Principal Alfredo Briceño, Paredes Local Nro S/N Zona Industrial Los Curos",
+      "estado": "MERIDA",
+      "ciudad": "MERIDA",
+      "telefono": "0414-9766069",
+      "mapa": "Mérida 5115, Mérida",
+      "url": "https://ceramica-carabobo.com/vitroceramikos-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 8.5816963,
+        "lng": -71.1658075
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-4",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Calle Luis Camoes Y Cecilio Acosta Piso 1 Cc Expreso Trinidad Urb La Trinidad. Baruta. Miranda",
+      "estado": "MIRANDA",
+      "ciudad": "BARUTA",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-4/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-la-tinajac-a",
+      "nombre": "CERAMICAS LA TINAJA,C.A",
+      "direccion": "Av.Tamanaco,Calle La Tinaja, Edif Esma Piso Pb Local 2c Urb El Llanito Caracas(Petare)",
+      "estado": "MIRANDA",
+      "ciudad": "CARACAS",
+      "telefono": "0212-2560055 / 0212-2560055",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-la-tinajac-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramillano-c-a",
+      "nombre": "CERAMILLANO, C.A.",
+      "direccion": "Av La Estancia Cc Ccct Nivel C1 Of 60 Sector Centro Profesional Tamanaco Caracas(Chacao)",
+      "estado": "MIRANDA",
+      "ciudad": "CARACAS",
+      "telefono": "0212 9599809 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramillano-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreceramik-26-c-a",
+      "nombre": "FERRECERAMIK 26, C.A.",
+      "direccion": "Av Romulo Gallegos Edif Pascal Torre A Piso 3 Of 34-A Urb Santa Eduvigis Caracas Miranda Caracas",
+      "estado": "MIRANDA",
+      "ciudad": "CARACAS",
+      "telefono": "0414-3043810 /",
+      "mapa": "Final Av. Rómulo Gallegos, Caracas 1071, Miranda",
+      "url": "https://ceramica-carabobo.com/ferreceramik-26-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "revestimiento-natural-stone-6c-a",
+      "nombre": "REVESTIMIENTO NATURAL STONE 6,C.A",
+      "direccion": "Av Cumana Con Avenida Principal Edif Niagara Piso Pb Local 1 Urb Las Palmas Caracas Caracas",
+      "estado": "MIRANDA",
+      "ciudad": "CARACAS",
+      "telefono": "0412-3810215 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/revestimiento-natural-stone-6c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "american-tile-corporation-c-a",
+      "nombre": "AMERICAN TILE CORPORATION C.A.",
+      "direccion": "Carretera Charallave Cua.Km 22 Galpon Ceramitodo Edo. Miranda",
+      "estado": "MIRANDA",
+      "ciudad": "CHARALLAVE-CUA",
+      "telefono": "0424-1058900 / 0239-2481210",
+      "mapa": "Cúa 1210, Miranda",
+      "url": "https://ceramica-carabobo.com/american-tile-corporation-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.1653676,
+        "lng": -66.8865117
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "el-galpon-de-la-ceramica-c-a",
+      "nombre": "EL GALPON DE LA CERAMICA C.A.",
+      "direccion": "Av Las Industrias Casa Galpon Nro S/N Zona Industrial Las Minas",
+      "estado": "MIRANDA",
+      "ciudad": "",
+      "telefono": "0414-2295104 / 0212-3736761",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/el-galpon-de-la-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-de-ceramicas-dicersa",
+      "nombre": "DISTRIBUIDORA DE CERAMICAS DICERSA,",
+      "direccion": "Urb. Ind.La.Planada Sector A Parc.F 2 Segunda Etapa",
+      "estado": "MIRANDA",
+      "ciudad": "GUATIRE",
+      "telefono": "0212-3413713 / 0212-3414536",
+      "mapa": "FFC5+MQ8, Guatire 1221, Miranda",
+      "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas-dicersa/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.471662500000004,
+        "lng": -66.540546875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "inversiones-construceramic-c-a",
+      "nombre": "INVERSIONES CONSTRUCERAMIC, C.A.",
+      "direccion": "Av Villa Heroica Local Nro S/N Sector Terrinca, Frente A La Urbanizacion Terrinca",
+      "estado": "MIRANDA",
+      "ciudad": "GUATIRE",
+      "telefono": "0412-5916449 /",
+      "mapa": "FF87+8FF, Avenida Intercomunal Guarenas Guati re, C. La Arenera, Guatire 1221, Miranda",
+      "url": "https://ceramica-carabobo.com/inversiones-construceramic-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4658125,
+        "lng": -66.53632812499998
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-el-tambor-c-a",
+      "nombre": "CERAMICAS EL TAMBOR C.A.",
+      "direccion": "Urb.Industrial El Tambor Sector Las Lomitas Los Teques Zona Metropolitana",
+      "estado": "MIRANDA",
+      "ciudad": "LOS TEQUES",
+      "telefono": "0212-3225982 / 0212-3217986",
+      "mapa": "9X3G+9WG, Carr. Panamericana, Los Teques 1201, Miranda",
+      "url": "https://ceramica-carabobo.com/ceramicas-el-tambor-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.353437499999986,
+        "lng": -67.02267187499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "gricosoluciones-c-a",
+      "nombre": "GRICOSOLUCIONES C.A.",
+      "direccion": "Av Maria Perez Pisanti Edif Gricoceramica Piso Pb Local Galpon Zona Ind. Los Teques, Los Tres Puentes",
+      "estado": "MIRANDA",
+      "ciudad": "LOS TEQUES",
+      "telefono": "0212 3234780 / 0212 3236966",
+      "mapa": "Av. Perez Pisanti, Los Teques 1201, Miranda",
+      "url": "https://ceramica-carabobo.com/gricosoluciones-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.3552969,
+        "lng": -67.0278152
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "inversiones-ceramica-latina-c-a",
+      "nombre": "INVERSIONES CERAMICA LATINA C.A.",
+      "direccion": "Av Willimas Torbay Local Nro 20 Zona Industrial El Tambor Sect Las Lomitas",
+      "estado": "MIRANDA",
+      "ciudad": "MIRANDA",
+      "telefono": "0212-3214717 / 0212-3837008",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/inversiones-ceramica-latina-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "homeflex-hogar-2023-c-a",
+      "nombre": "HOMEFLEX HOGAR 2023, C.A",
+      "direccion": "Av Francisco De Miranda Cc Puerta Del Este Nivel Pb Local 3 Urb Los Cortijos Caracas",
+      "estado": "MIRANDA",
+      "ciudad": "PETARE",
+      "telefono": "",
+      "mapa": "F5PG+2RH, Caracas 1071, Miranda",
+      "url": "https://ceramica-carabobo.com/homeflex-hogar-2023-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4850625,
+        "lng": -66.82289062499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "distribuidora-ceramicas-el-tambor",
+      "nombre": "DISTRIBUIDORA CERAMICAS EL TAMBOR",
+      "direccion": "Av. Chaid Torbay Edif.Industrial Campestre Piso 1 Local 1 Sector",
+      "estado": "MIRANDA",
+      "ciudad": "SAN ANTONIO DE LOS ALTOS",
+      "telefono": "0212 3737423 / 0212 3217689",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/distribuidora-ceramicas-el-tambor/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "materiales-de-construccion-braherca",
+      "nombre": "MATERIALES DE CONSTRUCCION BRAHERCA",
+      "direccion": "Ctra Que Conduce De Santa Teresa Del Tuy A Santa Lucia Parcelas Nro. A Y A1",
+      "estado": "MIRANDA",
+      "ciudad": "SANTA TERESA DEL TUY",
+      "telefono": "0239 2315651 / 0239 2318027",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/materiales-de-construccion-braherca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "benz-corporation-c-a",
+      "nombre": "BENZ CORPORATION, C.A",
+      "direccion": "Torre Valoralta Av. Principal Romulo Gallegos Urbanizacion Sebucan Edif.Varoralta Pb Oficina 2 Municipo Sucre",
+      "estado": "MIRANDA",
+      "ciudad": "SUCRE",
+      "telefono": "0412-8844005 / (305) 4091386",
+      "mapa": "Torre Valorlta, Av. Rómulo Gallegos, Caracas 1071, Distrito Capital",
+      "url": "https://ceramica-carabobo.com/benz-corporation-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "centro-ceramico-himalaya-c-a",
+      "nombre": "CENTRO CERAMICO HIMALAYA, C.A.",
+      "direccion": "Av. Alirio Ugarte Pelayo Casa No. 31 Local Galpon # 3 Sector Bajo Guarapiche",
+      "estado": "MONAGAS",
+      "ciudad": "MATURIN",
+      "telefono": "0424-9240215 /",
+      "mapa": "QR66+MRM, Maturín 6201, Monagas",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-himalaya-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.761712500000009,
+        "lng": -63.18795312500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-3",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Av. Bella Vista Frente Al Eidf. Alt O Guri, Maturin",
+      "estado": "MONAGAS",
+      "ciudad": "MATURIN",
+      "telefono": "0424-8991298 / 0291-6522144",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-3/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "disgreca-monagas-c-a",
+      "nombre": "DISGRECA MONAGAS, C.A.",
+      "direccion": "Av. Bella Vista Edificio Disgreca Monagas Nro. Pb Sector Bella Vista",
+      "estado": "MONAGAS",
+      "ciudad": "MATURIN",
+      "telefono": "0412-8008975 / 0291-6518945",
+      "mapa": "PQVQ+PP2, Avenida Bella Vista, Maturín 6201, Monagas",
+      "url": "https://ceramica-carabobo.com/disgreca-monagas-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.744262500000008,
+        "lng": -63.210734375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-3",
+      "nombre": "FERRETERIA EPA, C.A.",
+      "direccion": "Av. Alirio Ugarte Pelayo 200 Mts Antes De C/C Monagas Plaza",
+      "estado": "MONAGAS",
+      "ciudad": "MATURIN",
+      "telefono": "0414-4371599 /",
+      "mapa": "Av. Alirio Ugarte Pelayo, Maturín 6201, Monagas",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-3/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.7619729,
+        "lng": -63.1879696
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "eurostone-c-a",
+      "nombre": "EUROSTONE C.A",
+      "direccion": "Av Prolongacion Av. 4 De Mayo Edif El Pilar",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "LOS ROBLES",
+      "telefono": "0424-8005148/ 0412-0627478 / 0295-2642440/0295-2638397",
+      "mapa": "Av. Prolongación 4 de Mayo, Edif Eurostone Piso P/B a 100mts del Semáforo de, Av. La Auyama, Porlamar 6301, Nueva Esparta",
+      "url": "https://ceramica-carabobo.com/eurostone-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-porlamar-c-a",
+      "nombre": "CERAMICAS PORLAMAR C.A.",
+      "direccion": "Av Circunvalacion Local Nro S/N Urb Conejeros Mariño Porlamar Nueva Esparta",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "NUEVA ESPARTA",
+      "telefono": "0424-8543474 /",
+      "mapa": "X46M+73J, Porlamar 6308, Nueva Esparta",
+      "url": "https://ceramica-carabobo.com/ceramicas-porlamar-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.960712500000007,
+        "lng": -63.86735937500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-cristal-c-a",
+      "nombre": "CERAMICAS CRISTAL, C.A.",
+      "direccion": "Av.El Colegio Frente Al C.C. Makro Porlamar El Poblado",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "PORLAMAR",
+      "telefono": "0412-3569191 / 0295-2634036/2640696",
+      "mapa": "Centro Comercial Makro, Urb Puerto Madero 4 Sector, Porlamar 6301, Nueva Esparta, Calle El Colegio, Porlamar 6301, Nueva Esparta",
+      "url": "https://ceramica-carabobo.com/ceramicas-cristal-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "maquinarias-domo-s-a-2",
+      "nombre": "MAQUINARIAS DOMO, S.A.",
+      "direccion": "Urb. Nueva Segovia, Calle Ppal. Edf. Mahivenca, Piso 2, La Cruz Del Pastel",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "PORLAMAR",
+      "telefono": "0273-5309600 / 0273-5309602",
+      "mapa": "W3W4+CP4, San Antonio Sur 6301, Nueva Esparta",
+      "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.946012500000013,
+        "lng": -63.943171875000004
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "maquinarias-domo-s-a",
+      "nombre": "MAQUINARIAS DOMO, S.A.",
+      "direccion": "Urb. Nueva Segovia, Calle Ppal. Edf. Mahivenca, Piso 2, La Cruz Del Pastel",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "PORLAMAR",
+      "telefono": "0273-5309600 / 0273-5309602",
+      "mapa": "W3W4+CP4, San Antonio Sur 6301, Nueva Esparta",
+      "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.946012500000013,
+        "lng": -63.943171875000004
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "nodoestudio-c-a",
+      "nombre": "NODOESTUDIO, C.A",
+      "direccion": "Av Virgen Del Pilar Con Juan Bautista Arismendi Segunda Etapa De La Urbanizacion Jorge",
+      "estado": "NUEVA ESPARTA",
+      "ciudad": "PORLAMAR",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/nodoestudio-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferrecenca",
+      "nombre": "FERRECENCA",
+      "direccion": "Av Jose Antonio Paez Entre Av 21 Y 25 Local Galpon Ferrecenca Nro S/N Sector Villa Pastora",
+      "estado": "PORTUGUESA",
+      "ciudad": "ACARIGUA",
+      "telefono": "0424-5047296 / 0255 6221111",
+      "mapa": "HQ7X+X8M, Av. Páez, Acarigua 3301, Portuguesa",
+      "url": "https://ceramica-carabobo.com/ferrecenca/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.5649625,
+        "lng": -69.201703125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "inversiones-araguaney-c-a",
+      "nombre": "INVERSIONES ARAGUANEY, C.A.",
+      "direccion": "Av Eduardo Chollet Con Av Gonzalo Barrios A Media Cuadra Terminal Pasaj Local Araguaney Nro Planta",
+      "estado": "PORTUGUESA",
+      "ciudad": "ACARIGUA",
+      "telefono": "0255-6236404 / 0255-6235550",
+      "mapa": "a media cuadra del terminal, Av. Eduardo Chollet, con Av. Gonzalo Barrios, Acarigua, Portuguesa",
+      "url": "https://ceramica-carabobo.com/inversiones-araguaney-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "prosein-acarigua-c-a",
+      "nombre": "PROSEIN ACARIGUA C.A",
+      "direccion": "Av.Circunvalación 1 Sur Entre Calles 3 Y 4 Local Prosein Nro S/N Barrio San Antonio",
+      "estado": "PORTUGUESA",
+      "ciudad": "ACARIGUA",
+      "telefono": "0255-8084277 /",
+      "mapa": "Av. Cv Sur, Acarigua 3301, Portuguesa",
+      "url": "https://ceramica-carabobo.com/prosein-acarigua-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "inversiones-0905-c-a",
+      "nombre": "INVERSIONES 0905, C.A.",
+      "direccion": "Calle 5 Esquina Av.31 Local Galpon Nro S/N Zona Industrial De Araure",
+      "estado": "PORTUGUESA",
+      "ciudad": "ARAURE",
+      "telefono": "0255-6212219 / 0255-6212219",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/inversiones-0905-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "maquinarias-cadelma-acarigua-c-a",
+      "nombre": "MAQUINARIAS CADELMA ACARIGUA, C.A.",
+      "direccion": "Av Los Pioneros Edif. Margarita Piso P/B Local 1 Sector Araure",
+      "estado": "PORTUGUESA",
+      "ciudad": "ARAURE",
+      "telefono": "0273 5309600 /",
+      "mapa": "GQQF+P65 edif margarita, Avenida Los Pioneros, Araure 3303, Portuguesa",
+      "url": "https://ceramica-carabobo.com/maquinarias-cadelma-acarigua-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.539262499999996,
+        "lng": -69.22689062500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-optima-c-a-2",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Av. Universidad Sector Bello Monte, Parroquia Santa Catalina Del Munic. Bermudez.",
+      "estado": "SUCRE",
+      "ciudad": "CARUPANO, EDO. SUCRE",
+      "telefono": "0294-3318098 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-optima-c-a",
+      "nombre": "CERAMICAS OPTIMA, C.A.",
+      "direccion": "Cc El Indio Av Aristides R C Mexico Local 1-5-6-7, Cumana",
+      "estado": "SUCRE",
+      "ciudad": "CUMANA",
+      "telefono": "0424-7763149 / 0275-8813293",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramikoz-c-a",
+      "nombre": "CERAMIKOZ, C.A",
+      "direccion": "Av La Industrias Local Galpon 15-B Zona Industrial San Luis",
+      "estado": "SUCRE",
+      "ciudad": "CUMANA",
+      "telefono": "0424-8100009 / 0293-4333316",
+      "mapa": "CRR7+JQ7, Cumaná 6101, Sucre",
+      "url": "https://ceramica-carabobo.com/ceramikoz-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.441537500000006,
+        "lng": -64.185578125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "concretera-carabobo-c-a",
+      "nombre": "CONCRETERA CARABOBO C A",
+      "direccion": "Av Periferico Indio Cumana Edo Sucre",
+      "estado": "SUCRE",
+      "ciudad": "CUMANA",
+      "telefono": "0293-4313812 … / 0293-4314223",
+      "mapa": "6101 Avenida Nueva Toledo, Cumaná 6101, Sucre",
+      "url": "https://ceramica-carabobo.com/concretera-carabobo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.4494565,
+        "lng": -64.1785826
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "casa-dam-c-a",
+      "nombre": "CASA DAM, C.A.",
+      "direccion": "Av. Francisco De Caceres Casa 10-41 Sector Casco Central",
+      "estado": "TACHIRA",
+      "ciudad": "LA GRITA",
+      "telefono": "0424-7638711 /",
+      "mapa": "Avenida Francisco de Caceres, local 10 41, La Grita 5022, Táchira",
+      "url": "https://ceramica-carabobo.com/casa-dam-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramica-carabobo-center-c-a",
+      "nombre": "CERAMICA CARABOBO CENTER, C.A.",
+      "direccion": "Av. Venezuela, Entre Calles 3 Y 4 San Antonio",
+      "estado": "TACHIRA",
+      "ciudad": "SAN ANTONIO",
+      "telefono": "0424-7337270 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ceramica-carabobo-center-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramica-carabobo-centerc-a-2",
+      "nombre": "CERAMICA CARABOBO CENTER,C.A.",
+      "direccion": "Calle 4, Entre Carreras 7 Y 8 Al La Do De La Cruz Roja. San Antonio",
+      "estado": "TACHIRA",
+      "ciudad": "SAN ANTONIO",
+      "telefono": "0424-7337270 / 0276-3479232",
+      "mapa": "RH83+48P San Antonio del Táchira, Táchira",
+      "url": "https://ceramica-carabobo.com/ceramica-carabobo-centerc-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.815337499999991,
+        "lng": -72.446671875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "centro-ceramico-la-concordia-c-a",
+      "nombre": "CENTRO CERAMICO LA CONCORDIA, C.A.",
+      "direccion": "Carrer 6 Bis, Con Calle 4 # 4-16 Frente Al Diario La Nacion La Concordia Edo. Tachira",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0276-3473322 /",
+      "mapa": "QQ58+G82, San Cristóbal 5001, Táchira",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-la-concordia-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.7587624999999925,
+        "lng": -72.234234375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramic-center-import-c-a",
+      "nombre": "CERAMIC CENTER IMPORT C.A.",
+      "direccion": "Av 4 C/C E Centro Comercial Minicentro Paramillo Nivel Pb Local L-5 Sector Zona Industrial De Paramillo",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0276-3563993 / 0276-3562747",
+      "mapa": "San Cristóbal 5001, Táchira",
+      "url": "https://ceramica-carabobo.com/ceramic-center-import-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.7756663,
+        "lng": -72.2214154
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ceramica-carabobo-centerc-a",
+      "nombre": "CERAMICA CARABOBO CENTER,C.A.",
+      "direccion": "Calle 14, Entre Carrera 4 Con Av. 5 Diagonal Al Diario La Nacion San Cristobal",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0276-3434341 /",
+      "mapa": "QQ58+HC9 San Cristóbal, Táchira",
+      "url": "https://ceramica-carabobo.com/ceramica-carabobo-centerc-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.7589124999999886,
+        "lng": -72.23389062499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-carabobo-center-c-a",
+      "nombre": "CERAMICAS CARABOBO CENTER C.A",
+      "direccion": "Carrera 6 Bis Nro.3-80 Diagonal Al Diario La Nacion",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0424-7337270/ 0276-3479232 / 0276-3480401",
+      "mapa": "QQ58+GHG San Cristóbal, Táchira",
+      "url": "https://ceramica-carabobo.com/ceramicas-carabobo-center-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.758812499999992,
+        "lng": -72.233546875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "ceramicas-la-popular-c-a",
+      "nombre": "CERAMICAS LA POPULAR, C.A.",
+      "direccion": "Carrera 6 Con Cruce 4 No. 6-68 Diagonal Banesco",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0424-7573580/0276-3473322 /",
+      "mapa": "QQ58+G6X, San Cristóbal 5001, Táchira",
+      "url": "https://ceramica-carabobo.com/ceramicas-la-popular-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.758862499999992,
+        "lng": -72.234390625
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "rusticas-tachira-c-a-2",
+      "nombre": "RUSTICAS TACHIRA, C.A.",
+      "direccion": "Carrera 6 Con Calle 4 N° 3-93, Diagonal Al Diario La Nacion, La Concordia Edo. Tachira",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0212-9599809",
+      "mapa": "QQ58+CWC, C. 4 Bis, San Cristóbal 5001, Táchira",
+      "url": "https://ceramica-carabobo.com/rusticas-tachira-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.758562499999998,
+        "lng": -72.23273437499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "trainco-c-a",
+      "nombre": "TRAINCO, C.A.",
+      "direccion": "Carrera 10 N°5-155 La Concordia San Cristobal",
+      "estado": "TACHIRA",
+      "ciudad": "SAN CRISTOBAL",
+      "telefono": "0276-3474571-151 / 0276-3468816",
+      "mapa": "QQC9+P2M, Séptima Avenida, San Cristóbal 5001, Táchira",
+      "url": "https://ceramica-carabobo.com/trainco-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.771837499999997,
+        "lng": -72.232453125
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "porcemetal-c-a",
+      "nombre": "PORCEMETAL C.A",
+      "direccion": "Av Principal Local Galpon Nro 8-38 Sector Barrancas",
+      "estado": "TACHIRA",
+      "ciudad": "TARIBA",
+      "telefono": "0414-7517209 /",
+      "mapa": "QQW6+6VH, San Cristóbal 5017, Táchira",
+      "url": "https://ceramica-carabobo.com/porcemetal-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 7.795562500000004,
+        "lng": -72.23776562499998
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "el-mundo-de-la-ceramica-c-a",
+      "nombre": "EL MUNDO DE LA CERAMICA, C.A.",
+      "direccion": "Av 5 Con Calle 14 Edif Santa Rita Piso Pb Local N° 2 Sector Las Acacias",
+      "estado": "TRUJILLO",
+      "ciudad": "VALERA",
+      "telefono": "0414-7209796 / 0414-5242518",
+      "mapa": "Valera 3101, Trujillo",
+      "url": "https://ceramica-carabobo.com/el-mundo-de-la-ceramica-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.3148173,
+        "lng": -70.6081655
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "hierromo-c-a",
+      "nombre": "HIERROMO, C.A.",
+      "direccion": "Av Mexico C/Calles Buenos Aires Y La Paz Edif Don Pierre Piso P/B Local Sn Sector La Plata Valera Valera",
+      "estado": "TRUJILLO",
+      "ciudad": "VALERA",
+      "telefono": "0414-7232524 /",
+      "mapa": "y la Paz, Av. Mexico, entre C. Buenos Aires, Valera 3101, Trujillo",
+      "url": "https://ceramica-carabobo.com/hierromo-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "mil-decoraciones-c-a",
+      "nombre": "MIL DECORACIONES, C.A.",
+      "direccion": "Calle 6 Entre Av. 9 Y Bolivar Sector El Centro, Local S/N",
+      "estado": "TRUJILLO",
+      "ciudad": "VALERA",
+      "telefono": "0271-8085135 / 0271-2214604",
+      "mapa": "898V+3FQ, Valera 3101, Trujillo",
+      "url": "https://ceramica-carabobo.com/mil-decoraciones-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.315212499999994,
+        "lng": -70.60626562499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "prodecoraciones-c-a",
+      "nombre": "PRODECORACIONES, C.A.",
+      "direccion": "Av. Bolivar Entre Calles 17 Y 18 Municipio Valera Trujilo",
+      "estado": "TRUJILLO",
+      "ciudad": "VALERA",
+      "telefono": "0414-7304401 /",
+      "mapa": "Valera 3101, Trujillo",
+      "url": "https://ceramica-carabobo.com/prodecoraciones-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 9.3148173,
+        "lng": -70.6081655
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "rusticeramicas-lisandro-valero",
+      "nombre": "RUSTICERAMICAS LISANDRO VALERO",
+      "direccion": "Av Bolivar Edif Coromoto Piso P.B. Local 2 Sector La Plata",
+      "estado": "TRUJILLO",
+      "ciudad": "VALERA",
+      "telefono": "",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/rusticeramicas-lisandro-valero/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "puraceramica-litoral-c-a",
+      "nombre": "PURACERAMICA LITORAL, C.A.",
+      "direccion": "Av La Armada(Final) Edif Puraceramica Piso Pb Local N 9 Urb Catia La Mar",
+      "estado": "VARGAS",
+      "ciudad": "CATIA LA MAR",
+      "telefono": "0212-3510036 /",
+      "mapa": "pb. local Nª 9, Av. La Armada, Catia La Mar, La Guaira",
+      "url": "https://ceramica-carabobo.com/puraceramica-litoral-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "centro-ceramico-litomar-c-a",
+      "nombre": "CENTRO CERAMICO LITOMAR, C.A",
+      "direccion": "Calle Real De Montesano Galpon No. 5, Montesano",
+      "estado": "VARGAS",
+      "ciudad": "MAIQUETIA",
+      "telefono": "0212-3325891 / 0212-3324860",
+      "mapa": "H2WF+3HF, Maiquetía 1161, La Guaira",
+      "url": "https://ceramica-carabobo.com/centro-ceramico-litomar-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.595187499999996,
+        "lng": -66.97607812500002
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "inversiones-cisa-c-a",
+      "nombre": "INVERSIONES CISA C.A.",
+      "direccion": "Calle Real Local Galpon Nro 8 Sector Montesano",
+      "estado": "VARGAS",
+      "ciudad": "MAIQUETIA",
+      "telefono": "0212-3316818 / 0212-3526845",
+      "mapa": "Maiquetía 1161, La Guaira",
+      "url": "https://ceramica-carabobo.com/inversiones-cisa-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.5966074,
+        "lng": -66.9597542
+      },
+      "precision": "dirección"
+    },
+    {
+      "slug": "ferrelinca-jl-c-a",
+      "nombre": "FERRELINCA JL, C.A.",
+      "direccion": "Av 2 Con Calle 20 Edif S/N Piso N/A Sector Monte Oscuro",
+      "estado": "YARACUY",
+      "ciudad": "SAN FELIPE",
+      "telefono": "0412-3301645 / 0254-2343682/2343682",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferrelinca-jl-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "el-oferton-group-c-a",
+      "nombre": "EL OFERTON GROUP, C.A.",
+      "direccion": "Cr 18 Entre Calles 2 Y 3, Via De Servicio Local Nro 2 Sector Pilco Mayo",
+      "estado": "YARACUY",
+      "ciudad": "YARITAGUA",
+      "telefono": "",
+      "mapa": "CR 18 entre calles 2 Y 3. Via de servicio Sector pilco Mayo, Yaritagua 3203, Yaracuy",
+      "url": "https://ceramica-carabobo.com/el-oferton-group-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "el-palacio-del-caico-c-a",
+      "nombre": "EL PALACIO DEL CAICO, C.A.",
+      "direccion": "01 Sector Democracia Av 32 Con Calle San Luis Local Nro Cabimas Edo. Zulia",
+      "estado": "ZULIA",
+      "ciudad": "CABIMAS",
+      "telefono": "",
+      "mapa": "9HPC+3QM, Cabimas 4013, Zulia",
+      "url": "https://ceramica-carabobo.com/el-palacio-del-caico-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.385212499999987,
+        "lng": -71.42807812500001
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "temaco-costa-oriental-c-a",
+      "nombre": "TEMACO COSTA ORIENTAL C.A.",
+      "direccion": "Intercomunal Loc.640 Sector Las 5 Bocas Fte.Int.Grapette Cabimas Edo. Zulia",
+      "estado": "ZULIA",
+      "ciudad": "CABIMAS",
+      "telefono": "0264-3718027 / 0264-3711632",
+      "mapa": "9HH7+QPP, Av. Intercomunal, Cabimas 4013, Zulia",
+      "url": "https://ceramica-carabobo.com/temaco-costa-oriental-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.379462499999995,
+        "lng": -71.435671875
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "baldozulia-hogar-c-a",
+      "nombre": "BALDOZULIA HOGAR, C. A",
+      "direccion": "Avi 16b Local Nro Galpon 117-201 Sector Los Haticos",
+      "estado": "ZULIA",
+      "ciudad": "MARACAIBO",
+      "telefono": "0424-6257504 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/baldozulia-hogar-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-don-baraton-c-a",
+      "nombre": "CERAMICAS DON BARATON C.A.",
+      "direccion": "Av 22 Casa Nro 100c-11 Barrio La Sonrisa",
+      "estado": "ZULIA",
+      "ciudad": "MARACAIBO",
+      "telefono": "0414-6132353 /",
+      "mapa": "Barrio La Sonrisa Puente St. Clara 1, Maracaibo, Zulia",
+      "url": "https://ceramica-carabobo.com/ceramicas-don-baraton-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-verona-2000-c-a",
+      "nombre": "DISTRIBUIDORA VERONA 2000, C.A.",
+      "direccion": "Av 58 Circunvalacion Nro. 2 Local 99a-31 Sector Ixora Rojas",
+      "estado": "ZULIA",
+      "ciudad": "MARACAIBO",
+      "telefono": "",
+      "mapa": "Sector el Pescadito, Circunvalación 2, Av 58, Local 99A 31, Maracaibo 4001, Zulia",
+      "url": "https://ceramica-carabobo.com/distribuidora-verona-2000-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a-2",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Av Circunvalacion 1 Sect La Florida Parroquia Mara. Maracaibo.",
+      "estado": "ZULIA",
+      "ciudad": "MARACAIBO",
+      "telefono": "0414-4371599 /",
+      "mapa": "",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-2/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ferreteria-epa-c-a",
+      "nombre": "FERRETERIA EPA C.A.",
+      "direccion": "Maracaibo Norte C.C. Sambil Maracaibo",
+      "estado": "ZULIA",
+      "ciudad": "MARACAIBO",
+      "telefono": "0414-4371599 /",
+      "mapa": "Avenida Guajira, Zona Industrial Norte, Maracaibo 4001, Zulia",
+      "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "ceramicas-c1-c-a",
+      "nombre": "CERAMICAS C1, C.A",
+      "direccion": "Calles 22b Y 100d Local Nro 2 Sector Santa Clara Maracaibo",
+      "estado": "ZULIA",
+      "ciudad": "ZULIA",
+      "telefono": "0424-6774995 /",
+      "mapa": "101 Autop. 1, Maracaibo 4001, Zulia",
+      "url": "https://ceramica-carabobo.com/ceramicas-c1-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": null,
+      "precision": "sin ubicación"
+    },
+    {
+      "slug": "distribuidora-4-gres-c-a",
+      "nombre": "DISTRIBUIDORA 4 GRES, C.A.",
+      "direccion": "Barrio El Silencio Av 50 Calle 19a Local Nro 19a-113",
+      "estado": "ZULIA",
+      "ciudad": "ZULIA",
+      "telefono": "0424-6774995 /",
+      "mapa": "H979+P5J, Av. 40, Maracaibo 4004, Zulia",
+      "url": "https://ceramica-carabobo.com/distribuidora-4-gres-c-a/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.5643375,
+        "lng": -71.632109375
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "productos-ceramicos-y-para-el-hogar",
+      "nombre": "PRODUCTOS CERAMICOS Y PARA EL HOGAR",
+      "direccion": "Calle 79 H Edif Valencia Piso 4 Apt 4c Urb La Florida",
+      "estado": "ZULIA",
+      "ciudad": "ZULIA",
+      "telefono": "0264-2412727 / 0264-2514166",
+      "mapa": "M8HG+7PC, Maracaibo 4005, Zulia",
+      "url": "https://ceramica-carabobo.com/productos-ceramicos-y-para-el-hogar/",
+      "origen": "post",
+      "parcial": false,
+      "ubicacion": {
+        "lat": 10.678187500000009,
+        "lng": -71.67323437499999
+      },
+      "precision": "plus-code"
+    },
+    {
+      "slug": "aceros-yaracuy-c-a",
+      "nombre": "Aceros Yaracuy, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/aceros-yaracuy-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "alfa-gres-c-a",
+      "nombre": "Alfa Gres c.a.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/alfa-gres-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "baldolara-c-a",
+      "nombre": "Baldolara C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/baldolara-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramicas-importadas-falcon-c-a",
+      "nombre": "Cerámicas Importadas Falcón C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramicas-importadas-falcon-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramicas-insumaca-c-a",
+      "nombre": "Cerámicas Insumaca C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramicas-insumaca-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramicas-la-popular-2-c-a",
+      "nombre": "Cerámicas La Popular 2 C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramicas-la-popular-2-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramicas-la-tinaja-c-a",
+      "nombre": "Cerámicas la Tinaja, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramicas-la-tinaja-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramicas-nela-compania-anonima",
+      "nombre": "Cerámicas Nela, Compañía Anónima",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramicas-nela-compania-anonima/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ceramioferta-c-a",
+      "nombre": "Ceramioferta, C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ceramioferta-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "comercial-decoloris-c-a",
+      "nombre": "Comercial Decoloris, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/comercial-decoloris-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "comercializadora-cima-261-c-a",
+      "nombre": "Comercializadora Cima 261, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/comercializadora-cima-261-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "distribuidora-de-ceramicas-dicersa-c-a",
+      "nombre": "Distribuidora de Cerámicas Dicersa C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/distribuidora-de-ceramicas-dicersa-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "ferro-ceramicas-valcro",
+      "nombre": "Ferro cerámicas Valcro",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/ferro-ceramicas-valcro/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "greal-c-a",
+      "nombre": "Greal, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/greal-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "insumaca-hogar-c-a",
+      "nombre": "Insumaca Hogar C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/insumaca-hogar-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "la-porcelana-c-a",
+      "nombre": "La Porcelana, C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/la-porcelana-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "materiales-guayabal-c-a",
+      "nombre": "Materiales Guayabal C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/materiales-guayabal-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "migo-san-diego-c-a",
+      "nombre": "Migo San Diego, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/migo-san-diego-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "prosein-barquisimeto-c-a",
+      "nombre": "Prosein Barquisimeto, C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/prosein-barquisimeto-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "riogres-c-a",
+      "nombre": "Riogres, C.A",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/riogres-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    },
+    {
+      "slug": "valcro-los-colorados-c-a",
+      "nombre": "Valcro Los Colorados, C.A.",
+      "direccion": "",
+      "estado": "Sin categoría",
+      "ciudad": "",
+      "telefono": "",
+      "url": "https://ceramica-carabobo.com/project/valcro-los-colorados-c-a/",
+      "origen": "project",
+      "parcial": true,
+      "mapa": ""
+    }
+  ]
+}

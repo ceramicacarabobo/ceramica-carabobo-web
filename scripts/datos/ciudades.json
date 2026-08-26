@@ -1,0 +1,292 @@
+{
+  "PUERTO AYACUCHO|AMAZONAS": {
+    "lat": 5.655167,
+    "lng": -67.6000791
+  },
+  "BARCELONA|ANZOATEGUI": {
+    "lat": 10.1325951,
+    "lng": -64.6819583
+  },
+  "EL TIGRE|ANZOATEGUI": {
+    "lat": 8.8862119,
+    "lng": -64.2488754
+  },
+  "GUANIPA|ANZOATEGUI": {
+    "lat": 9.0973508,
+    "lng": -64.4055891
+  },
+  "LECHERIAS|ANZOATEGUI": null,
+  "PTO. LA CRUZ|ANZOATEGUI": {
+    "lat": 10.2028617,
+    "lng": -64.6307626
+  },
+  "SAN FERNANDO DE APURE|APURE": {
+    "lat": 7.8837668,
+    "lng": -67.4708615
+  },
+  "SAN FERNANDO|APURE": {
+    "lat": 7.8837668,
+    "lng": -67.4708615
+  },
+  "ARAGUA|ARAGUA": {
+    "lat": 10.2691064,
+    "lng": -67.6598123
+  },
+  "CAGUA|ARAGUA": {
+    "lat": 10.1796632,
+    "lng": -67.4606765
+  },
+  "LA VICTORIA|ARAGUA": {
+    "lat": 10.2276838,
+    "lng": -67.3246357
+  },
+  "MARACAY|ARAGUA": {
+    "lat": 10.2375144,
+    "lng": -67.5890216
+  },
+  "TEJERIAS|ARAGUA": {
+    "lat": 10.2513904,
+    "lng": -67.1516587
+  },
+  "TURMERO|ARAGUA": {
+    "lat": 10.2217183,
+    "lng": -67.4865808
+  },
+  "BARINAS|BARINAS": {
+    "lat": 8.6182737,
+    "lng": -70.2274065
+  },
+  "BOLIVAR|BOLIVAR": {
+    "lat": 8.1028532,
+    "lng": -63.5469562
+  },
+  "CIUDAD BOLIVAR|BOLIVAR": {
+    "lat": 8.1028532,
+    "lng": -63.5469562
+  },
+  "CIUDAD GUAYANA|BOLIVAR": {
+    "lat": 8.3223763,
+    "lng": -62.6896622
+  },
+  "PTO ORDAZ|BOLIVAR": {
+    "lat": 8.2750351,
+    "lng": -62.7558263
+  },
+  "PUERTO ORDAZ|BOLIVAR": {
+    "lat": 8.2750351,
+    "lng": -62.7558263
+  },
+  "SAN FELIX|BOLIVAR": {
+    "lat": 8.3475408,
+    "lng": -62.6471342
+  },
+  "CIUDAD GUAYANA|BOLIVIA": {
+    "lat": 8.3082635,
+    "lng": -62.714357
+  },
+  "CIUDAD GUYANA|BOLIVIA": null,
+  "GUACARA|CARABOBO": {
+    "lat": 10.2172127,
+    "lng": -67.8836179
+  },
+  "LA YAGUARA|CARABOBO": {
+    "lat": 10.0588246,
+    "lng": -68.1109408
+  },
+  "LOS GUAYOS|CARABOBO": {
+    "lat": 10.1755763,
+    "lng": -67.9194222
+  },
+  "PUERTO CABELLO|CARABOBO": {
+    "lat": 10.4677932,
+    "lng": -68.0436682
+  },
+  "SAN DIEGO|CARABOBO": {
+    "lat": 10.2299896,
+    "lng": -67.9617968
+  },
+  "SECTOR SAN BLAS VALENCIA|CARABOBO": null,
+  "TOCUYITO|CARABOBO": {
+    "lat": 10.1062443,
+    "lng": -68.0942185
+  },
+  "VALENCIA|CARABOBO": {
+    "lat": 10.170026,
+    "lng": -68.0003987
+  },
+  "YAGUA|CARABOBO": {
+    "lat": 10.2598654,
+    "lng": -67.9039675
+  },
+  "CARACAS|CARACAS": {
+    "lat": 10.5060934,
+    "lng": -66.9146008
+  },
+  "CHACAO|CARACAS": {
+    "lat": 10.4930309,
+    "lng": -66.8545356
+  },
+  "MARACAY|CARACAS": {
+    "lat": 10.5083463,
+    "lng": -66.8803653
+  },
+  "SAN CARLOS|COJEDES": {
+    "lat": 9.6631589,
+    "lng": -68.5869647
+  },
+  "PUNTO FIJO|FALCON": {
+    "lat": 11.6931716,
+    "lng": -70.1917178
+  },
+  "CALABOZO|GUARICO": {
+    "lat": 8.9208142,
+    "lng": -67.4234635
+  },
+  "SAN JUAN DE LOS MORROS|GUARICO": {
+    "lat": 9.9152306,
+    "lng": -67.3569141
+  },
+  "VALLE DE LA PASCUA|GUARICO": {
+    "lat": 9.2139083,
+    "lng": -66.0065129
+  },
+  "VALLE LA PASCUA|GUARICO": {
+    "lat": 9.2139083,
+    "lng": -66.0065129
+  },
+  "BARQUISIMETO|LARA": {
+    "lat": 10.0774374,
+    "lng": -69.3222293
+  },
+  "EDIDO|MERIDA": null,
+  "EJIDO|MERIDA": {
+    "lat": 8.5524805,
+    "lng": -71.2409192
+  },
+  "EL VIGIA, EDO. MERIDA.|MERIDA": null,
+  "EL VIGIA|MERIDA": {
+    "lat": 8.6239179,
+    "lng": -71.6713251
+  },
+  "MERIDA|MERIDA": {
+    "lat": 8.5816963,
+    "lng": -71.1658075
+  },
+  "BARUTA|MIRANDA": {
+    "lat": 10.4350067,
+    "lng": -66.8734682
+  },
+  "CARACAS|MIRANDA": {
+    "lat": 10.4707551,
+    "lng": -66.8372571
+  },
+  "CHARALLAVE-CUA|MIRANDA": {
+    "lat": 10.201968,
+    "lng": -66.8842612
+  },
+  "GUATIRE|MIRANDA": {
+    "lat": 10.4684588,
+    "lng": -66.5431115
+  },
+  "LOS TEQUES|MIRANDA": {
+    "lat": 10.3437382,
+    "lng": -67.0453091
+  },
+  "MIRANDA|MIRANDA": {
+    "lat": 10.497338,
+    "lng": -66.8414055
+  },
+  "PETARE|MIRANDA": {
+    "lat": 10.4787104,
+    "lng": -66.8072228
+  },
+  "SAN ANTONIO DE LOS ALTOS|MIRANDA": {
+    "lat": 10.3751347,
+    "lng": -66.9665409
+  },
+  "SANTA TERESA DEL TUY|MIRANDA": {
+    "lat": 10.2388567,
+    "lng": -66.6722608
+  },
+  "SUCRE|MIRANDA": {
+    "lat": 10.5053197,
+    "lng": -66.8322988
+  },
+  "MATURIN|MONAGAS": {
+    "lat": 9.7422774,
+    "lng": -63.1888854
+  },
+  "LOS ROBLES|NUEVA ESPARTA": {
+    "lat": 10.996319,
+    "lng": -63.833702
+  },
+  "NUEVA ESPARTA|NUEVA ESPARTA": {
+    "lat": 10.9164224,
+    "lng": -63.9694316
+  },
+  "PORLAMAR|NUEVA ESPARTA": {
+    "lat": 10.9635839,
+    "lng": -63.8464509
+  },
+  "ACARIGUA|PORTUGUESA": {
+    "lat": 9.5507961,
+    "lng": -69.2032823
+  },
+  "ARAURE|PORTUGUESA": {
+    "lat": 9.5832311,
+    "lng": -69.2239795
+  },
+  "CARUPANO, EDO. SUCRE|SUCRE": null,
+  "CUMANA|SUCRE": {
+    "lat": 10.4495706,
+    "lng": -64.1578046
+  },
+  "LA GRITA|TACHIRA": {
+    "lat": 8.1360228,
+    "lng": -71.985827
+  },
+  "SAN ANTONIO|TACHIRA": {
+    "lat": 7.7952554,
+    "lng": -72.0655099
+  },
+  "SAN CRISTOBAL|TACHIRA": {
+    "lat": 7.7756663,
+    "lng": -72.2214154
+  },
+  "TARIBA|TACHIRA": {
+    "lat": 7.8208151,
+    "lng": -72.2228003
+  },
+  "VALERA|TRUJILLO": {
+    "lat": 9.3148173,
+    "lng": -70.6081655
+  },
+  "CATIA LA MAR|VARGAS": {
+    "lat": 10.5992669,
+    "lng": -67.0145106
+  },
+  "MAIQUETIA|VARGAS": {
+    "lat": 10.6031377,
+    "lng": -66.9966802
+  },
+  "SAN FELIPE|YARACUY": {
+    "lat": 10.3394796,
+    "lng": -68.7417033
+  },
+  "YARITAGUA|YARACUY": {
+    "lat": 10.0805848,
+    "lng": -69.1211307
+  },
+  "CABIMAS|ZULIA": {
+    "lat": 10.395075,
+    "lng": -71.4414049
+  },
+  "MARACAIBO|ZULIA": {
+    "lat": 10.6498095,
+    "lng": -71.6443596
+  },
+  "ZULIA|ZULIA": {
+    "lat": 10.1954674,
+    "lng": -71.3215354
+  }
+}
