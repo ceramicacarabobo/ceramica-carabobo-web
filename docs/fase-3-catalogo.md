@@ -11,7 +11,7 @@ y el sitio lo muestra filtrable.*
 | 3.2 | Página de catálogo: grilla de 24 en 24, cinco filtros combinables, orden y estados vacíos | ✅ |
 | 3.3 | Contrato de URL e historial (filtros sin ensuciar historial, ficha con entrada propia, atrás cierra lo de encima) | ✅ (la ficha, enganchada) |
 | 3.4 | Ficha de producto: overlay en el catálogo y página propia indexable por producto | ✅ |
-| 3.5 | Megamenú de Catálogo enlazando por materia, y las tarjetas del home enlazando a su producto | pendiente |
+| 3.5 | Megamenú de Catálogo enlazando por materia, y las tarjetas del home enlazando a su producto | ✅ |
 | 3.6 | QA: pruebas 05, 06, 07 y 10 del checklist, sumadas a `scripts/qa/aceptacion.mjs` | ✅ la 05, 06 y 07 (la 10 necesita contenido preparado) |
 
 ## Reglas heredadas que gobiernan esta fase
@@ -135,6 +135,49 @@ PLANO=1 PROTO=http://localhost:4500/catalogo-c5.dc.html NUESTRO=http://localhost
 | Un "atrás" devuelve a la página anterior | ✅ vuelve al inicio |
 | Abrir la hoja de filtros SÍ agrega una entrada | ✅ 2 → 3 |
 | "Atrás" cierra la hoja sin salir del catálogo y conserva el filtro puesto dentro | ✅ |
+
+#### Bloque 3.5 — el home conectado al catálogo (verificado 2026-08-25)
+
+**Megamenú por materia.** Las cinco materias del CMS llevan al catálogo filtrado por ella. El enlace
+usa el ancla del prototipo (`#materia-madera`) que `direccion.ts` normaliza a `#materia=Madera` con
+`replaceState`. Verificado en el navegador uno por uno: la dirección queda normalizada y la casilla
+correcta marcada en el catálogo.
+
+| Materia | Enlace | Queda en | Productos visibles |
+|---|---|---|---|
+| Piedra | `/catalogo#materia-piedra` | `#materia=Piedra` | 24 de 126 |
+| Cemento | `/catalogo#materia-cemento` | `#materia=Cemento` | 24 de 126 |
+| Madera | `/catalogo#materia-madera` | `#materia=Madera` | 20 de 126 |
+| Mármol | `/catalogo#materia-m%C3%A1rmol` | `#materia=M%C3%A1rmol` | 14 de 126 |
+| Terrazo | `/catalogo#materia-terrazo` | `#materia=Terrazo` | 3 de 126 |
+
+El acento de "Mármol" viaja codificado (`encodeURIComponent` en el `href`): sin eso el ancla no
+sobrevive el viaje y el catálogo abre sin filtrar.
+
+**El índice del megamenú no filtra, y es fiel.** "Todos los diseños", "Por uso", "Formatos" y
+"Acabados" van a `/catalogo` a secas, porque en el prototipo los seis enlaces del panel repiten el
+mismo `href`. No hay un valor único de eje que represente "por uso" o "acabados" — son categorías,
+no valores—, así que las anclas `#uso` / `#formato` / `#brillo` que llevaban antes no traían
+`=valor` y `direccion.ts` las ignoraba: el catálogo abría igual sin filtro, solo que con una URL con
+un ancla muerta.
+
+**Tarjetas de Ambientes.** Las 15 fichas son `<a href="/catalogo/<slug>">` con toda la tarjeta como
+área tocable (389×486 a 1440). Los 15 slugs resuelven a páginas que existen. El `<a>` no arrastró
+estilos de enlace —sin subrayado, el nombre sigue blanco— y la maqueta no se movió: **0,59% de
+diferencia a 1440 en modo PLANO, igual que antes del cambio.** Sin `PLANO` da 0,66%, pero esa
+diferencia es de fotos, no de composición. Una ficha sin producto enlazado sigue siendo un `div` con
+los mismos datos, en vez de un enlace roto.
+
+**Las obras de Proyectos quedan como texto, a propósito.** La fila "Diseño" trae `disenoSlug` del
+CMS, pero **el prototipo la dibuja como texto plano, no como enlace** — el encargo del bloque decía
+enlazarla solo si el prototipo lo hacía. El dato queda disponible en el adaptador para cuando se
+decida lo contrario.
+
+#### Pendiente de fidelidad, heredado de la cáscara
+
+El índice del megamenú del prototipo tiene **seis** enlaces; nosotros dibujamos cuatro. Faltan "Por
+tipo" y "Ficha técnica". Viene de la Fase 1 —no lo introdujo este bloque— pero es una diferencia
+visible contra el diseño y no está justificada en ningún lado.
 
 #### Bloque 3.6 — las pruebas 05, 06 y 07, plegadas (2026-08-25)
 
