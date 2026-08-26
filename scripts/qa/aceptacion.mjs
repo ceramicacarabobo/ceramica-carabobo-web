@@ -3,17 +3,23 @@
  *
  * El criterio de cierre de QA del proyecto son las 12 pruebas de
  * `design/Requisitos tecnicos v0.dc.html` (clave `aceptacion` del script).
- * Cinco de ellas —01 (mapa), 05, 06, 07 (direcciones del catálogo) y 10
- * (estados vacíos del catálogo)— dependen de pantallas que todavía no existen:
- * son de las fases del catálogo y del mapa. Este script cubre las otras siete:
+ * Este script cubre diez:
  *
  *   02  una dirección inexistente muestra NUESTRA 404, no el error del servidor
  *   03  la primera pantalla del inicio: LCP y peso transferido (se MIDE, no se juzga)
  *   04  navegar no produce destello blanco ni vuelve a montar el encabezado
+ *   05  quince filtrados y un atrás devuelve a la página anterior, no al filtro
+ *   06  con la ficha abierta, el gesto de volver la cierra y deja los filtros
+ *   07  el enlace de un diseño abre el catálogo con esa ficha abierta
  *   08  ninguna imagen hace saltar el contenido (CLS)
  *   09  con movimiento reducido, nada se anima
  *   11  todo lo tocable mide 44px y nada queda bajo la barra del sistema
  *   12  se recorre con el teclado, con foco visible, y los paneles abren y cierran
+ *
+ * Quedan fuera dos, sin automatizar todavía: la 01 (el mapa de dónde comprar
+ * dibuja los 26 estados con todo CDN externo desconectado) y la 10 (con el
+ * catálogo vacío, una foto faltante o una ficha sin datos, ninguna pantalla se
+ * ve rota) — esta última necesita contenido preparado a propósito.
  *
  * Uso:
  *   node scripts/qa/aceptacion.mjs                 # levanta dist/client y prueba ahí
@@ -147,6 +153,25 @@ const recorrer = async (pagina, pausa = 300) => {
 }
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(0)} KB`
+
+/** El teléfono de referencia del handoff, el mismo de las pruebas 05, 06 y 07. */
+const TELEFONO = {viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true}
+
+/** La capa de la ficha ya enganchó sus escuchas: antes de esto, un clic en una
+ *  tarjeta navega a la página propia en vez de abrir el overlay. */
+const fichaEnganchada = (pagina) =>
+  pagina.waitForFunction(() => !!document.querySelector('[data-capa-ficha][data-enganchada]'), null, {timeout: 20000})
+
+/** Hay una ficha visible dentro de la capa. */
+const fichaAbierta = (pagina) =>
+  pagina.waitForFunction(
+    () => {
+      const capa = document.querySelector('[data-capa-ficha]')
+      return !!capa && !capa.hidden && !!capa.querySelector('[data-ficha]')
+    },
+    null,
+    {timeout: 20000},
+  )
 
 // ===========================================================================
 // 02 — Una dirección inexistente muestra la 404 del sitio
@@ -783,10 +808,383 @@ async function prueba12(navegador, base) {
 // ===========================================================================
 // Orquestación
 // ===========================================================================
+// ===========================================================================
+// 05 — Filtrar quince veces y un atrás devuelve a la página anterior
+// ===========================================================================
+// El contrato de `direccion.ts`: los filtros se escriben con `replaceState`
+// —la dirección refleja lo que se ve y sigue siendo compartible, pero el
+// historial no guarda un paso por filtro— y lo que se abre ENCIMA (la hoja de
+// filtros, la ficha) sí deja entrada propia, para que el gesto de volver la
+// cierre. Se prueban las dos mitades: sin la segunda, "atrás" se saldría del
+// catálogo con la hoja abierta.
+async function prueba05(navegador, base) {
+  const notas = []
+  const fallas = []
+  const comprobar = (ok, texto) => {
+    notas.push(`${ok ? 'OK' : 'FALLA'} · ${texto}`)
+    if (!ok) fallas.push(texto)
+  }
+
+  // — Escritorio: quince filtrados y un atrás ——————————————————————————————
+  {
+    const contexto = await navegador.newContext({viewport: {width: 1440, height: 900}})
+    const pagina = await contexto.newPage()
+    await pagina.addInitScript(SIN_TELON)
+    await pagina.goto(base + '/', {waitUntil: 'load', timeout: 60000})
+
+    // Se llega al catálogo NAVEGANDO con el enrutador de la cáscara, que es lo
+    // que deja la entrada anterior — y de paso ejercita el re-enganche del
+    // script, que es donde un listener duplicado se notaría.
+    await pagina.click('[data-abre-megamenu]')
+    await pagina.waitForTimeout(300)
+    await pagina.click('.megamenu a[href="/catalogo"]')
+    await pagina.waitForFunction(() => !!document.querySelector('[data-catalogo][data-enganchada]'), null, {timeout: 15000})
+
+    const largoInicial = await pagina.evaluate(() => history.length)
+    const urlCatalogo = pagina.url()
+
+    // Quince gestos de verdad: casillas de los cinco ejes y cambios de serie.
+    const gestos = []
+    let vuelta = 0
+    while (gestos.length < 15 && vuelta < 40) {
+      vuelta += 1
+      if (gestos.length % 5 === 4) {
+        const serie = ['Todas', 'Regular', 'Venezuela'][(gestos.length / 5) | 0]
+        await pagina.click(`[data-serie="${serie}"]`)
+        gestos.push(`serie=${serie}`)
+      } else {
+        // Se vuelven a buscar en cada vuelta: filtrar apaga y enciende casillas.
+        const casillas = await pagina.$$('aside input[data-eje]:not([disabled])')
+        const casilla = casillas[vuelta % casillas.length]
+        if (!casilla || (await casilla.isDisabled())) continue
+        await casilla.click()
+        gestos.push(await casilla.getAttribute('data-valor'))
+      }
+      await pagina.waitForTimeout(120)
+    }
+
+    const largoTrasFiltrar = await pagina.evaluate(() => history.length)
+    const urlTrasFiltrar = pagina.url()
+
+    comprobar(
+      largoTrasFiltrar === largoInicial,
+      `${gestos.length} filtrados no ensucian el historial (history.length ${largoInicial} → ${largoTrasFiltrar})`,
+    )
+    comprobar(
+      urlTrasFiltrar !== urlCatalogo && urlTrasFiltrar.includes('#'),
+      `la dirección sí refleja los filtros, con replaceState: ${urlTrasFiltrar.slice(urlTrasFiltrar.indexOf('#')) || '(sin hash)'}`,
+    )
+
+    await pagina.goBack()
+    await pagina.waitForTimeout(1200)
+    const destino = new URL(pagina.url()).pathname.replace(/\/$/, '') || '/'
+    comprobar(destino === '/', `un atrás devuelve a la página anterior (quedó en ${pagina.url()})`)
+
+    await contexto.close()
+  }
+
+  // — Teléfono: la hoja de filtros SÍ deja entrada propia ————————————————
+  {
+    const contexto = await navegador.newContext(TELEFONO)
+    const pagina = await contexto.newPage()
+    await pagina.addInitScript(SIN_TELON)
+    await pagina.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+    await pagina.waitForFunction(() => !!document.querySelector('[data-catalogo][data-enganchada]'), null, {timeout: 15000})
+
+    const antes = await pagina.evaluate(() => history.length)
+    await pagina.click('.filtrar[data-abre-filtros]')
+    await pagina.waitForTimeout(400)
+    const abierta = await pagina.evaluate(() => !document.querySelector('[data-hoja-filtros]').hidden)
+    const despues = await pagina.evaluate(() => history.length)
+    comprobar(abierta && despues === antes + 1, `abrir la hoja de filtros agrega una entrada (history.length ${antes} → ${despues})`)
+
+    // Con un filtro puesto DENTRO de la hoja: atrás la cierra y NO deshace el
+    // filtro. El acordeón abre con Materia desplegada, así que no hay que tocarlo.
+    const primera = await pagina.$('.hoja input[data-eje="materia"]:not([disabled])')
+    await primera.click()
+    await pagina.waitForTimeout(300)
+    const elegido = await primera.getAttribute('data-valor')
+
+    await pagina.goBack()
+    await pagina.waitForTimeout(600)
+    const cerrada = await pagina.evaluate(() => document.querySelector('[data-hoja-filtros]').hidden)
+    const sigueFiltrado = await pagina.evaluate((valor) => location.hash.includes(encodeURIComponent(valor)), elegido)
+    const enCatalogo = new URL(pagina.url()).pathname.replace(/\/$/, '') === '/catalogo'
+    comprobar(cerrada && enCatalogo, 'atrás cierra la hoja sin salir del catálogo')
+    comprobar(sigueFiltrado, `el filtro puesto dentro de la hoja sobrevive al cierre (materia=${elegido})`)
+
+    await contexto.close()
+  }
+
+  anotar(
+    '05',
+    'Quince filtrados y un atrás',
+    fallas.length ? 'FALLA' : 'OK',
+    `${notas.length} comprobaciones · ${fallas.length} fallidas`,
+    notas,
+  )
+}
+
+// ===========================================================================
+// 06 — Con la ficha abierta, el gesto de volver la cierra y deja los filtros
+// ===========================================================================
+// Antes del gesto se comprueba lo que lo sostiene: que la página propia del
+// producto exista y sea indexable, porque el overlay se la trae por `fetch` —
+// si la página no está, no hay ficha que cerrar.
+async function prueba06(navegador, base) {
+  const notas = []
+  const fallas = []
+  const comprobar = (ok, texto) => {
+    notas.push(`${ok ? 'OK' : 'FALLA'} · ${texto}`)
+    if (!ok) fallas.push(texto)
+  }
+
+  // — Base: la página propia del producto ————————————————————————————————
+  {
+    const contexto = await navegador.newContext(TELEFONO)
+    const pagina = await contexto.newPage()
+    await pagina.addInitScript(SIN_TELON)
+    await pagina.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+    await fichaEnganchada(pagina)
+
+    const tarjeta = pagina.locator('a[data-abre-ficha]').first()
+    const slug = (await tarjeta.getAttribute('href')) || ''
+
+    const respuesta = await pagina.goto(base + slug, {waitUntil: 'load', timeout: 60000})
+    comprobar(respuesta?.status() === 200, `la página propia del producto responde: ${slug} → ${respuesta?.status()}`)
+
+    const canonical = await pagina.getAttribute('link[rel=canonical]', 'href')
+    comprobar(!!canonical && canonical.endsWith(slug), `canonical propio: ${canonical || '(sin canonical)'}`)
+
+    const og = await pagina.getAttribute('meta[property="og:url"]', 'content')
+    comprobar(!!og && og.endsWith(slug), `og:url propio: ${og || '(sin og:url)'}`)
+
+    const filas = await pagina.locator('[data-ficha] .ficha__fila').count()
+    const vacias = await pagina.locator('[data-ficha] .ficha__v:empty').count()
+    comprobar(filas > 0 && vacias === 0, `la ficha técnica tiene filas y ninguna vacía: ${filas} filas`)
+
+    comprobar((await pagina.locator('.ficha__ejemplo').count()) === 0, 'sin avisos internos en un build que no es de preview')
+
+    await contexto.close()
+  }
+
+  // — El gesto de volver ——————————————————————————————————————————————————
+  {
+    const contexto = await navegador.newContext(TELEFONO)
+    const pagina = await contexto.newPage()
+    await pagina.addInitScript(SIN_TELON)
+    await pagina.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+    await fichaEnganchada(pagina)
+
+    // Se pone un filtro DE VERDAD, por la hoja, que es lo que hay en teléfono.
+    await pagina.click('.filtrar[data-abre-filtros]')
+    await pagina.waitForTimeout(400)
+    const casilla = pagina.locator('.hoja input[data-eje="materia"]:not([disabled])').first()
+    const materia = await casilla.getAttribute('data-valor')
+    await casilla.click()
+    await pagina.waitForTimeout(300)
+    await pagina.click('[data-ver-resultados]')
+    await pagina.waitForTimeout(500)
+
+    const filtrada = await pagina.evaluate(() => location.hash)
+    comprobar(filtrada.includes(encodeURIComponent(materia)), `el filtro queda puesto antes de abrir la ficha: ${filtrada}`)
+
+    const tarjeta = pagina.locator('.grilla a[data-abre-ficha]:not([hidden])').first()
+    const id = await tarjeta.getAttribute('data-abre-ficha')
+    await tarjeta.click()
+    await fichaAbierta(pagina)
+
+    // La marca en `history.state`, no `history.length`: cerrar la hoja de
+    // filtros usa `history.back()`, que deja una entrada HACIA ADELANTE. El
+    // `pushState` de la ficha la sobrescribe en vez de sumar una, así que la
+    // longitud no se mueve aunque la entrada propia sí exista.
+    comprobar(
+      await pagina.evaluate(() => !!(history.state && history.state.capaCatalogo)),
+      'abrir la ficha deja entrada propia en el historial (history.state.capaCatalogo)',
+    )
+    comprobar(
+      (await pagina.evaluate(() => location.hash)).includes(`diseno=${encodeURIComponent(id)}`),
+      'la dirección nombra el diseño abierto',
+    )
+    comprobar(
+      await pagina.evaluate(() => document.documentElement.style.overflow === 'hidden'),
+      'el documento no scrollea detrás de la hoja (el scroll es interno)',
+    )
+    // Se mide DOS veces si la primera sale corta. La hoja acaba de entrar con
+    // su animación y el HTML de la ficha se acaba de inyectar: en una máquina
+    // cargada se ha visto una lectura temprana por debajo de 44 que a los
+    // 400ms ya está bien. Una lectura corta que se corrige sola es un artefacto
+    // del momento en que se mide, no un control chico — pero se deja anotada,
+    // porque si el aspa se rompe de verdad las dos lecturas van a salir cortas.
+    const medirAspa = () =>
+      pagina.evaluate(() => {
+        const b = document.querySelector('.capa-ficha__cerrar')
+        if (!b) return null
+        const r = b.getBoundingClientRect()
+        return {w: +r.width.toFixed(1), h: +r.height.toFixed(1)}
+      })
+    let aspa = await medirAspa()
+    let reintento = null
+    if (!aspa || aspa.w < 44 || aspa.h < 44) {
+      await pagina.waitForTimeout(400)
+      reintento = await medirAspa()
+    }
+    const valida = reintento || aspa
+    comprobar(
+      !!valida && valida.w >= 44 && valida.h >= 44,
+      `el cierre de la hoja mide 44px: ${valida ? `${valida.w}×${valida.h}` : '(no existe)'}` +
+        (reintento ? ` — la primera lectura dio ${aspa ? `${aspa.w}×${aspa.h}` : '(no existe)'} y se repitió a los 400ms` : ''),
+    )
+
+    // Arrastrar la hoja hacia abajo desde el asa también cierra
+    // (`Responsividad v0` §03). El cuerpo NO arrastra: ahí manda el scroll.
+    const caja = await pagina.locator('.capa-ficha__asa').boundingBox()
+    await pagina.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2)
+    await pagina.mouse.down()
+    for (let y = 20; y <= 200; y += 45) {
+      await pagina.mouse.move(caja.x + caja.width / 2, caja.y + y)
+      await pagina.waitForTimeout(60)
+    }
+    const corrida = await pagina.evaluate(() => document.querySelector('.capa-ficha__caja').style.transform)
+    await pagina.mouse.up()
+    await pagina.waitForTimeout(700)
+    comprobar(/translateY\(\d+/.test(corrida), `la hoja sigue al dedo mientras se arrastra: ${corrida || '(sin transform)'}`)
+    comprobar(await pagina.evaluate(() => document.querySelector('[data-capa-ficha]').hidden), 'arrastrar hacia abajo cierra la hoja')
+
+    // Se vuelve a abrir para probar el gesto de volver del sistema.
+    await pagina.locator('.grilla a[data-abre-ficha]:not([hidden])').first().click()
+    await fichaAbierta(pagina)
+    await pagina.goBack()
+    await pagina.waitForTimeout(600)
+
+    const cerrada = await pagina.evaluate(() => document.querySelector('[data-capa-ficha]').hidden)
+    const ruta = new URL(pagina.url()).pathname.replace(/\/$/, '')
+    const hash = await pagina.evaluate(() => location.hash)
+
+    comprobar(cerrada && ruta === '/catalogo', `atrás cierra la ficha sin salir del catálogo: ${pagina.url()}`)
+    comprobar(hash.includes(encodeURIComponent(materia)), `el filtro sobrevive al cierre: materia=${materia}`)
+    comprobar(!hash.includes('diseno='), `la dirección deja de nombrar el diseño: ${hash || '(sin hash)'}`)
+
+    await contexto.close()
+  }
+
+  anotar(
+    '06',
+    'Atrás cierra la ficha y conserva los filtros',
+    fallas.length ? 'FALLA' : 'OK',
+    `${notas.length} comprobaciones · ${fallas.length} fallidas`,
+    notas,
+  )
+}
+
+// ===========================================================================
+// 07 — El enlace de un diseño, abierto en otro teléfono
+// ===========================================================================
+// Se comprueba de punta a punta: un contexto abre la ficha y se lee lo que
+// compartiría, y OTRO contexto —sin nada guardado, que es lo que significa
+// "otro teléfono"— abre ese enlace. De paso se comprueba que el overlay y la
+// página propia son el MISMO HTML: como el overlay se lo trae por `fetch`, si
+// divergen es que algo se rompió.
+async function prueba07(navegador, base) {
+  const notas = []
+  const fallas = []
+  const comprobar = (ok, texto) => {
+    notas.push(`${ok ? 'OK' : 'FALLA'} · ${texto}`)
+    if (!ok) fallas.push(texto)
+  }
+
+  let slug = ''
+  let id = ''
+
+  // — Teléfono 1 comparte, teléfono 2 abre ————————————————————————————————
+  {
+    const uno = await navegador.newContext(TELEFONO)
+    const p1 = await uno.newPage()
+    await p1.addInitScript(SIN_TELON)
+    await p1.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+    await fichaEnganchada(p1)
+
+    const tarjeta = p1.locator('a[data-abre-ficha]').first()
+    slug = (await tarjeta.getAttribute('href')) || ''
+    id = (await tarjeta.getAttribute('data-abre-ficha')) || ''
+
+    await tarjeta.click()
+    await fichaAbierta(p1)
+    // `location.href` es exactamente lo que copian "Copiar enlace" y la hoja
+    // del sistema.
+    const compartido = p1.url()
+    const nombre = (await p1.locator('[data-capa-ficha] .ficha__nombre').first().textContent())?.trim()
+    await uno.close()
+
+    comprobar(compartido.includes(`#diseno=${encodeURIComponent(id)}`), `el enlace a compartir nombra el diseño: ${compartido}`)
+
+    const dos = await navegador.newContext(TELEFONO)
+    const p2 = await dos.newPage()
+    await p2.addInitScript(SIN_TELON)
+    await p2.goto(compartido, {waitUntil: 'load', timeout: 60000})
+    await fichaEnganchada(p2)
+    await fichaAbierta(p2)
+
+    const nombre2 = (await p2.locator('[data-capa-ficha] .ficha__nombre').first().textContent())?.trim()
+    const enCatalogo = new URL(p2.url()).pathname.replace(/\/$/, '') === '/catalogo'
+    const grilla = await p2.locator('.grilla a[data-abre-ficha]:not([hidden])').count()
+
+    comprobar(enCatalogo && grilla > 0, `el enlace abre el CATÁLOGO, no otra página: ${grilla} tarjetas detrás`)
+    comprobar(!!nombre2 && nombre2 === nombre, `con la ficha de ese diseño abierta: ${nombre2 || '(vacía)'}`)
+    await dos.close()
+  }
+
+  // — El overlay y la página propia son la MISMA ficha ————————————————————
+  {
+    const contexto = await navegador.newContext({viewport: {width: 1440, height: 900}})
+    const pagina = await contexto.newPage()
+    await pagina.addInitScript(SIN_TELON)
+
+    await pagina.goto(base + slug, {waitUntil: 'load', timeout: 60000})
+    const enPagina = await pagina.locator('[data-ficha]').first().evaluate((el) => el.outerHTML)
+
+    await pagina.goto(`${base}/catalogo#diseno=${encodeURIComponent(id)}`, {waitUntil: 'load', timeout: 60000})
+    await fichaEnganchada(pagina)
+    await fichaAbierta(pagina)
+    const enOverlay = await pagina.locator('[data-capa-ficha] [data-ficha]').first().evaluate((el) => el.outerHTML)
+
+    // El overlay destapa el compartir (lo hace el script), así que se compara
+    // sin ese atributo: todo lo demás tiene que ser idéntico.
+    const limpiar = (html) => html.replace(/ hidden=""/g, '').replace(/\s+/g, ' ')
+    comprobar(limpiar(enPagina) === limpiar(enOverlay), 'el overlay muestra la misma ficha que la página propia')
+
+    const ancho = await pagina.locator('.capa-ficha__caja').evaluate((el) => el.getBoundingClientRect().width)
+    comprobar(Math.round(ancho) === 880, `el diálogo de escritorio mide 880px: ${Math.round(ancho)}px`)
+
+    await pagina.mouse.click(8, 8)
+    await pagina.waitForTimeout(500)
+    comprobar(await pagina.evaluate(() => document.querySelector('[data-capa-ficha]').hidden), 'clic fuera cierra el diálogo')
+
+    await pagina.locator(`a[data-abre-ficha="${id}"]`).first().click()
+    await fichaAbierta(pagina)
+    await pagina.keyboard.press('Escape')
+    await pagina.waitForTimeout(500)
+    comprobar(await pagina.evaluate(() => document.querySelector('[data-capa-ficha]').hidden), 'Escape cierra el diálogo')
+
+    await contexto.close()
+  }
+
+  anotar(
+    '07',
+    'El enlace de un diseño abre el catálogo con su ficha',
+    fallas.length ? 'FALLA' : 'OK',
+    `${notas.length} comprobaciones · ${fallas.length} fallidas`,
+    notas,
+  )
+}
+
 const PRUEBAS = [
   ['02', prueba02],
   ['03', prueba03],
   ['04', prueba04],
+  ['05', prueba05],
+  ['06', prueba06],
+  ['07', prueba07],
   ['08', prueba08],
   ['09', prueba09],
   ['11', prueba11],
@@ -797,7 +1195,7 @@ const servidor = process.env.NUESTRO ? null : await levantarServidor()
 const base = (process.env.NUESTRO || `http://localhost:${PUERTO}`).replace(/\/$/, '')
 
 titular(`Checklist de aceptación — ${base}`)
-console.log('Pruebas 01, 05, 06, 07 y 10 del handoff dependen del catálogo y del mapa: fases posteriores.')
+console.log('Faltan la 01 (mapa sin CDN externo) y la 10 (estados vacíos, foto faltante, ficha sin datos): sin automatizar todavía.')
 
 const navegador = await chromium.launch()
 for (const [n, prueba] of PRUEBAS) {

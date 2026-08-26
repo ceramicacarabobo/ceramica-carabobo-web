@@ -12,7 +12,7 @@ y el sitio lo muestra filtrable.*
 | 3.3 | Contrato de URL e historial (filtros sin ensuciar historial, ficha con entrada propia, atrás cierra lo de encima) | ✅ (la ficha, enganchada) |
 | 3.4 | Ficha de producto: overlay en el catálogo y página propia indexable por producto | ✅ |
 | 3.5 | Megamenú de Catálogo enlazando por materia, y las tarjetas del home enlazando a su producto | pendiente |
-| 3.6 | QA: pruebas 05, 06, 07 y 10 del checklist, sumadas a `scripts/qa/aceptacion.mjs` | pendiente |
+| 3.6 | QA: pruebas 05, 06, 07 y 10 del checklist, sumadas a `scripts/qa/aceptacion.mjs` | ✅ la 05, 06 y 07 (la 10 necesita contenido preparado) |
 
 ## Reglas heredadas que gobiernan esta fase
 
@@ -126,8 +126,7 @@ PLANO=1 PROTO=http://localhost:4500/catalogo-c5.dc.html NUESTRO=http://localhost
 
 #### Prueba 05 del checklist — pasa
 
-`node scripts/qa/prueba-05.mjs` (suelta mientras dura la fase; el bloque 3.6 la pliega a
-`aceptacion.mjs` junto con la 06, la 07 y la 10).
+`SOLO=05 node scripts/qa/aceptacion.mjs` (plegada el 2026-08-25; ya no hay script suelto).
 
 | Qué | Resultado |
 |---|---|
@@ -137,9 +136,36 @@ PLANO=1 PROTO=http://localhost:4500/catalogo-c5.dc.html NUESTRO=http://localhost
 | Abrir la hoja de filtros SÍ agrega una entrada | ✅ 2 → 3 |
 | "Atrás" cierra la hoja sin salir del catálogo y conserva el filtro puesto dentro | ✅ |
 
-#### Abierto para el bloque 3.6
+#### Bloque 3.6 — las pruebas 05, 06 y 07, plegadas (2026-08-25)
 
-- Plegar `scripts/qa/prueba-05.mjs` y `scripts/qa/prueba-06-07.mjs` a `scripts/qa/aceptacion.mjs`.
+`scripts/qa/prueba-05.mjs` y `scripts/qa/prueba-06-07.mjs` desaparecen: sus comprobaciones son ahora
+`prueba05`, `prueba06` y `prueba07` dentro de `scripts/qa/aceptacion.mjs`, con el formato del resto
+—un veredicto por prueba del checklist y cada comprobación anotada debajo—. Se corren solas con
+`SOLO=05,06,07 node scripts/qa/aceptacion.mjs`.
+
+La suite pasó de siete pruebas a diez: **9 en verde, la 03 medida sin veredicto, 0 en falla.**
+
+Dos siguen sin automatizar, y conviene no perderlas de vista:
+
+- **01** — el mapa de dónde comprar dibuja los 26 estados con todo CDN externo desconectado. La
+  página existe desde hoy y el build no trae ningún script externo, así que ya se puede escribir.
+- **10** — con el catálogo vacío, una foto faltante o una ficha sin datos, ninguna pantalla se ve
+  rota. Necesita contenido preparado a propósito, que es lo que la mantiene fuera.
+
+**Dos correcciones que salieron de plegarlas, las dos en la prueba, no en el catálogo:**
+
+1. **La entrada de historial se comprueba por `history.state`, no por `history.length`.** La 06 medía
+   la longitud antes y después de abrir la ficha y esperaba +1. Pero en el flujo de teléfono la
+   prueba abre primero la hoja de filtros —que también empuja una entrada— y "ver resultados" la
+   cierra con `history.back()`. Eso deja una entrada HACIA ADELANTE: el `pushState` de la ficha la
+   sobrescribe en vez de sumar una, así que la longitud no se mueve aunque la entrada propia sí
+   exista. Ahora se lee la marca `capaCatalogo` que escribe `direccion.ts`.
+2. **La medida de 44px del aspa se reintenta una vez.** Se vio fallar dos veces con una lectura corta
+   y no se pudo reproducir en 22 corridas seguidas; la hoja acaba de entrar con su animación y el
+   HTML de la ficha se acaba de inyectar, así que una lectura temprana puede salir corta. Si la
+   primera sale bajo 44 se repite a los 400ms y se anotan las dos: un aspa rota daría corto las dos
+   veces. La 11, que barre todos los controles del sitio con hit-test, da 0 bajo 44px de forma
+   estable — que es la comprobación de fondo.
 
 **Cerrado el 2026-08-25 — el `select` de "Ordenar" ya mide 44px tocables.** Medía 36 de alto, que es
 lo que dibuja el prototipo y lo que `Tokens v0` llama `--control-height-sm`, y subirlo a 44 movía la
