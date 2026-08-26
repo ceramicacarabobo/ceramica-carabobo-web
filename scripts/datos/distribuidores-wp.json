@@ -1,12 +1,14 @@
 {
   "fuente": "https://ceramica-carabobo.com",
-  "extraido": "2026-08-26T04:21:02.305Z",
+  "extraido": "2026-08-26T04:31:40.182Z",
   "resumen": {
     "total": 247,
     "conDireccion": 226,
     "conTelefono": 212,
     "conEstado": 247,
     "conCiudad": 225,
+    "conMapa": 158,
+    "conPlusCode": 81,
     "parciales": 21,
     "conError": 0
   },
@@ -18,6 +20,7 @@
       "estado": "AMAZONAS",
       "ciudad": "PUERTO AYACUCHO",
       "telefono": "0416-6439955 /",
+      "mapa": "M96F+29V, Puerto Ayacucho 7101, Amazonas",
       "url": "https://ceramica-carabobo.com/agro-ferremateriales-moroni-c-a/",
       "origen": "post",
       "parcial": false
@@ -29,6 +32,7 @@
       "estado": "AMAZONAS",
       "ciudad": "PUERTO AYACUCHO",
       "telefono": "0414-4868009 / 0248-5214401",
+      "mapa": "Av las Casuarinas 111, Ayacucho 05001, Perú",
       "url": "https://ceramica-carabobo.com/ceramiconi-ayacucho-c-a/",
       "origen": "post",
       "parcial": false
@@ -40,6 +44,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "BARCELONA",
       "telefono": "0412-8754885 /",
+      "mapa": "58C8+PVC, Av. Intercomunal, Barcelona 6001, Anzoátegui",
       "url": "https://ceramica-carabobo.com/distribuidora-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -51,6 +56,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "BARCELONA",
       "telefono": "0212-3324860 /",
+      "mapa": "Barcelona 6001, Anzoátegui",
       "url": "https://ceramica-carabobo.com/grupo-decogres-2012-c-a/",
       "origen": "post",
       "parcial": false
@@ -62,6 +68,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "BARCELONA",
       "telefono": "0424-8132572 / 0281-286993",
+      "mapa": "Av. Intercomunal, Lechería 6016, Anzoátegui",
       "url": "https://ceramica-carabobo.com/himalaya-baths-tiles-c-a/",
       "origen": "post",
       "parcial": false
@@ -73,6 +80,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "EL TIGRE",
       "telefono": "0283-2352260 / 0283-2416431",
+      "mapa": "Av. Jesús Subero, El Tigre 6050, Anzoátegui",
       "url": "https://ceramica-carabobo.com/ferreteria-celma-c-a/",
       "origen": "post",
       "parcial": false
@@ -84,6 +92,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "EL TIGRE",
       "telefono": "0283-2416395 / 0283-2410124",
+      "mapa": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui",
       "url": "https://ceramica-carabobo.com/inversiones-rosdany-c-a/",
       "origen": "post",
       "parcial": false
@@ -95,6 +104,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "GUANIPA",
       "telefono": "0283-2415305 / 0283-2412002",
+      "mapa": "VQWH+PGH, Av. Intercomunal, El Tigre 6050, Anzoátegui",
       "url": "https://ceramica-carabobo.com/ceramica-guayana-orientec-a/",
       "origen": "post",
       "parcial": false
@@ -106,6 +116,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "LECHERIAS",
       "telefono": "0414-3023609 / 0412-9450454",
+      "mapa": "58HF+P9H, Av. Intercomunal, Lechería 6016, Anzoátegui",
       "url": "https://ceramica-carabobo.com/ceramicmania-c-a/",
       "origen": "post",
       "parcial": false
@@ -117,6 +128,7 @@
       "estado": "ANZOATEGUI",
       "ciudad": "PTO. LA CRUZ",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. Intercomunal Jorge Rodríguez, Lechería 6016, Anzoátegui",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-18/",
       "origen": "post",
       "parcial": false
@@ -128,6 +140,7 @@
       "estado": "APURE",
       "ciudad": "SAN FERNANDO DE APURE",
       "telefono": "0414 4169646 /",
+      "mapa": "VGMG+CM6, Av. Caracas, San Fernando de Apure 7001, Apure",
       "url": "https://ceramica-carabobo.com/importllano-c-a/",
       "origen": "post",
       "parcial": false
@@ -139,6 +152,7 @@
       "estado": "APURE",
       "ciudad": "SAN FERNANDO DE APURE",
       "telefono": "0247-3410548 / 0247-3412715",
+      "mapa": "VGRH+2P5, Avenida Carabobo, San Fernando de Apure 7001, Apure",
       "url": "https://ceramica-carabobo.com/punto-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -150,6 +164,7 @@
       "estado": "APURE",
       "ciudad": "SAN FERNANDO",
       "telefono": "0247-3413193 / 0247-3425475",
+      "mapa": "Q Movil, C.A Av Diego Bautista Urbaneja, Lechería 6016, Anzoátegui",
       "url": "https://ceramica-carabobo.com/importllano-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -161,6 +176,7 @@
       "estado": "ARAGUA",
       "ciudad": "ARAGUA",
       "telefono": "0414-4673356 / 0244-3955795",
+      "mapa": "Nro. 09 4ta Avenida, Maracay 2101, Aragua",
       "url": "https://ceramica-carabobo.com/ceramiplus-c-a/",
       "origen": "post",
       "parcial": false
@@ -172,6 +188,7 @@
       "estado": "ARAGUA",
       "ciudad": "CAGUA",
       "telefono": "0412-4447564 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-rusticas-cagua-c-a/",
       "origen": "post",
       "parcial": false
@@ -183,6 +200,7 @@
       "estado": "ARAGUA",
       "ciudad": "CAGUA",
       "telefono": "0424-3230348 /",
+      "mapa": "5GQP+JQH, C. Mariño, Cagua 2122, Aragua",
       "url": "https://ceramica-carabobo.com/mega-precio-2001c-a/",
       "origen": "post",
       "parcial": false
@@ -194,6 +212,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0424-7058011 /",
+      "mapa": "Av. Soco, La Victoria 2121, Aragua",
       "url": "https://ceramica-carabobo.com/distribuidora-de-hierro-el-vigia/",
       "origen": "post",
       "parcial": false
@@ -205,6 +224,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0244-3214611 / 0244-3225823",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
       "url": "https://ceramica-carabobo.com/migo-charallave-c-a/",
       "origen": "post",
       "parcial": false
@@ -216,6 +236,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0271-7721527 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/migo-lago-c-a/",
       "origen": "post",
       "parcial": false
@@ -227,6 +248,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0251-4451423 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/migo-lara-c-a/",
       "origen": "post",
       "parcial": false
@@ -238,6 +260,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0244 3214611 /",
+      "mapa": "6MHG+Q9M, La Victoria 2121, Aragua",
       "url": "https://ceramica-carabobo.com/migo-palonegro-c-a/",
       "origen": "post",
       "parcial": false
@@ -249,6 +272,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0271-6690040 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/migo-sabana-c-a/",
       "origen": "post",
       "parcial": false
@@ -260,6 +284,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0244-3343131 / 0244-3343889",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
       "url": "https://ceramica-carabobo.com/migo-tejerias-c-a/",
       "origen": "post",
       "parcial": false
@@ -271,6 +296,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0271-7721357 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/migo-torondoy-c-a/",
       "origen": "post",
       "parcial": false
@@ -282,6 +308,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0424-1006446 /",
+      "mapa": "6MHG+VF8, C. Páez, La Victoria 2121, Aragua",
       "url": "https://ceramica-carabobo.com/migo-victoria-c-a/",
       "origen": "post",
       "parcial": false
@@ -293,6 +320,7 @@
       "estado": "ARAGUA",
       "ciudad": "LA VICTORIA",
       "telefono": "0244-3213777 / 0244-3225421",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/migoceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -304,6 +332,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0243-2474491 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-paez-c-a/",
       "origen": "post",
       "parcial": false
@@ -315,6 +344,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0243-2461210 / 0243-2452350",
+      "mapa": "69VW+JV5, C. Mariño, Maracay 2103, Aragua",
       "url": "https://ceramica-carabobo.com/euroceramicas-marino-c-a/",
       "origen": "post",
       "parcial": false
@@ -326,6 +356,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0412-6102161 / 0412-9669692",
+      "mapa": "6CX2+H4R, C. Paez, Maracay 2101, Aragua",
       "url": "https://ceramica-carabobo.com/expo-centro-ceramicas-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -337,6 +368,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. Intercomunal Santiago Mariño, Turmero 2115, Aragua",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-17/",
       "origen": "post",
       "parcial": false
@@ -348,6 +380,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0412-8851062/ 0412-8853424 / 0424-3126376/3129534",
+      "mapa": "6CR6+JV6, Calle independencia crucé con Rosales sector santa Ana, Maracay 2103, Aragua",
       "url": "https://ceramica-carabobo.com/hierro-santana-c-a/",
       "origen": "post",
       "parcial": false
@@ -359,6 +392,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0243-2357478/2359356 / 0243-2357478",
+      "mapa": "6CR5+49V, Maracay 2103, Aragua",
       "url": "https://ceramica-carabobo.com/hyperceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -370,6 +404,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/importadora-menfi-c-a/",
       "origen": "post",
       "parcial": false
@@ -381,6 +416,7 @@
       "estado": "ARAGUA",
       "ciudad": "MARACAY",
       "telefono": "0414-5876736/04144929772 / 0243-2358243",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/porcelanic-c-a/",
       "origen": "post",
       "parcial": false
@@ -392,6 +428,7 @@
       "estado": "ARAGUA",
       "ciudad": "TEJERIAS",
       "telefono": "0244-3341710 / 0244-3343889",
+      "mapa": "7R3J+G5H, Las Tejerias 2119, Aragua",
       "url": "https://ceramica-carabobo.com/migo-tejerias-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -403,6 +440,7 @@
       "estado": "ARAGUA",
       "ciudad": "TURMERO",
       "telefono": "0424-3088150 /",
+      "mapa": "6FC3+543, Sector Farenachi, Maracay 2107, Aragua",
       "url": "https://ceramica-carabobo.com/ferreteria-y-transporte-aragua-c-a/",
       "origen": "post",
       "parcial": false
@@ -414,6 +452,7 @@
       "estado": "ARAGUA",
       "ciudad": "TURMERO",
       "telefono": "0424-3230348 /",
+      "mapa": "6G8F+JRQ, Turmero 2115, Aragua",
       "url": "https://ceramica-carabobo.com/inversiones-marmolgres-c-a/",
       "origen": "post",
       "parcial": false
@@ -425,6 +464,7 @@
       "estado": "ARAGUA",
       "ciudad": "TURMERO",
       "telefono": "0412-8685467 /",
+      "mapa": "PARCELA 22A, LOTE 1 Av. Intercomunal Santiago Mariño, Turmero 2115, Aragua",
       "url": "https://ceramica-carabobo.com/ksa-home-centerc-a/",
       "origen": "post",
       "parcial": false
@@ -436,6 +476,7 @@
       "estado": "ARAGUA",
       "ciudad": "TURMERO",
       "telefono": "0414-4635286 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/simpolo-c-a/",
       "origen": "post",
       "parcial": false
@@ -447,6 +488,7 @@
       "estado": "ARAGUA",
       "ciudad": "TURMERO",
       "telefono": "0243-2691180 / 0243-2693227",
+      "mapa": "6FJ5+8M4, Turmero 2115, Aragua",
       "url": "https://ceramica-carabobo.com/techomat-metropolitano-c-a/",
       "origen": "post",
       "parcial": false
@@ -458,6 +500,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273-5309600 /",
+      "mapa": "Avenida 23 de Enero, al frente del Parque La Federación, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/cadelma-barinas-c-a/",
       "origen": "post",
       "parcial": false
@@ -469,6 +512,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273-5309720-743 / 0273-5309600",
+      "mapa": "MQ24+GXH, Av Industrial, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/decoracion-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -480,6 +524,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273 5309720 / 0273 5309721",
+      "mapa": "MQ33+FRJ, Av Industrial, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/domosa-decoraciones-c-a/",
       "origen": "post",
       "parcial": false
@@ -491,6 +536,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273-5523050 / 0273-5526622",
+      "mapa": "JQGH+RJG, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/expoceramica-barinas-c-a/",
       "origen": "post",
       "parcial": false
@@ -502,6 +548,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273 5526622 /",
+      "mapa": "JQGH+RJG, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/expoceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -513,6 +560,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273-5309720 /",
+      "mapa": "sector, Carretera Nacional Vía Guanare, Barinas 5213, Barinas",
       "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a-3/",
       "origen": "post",
       "parcial": false
@@ -524,6 +572,7 @@
       "estado": "BARINAS",
       "ciudad": "BARINAS",
       "telefono": "0273-5525965 / 0273-5523035",
+      "mapa": "JQMH+WHW, Av. Carabobo, Barinas 5201, Barinas",
       "url": "https://ceramica-carabobo.com/mileceramica-barinas/",
       "origen": "post",
       "parcial": false
@@ -535,6 +584,7 @@
       "estado": "BOLIVAR",
       "ciudad": "BOLIVAR",
       "telefono": "0288 2212782 / 0288 2212608",
+      "mapa": "2J53+JJF, Av Raúl Leoni, Upata 8052, Bolívar",
       "url": "https://ceramica-carabobo.com/ferro-materiales-piar-c-a/",
       "origen": "post",
       "parcial": false
@@ -546,6 +596,7 @@
       "estado": "BOLIVAR",
       "ciudad": "BOLIVAR",
       "telefono": "0285 6549861 /",
+      "mapa": "3FHF+VJ2 mil cerámicas, Av libertador diagonal al CICPC al lado de, Cdad. Bolívar 8001, Bolívar",
       "url": "https://ceramica-carabobo.com/orilet-c-a/",
       "origen": "post",
       "parcial": false
@@ -557,6 +608,7 @@
       "estado": "BOLIVAR",
       "ciudad": "CIUDAD BOLIVAR",
       "telefono": "0285-6549861 / 0285-6316204",
+      "mapa": "3FHF+MJH, Cdad. Bolívar 8001, Bolívar",
       "url": "https://ceramica-carabobo.com/grealc-a/",
       "origen": "post",
       "parcial": false
@@ -568,6 +620,7 @@
       "estado": "BOLIVAR",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0286-9711848 / 0286-9713309",
+      "mapa": "877R+PWV, Ciudad Guayana 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/metroceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -579,6 +632,7 @@
       "estado": "BOLIVAR",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0414-3860199 / 0286-9344352",
+      "mapa": "9977+22F, Carril de Servicio, Ciudad Guayana 8051, Bolívar",
       "url": "https://ceramica-carabobo.com/mundo-ceramico-principal-c-a/",
       "origen": "post",
       "parcial": false
@@ -590,6 +644,7 @@
       "estado": "BOLIVAR",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0286 9345678 /",
+      "mapa": "89R8+X9M, Av. Cisneros, Ciudad Guayana 8051, Bolívar",
       "url": "https://ceramica-carabobo.com/riogresc-a/",
       "origen": "post",
       "parcial": false
@@ -601,6 +656,7 @@
       "estado": "BOLIVAR",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0414-8672913 / 0412-8355833",
+      "mapa": "8050, Ciudad Guayana, Bolívar",
       "url": "https://ceramica-carabobo.com/surgresc-a-surgresc-a/",
       "origen": "post",
       "parcial": false
@@ -612,6 +668,7 @@
       "estado": "BOLIVAR",
       "ciudad": "PTO ORDAZ",
       "telefono": "0414-8759120 /",
+      "mapa": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-3-c-a/",
       "origen": "post",
       "parcial": false
@@ -623,6 +680,7 @@
       "estado": "BOLIVAR",
       "ciudad": "PTO ORDAZ",
       "telefono": "0414-8984997 / 0286-9512034",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-7/",
       "origen": "post",
       "parcial": false
@@ -634,6 +692,7 @@
       "estado": "BOLIVAR",
       "ciudad": "PTO ORDAZ",
       "telefono": "0414-4336133 / 0286-9528784/9529450",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-ceramigres-c-a/",
       "origen": "post",
       "parcial": false
@@ -645,6 +704,7 @@
       "estado": "BOLIVAR",
       "ciudad": "PUERTO ORDAZ",
       "telefono": "0286 9236416 /",
+      "mapa": "877R+PWV, Ciudad Guayana 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/centro-ceramico-la-fuerte-c-a/",
       "origen": "post",
       "parcial": false
@@ -656,6 +716,7 @@
       "estado": "BOLIVAR",
       "ciudad": "SAN FELIX",
       "telefono": "0414-3861378 /",
+      "mapa": "Avenida Norte Sur 3 Ud-288 Unare III Ciudad Guayana, 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-2-c-a/",
       "origen": "post",
       "parcial": false
@@ -667,6 +728,7 @@
       "estado": "BOLIVAR",
       "ciudad": "SAN FELIX",
       "telefono": "0286-9323477 / 0286-9345035",
+      "mapa": "9949+G2Q, Av Manuel Piar, Ciudad Guayana 8051, Bolívar",
       "url": "https://ceramica-carabobo.com/centro-ceramico-reyfeca-c-a/",
       "origen": "post",
       "parcial": false
@@ -678,6 +740,7 @@
       "estado": "BOLIVAR",
       "ciudad": "SAN FELIX",
       "telefono": "0424-9611305 / 0286-9340160",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-6/",
       "origen": "post",
       "parcial": false
@@ -689,6 +752,7 @@
       "estado": "BOLIVIA",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0286-9235461/0424-9487578 / 0286-9235461",
+      "mapa": "877R+QRF, Avenida Principal, Ciudad Guayana 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/ferremateriales-la-fuerte-compania/",
       "origen": "post",
       "parcial": false
@@ -700,6 +764,7 @@
       "estado": "BOLIVIA",
       "ciudad": "CIUDAD GUAYANA",
       "telefono": "0286-9344352 /",
+      "mapa": "Carril de Servicio, Ciudad Guayana 8051, Bolívar",
       "url": "https://ceramica-carabobo.com/ferreteria-principal-pzo-c-a/",
       "origen": "post",
       "parcial": false
@@ -711,6 +776,7 @@
       "estado": "BOLIVIA",
       "ciudad": "CIUDAD GUYANA",
       "telefono": "0286-9973131 /",
+      "mapa": "Frente al Comando de la Guardia Nacional, Av. Caracas, Ciudad Guayana 8050, Bolívar",
       "url": "https://ceramica-carabobo.com/ferre-max-c-a/",
       "origen": "post",
       "parcial": false
@@ -722,6 +788,7 @@
       "estado": "CARABOBO",
       "ciudad": "GUACARA",
       "telefono": "0412-2205598",
+      "mapa": "Guacara 2015, Carabobo",
       "url": "https://ceramica-carabobo.com/grupo-iso-home-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -733,6 +800,7 @@
       "estado": "CARABOBO",
       "ciudad": "LA YAGUARA",
       "telefono": "0241-6151715 /",
+      "mapa": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo",
       "url": "https://ceramica-carabobo.com/jadel-construye-c-a/",
       "origen": "post",
       "parcial": false
@@ -744,6 +812,7 @@
       "estado": "CARABOBO",
       "ciudad": "LOS GUAYOS",
       "telefono": "0412-9321856/9321863/9321864 / 0414-1485907",
+      "mapa": "via principal el roble, Los Guayos, Valencia, Los Guayos, Carabobo",
       "url": "https://ceramica-carabobo.com/inversiones-galpe-2021-c-a/",
       "origen": "post",
       "parcial": false
@@ -755,6 +824,7 @@
       "estado": "CARABOBO",
       "ciudad": "PUERTO CABELLO",
       "telefono": "0424-4054600 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-materiales-puerto/",
       "origen": "post",
       "parcial": false
@@ -766,6 +836,7 @@
       "estado": "CARABOBO",
       "ciudad": "PUERTO CABELLO",
       "telefono": "0412-1440573 /",
+      "mapa": "C. Córdova, Puerto Cabello 2050, Carabobo",
       "url": "https://ceramica-carabobo.com/k-b-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -777,6 +848,7 @@
       "estado": "CARABOBO",
       "ciudad": "SAN DIEGO",
       "telefono": "0241 3168540 / 0241 8312076",
+      "mapa": "5237+P2P, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ceramicas-insumaca-ca/",
       "origen": "post",
       "parcial": false
@@ -788,6 +860,7 @@
       "estado": "CARABOBO",
       "ciudad": "SECTOR SAN BLAS VALENCIA",
       "telefono": "0412-4400609 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-california-2018-c-a/",
       "origen": "post",
       "parcial": false
@@ -799,6 +872,7 @@
       "estado": "CARABOBO",
       "ciudad": "TOCUYITO",
       "telefono": "0241-6151715 /",
+      "mapa": "Calle Sucre Via Autopista Campo de Carabobo Casa Lotes A y B Nº 187, Sector La Yaguara, Tocuyito 2035, Carabobo",
       "url": "https://ceramica-carabobo.com/jadel-c-a/",
       "origen": "post",
       "parcial": false
@@ -810,6 +884,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0424-3668702",
+      "mapa": "local 112-91, calle N 7 Avenida Enrique Tejera, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/acerohierro-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -821,6 +896,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "",
+      "mapa": "2001, Valencia, Carabobo",
       "url": "https://ceramica-carabobo.com/alfa-gres-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -832,6 +908,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0412-2324810/ 0241-8572832 / 0241-8575232/8593139",
+      "mapa": "Distribuidor San Blas, Finalizando la Avenida Lara, Nro 84-85. Locales 1 y 2. A 200 metros del, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ceramicas-el-morro-c-a/",
       "origen": "post",
       "parcial": false
@@ -843,6 +920,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0424-4282251",
+      "mapa": "5XHX+FJW, C. 95A Lara, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ceramimport-2010-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -854,6 +932,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0424-4303198",
+      "mapa": "105 Av. Lisandro Alvarado, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ceramioferta-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -865,6 +944,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "",
+      "mapa": "Av. Bolívar Sur, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/dimo-c-a/",
       "origen": "post",
       "parcial": false
@@ -876,6 +956,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0412-7846828 /",
+      "mapa": "CARABOBO VALENCIA Avenida 104 Soublette, Valencia 2001, Valencia 0241, Carabobo",
       "url": "https://ceramica-carabobo.com/distribuidora-msg-77-c-a/",
       "origen": "post",
       "parcial": false
@@ -887,6 +968,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8717265 / 0241-8714595",
+      "mapa": "Av. Intercomunal de San Diego, Sector 2do. Semáforo del Big Low Center, Edificio Celta, locales 1 y 2. San Diego Estado Carabobo. Venezuela. Teléfonos: 58 241 871.68.94 - 49.17 - 54.47 - 75.96 - 72.65 - 45.95, Avenida 71, San Diego, Carabobo",
       "url": "https://ceramica-carabobo.com/el-mar-de-la-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -898,6 +980,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0412-8333773 / 0414-8383683",
+      "mapa": "C.C. Mañongo, Urb. Valencia,, Av. 168 Salvador Feo La Cruz Este - Oeste Naguanagua, Valencia 2005, Carabobo",
       "url": "https://ceramica-carabobo.com/ferre-vente-c-a/",
       "origen": "post",
       "parcial": false
@@ -909,6 +992,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-4373795 /",
+      "mapa": "Sector La Luz Autopista Barbula Guacara, cerca del dist La Cumaca, San Diego 2005, Carabobo",
       "url": "https://ceramica-carabobo.com/ferrepiscina-c-a/",
       "origen": "post",
       "parcial": false
@@ -920,6 +1004,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-15/",
       "origen": "post",
       "parcial": false
@@ -931,6 +1016,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-4371599 /",
+      "mapa": "La Granja, Av. 102 Universidad, Naguanagua 2005, Carabobo",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-14/",
       "origen": "post",
       "parcial": false
@@ -942,6 +1028,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8560145 / 0241-8560100",
+      "mapa": "C. 91 Michelena, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-13/",
       "origen": "post",
       "parcial": false
@@ -953,6 +1040,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-16/",
       "origen": "post",
       "parcial": false
@@ -964,6 +1052,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8353231 / 0241-8340032",
+      "mapa": "4WMV+5X7, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ferroceramica-valcro-c-a/",
       "origen": "post",
       "parcial": false
@@ -975,6 +1064,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0412-4400691",
+      "mapa": "6XHQ+GCG, Av. 100 Bolívar Nte., Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/inversiones-deco-tiles-2023-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -986,6 +1076,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414 4209439 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/kaleos-1008-c-a/",
       "origen": "post",
       "parcial": false
@@ -997,6 +1088,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8357473 / 8356667",
+      "mapa": "2001, Valencia, Carabobo",
       "url": "https://ceramica-carabobo.com/la-feria-de-la-ceramica-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -1008,6 +1100,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0424-5274950 /",
+      "mapa": "Av. Universidad, Naguanagua 2005, Carabobo",
       "url": "https://ceramica-carabobo.com/megahierro-naguanagua-c-a/",
       "origen": "post",
       "parcial": false
@@ -1019,6 +1112,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-7517209",
+      "mapa": "6X6Q+GRC, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/porcemetal-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -1030,6 +1124,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8211992 / 0241-8256470",
+      "mapa": "Av. Monseñor Adams, calle 161 Casa 104-61 (PROSEIN)",
       "url": "https://ceramica-carabobo.com/prosevinedo-c-a/",
       "origen": "post",
       "parcial": false
@@ -1041,6 +1136,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241 8355827 / 0241 8355827",
+      "mapa": "5XQQ+GGF, Calle Fernando Figueredo, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/valceramic-lisandro-alvarado-c-a/",
       "origen": "post",
       "parcial": false
@@ -1052,6 +1148,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0241-8586685",
+      "mapa": "5XVR+F5G, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/valcro-los-colorados-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -1063,6 +1160,7 @@
       "estado": "CARABOBO",
       "ciudad": "VALENCIA",
       "telefono": "0414-5964919 /",
+      "mapa": "52HV+72C, Av. Prol. Michelena, Valencia 2003, Carabobo",
       "url": "https://ceramica-carabobo.com/valim-c-a/",
       "origen": "post",
       "parcial": false
@@ -1074,6 +1172,7 @@
       "estado": "CARABOBO",
       "ciudad": "YAGUA",
       "telefono": "0424-3668702 /",
+      "mapa": "Autop. Bárbula - Guacara, Guacara 2015, Carabobo",
       "url": "https://ceramica-carabobo.com/agroconstrucciones-yagua-2000-c-a/",
       "origen": "post",
       "parcial": false
@@ -1085,6 +1184,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-2088098/0424-1869496 / 0212-4812972/4812972",
+      "mapa": "F3XF+67J, Caracas 1020, Distrito Capital",
       "url": "https://ceramica-carabobo.com/centro-ceramico-garcia-i-c-a/",
       "origen": "post",
       "parcial": false
@@ -1096,6 +1196,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0424-1047820 / 0212-7315556",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-5/",
       "origen": "post",
       "parcial": false
@@ -1107,6 +1208,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0412-2023970 / 0212–5778268/5764908",
+      "mapa": "G34X+J7P, Av. Ávila, Caracas 1011, Distrito Capital",
       "url": "https://ceramica-carabobo.com/ceramicas-rustiestrella-c-a/",
       "origen": "post",
       "parcial": false
@@ -1118,6 +1220,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "",
+      "mapa": "F4G5+83F, Calle Arturo Michelena, Caracas 1041, Distrito Capital",
       "url": "https://ceramica-carabobo.com/ceramicas-valladares-c-a/",
       "origen": "post",
       "parcial": false
@@ -1129,6 +1232,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-2560055 / 0212 9599809",
+      "mapa": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda",
       "url": "https://ceramica-carabobo.com/ceramiespacio-c-a/",
       "origen": "post",
       "parcial": false
@@ -1140,6 +1244,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-462-13-17 /",
+      "mapa": "Entre la estación del Metro Capuchinos y el elevado de la, urbanización San Juan, Av. San Martín, Caracas 1020, Distrito Capital",
       "url": "https://ceramica-carabobo.com/comercial-decolorisc-a/",
       "origen": "post",
       "parcial": false
@@ -1151,6 +1256,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0424-2075578 / 0212- 8718528",
+      "mapa": "calle Panamerican entre Chile y Bolivia (Nro 28-45). Sector, Caracas 1030, Distrito Capital",
       "url": "https://ceramica-carabobo.com/comercializadora-cima-261-ca/",
       "origen": "post",
       "parcial": false
@@ -1162,6 +1268,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-2225910/04142223624 / 0212-5761297",
+      "mapa": "Embajada y Consulado de Austria en Caracas, 1060, Avenida Orinoco, Caracas 1060, Distrito Capital",
       "url": "https://ceramica-carabobo.com/distribuidora-maracana-s-r-l/",
       "origen": "post",
       "parcial": false
@@ -1173,6 +1280,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-0260917 / 0412-9051585",
+      "mapa": "G42H+MX4, Caracas 1050, Distrito Capital",
       "url": "https://ceramica-carabobo.com/ferreteria-chapellin-c-a/",
       "origen": "post",
       "parcial": false
@@ -1184,6 +1292,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. San Martín, Caracas 2338, Aragua",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-12/",
       "origen": "post",
       "parcial": false
@@ -1195,6 +1304,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-4371599 /",
+      "mapa": "C. Adriana Johanna, Caracas 1071, Miranda",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-11/",
       "origen": "post",
       "parcial": false
@@ -1206,6 +1316,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-4371599 /",
+      "mapa": "F4C3+8RQ, CC IPSFA, P.º Los Próceres, Caracas, Distrito Capital",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-10/",
       "origen": "post",
       "parcial": false
@@ -1217,6 +1328,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. Principal Norte 1, c/c Transversal 5, N° 82A-120, Valencia 2001, Carabobo",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-9/",
       "origen": "post",
       "parcial": false
@@ -1228,6 +1340,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "",
+      "mapa": "Avenida Francisco De Miranda entre calles Barquisimeto, y Valencia, Carora 3050, Lara",
       "url": "https://ceramica-carabobo.com/habitat-porcelanato-c-a/",
       "origen": "post",
       "parcial": false
@@ -1239,6 +1352,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212 6331822 / 0212 6325870",
+      "mapa": "F3MW+53C, Av. Nueva Granada, Caracas 1041, Distrito Capital",
       "url": "https://ceramica-carabobo.com/inversiones-mastergres-c-a/",
       "origen": "post",
       "parcial": false
@@ -1250,6 +1364,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212 – 2346345 / 0212-2345839",
+      "mapa": "Caracas 1071, Miranda",
       "url": "https://ceramica-carabobo.com/materiales-guayabal-ca/",
       "origen": "post",
       "parcial": false
@@ -1261,6 +1376,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0414-2554109 /",
+      "mapa": "2DA AVEVIDA, ENTRE CALLES CHILE Y C. México, Caracas 1030, Distrito Capital",
       "url": "https://ceramica-carabobo.com/megaceramicas-y-algo-mas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1272,6 +1388,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-7625678 / 0212-7631190",
+      "mapa": "Av Principal del Bosque, Caracas 1060, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-el-bosque/",
       "origen": "post",
       "parcial": false
@@ -1283,6 +1400,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-7625678 / 0212-7631190",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-el-bosque-c-a/",
       "origen": "post",
       "parcial": false
@@ -1294,6 +1412,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-4517753 / 0212-4517317",
+      "mapa": "QTA BERTHA, AV. PAEZ, ENTRE PLAZA WASHINGTON Y AV. LOS ESTADIOS, C. Ocho, Caracas, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-el-paraiso/",
       "origen": "post",
       "parcial": false
@@ -1305,6 +1424,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-4517753 / 0212-4517317",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-el-paraiso-c-a/",
       "origen": "post",
       "parcial": false
@@ -1316,6 +1436,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-2613261 / 0212-2665678",
+      "mapa": "F4XW+PWW de, Avenida Principal, Caracas 1060, Miranda",
       "url": "https://ceramica-carabobo.com/prosein-la-castellana-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -1327,6 +1448,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-2613261 / 0212-2665678",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-la-castellana-c-a/",
       "origen": "post",
       "parcial": false
@@ -1338,6 +1460,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-9930864 / 0212-9911421",
+      "mapa": "F4JR+JW2, C. París, Caracas Metropolitan District 1080, Miranda",
       "url": "https://ceramica-carabobo.com/prosein-las-mercedes/",
       "origen": "post",
       "parcial": false
@@ -1349,6 +1472,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-9930864 / 0212-9911421",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-las-mercedes-c-a/",
       "origen": "post",
       "parcial": false
@@ -1360,6 +1484,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-8231100 / 0212-2399460",
+      "mapa": "F5XG+2M, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/prosein-proveeduria-y-servicio/",
       "origen": "post",
       "parcial": false
@@ -1371,6 +1496,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0212-9599809 /",
+      "mapa": "Avenida La Estancia, C/C C. Ernesto Blohm, 1090, Miranda",
       "url": "https://ceramica-carabobo.com/rusticas-tachira-c-a/",
       "origen": "post",
       "parcial": false
@@ -1382,6 +1508,7 @@
       "estado": "CARACAS",
       "ciudad": "CARACAS",
       "telefono": "0424-2723741/ 0212-8700042 / 0212-8703951",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/vene-materiales-c-a/",
       "origen": "post",
       "parcial": false
@@ -1393,6 +1520,7 @@
       "estado": "CARACAS",
       "ciudad": "CHACAO",
       "telefono": "0412-0379747 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/grupo-jed-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1404,6 +1532,7 @@
       "estado": "CARACAS",
       "ciudad": "MARACAY",
       "telefono": "0412-6102161 / 0412-9669692",
+      "mapa": "Av las Casuarinas 111, Ayacucho 05001, Perú",
       "url": "https://ceramica-carabobo.com/expo-centro-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1415,6 +1544,7 @@
       "estado": "COJEDES",
       "ciudad": "SAN CARLOS",
       "telefono": "0414-4967169 / 0258-2518504/4338799",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/decoceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -1426,6 +1556,7 @@
       "estado": "FALCON",
       "ciudad": "PUNTO FIJO",
       "telefono": "0269-2464113 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-importadas-falcon-ca/",
       "origen": "post",
       "parcial": false
@@ -1437,6 +1568,7 @@
       "estado": "FALCON",
       "ciudad": "PUNTO FIJO",
       "telefono": "0414-6583621/ 0269-2464643 / 0269-2451763",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas-elemas/",
       "origen": "post",
       "parcial": false
@@ -1448,6 +1580,7 @@
       "estado": "FALCON",
       "ciudad": "PUNTO FIJO",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-8/",
       "origen": "post",
       "parcial": false
@@ -1459,6 +1592,7 @@
       "estado": "FALCON",
       "ciudad": "PUNTO FIJO",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-7/",
       "origen": "post",
       "parcial": false
@@ -1470,6 +1604,7 @@
       "estado": "FALCON",
       "ciudad": "PUNTO FIJO",
       "telefono": "0424-6288343 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferro-materiales-falcon-c-a/",
       "origen": "post",
       "parcial": false
@@ -1481,6 +1616,7 @@
       "estado": "GUARICO",
       "ciudad": "CALABOZO",
       "telefono": "0246-8719064 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/mercantil-la-solucionc-a/",
       "origen": "post",
       "parcial": false
@@ -1492,6 +1628,7 @@
       "estado": "GUARICO",
       "ciudad": "SAN JUAN DE LOS MORROS",
       "telefono": "0246-4317453 / 0246-4318686",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-de-materiales-la-oferta/",
       "origen": "post",
       "parcial": false
@@ -1503,6 +1640,7 @@
       "estado": "GUARICO",
       "ciudad": "VALLE DE LA PASCUA",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferre-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -1514,6 +1652,7 @@
       "estado": "GUARICO",
       "ciudad": "VALLE DE LA PASCUA",
       "telefono": "0424-3500087 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/inversiones-todo-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -1525,6 +1664,7 @@
       "estado": "GUARICO",
       "ciudad": "VALLE LA PASCUA",
       "telefono": "0414 4745395 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramikass-center-c-a/",
       "origen": "post",
       "parcial": false
@@ -1536,6 +1676,7 @@
       "estado": "GUARICO",
       "ciudad": "VALLE LA PASCUA",
       "telefono": "0235-3422209 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/valle-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -1547,6 +1688,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0414-3503654 / 0251-2323311/ 232370",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/arcosan-barquisimeto-c-a/",
       "origen": "post",
       "parcial": false
@@ -1558,6 +1700,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0412-3284763 / 0251-2615827/2534923",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/baldolara-c-a-barquisimeto/",
       "origen": "post",
       "parcial": false
@@ -1569,6 +1712,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0414-5028434 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/delitodo-express-c-a/",
       "origen": "post",
       "parcial": false
@@ -1580,6 +1724,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0424-5058058 / 0251-2331987",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas/",
       "origen": "post",
       "parcial": false
@@ -1591,6 +1736,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-6/",
       "origen": "post",
       "parcial": false
@@ -1602,6 +1748,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-5/",
       "origen": "post",
       "parcial": false
@@ -1613,6 +1760,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0424-1006446",
+      "mapa": "3MMC+57W, Carrera 4, Barquisimeto 3001, Lara",
       "url": "https://ceramica-carabobo.com/migo-lara-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -1624,6 +1772,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0251-2324005/0424-5058058 / 0251 2319010",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/proceramic-c-a/",
       "origen": "post",
       "parcial": false
@@ -1635,6 +1784,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0251-2549737 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/segoceramic-c-a/",
       "origen": "post",
       "parcial": false
@@ -1646,6 +1796,7 @@
       "estado": "LARA",
       "ciudad": "BARQUISIMETO",
       "telefono": "0424-5802431",
+      "mapa": "Barquisimeto 3001, Lara",
       "url": "https://ceramica-carabobo.com/tienda-mosaico-c-a/",
       "origen": "post",
       "parcial": false
@@ -1657,6 +1808,7 @@
       "estado": "MERIDA",
       "ciudad": "EDIDO",
       "telefono": "0424-7470917 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-megaceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1668,6 +1820,7 @@
       "estado": "MERIDA",
       "ciudad": "EJIDO",
       "telefono": "0416-0557759 / 0274-2212197/0274-2215433",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/el-roble-ceramicas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1679,6 +1832,7 @@
       "estado": "MERIDA",
       "ciudad": "EL VIGIA, EDO. MERIDA.",
       "telefono": "0424-7763149 / 0275-8813293",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-4/",
       "origen": "post",
       "parcial": false
@@ -1690,6 +1844,7 @@
       "estado": "MERIDA",
       "ciudad": "EL VIGIA",
       "telefono": "0424-7058011 / 0275-8816545",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-el-vigia-c-a/",
       "origen": "post",
       "parcial": false
@@ -1701,6 +1856,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/administradora-de-inmuebles-c-a/",
       "origen": "post",
       "parcial": false
@@ -1712,6 +1868,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0414-7466899 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-e-importaciones/",
       "origen": "post",
       "parcial": false
@@ -1723,6 +1880,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0424-7470917 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-y-decoraciones-ca/",
       "origen": "post",
       "parcial": false
@@ -1734,6 +1892,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0414-7466899/ 0424-7470917 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/decosanitarios-c-a/",
       "origen": "post",
       "parcial": false
@@ -1745,6 +1904,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0414-7466899/ 0424-7470917 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-de-arcosan/",
       "origen": "post",
       "parcial": false
@@ -1756,6 +1916,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0414-9766069 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/home-deco-c-a/",
       "origen": "post",
       "parcial": false
@@ -1767,6 +1928,7 @@
       "estado": "MERIDA",
       "ciudad": "MERIDA",
       "telefono": "0414-9766069",
+      "mapa": "Mérida 5115, Mérida",
       "url": "https://ceramica-carabobo.com/vitroceramikos-c-a/",
       "origen": "post",
       "parcial": false
@@ -1778,6 +1940,7 @@
       "estado": "MIRANDA",
       "ciudad": "BARUTA",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-4/",
       "origen": "post",
       "parcial": false
@@ -1789,6 +1952,7 @@
       "estado": "MIRANDA",
       "ciudad": "CARACAS",
       "telefono": "0212-2560055 / 0212-2560055",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-la-tinajac-a/",
       "origen": "post",
       "parcial": false
@@ -1800,6 +1964,7 @@
       "estado": "MIRANDA",
       "ciudad": "CARACAS",
       "telefono": "0212 9599809 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramillano-c-a/",
       "origen": "post",
       "parcial": false
@@ -1811,6 +1976,7 @@
       "estado": "MIRANDA",
       "ciudad": "CARACAS",
       "telefono": "0414-3043810 /",
+      "mapa": "Final Av. Rómulo Gallegos, Caracas 1071, Miranda",
       "url": "https://ceramica-carabobo.com/ferreceramik-26-c-a/",
       "origen": "post",
       "parcial": false
@@ -1822,6 +1988,7 @@
       "estado": "MIRANDA",
       "ciudad": "CARACAS",
       "telefono": "0412-3810215 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/revestimiento-natural-stone-6c-a/",
       "origen": "post",
       "parcial": false
@@ -1833,6 +2000,7 @@
       "estado": "MIRANDA",
       "ciudad": "CHARALLAVE-CUA",
       "telefono": "0424-1058900 / 0239-2481210",
+      "mapa": "Cúa 1210, Miranda",
       "url": "https://ceramica-carabobo.com/american-tile-corporation-c-a/",
       "origen": "post",
       "parcial": false
@@ -1844,6 +2012,7 @@
       "estado": "MIRANDA",
       "ciudad": "",
       "telefono": "0414-2295104 / 0212-3736761",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/el-galpon-de-la-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -1855,6 +2024,7 @@
       "estado": "MIRANDA",
       "ciudad": "GUATIRE",
       "telefono": "0212-3413713 / 0212-3414536",
+      "mapa": "FFC5+MQ8, Guatire 1221, Miranda",
       "url": "https://ceramica-carabobo.com/distribuidora-de-ceramicas-dicersa/",
       "origen": "post",
       "parcial": false
@@ -1866,6 +2036,7 @@
       "estado": "MIRANDA",
       "ciudad": "GUATIRE",
       "telefono": "0412-5916449 /",
+      "mapa": "FF87+8FF, Avenida Intercomunal Guarenas Guati re, C. La Arenera, Guatire 1221, Miranda",
       "url": "https://ceramica-carabobo.com/inversiones-construceramic-c-a/",
       "origen": "post",
       "parcial": false
@@ -1877,6 +2048,7 @@
       "estado": "MIRANDA",
       "ciudad": "LOS TEQUES",
       "telefono": "0212-3225982 / 0212-3217986",
+      "mapa": "9X3G+9WG, Carr. Panamericana, Los Teques 1201, Miranda",
       "url": "https://ceramica-carabobo.com/ceramicas-el-tambor-c-a/",
       "origen": "post",
       "parcial": false
@@ -1888,6 +2060,7 @@
       "estado": "MIRANDA",
       "ciudad": "LOS TEQUES",
       "telefono": "0212 3234780 / 0212 3236966",
+      "mapa": "Av. Perez Pisanti, Los Teques 1201, Miranda",
       "url": "https://ceramica-carabobo.com/gricosoluciones-c-a/",
       "origen": "post",
       "parcial": false
@@ -1899,6 +2072,7 @@
       "estado": "MIRANDA",
       "ciudad": "MIRANDA",
       "telefono": "0212-3214717 / 0212-3837008",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/inversiones-ceramica-latina-c-a/",
       "origen": "post",
       "parcial": false
@@ -1910,6 +2084,7 @@
       "estado": "MIRANDA",
       "ciudad": "PETARE",
       "telefono": "",
+      "mapa": "F5PG+2RH, Caracas 1071, Miranda",
       "url": "https://ceramica-carabobo.com/homeflex-hogar-2023-c-a/",
       "origen": "post",
       "parcial": false
@@ -1921,6 +2096,7 @@
       "estado": "MIRANDA",
       "ciudad": "SAN ANTONIO DE LOS ALTOS",
       "telefono": "0212 3737423 / 0212 3217689",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/distribuidora-ceramicas-el-tambor/",
       "origen": "post",
       "parcial": false
@@ -1932,6 +2108,7 @@
       "estado": "MIRANDA",
       "ciudad": "SANTA TERESA DEL TUY",
       "telefono": "0239 2315651 / 0239 2318027",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/materiales-de-construccion-braherca/",
       "origen": "post",
       "parcial": false
@@ -1943,6 +2120,7 @@
       "estado": "MIRANDA",
       "ciudad": "SUCRE",
       "telefono": "0412-8844005 / (305) 4091386",
+      "mapa": "Torre Valorlta, Av. Rómulo Gallegos, Caracas 1071, Distrito Capital",
       "url": "https://ceramica-carabobo.com/benz-corporation-c-a/",
       "origen": "post",
       "parcial": false
@@ -1954,6 +2132,7 @@
       "estado": "MONAGAS",
       "ciudad": "MATURIN",
       "telefono": "0424-9240215 /",
+      "mapa": "QR66+MRM, Maturín 6201, Monagas",
       "url": "https://ceramica-carabobo.com/centro-ceramico-himalaya-c-a/",
       "origen": "post",
       "parcial": false
@@ -1965,6 +2144,7 @@
       "estado": "MONAGAS",
       "ciudad": "MATURIN",
       "telefono": "0424-8991298 / 0291-6522144",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-3/",
       "origen": "post",
       "parcial": false
@@ -1976,6 +2156,7 @@
       "estado": "MONAGAS",
       "ciudad": "MATURIN",
       "telefono": "0412-8008975 / 0291-6518945",
+      "mapa": "PQVQ+PP2, Avenida Bella Vista, Maturín 6201, Monagas",
       "url": "https://ceramica-carabobo.com/disgreca-monagas-c-a/",
       "origen": "post",
       "parcial": false
@@ -1987,6 +2168,7 @@
       "estado": "MONAGAS",
       "ciudad": "MATURIN",
       "telefono": "0414-4371599 /",
+      "mapa": "Av. Alirio Ugarte Pelayo, Maturín 6201, Monagas",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-3/",
       "origen": "post",
       "parcial": false
@@ -1998,6 +2180,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "LOS ROBLES",
       "telefono": "0424-8005148/ 0412-0627478 / 0295-2642440/0295-2638397",
+      "mapa": "Av. Prolongación 4 de Mayo, Edif Eurostone Piso P/B a 100mts del Semáforo de, Av. La Auyama, Porlamar 6301, Nueva Esparta",
       "url": "https://ceramica-carabobo.com/eurostone-c-a/",
       "origen": "post",
       "parcial": false
@@ -2009,6 +2192,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "NUEVA ESPARTA",
       "telefono": "0424-8543474 /",
+      "mapa": "X46M+73J, Porlamar 6308, Nueva Esparta",
       "url": "https://ceramica-carabobo.com/ceramicas-porlamar-c-a/",
       "origen": "post",
       "parcial": false
@@ -2020,6 +2204,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "PORLAMAR",
       "telefono": "0412-3569191 / 0295-2634036/2640696",
+      "mapa": "Centro Comercial Makro, Urb Puerto Madero 4 Sector, Porlamar 6301, Nueva Esparta, Calle El Colegio, Porlamar 6301, Nueva Esparta",
       "url": "https://ceramica-carabobo.com/ceramicas-cristal-c-a/",
       "origen": "post",
       "parcial": false
@@ -2031,6 +2216,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "PORLAMAR",
       "telefono": "0273-5309600 / 0273-5309602",
+      "mapa": "W3W4+CP4, San Antonio Sur 6301, Nueva Esparta",
       "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a-2/",
       "origen": "post",
       "parcial": false
@@ -2042,6 +2228,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "PORLAMAR",
       "telefono": "0273-5309600 / 0273-5309602",
+      "mapa": "W3W4+CP4, San Antonio Sur 6301, Nueva Esparta",
       "url": "https://ceramica-carabobo.com/maquinarias-domo-s-a/",
       "origen": "post",
       "parcial": false
@@ -2053,6 +2240,7 @@
       "estado": "NUEVA ESPARTA",
       "ciudad": "PORLAMAR",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/nodoestudio-c-a/",
       "origen": "post",
       "parcial": false
@@ -2064,6 +2252,7 @@
       "estado": "PORTUGUESA",
       "ciudad": "ACARIGUA",
       "telefono": "0424-5047296 / 0255 6221111",
+      "mapa": "HQ7X+X8M, Av. Páez, Acarigua 3301, Portuguesa",
       "url": "https://ceramica-carabobo.com/ferrecenca/",
       "origen": "post",
       "parcial": false
@@ -2075,6 +2264,7 @@
       "estado": "PORTUGUESA",
       "ciudad": "ACARIGUA",
       "telefono": "0255-6236404 / 0255-6235550",
+      "mapa": "a media cuadra del terminal, Av. Eduardo Chollet, con Av. Gonzalo Barrios, Acarigua, Portuguesa",
       "url": "https://ceramica-carabobo.com/inversiones-araguaney-c-a/",
       "origen": "post",
       "parcial": false
@@ -2086,6 +2276,7 @@
       "estado": "PORTUGUESA",
       "ciudad": "ACARIGUA",
       "telefono": "0255-8084277 /",
+      "mapa": "Av. Cv Sur, Acarigua 3301, Portuguesa",
       "url": "https://ceramica-carabobo.com/prosein-acarigua-c-a/",
       "origen": "post",
       "parcial": false
@@ -2097,6 +2288,7 @@
       "estado": "PORTUGUESA",
       "ciudad": "ARAURE",
       "telefono": "0255-6212219 / 0255-6212219",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/inversiones-0905-c-a/",
       "origen": "post",
       "parcial": false
@@ -2108,6 +2300,7 @@
       "estado": "PORTUGUESA",
       "ciudad": "ARAURE",
       "telefono": "0273 5309600 /",
+      "mapa": "GQQF+P65 edif margarita, Avenida Los Pioneros, Araure 3303, Portuguesa",
       "url": "https://ceramica-carabobo.com/maquinarias-cadelma-acarigua-c-a/",
       "origen": "post",
       "parcial": false
@@ -2121,7 +2314,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/aceros-yaracuy-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "alfa-gres-c-a",
@@ -2132,7 +2326,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/alfa-gres-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "baldolara-c-a",
@@ -2143,7 +2338,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/baldolara-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-importadas-falcon-c-a",
@@ -2154,7 +2350,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramicas-importadas-falcon-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-insumaca-c-a",
@@ -2165,7 +2362,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramicas-insumaca-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-la-popular-2-c-a",
@@ -2176,7 +2374,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramicas-la-popular-2-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-la-tinaja-c-a",
@@ -2187,7 +2386,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramicas-la-tinaja-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-nela-compania-anonima",
@@ -2198,7 +2398,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramicas-nela-compania-anonima/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramioferta-c-a",
@@ -2209,7 +2410,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ceramioferta-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "comercial-decoloris-c-a",
@@ -2220,7 +2422,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/comercial-decoloris-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "comercializadora-cima-261-c-a",
@@ -2231,7 +2434,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/comercializadora-cima-261-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "distribuidora-de-ceramicas-dicersa-c-a",
@@ -2242,7 +2446,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/distribuidora-de-ceramicas-dicersa-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ferro-ceramicas-valcro",
@@ -2253,7 +2458,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/ferro-ceramicas-valcro/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "greal-c-a",
@@ -2264,7 +2470,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/greal-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "insumaca-hogar-c-a",
@@ -2275,7 +2482,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/insumaca-hogar-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "la-porcelana-c-a",
@@ -2286,7 +2494,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/la-porcelana-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "materiales-guayabal-c-a",
@@ -2297,7 +2506,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/materiales-guayabal-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "migo-san-diego-c-a",
@@ -2308,7 +2518,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/migo-san-diego-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "prosein-barquisimeto-c-a",
@@ -2319,7 +2530,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/prosein-barquisimeto-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "riogres-c-a",
@@ -2330,7 +2542,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/riogres-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "valcro-los-colorados-c-a",
@@ -2341,7 +2554,8 @@
       "telefono": "",
       "url": "https://ceramica-carabobo.com/project/valcro-los-colorados-c-a/",
       "origen": "project",
-      "parcial": true
+      "parcial": true,
+      "mapa": ""
     },
     {
       "slug": "ceramicas-optima-c-a-2",
@@ -2350,6 +2564,7 @@
       "estado": "SUCRE",
       "ciudad": "CARUPANO, EDO. SUCRE",
       "telefono": "0294-3318098 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -2361,6 +2576,7 @@
       "estado": "SUCRE",
       "ciudad": "CUMANA",
       "telefono": "0424-7763149 / 0275-8813293",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramicas-optima-c-a/",
       "origen": "post",
       "parcial": false
@@ -2372,6 +2588,7 @@
       "estado": "SUCRE",
       "ciudad": "CUMANA",
       "telefono": "0424-8100009 / 0293-4333316",
+      "mapa": "CRR7+JQ7, Cumaná 6101, Sucre",
       "url": "https://ceramica-carabobo.com/ceramikoz-c-a/",
       "origen": "post",
       "parcial": false
@@ -2383,6 +2600,7 @@
       "estado": "SUCRE",
       "ciudad": "CUMANA",
       "telefono": "0293-4313812 … / 0293-4314223",
+      "mapa": "6101 Avenida Nueva Toledo, Cumaná 6101, Sucre",
       "url": "https://ceramica-carabobo.com/concretera-carabobo-c-a/",
       "origen": "post",
       "parcial": false
@@ -2394,6 +2612,7 @@
       "estado": "TACHIRA",
       "ciudad": "LA GRITA",
       "telefono": "0424-7638711 /",
+      "mapa": "Avenida Francisco de Caceres, local 10 41, La Grita 5022, Táchira",
       "url": "https://ceramica-carabobo.com/casa-dam-c-a/",
       "origen": "post",
       "parcial": false
@@ -2405,6 +2624,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN ANTONIO",
       "telefono": "0424-7337270 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ceramica-carabobo-center-c-a/",
       "origen": "post",
       "parcial": false
@@ -2416,6 +2636,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN ANTONIO",
       "telefono": "0424-7337270 / 0276-3479232",
+      "mapa": "RH83+48P San Antonio del Táchira, Táchira",
       "url": "https://ceramica-carabobo.com/ceramica-carabobo-centerc-a-2/",
       "origen": "post",
       "parcial": false
@@ -2427,6 +2648,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0276-3473322 /",
+      "mapa": "QQ58+G82, San Cristóbal 5001, Táchira",
       "url": "https://ceramica-carabobo.com/centro-ceramico-la-concordia-c-a/",
       "origen": "post",
       "parcial": false
@@ -2438,6 +2660,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0276-3563993 / 0276-3562747",
+      "mapa": "San Cristóbal 5001, Táchira",
       "url": "https://ceramica-carabobo.com/ceramic-center-import-c-a/",
       "origen": "post",
       "parcial": false
@@ -2449,6 +2672,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0276-3434341 /",
+      "mapa": "QQ58+HC9 San Cristóbal, Táchira",
       "url": "https://ceramica-carabobo.com/ceramica-carabobo-centerc-a/",
       "origen": "post",
       "parcial": false
@@ -2460,6 +2684,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0424-7337270/ 0276-3479232 / 0276-3480401",
+      "mapa": "QQ58+GHG San Cristóbal, Táchira",
       "url": "https://ceramica-carabobo.com/ceramicas-carabobo-center-c-a/",
       "origen": "post",
       "parcial": false
@@ -2471,6 +2696,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0424-7573580/0276-3473322 /",
+      "mapa": "QQ58+G6X, San Cristóbal 5001, Táchira",
       "url": "https://ceramica-carabobo.com/ceramicas-la-popular-c-a/",
       "origen": "post",
       "parcial": false
@@ -2482,6 +2708,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0212-9599809",
+      "mapa": "QQ58+CWC, C. 4 Bis, San Cristóbal 5001, Táchira",
       "url": "https://ceramica-carabobo.com/rusticas-tachira-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -2493,6 +2720,7 @@
       "estado": "TACHIRA",
       "ciudad": "SAN CRISTOBAL",
       "telefono": "0276-3474571-151 / 0276-3468816",
+      "mapa": "QQC9+P2M, Séptima Avenida, San Cristóbal 5001, Táchira",
       "url": "https://ceramica-carabobo.com/trainco-c-a/",
       "origen": "post",
       "parcial": false
@@ -2504,6 +2732,7 @@
       "estado": "TACHIRA",
       "ciudad": "TARIBA",
       "telefono": "0414-7517209 /",
+      "mapa": "QQW6+6VH, San Cristóbal 5017, Táchira",
       "url": "https://ceramica-carabobo.com/porcemetal-c-a/",
       "origen": "post",
       "parcial": false
@@ -2515,6 +2744,7 @@
       "estado": "TRUJILLO",
       "ciudad": "VALERA",
       "telefono": "0414-7209796 / 0414-5242518",
+      "mapa": "Valera 3101, Trujillo",
       "url": "https://ceramica-carabobo.com/el-mundo-de-la-ceramica-c-a/",
       "origen": "post",
       "parcial": false
@@ -2526,6 +2756,7 @@
       "estado": "TRUJILLO",
       "ciudad": "VALERA",
       "telefono": "0414-7232524 /",
+      "mapa": "y la Paz, Av. Mexico, entre C. Buenos Aires, Valera 3101, Trujillo",
       "url": "https://ceramica-carabobo.com/hierromo-c-a/",
       "origen": "post",
       "parcial": false
@@ -2537,6 +2768,7 @@
       "estado": "TRUJILLO",
       "ciudad": "VALERA",
       "telefono": "0271-8085135 / 0271-2214604",
+      "mapa": "898V+3FQ, Valera 3101, Trujillo",
       "url": "https://ceramica-carabobo.com/mil-decoraciones-c-a/",
       "origen": "post",
       "parcial": false
@@ -2548,6 +2780,7 @@
       "estado": "TRUJILLO",
       "ciudad": "VALERA",
       "telefono": "0414-7304401 /",
+      "mapa": "Valera 3101, Trujillo",
       "url": "https://ceramica-carabobo.com/prodecoraciones-c-a/",
       "origen": "post",
       "parcial": false
@@ -2559,6 +2792,7 @@
       "estado": "TRUJILLO",
       "ciudad": "VALERA",
       "telefono": "",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/rusticeramicas-lisandro-valero/",
       "origen": "post",
       "parcial": false
@@ -2570,6 +2804,7 @@
       "estado": "VARGAS",
       "ciudad": "CATIA LA MAR",
       "telefono": "0212-3510036 /",
+      "mapa": "pb. local Nª 9, Av. La Armada, Catia La Mar, La Guaira",
       "url": "https://ceramica-carabobo.com/puraceramica-litoral-c-a/",
       "origen": "post",
       "parcial": false
@@ -2581,6 +2816,7 @@
       "estado": "VARGAS",
       "ciudad": "MAIQUETIA",
       "telefono": "0212-3325891 / 0212-3324860",
+      "mapa": "H2WF+3HF, Maiquetía 1161, La Guaira",
       "url": "https://ceramica-carabobo.com/centro-ceramico-litomar-c-a/",
       "origen": "post",
       "parcial": false
@@ -2592,6 +2828,7 @@
       "estado": "VARGAS",
       "ciudad": "MAIQUETIA",
       "telefono": "0212-3316818 / 0212-3526845",
+      "mapa": "Maiquetía 1161, La Guaira",
       "url": "https://ceramica-carabobo.com/inversiones-cisa-c-a/",
       "origen": "post",
       "parcial": false
@@ -2603,6 +2840,7 @@
       "estado": "YARACUY",
       "ciudad": "SAN FELIPE",
       "telefono": "0412-3301645 / 0254-2343682/2343682",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferrelinca-jl-c-a/",
       "origen": "post",
       "parcial": false
@@ -2614,6 +2852,7 @@
       "estado": "YARACUY",
       "ciudad": "YARITAGUA",
       "telefono": "",
+      "mapa": "CR 18 entre calles 2 Y 3. Via de servicio Sector pilco Mayo, Yaritagua 3203, Yaracuy",
       "url": "https://ceramica-carabobo.com/el-oferton-group-c-a/",
       "origen": "post",
       "parcial": false
@@ -2625,6 +2864,7 @@
       "estado": "ZULIA",
       "ciudad": "CABIMAS",
       "telefono": "",
+      "mapa": "9HPC+3QM, Cabimas 4013, Zulia",
       "url": "https://ceramica-carabobo.com/el-palacio-del-caico-c-a/",
       "origen": "post",
       "parcial": false
@@ -2636,6 +2876,7 @@
       "estado": "ZULIA",
       "ciudad": "CABIMAS",
       "telefono": "0264-3718027 / 0264-3711632",
+      "mapa": "9HH7+QPP, Av. Intercomunal, Cabimas 4013, Zulia",
       "url": "https://ceramica-carabobo.com/temaco-costa-oriental-c-a/",
       "origen": "post",
       "parcial": false
@@ -2647,6 +2888,7 @@
       "estado": "ZULIA",
       "ciudad": "MARACAIBO",
       "telefono": "0424-6257504 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/baldozulia-hogar-c-a/",
       "origen": "post",
       "parcial": false
@@ -2658,6 +2900,7 @@
       "estado": "ZULIA",
       "ciudad": "MARACAIBO",
       "telefono": "0414-6132353 /",
+      "mapa": "Barrio La Sonrisa Puente St. Clara 1, Maracaibo, Zulia",
       "url": "https://ceramica-carabobo.com/ceramicas-don-baraton-c-a/",
       "origen": "post",
       "parcial": false
@@ -2669,6 +2912,7 @@
       "estado": "ZULIA",
       "ciudad": "MARACAIBO",
       "telefono": "",
+      "mapa": "Sector el Pescadito, Circunvalación 2, Av 58, Local 99A 31, Maracaibo 4001, Zulia",
       "url": "https://ceramica-carabobo.com/distribuidora-verona-2000-c-a/",
       "origen": "post",
       "parcial": false
@@ -2680,6 +2924,7 @@
       "estado": "ZULIA",
       "ciudad": "MARACAIBO",
       "telefono": "0414-4371599 /",
+      "mapa": "",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a-2/",
       "origen": "post",
       "parcial": false
@@ -2691,6 +2936,7 @@
       "estado": "ZULIA",
       "ciudad": "MARACAIBO",
       "telefono": "0414-4371599 /",
+      "mapa": "Avenida Guajira, Zona Industrial Norte, Maracaibo 4001, Zulia",
       "url": "https://ceramica-carabobo.com/ferreteria-epa-c-a/",
       "origen": "post",
       "parcial": false
@@ -2702,6 +2948,7 @@
       "estado": "ZULIA",
       "ciudad": "ZULIA",
       "telefono": "0424-6774995 /",
+      "mapa": "101 Autop. 1, Maracaibo 4001, Zulia",
       "url": "https://ceramica-carabobo.com/ceramicas-c1-c-a/",
       "origen": "post",
       "parcial": false
@@ -2713,6 +2960,7 @@
       "estado": "ZULIA",
       "ciudad": "ZULIA",
       "telefono": "0424-6774995 /",
+      "mapa": "H979+P5J, Av. 40, Maracaibo 4004, Zulia",
       "url": "https://ceramica-carabobo.com/distribuidora-4-gres-c-a/",
       "origen": "post",
       "parcial": false
@@ -2724,6 +2972,7 @@
       "estado": "ZULIA",
       "ciudad": "ZULIA",
       "telefono": "0264-2412727 / 0264-2514166",
+      "mapa": "M8HG+7PC, Maracaibo 4005, Zulia",
       "url": "https://ceramica-carabobo.com/productos-ceramicos-y-para-el-hogar/",
       "origen": "post",
       "parcial": false

@@ -90,6 +90,28 @@ const limpio = (html = '') =>
     .trim()
 
 /**
+ * La ubicación que el cliente eligió en Google Maps. El tema incrusta un
+ * `maps/embed/v1/place` cuyo parámetro `q` es lo que alguien escribió al
+ * armar la ficha, y no es homogéneo: unas veces es un Plus Code con su
+ * localidad (`M96F+29V, Puerto Ayacucho 7101, Amazonas`), otras una dirección
+ * de calle, otras solo la ciudad. Se guarda crudo: clasificarlo y convertirlo
+ * en coordenadas es trabajo aparte, y mezclar las dos cosas escondería de qué
+ * calidad es cada punto.
+ */
+function mapaDe(html) {
+  // Ojo con el separador: el tema escribe `&#038;` en vez de `&`, así que el
+  // carácter que precede a `q=` es un `;`. Exigir `?` o `&` ahí no encuentra
+  // nada. El valor termina en el siguiente `&` —o en el `&` de la entidad—.
+  const m = html.match(/maps\/embed\/v1\/place\?[^"']*?q=([^"'&#]+)/)
+  if (!m) return ''
+  try {
+    return decodeURIComponent(m[1]).trim()
+  } catch (e) {
+    return m[1]
+  }
+}
+
+/**
  * El teléfono, del HTML de la ficha. El tema lo pinta como un encabezado
  * "Teléfono" seguido del widget de texto que lo contiene, así que se busca ese
  * par en vez de un número suelto — en la página hay otros (el del pie, por
@@ -127,6 +149,7 @@ for (const p of entradas) {
     estado: (p.categories || []).map((id) => estadoDe.get(id)).filter(Boolean)[0] || '',
     ciudad: (p.tags || []).map((id) => ciudadDe.get(id)).filter(Boolean)[0] || '',
     telefono: '',
+    mapa: '',
     url: p.link,
     origen: 'post',
     parcial: false,
@@ -162,7 +185,9 @@ for (let i = 0; i < lista.length; i += TANDA) {
   await Promise.all(
     tanda.map(async (d) => {
       try {
-        d.telefono = telefonoDe(await pedir(d.url, {texto: true}))
+        const html = await pedir(d.url, {texto: true})
+        d.telefono = telefonoDe(html)
+        d.mapa = mapaDe(html)
       } catch (error) {
         d.error = String(error.message || error)
       }
@@ -182,6 +207,8 @@ const resumen = {
   conTelefono: cuenta((d) => d.telefono),
   conEstado: cuenta((d) => d.estado),
   conCiudad: cuenta((d) => d.ciudad),
+  conMapa: cuenta((d) => d.mapa),
+  conPlusCode: cuenta((d) => /^[23456789CFGHJMPQRVWX]{4,8}\+[23456789CFGHJMPQRVWX]{2,3}\b/i.test(d.mapa || '')),
   parciales: cuenta((d) => d.parcial),
   conError: cuenta((d) => d.error),
 }
@@ -191,5 +218,6 @@ writeFileSync(SALIDA, JSON.stringify({fuente: SITIO, extraido: new Date().toISOS
 console.log('')
 console.log(`  ${resumen.total} distribuidores → ${SALIDA}`)
 console.log(`  con dirección ${resumen.conDireccion} · con teléfono ${resumen.conTelefono} · con estado ${resumen.conEstado} · con ciudad ${resumen.conCiudad}`)
+console.log(`  con ubicación de Maps ${resumen.conMapa}, de las cuales ${resumen.conPlusCode} traen Plus Code`)
 if (resumen.parciales) console.log(`  ${resumen.parciales} parciales (solo nombre y estado, de 'project')`)
 if (resumen.conError) console.log(`  ${resumen.conError} con error al pedir la ficha`)
