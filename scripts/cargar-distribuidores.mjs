@@ -104,6 +104,23 @@ function telefonoLimpio(bruto = '') {
 /** "C A" y "C.A" sueltos al final de un nombre son la sigla societaria. */
 const normalizarSigla = (nombre) => nombre.replace(/[,\s]+C\.?\s*A\.?\s*$/i, ', C.A.')
 
+/**
+ * Un paréntesis que cierra sin haber abierto es un error de tecleo del sitio
+ * viejo, no parte de la razón social: `AGRO FERREMATERIALES MORONI C.A)`. Se
+ * quita solo cuando está DESBALANCEADO, para no tocar los nombres que sí lo
+ * usan bien, como `BALDOLARA C.A. (BARQUISIMETO)`.
+ */
+function parentesisSueltos(nombre = '') {
+  let limpio = nombre
+  while ((limpio.match(/\)/g) || []).length > (limpio.match(/\(/g) || []).length) {
+    limpio = limpio.replace(/\s*\)(?=[^)]*$)/, '')
+  }
+  while ((limpio.match(/\(/g) || []).length > (limpio.match(/\)/g) || []).length) {
+    limpio = limpio.replace(/\s*\((?=[^(]*$)/, '')
+  }
+  return limpio.trim()
+}
+
 const MINUSCULAS = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'e', 'en', 'a', 'al'])
 /** Siglas societarias y de vía que no deben quedar en Mayúscula Inicial. */
 const TAL_CUAL = new Map([
@@ -150,7 +167,7 @@ for (const d of conDatos) {
   const doc = {
     _id: `distribuidor-${d.slug}`,
     _type: 'distribuidor',
-    nombre: normalizarSigla(titulo(d.nombre)),
+    nombre: normalizarSigla(parentesisSueltos(titulo(d.nombre))),
     estado,
     ciudad: titulo(d.ciudad) || estado,
     direccion: d.direccion,
@@ -167,7 +184,7 @@ for (const d of conDatos) {
 const borradores = soloNombre.map((d) => ({
   _id: `drafts.distribuidor-${d.slug}`,
   _type: 'distribuidor',
-  nombre: normalizarSigla(titulo(d.nombre)),
+  nombre: normalizarSigla(parentesisSueltos(titulo(d.nombre))),
   esEjemplo: false,
 }))
 
