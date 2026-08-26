@@ -224,3 +224,11 @@ registrados acá como manda §9.
    Conectarlo son tres pasos y ningún otro archivo, descritos en la cabecera de ese archivo. La
    decisión de §5.3 de `modelo-de-contenido.md` (Worker de Cloudflare + email con tier gratis, y
    Turnstile como anti-spam) sigue siendo la propuesta; falta el correo destino del cliente.
+
+5. **El entregable de la fase, verificado de punta a punta** (2026-08-25). "Admin añade punto de
+   venta y aparece en mapa" se probó creando un distribuidor real en **Cojedes** —un estado que no
+   tenía cobertura, para que el cambio fuera inequívoco— con el mismo schema que usa el Studio.
+   Tras reconstruir: la tienda entró al índice, **Cojedes ganó su pin** (`<g class="pin"
+   data-estado="cojedes">`) y los puntos pasaron de 24 a 25. Después se borró el documento y se
+   reconstruyó: 0 menciones, 24 puntos, sin pin en Cojedes. El camino CMS → adaptador → mapa
+   funciona en las dos direcciones, alta y baja.
