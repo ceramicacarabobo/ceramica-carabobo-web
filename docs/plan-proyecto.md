@@ -30,7 +30,7 @@ Sitio para cliente que migra desde WordPress (hoy: WP gestionado en Hostinger). 
 | Imágenes | Procesadas **en build** (resize, WebP/AVIF), servidas por Cloudflare | El CDN de Sanity solo en build/preview |
 | Filtros catálogo | **JSON precargado + filtrado client-side** (isla interactiva) | 0 requests a Sanity |
 | Búsqueda texto | **Pagefind** (solo si el cliente la pide) | Índice en build, multiidioma |
-| Mapas | **MapLibre GL + OpenFreeMap** (Protomaps `.pmtiles` como plan B) | Sin API key, sin tarjeta |
+| Mapas | ~~MapLibre GL + OpenFreeMap~~ → **SVG con geometría en el bundle** (ver §13.1) | Ni librería ni teselas ajenas |
 | i18n | Rutas por idioma en Astro + document-internationalization en Sanity | Idiomas: pendiente confirmar con cliente |
 
 **Por qué esta y no Payload self-hosted:** modo de fallo benigno — sin nadie que mantenga, el sitio estático queda congelado pero en línea (vs caído). Payload queda documentado como opción preferente para clientes futuros CON infraestructura (ver contraste-propuestas.md).
@@ -77,9 +77,9 @@ Este proyecto es el primero de varios similares. **No se construye plataforma ge
 | **0. Modelo de contenido** ✅ | Inventario de tipos y bloques desde el handoff → schemas Sanity con validaciones. ANTES de tocar diseño | Documento de modelo aprobado + schemas |
 | **1. Esqueleto** ✅ | Astro + Sanity Studio en `/admin` + deploy Cloudflare + webhook publicación + preview/visual editing | QA en línea: home mínima + admin funcional — *en línea en https://qa.ceramica-carabobo.workers.dev; publicar en Sanity reconstruye el sitio solo* |
 | **2. Diseño a componentes** ✅ | Tokens al theme; cada sección del handoff → bloque Astro conectado a schema (nada hardcodeado) | Admin compone una página nueva con bloques reales |
-| **3. Catálogo** ⏳ | Producto + atributos en Sanity; listado con filtros client-side; fichas estáticas; imágenes en build; (Pagefind si se pide) | Admin crea/edita/despublica producto, filtrable en el sitio |
+| **3. Catálogo** ✅ | Producto + atributos en Sanity; listado con filtros client-side; fichas estáticas; imágenes en build; (Pagefind si se pide) | Admin crea/edita/despublica producto, filtrable en el sitio |
 | **4. Multiidioma** | i18n rutas + traducción de contenido en Studio + hreflang/sitemap | Sitio en todos los idiomas, traducible desde el admin |
-| **5. Puntos de venta + contacto** | Colección dealers + mapa MapLibre + formulario de contacto | Admin añade punto de venta y aparece en mapa |
+| **5. Puntos de venta + contacto** ✅ (sin receptor) | Colección dealers + mapa **SVG self-hosted, no MapLibre** (ver §13.1) + formulario de contacto | Admin añade punto de venta y aparece en mapa |
 | **6. Editores + migración** | Studio pulido para no técnicos; doc "en WordPress lo hacía así → ahora así"; carga de contenido real; redirects 301 | Cliente valida QA; capacitación hecha |
 | **7. Producción** | Cuentas del cliente; DNS a Cloudflare; export automático configurado; runbook | Sitio en producción + titularidad del cliente |
 | **8. Extracción** | Repo template + CLAUDE.md + playbook + runbook (sección 5) | Starter listo para el cliente nº 2 |
@@ -167,3 +167,60 @@ que introduce la ejecución (registrados acá como manda §9):
    y multiplica el build: en el catálogo, el recorte bajó el build de 1.411 imágenes a 967. La
    primitiva `base/Imagen.astro` sigue sin ese recorte y le aplica el mismo defecto — anotado como
    pendiente de la cáscara.
+
+## 13. Registro de ejecución — Fase 5 (2026-08-25)
+
+La Fase 5 se adelantó mientras corría la 3: contacto y dónde comprar se construyeron completas en la
+misma tanda que la ficha de producto. Lo que sigue son los cambios que introduce esa ejecución,
+registrados acá como manda §9.
+
+1. **Los mapas NO son MapLibre. Son SVG con la geometría en el bundle.** §4 de este plan proponía
+   **MapLibre GL + OpenFreeMap** (Protomaps `.pmtiles` como plan B) y la tabla de fases habla de
+   "mapa MapLibre". No se usó ninguno de los dos, y la razón es la condición de autosuficiencia
+   (§3.3), que no admite matices: *ningún CDN externo en producción*.
+
+   - **Dónde comprar** dibuja las entidades federales con trazados calculados en build por
+     `scripts/generar-mapa.mjs` y volcados en `src/components/donde-comprar/geometria.ts` (38 KB).
+     El prototipo cargaba d3 y topojson desde unpkg y el GeoJSON desde jsDelivr — tres terceros, y
+     el propio prototipo anotaba que uno ya se había roto solo. Como la proyección es fija (Mercator
+     ajustada a un viewBox de 800×505), el cálculo se hace UNA VEZ y el mapa entra al HTML ya
+     dibujado: en producción no hay librería de mapas ni archivo de geometría que pedir.
+   - **Contacto** dibuja el mapa de sedes con el mismo criterio. El prototipo usaba Leaflet de
+     unpkg con teselas de `tile.openstreetmap.org`; traer Leaflet desde npm habría resuelto la
+     librería y no lo que importa, porque cada tesela sigue siendo una petición a un servidor ajeno
+     sin la cual el mapa queda en blanco. Servir teselas propias habría significado versionar
+     cientos de PNG por sede y nivel de zoom, con su licencia, para ilustrar dos puntos cuyas
+     coordenadas todavía son aproximadas.
+
+   Esto **no reabre** la decisión de §4: MapLibre sigue siendo la respuesta correcta para un mapa
+   de calles navegable. Lo que el diseño pide no es eso — es un mapa temático de entidades y un
+   localizador—, y para eso la librería sobra. Si más adelante aparece un requisito de mapa
+   navegable, MapLibre + Protomaps self-hosted es el camino, no las teselas de terceros.
+
+2. **Venezuela tiene 25 entidades federales, no 26.** El checklist de aceptación (prueba 01) dice
+   "los 26 estados" y el prototipo dibujaba 26 formas, pero la 26ª no es un estado: el GeoJSON de
+   Natural Earth trae una entidad con `ISO: "VE-X01~"` y `NAME_1: null`, una mancha de 0,28 × 0,21
+   unidades en un lienzo de 800×505 — invisible, sin nombre y sin tienda posible. Se colaba porque
+   el generador caía al ISO cuando no había nombre, y entraba al mapa como un trazado que el lector
+   de pantalla anunciaba "VE-X01~". `scripts/generar-mapa.mjs` ahora la descarta y lo dice al
+   generar. El mapa dibuja **23 estados + Distrito Capital + Dependencias Federales = 25**, y la
+   prueba 01 comprueba ese número.
+
+3. **El contenido del prototipo ES el contenido real, por ahora** (decisión del usuario,
+   2026-08-25). La web tiene que quedar en línea *tal cual el prototipo, con lo que contiene*.
+   Después el cliente cambia lo que quiera desde el administrador, o nos entrega el contenido real y
+   lo gestionamos nosotros. Consecuencia práctica: los teléfonos, WhatsApp y correos de las tiendas
+   de "dónde comprar" son los del handoff (`584141234567` correlativos, `@placeholder.com`) y **eso
+   está bien por ahora** — no son datos inventados por la ejecución, son los del diseño. El schema
+   `distribuidor` tiene un campo `esEjemplo` justo para marcarlos como pendientes de validar. Los
+   pedidos al cliente de `modelo-de-contenido.md` §6 siguen abiertos, pero **ya no bloquean**
+   terminar el sitio.
+
+4. **El formulario de contacto queda sin receptor, a propósito** (decisión del usuario,
+   2026-08-25). Está construido completo —campos, teclados de móvil, validación, estado de éxito y
+   de error— y todo el envío entra y sale por una única función, `src/components/contacto/envio.ts`.
+   Mientras no haya receptor, `hayReceptor()` devuelve `false` y el formulario no promete lo que no
+   puede cumplir: avisa que hay que escribir o llamar, en vez de decir "gracias" y tirar el mensaje.
+   Conectarlo son tres pasos y ningún otro archivo, descritos en la cabecera de ese archivo. La
+   decisión de §5.3 de `modelo-de-contenido.md` (Worker de Cloudflare + email con tier gratis, y
+   Turnstile como anti-spam) sigue siendo la propuesta; falta el correo destino del cliente.

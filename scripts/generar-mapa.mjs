@@ -61,9 +61,19 @@ for (const [lon, lat] of [[-68, 10.16], [-71.6, 10.64], [-62.7, 8.29], [-63.87, 
 }
 if (peor > 1e-6) throw new Error(`la fórmula cerrada no coincide con d3 (${peor})`)
 
-const nombreDe = (f) => f.properties?.NAME_1 || f.properties?.name || f.properties?.NAME || f.properties?.ISO || ''
+const nombreDe = (f) => f.properties?.NAME_1 || f.properties?.name || f.properties?.NAME || ''
+
+// Natural Earth trae una entidad de más: `ISO: "VE-X01~"` con `NAME_1: null`.
+// No es un estado — es una mancha de 0,28 × 0,21 unidades en un lienzo de
+// 800×505, invisible, sin nombre y sin tienda posible. Antes se colaba porque
+// `nombreDe` caía al ISO cuando no había nombre, y entraba al mapa como un
+// trazado que el lector de pantalla anunciaba "VE-X01~". Venezuela tiene 23
+// estados más el Distrito Capital y las Dependencias Federales: 25 entidades.
+const esEntidadReal = (f) => !!nombreDe(f).trim()
+const descartadas = features.filter((f) => !esEntidadReal(f))
 
 const estados = features
+  .filter(esEntidadReal)
   .map((f) => {
     const [[x0, y0], [x1, y1]] = trazar.bounds(f)
     return {
@@ -120,3 +130,6 @@ export const ESTADOS: EstadoGeo[] = ${JSON.stringify(estados, null, 0).replace(/
 writeFileSync(SALIDA, ts)
 console.log(`${estados.length} estados · ${(ts.length / 1024).toFixed(1)} KB → ${SALIDA.pathname}`)
 console.log(estados.map((e) => e.nombre).join(' · '))
+for (const f of descartadas) {
+  console.log(`descartada (sin nombre, no es una entidad federal): ISO ${f.properties?.ISO ?? '(sin ISO)'}`)
+}

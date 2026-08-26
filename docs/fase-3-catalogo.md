@@ -188,12 +188,10 @@ visible contra el diseño y no está justificada en ningún lado.
 
 La suite pasó de siete pruebas a diez: **9 en verde, la 03 medida sin veredicto, 0 en falla.**
 
-Dos siguen sin automatizar, y conviene no perderlas de vista:
-
-- **01** — el mapa de dónde comprar dibuja los 26 estados con todo CDN externo desconectado. La
-  página existe desde hoy y el build no trae ningún script externo, así que ya se puede escribir.
-- **10** — con el catálogo vacío, una foto faltante o una ficha sin datos, ninguna pantalla se ve
-  rota. Necesita contenido preparado a propósito, que es lo que la mantiene fuera.
+**La 01 se escribió después** (ver `plan-proyecto.md` §13.2): la suite quedó en once pruebas, diez
+en verde y la 03 medida sin veredicto. Solo falta la **10** —con el catálogo vacío, una foto
+faltante o una ficha sin datos, ninguna pantalla se ve rota—, que necesita contenido preparado a
+propósito.
 
 **Dos correcciones que salieron de plegarlas, las dos en la prueba, no en el catálogo:**
 

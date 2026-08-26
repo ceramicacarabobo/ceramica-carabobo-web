@@ -174,6 +174,112 @@ const fichaAbierta = (pagina) =>
   )
 
 // ===========================================================================
+// 01 — El mapa dibuja los 26 estados sin depender de ningún servidor ajeno
+// ===========================================================================
+// El handoff lo enuncia como una prueba destructiva: "se prueba desconectando
+// cualquier CDN externo — el mapa tiene que seguir apareciendo". Así se corre
+// acá: TODA petición que no sea a nuestro origen se aborta, no se cuenta y ya.
+// El prototipo cargaba d3 y topojson de unpkg y el GeoJSON de jsDelivr, y con
+// este corte no habría dibujado nada.
+//
+// No basta con contar 26 nodos: un `<path>` sin `d` también cuenta. Se
+// comprueba que cada estado traiga geometría de verdad y que el mapa ocupe
+// espacio en la página.
+async function prueba01(navegador, base) {
+  const notas = []
+  const fallas = []
+  const comprobar = (ok, texto) => {
+    notas.push(`${ok ? 'OK' : 'FALLA'} · ${texto}`)
+    if (!ok) fallas.push(texto)
+  }
+
+  const contexto = await navegador.newContext({viewport: {width: 1440, height: 900}})
+  const pagina = await contexto.newPage()
+  await pagina.addInitScript(SIN_TELON)
+
+  // El corte: nada que no sea nuestro origen llega a la página.
+  const ajenas = []
+  await contexto.route('**/*', (ruta) => {
+    const url = ruta.request().url()
+    if (url.startsWith(base) || url.startsWith('data:') || url.startsWith('blob:')) return ruta.continue()
+    ajenas.push(url)
+    return ruta.abort()
+  })
+
+  await pagina.goto(base + '/donde-comprar', {waitUntil: 'load', timeout: 60000})
+  await pagina.waitForTimeout(800)
+
+  comprobar(
+    ajenas.length === 0,
+    ajenas.length === 0
+      ? 'la página no pidió nada fuera de nuestro origen'
+      : `pidió ${ajenas.length} recursos ajenos: ${[...new Set(ajenas.map((u) => new URL(u).host))].join(', ')}`,
+  )
+
+  // `[data-estado]` también lo llevan los pines de las tiendas: acá interesan
+  // solo los trazados de las entidades, que son los `<path>`.
+  const mapa = await pagina.evaluate(() => {
+    const svg = document.querySelector('[data-mapa]')
+    if (!svg) return null
+    const formas = [...svg.querySelectorAll('path[data-estado]')]
+    const caja = svg.getBoundingClientRect()
+    return {
+      estados: new Set(formas.map((f) => f.getAttribute('data-estado'))).size,
+      conGeometria: formas.filter((f) => (f.getAttribute('d') || '').length > 50).length,
+      nombrados: formas.filter((f) => (f.getAttribute('data-nombre') || '').trim()).length,
+      ancho: Math.round(caja.width),
+      alto: Math.round(caja.height),
+    }
+  })
+
+  // ENTIDADES es 25, no 26: Venezuela tiene 23 estados más el Distrito Capital
+  // y las Dependencias Federales. El "26" del checklist contaba una entidad de
+  // más que traía Natural Earth —`ISO: "VE-X01~"`, `NAME_1: null`—, una mancha
+  // de 0,28 × 0,21 en un lienzo de 800×505: invisible, sin nombre y sin tienda
+  // posible. `scripts/generar-mapa.mjs` ya la descarta.
+  const ENTIDADES = 25
+  comprobar(!!mapa && mapa.estados === ENTIDADES, `las ${ENTIDADES} entidades federales están en el mapa: ${mapa ? mapa.estados : '(sin mapa)'}`)
+  comprobar(!!mapa && mapa.conGeometria === ENTIDADES, `las ${ENTIDADES} traen geometría propia, no un hueco: ${mapa ? mapa.conGeometria : 0} con trazado`)
+  comprobar(!!mapa && mapa.nombrados === ENTIDADES, `las ${ENTIDADES} tienen nombre para el lector de pantalla: ${mapa ? mapa.nombrados : 0}`)
+  comprobar(!!mapa && mapa.ancho > 200 && mapa.alto > 100, `el mapa ocupa espacio y se ve: ${mapa ? `${mapa.ancho}×${mapa.alto}` : '(sin caja)'}`)
+
+  // Y sigue siendo un control, no un dibujo: elegir un estado con cobertura
+  // filtra el índice de tiendas. Sin librería de mapas de por medio.
+  const conCobertura = await pagina.evaluate(() => {
+    const con = [...document.querySelectorAll('path[data-estado]')].find((f) => {
+      const t = f.querySelector('title')?.textContent || ''
+      return !t.includes('sin cobertura')
+    })
+    return con ? con.getAttribute('data-estado') : null
+  })
+  if (conCobertura) {
+    // Las tarjetas se esconden por GRUPO, no una a una, así que `hidden` en la
+    // tarjeta no dice nada: lo que cuenta es si están puestas en la página.
+    const visibles = () => pagina.$$eval('[data-punto]', (ps) => ps.filter((p) => p.offsetParent !== null).length)
+    const antes = await visibles()
+    await pagina.click(`path[data-estado="${conCobertura}"]`)
+    await pagina.waitForTimeout(600)
+    const despues = await visibles()
+    const hash = await pagina.evaluate(() => location.hash)
+    comprobar(
+      hash === `#estado=${conCobertura}` && despues > 0,
+      `elegir un estado en el mapa abre sus tiendas: ${conCobertura} → ${hash}, de ${antes} tiendas a la vista se pasa a ${despues}`,
+    )
+  } else {
+    comprobar(false, 'no hay ningún estado con cobertura para probar el filtrado')
+  }
+
+  await contexto.close()
+  anotar(
+    '01',
+    'El mapa se dibuja sin ningún servidor ajeno',
+    fallas.length ? 'FALLA' : 'OK',
+    `${notas.length} comprobaciones · ${fallas.length} fallidas · ${ajenas.length} peticiones ajenas`,
+    notas,
+  )
+}
+
+// ===========================================================================
 // 02 — Una dirección inexistente muestra la 404 del sitio
 // ===========================================================================
 // El handoff lo llama "configuración de servidor: la página ya está diseñada y
@@ -1179,6 +1285,7 @@ async function prueba07(navegador, base) {
 }
 
 const PRUEBAS = [
+  ['01', prueba01],
   ['02', prueba02],
   ['03', prueba03],
   ['04', prueba04],
@@ -1195,7 +1302,7 @@ const servidor = process.env.NUESTRO ? null : await levantarServidor()
 const base = (process.env.NUESTRO || `http://localhost:${PUERTO}`).replace(/\/$/, '')
 
 titular(`Checklist de aceptación — ${base}`)
-console.log('Faltan la 01 (mapa sin CDN externo) y la 10 (estados vacíos, foto faltante, ficha sin datos): sin automatizar todavía.')
+console.log('Falta la 10 (estados vacíos, foto faltante, ficha sin datos): necesita contenido preparado a propósito.')
 
 const navegador = await chromium.launch()
 for (const [n, prueba] of PRUEBAS) {
