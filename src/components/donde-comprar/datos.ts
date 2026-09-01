@@ -49,17 +49,28 @@ export interface GrupoEstado {
   puntos: Distribuidor[]
 }
 
-/** La red agrupada por estado, en orden alfabético (el del prototipo). */
+/**
+ * La red agrupada por estado, en orden alfabético (el del prototipo).
+ *
+ * Un punto SIN estado se descarta en vez de agruparse aparte. El schema lo
+ * exige, así que ningún documento publicado llega sin él; pero el preview lee
+ * BORRADORES, y un borrador a medias sí puede venir sin estado. Sin estado no
+ * hay grupo, no hay dirección `#estado=…` y el filtro del localizador no lo
+ * alcanza: mostrarlo sería un punto inalcanzable. Descartarlo, además, evita
+ * que una ficha a medio escribir tumbe la página entera — que es lo que pasaba:
+ * el orden llamaba a `localeCompare` sobre un `null`.
+ */
 export function agruparPorEstado(distribuidores: Distribuidor[]): GrupoEstado[] {
   const mapa = new Map<string, GrupoEstado>()
   for (const d of distribuidores) {
+    if (!d.estado) continue
     const k = clave(d.estado)
     const grupo = mapa.get(k) ?? {clave: k, nombre: d.estado, ciudades: [], puntos: []}
     grupo.puntos.push(d)
-    if (!grupo.ciudades.includes(d.ciudad)) grupo.ciudades.push(d.ciudad)
+    if (d.ciudad && !grupo.ciudades.includes(d.ciudad)) grupo.ciudades.push(d.ciudad)
     mapa.set(k, grupo)
   }
-  return [...mapa.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+  return [...mapa.values()].sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'))
 }
 
 export interface Ciudad {
