@@ -24,7 +24,8 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 
 - Fase 0 (modelo de contenido) ✅. Bundle de diseño completo en `design/` (107 archivos, texto + fotos + video) ✅.
 - **Fase 1 (esqueleto) cerrada** — QA en línea: https://qa.ceramica-carabobo.workers.dev (preview en https://preview.ceramica-carabobo.workers.dev). Sanity `egpui9al`; publicar reconstruye el sitio solo (webhook → Workers Builds). Datos del entorno en `docs/fase-1-esqueleto.md` §1.bis.
-- Pendientes menores de la fase: verificar click-to-edit en el navegador y poner contraseña al QA con Cloudflare Access antes de compartirlo con el cliente.
+- Pendientes de la fase, cerrados el 2026-09-02: el click-to-edit **ya funciona** (estaba roto por tres causas encadenadas — ver `plan-proyecto.md` §14) y **Cloudflare Access se descarta** (decisión del usuario): el QA queda accesible con el enlace. No lo indexan los buscadores (`robots.txt` con `Disallow: /` y `noindex, nofollow` verificados), pero cualquiera con la dirección entra. El admin sigue protegido por el inicio de sesión de Sanity, que es lo que importa para editar.
+- El worker `preview` **se despliega a mano** (`npm run deploy:preview`); solo el `qa` está conectado a Workers Builds. Por eso el preview se quedó atrás fases enteras. Conectarlo es el arreglo de fondo.
 - **Fase 2 (diseño a componentes) cerrada** — home completa y 404 al píxel contra el prototipo, QA de aceptación automatizado en `scripts/qa/aceptacion.mjs` (6 pruebas en verde). Herramientas de fidelidad y decisiones en `docs/fase-2-qa-fidelidad.md`.
 - **En curso: Fase 3 (catálogo)** — ver `docs/fase-3-catalogo.md`.
 - **El prototipo del diseño se ejecuta**: `cd design/publicar && python3 -m http.server 4500`. Es la referencia de fidelidad; se compara con `scripts/qa/diff.mjs` y `scripts/qa/medir.mjs`.
