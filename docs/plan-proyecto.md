@@ -232,3 +232,32 @@ registrados acá como manda §9.
    data-estado="cojedes">`) y los puntos pasaron de 24 a 25. Después se borró el documento y se
    reconstruyó: 0 menciones, 24 puntos, sin pin en Cojedes. El camino CMS → adaptador → mapa
    funciona en las dos direcciones, alta y baja.
+
+## 14. Registro de ejecución — el preview y el click-to-edit (2026-09-02)
+
+El deploy de preview servía una versión de la Fase 1 y el click-to-edit no había funcionado nunca.
+Eran tres fallas encadenadas, y la tercera destapó un defecto del sitio:
+
+1. **Nadie lo redesplegaba.** El worker `qa` se reconstruye solo en cada push (Workers Builds); el
+   `preview` solo se actualiza con `npm run deploy:preview`, a mano. Conectarlo también a Workers
+   Builds es el arreglo de fondo y sigue pendiente.
+2. **El token no llegaba al Worker.** `astro.config.mjs` reinyectaba con `vite.define` solo las
+   variables `PUBLIC_`. El token de lectura no lleva ese prefijo, así que
+   `import.meta.env.SANITY_API_READ_TOKEN` quedaba `undefined` dentro del Worker —que no tiene
+   `process.env`— y el cliente caía a la rama sin borradores. Ahora se inyecta, y **solo en el build
+   de preview**: verificado que el build estático de producción no contiene el token en ningún
+   archivo.
+3. **El token estaba vacío** en `.env`. El de la Fase 1 existía en Sanity pero su secreto nunca se
+   guardó, y rotarlo exige el secreto viejo. Se creó uno nuevo con rol *viewer*.
+
+**El defecto que apareció al encender los borradores es del sitio, no del preview.**
+`agruparPorEstado` ordenaba con `a.nombre.localeCompare(...)` y un distribuidor sin estado llega con
+`null`: la página de dónde comprar reventaba entera (respuesta de 1 byte). El schema exige el estado,
+así que ningún documento publicado llega sin él — pero el preview lee BORRADORES, y un borrador a
+medias sí puede venir sin estado. Ahora esos puntos se descartan (sin estado no hay grupo ni
+dirección `#estado=…`, y el filtro no los alcanza) y el orden tolera nulos.
+
+**Cloudflare Access descartado** (decisión del usuario, 2026-09-02): el QA queda accesible con el
+enlace. Los buscadores no lo indexan —`robots.txt` con `Disallow: /` y `noindex, nofollow`,
+verificados— pero cualquiera con la dirección entra, y se acepta a propósito. El admin sigue
+protegido por el inicio de sesión de Sanity, que es lo que importa para editar.

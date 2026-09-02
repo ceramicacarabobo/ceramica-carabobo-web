@@ -20,14 +20,16 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - El checklist de aceptación (12 pruebas, en `design/Requisitos tecnicos v0.dc.html`) es el criterio de cierre de QA.
 - `design/NOTAS-SESION-DISENO.md` es la bitácora de la sesión de diseño — contexto histórico, no instrucciones.
 
-## Estado (2026-08-25)
+## Estado (2026-09-02)
 
 - Fase 0 (modelo de contenido) ✅. Bundle de diseño completo en `design/` (107 archivos, texto + fotos + video) ✅.
 - **Fase 1 (esqueleto) cerrada** — QA en línea: https://qa.ceramica-carabobo.workers.dev (preview en https://preview.ceramica-carabobo.workers.dev). Sanity `egpui9al`; publicar reconstruye el sitio solo (webhook → Workers Builds). Datos del entorno en `docs/fase-1-esqueleto.md` §1.bis.
 - Pendientes de la fase, cerrados el 2026-09-02: el click-to-edit **ya funciona** (estaba roto por tres causas encadenadas — ver `plan-proyecto.md` §14) y **Cloudflare Access se descarta** (decisión del usuario): el QA queda accesible con el enlace. No lo indexan los buscadores (`robots.txt` con `Disallow: /` y `noindex, nofollow` verificados), pero cualquiera con la dirección entra. El admin sigue protegido por el inicio de sesión de Sanity, que es lo que importa para editar.
 - El worker `preview` **se despliega a mano** (`npm run deploy:preview`); solo el `qa` está conectado a Workers Builds. Por eso el preview se quedó atrás fases enteras. Conectarlo es el arreglo de fondo.
-- **Fase 2 (diseño a componentes) cerrada** — home completa y 404 al píxel contra el prototipo, QA de aceptación automatizado en `scripts/qa/aceptacion.mjs` (6 pruebas en verde). Herramientas de fidelidad y decisiones en `docs/fase-2-qa-fidelidad.md`.
-- **En curso: Fase 3 (catálogo)** — ver `docs/fase-3-catalogo.md`.
+- **Fase 2 (diseño a componentes) cerrada** — home completa y 404 al píxel contra el prototipo, QA de aceptación automatizado en `scripts/qa/aceptacion.mjs` (hoy 11 pruebas: 10 en verde y la 03 medida sin veredicto). Herramientas de fidelidad y decisiones en `docs/fase-2-qa-fidelidad.md`.
+- **Fase 3 (catálogo) cerrada** — 126 fichas de producto, grilla con cinco filtros y contrato de historial. Ver `docs/fase-3-catalogo.md`. Falta solo la prueba 10 del checklist (pantallas con datos faltantes), que necesita contenido preparado a propósito.
+- **Fase 5 (puntos de venta + contacto) cerrada, sin receptor de correo** — las cinco páginas del sitio están construidas. 226 distribuidores reales extraídos del WordPress viejo (`plan-proyecto.md` §13 y §14).
+- **En curso: Fase 6 (editores + migración).** Hechos los 301 (575 reglas, probadas en línea) y la carga de contenido. Faltan el documento "en WordPress lo hacía así → ahora así", pulir el Studio para no técnicos y la capacitación.
 - **El prototipo del diseño se ejecuta**: `cd design/publicar && python3 -m http.server 4500`. Es la referencia de fidelidad; se compara con `scripts/qa/diff.mjs` y `scripts/qa/medir.mjs`.
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.
