@@ -1,18 +1,12 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
-import {presentationTool} from 'sanity/presentation'
 import {visionTool} from '@sanity/vision'
 
 import {schemaTypes, SINGLETONS} from './sanity/schemas'
 import {structure} from './sanity/structure'
-import {locations} from './sanity/locations'
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'placeholder'
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production'
-
-// En dev el Studio y el sitio comparten origen; el deploy de preview
-// (server-rendered) se pasa por variable de entorno.
-const previewUrl = import.meta.env.PUBLIC_SANITY_PREVIEW_URL || '/'
 
 export default defineConfig({
   name: 'ceramica-carabobo',
@@ -20,9 +14,16 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: '/admin',
+  // El Presentation Tool (vista previa de borradores con click-to-edit) se
+  // RETIRÓ el 2026-09-04. Exigía un deploy server-rendered, y ese worker se
+  // pasa del límite de CPU del plan gratuito al renderizar el sitio con el
+  // marcado invisible que el click-to-edit inyecta: devolvía 503 en TODAS sus
+  // rutas. No es un fallo de configuración, es un techo del plan.
+  // Dejarlo enchufado a un worker caído habría puesto un panel roto dentro del
+  // admin que usa el cliente. El ciclo editar → publicar → ver en ~3 minutos
+  // cubre la necesidad; ver `plan-proyecto.md` §16.
   plugins: [
     structureTool({structure}),
-    presentationTool({previewUrl, resolve: {locations}}),
     visionTool({defaultApiVersion: '2026-08-01'}),
   ],
   schema: {

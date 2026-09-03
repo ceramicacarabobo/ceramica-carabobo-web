@@ -295,3 +295,35 @@ producto**. De las 15 fichas de Ambientes, 10 lo eran; 5 no venían de ningún p
    alternativo, que decía "Ambiente con porcelanato de la red de distribuidores" cuando no es la
    sala de exhibición de ningún distribuidor. Corregido a "Ambiente con Adícora Beige". Lo que falta
    ahí sigue siendo lo que ya anotaba el diseño: una foto de tienda real.
+
+## 16. Registro de ejecución — se retira el preview (2026-09-04)
+
+**El deploy de preview se abandona.** No es un fallo de configuración: es un techo del plan gratuito
+de Cloudflare Workers.
+
+El preview existía para ver BORRADORES antes de publicar, con click-to-edit. Eso exige un deploy
+**server-rendered** —el sitio de producción es estático— y, encima, el click-to-edit inyecta marcado
+invisible en cada cadena de texto: la página de dónde comprar llegaba a 12 MB y casi 4 millones de
+caracteres invisibles. Renderizar eso en cada petición se pasa del límite de CPU por petición del
+plan gratuito, y el worker respondía **503 en todas sus rutas**.
+
+Estuvo al filo mucho tiempo y lo cruzó al cargar el catálogo completo y los 226 distribuidores.
+
+**Lo que se retira:**
+- El `presentationTool` del Studio. Apuntaba al worker caído: dejarlo habría puesto un panel roto
+  dentro del admin que usa el cliente.
+- La inyección de `SANITY_API_READ_TOKEN` en `astro.config.mjs`, que solo servía a ese build.
+- `PUBLIC_SANITY_PREVIEW_URL` de `.env.production` y los scripts `build:preview` / `deploy:preview`.
+
+**Lo que NO se retira**, porque no era del preview aunque se descubriera por él: la guarda de
+`agruparPorEstado` ante un distribuidor sin estado. El sitio reventaba entero con una ficha a medio
+escribir y eso sigue siendo un defecto propio.
+
+**Qué se pierde y qué no.** Se pierde ver un borrador antes de publicar. No se pierde nada del
+checklist de aceptación ni de los entregables de ninguna fase: el preview era una comodidad, no un
+requisito. El ciclo editar → publicar → ver tarda ~3 minutos con el caché de build activo, y
+publicar es reversible.
+
+**Si algún día se quiere recuperar**, las salidas son el plan de pago de Workers (~5 USD/mes, sube el
+límite de CPU) o limitar el preview a las páginas ligeras. Ambas contradicen la premisa de
+presupuesto cero, así que la decisión es del cliente, no técnica.

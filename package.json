@@ -10,11 +10,9 @@
     "dev": "astro dev",
     "prebuild": "node --env-file-if-exists=.env scripts/descargar-medios.mjs",
     "build": "astro build",
-    "build:preview": "PUBLIC_SANITY_VISUAL_EDITING_ENABLED=true astro build",
     "preview": "astro preview",
     "check": "astro check",
     "deploy": "npm run build && wrangler deploy -c dist/client/wrangler.json",
-    "deploy:preview": "npm run build:preview && wrangler deploy -c dist/server/wrangler.json --name preview",
     "sanity:export": "sanity dataset export production backups/dataset.tar.gz"
   },
   "dependencies": {

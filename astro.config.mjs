@@ -57,18 +57,6 @@ export default defineConfig({
     define: {
       'import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED': JSON.stringify(String(visualEditingEnabled)),
       'import.meta.env.PUBLIC_SANITY_STUDIO_URL': JSON.stringify(studioUrl),
-      // El token de lectura NO lleva prefijo `PUBLIC_`, así que Vite no lo
-      // sustituye solo: sin esta línea `import.meta.env.SANITY_API_READ_TOKEN`
-      // queda `undefined` dentro del Worker —que no tiene `process.env`— y el
-      // preview cae a la rama sin borradores. Era la causa de que el
-      // click-to-edit no funcionara desde la Fase 1.
-      //
-      // Se inyecta SOLO en el build de preview: el sitio estático de producción
-      // no lo lleva, y así el token no viaja en ningún artefacto público. Es un
-      // token de rol *viewer* y el bundle del Worker no se sirve al navegador.
-      ...(visualEditingEnabled
-        ? {'import.meta.env.SANITY_API_READ_TOKEN': JSON.stringify(process.env.SANITY_API_READ_TOKEN ?? env.SANITY_API_READ_TOKEN ?? '')}
-        : {}),
     },
   },
   build: {inlineStylesheets: 'auto'},
