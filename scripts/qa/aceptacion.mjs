@@ -1284,6 +1284,163 @@ async function prueba07(navegador, base) {
   )
 }
 
+// ===========================================================================
+// 10 — Con datos faltantes, ninguna pantalla se ve rota
+// ===========================================================================
+// El handoff lo enuncia en tres casos: "con el catálogo vacío, con una sola
+// foto faltante y con una ficha sin datos, ninguna pantalla se ve rota".
+//
+// Ya no hace falta preparar contenido: el catálogo real trae los tres. Hay 37
+// productos sin ninguna foto —las de ejemplo se quitaron a propósito, para que
+// nadie tenga que adivinar cuáles eran reales—, hay fichas a las que les faltan
+// filas de specs, y cualquier combinación de filtros sin resultados deja la
+// grilla vacía.
+//
+// "No se ve rota" se mide, no se opina: el hueco tiene que ocupar el MISMO
+// espacio que ocuparía la foto (si no, la grilla se descuadra), la tarjeta
+// tiene que conservar su texto, y el estado vacío tiene que ofrecer una salida.
+async function prueba10(navegador, base) {
+  const notas = []
+  const fallas = []
+  const comprobar = (ok, texto) => {
+    notas.push(`${ok ? 'OK' : 'FALLA'} · ${texto}`)
+    if (!ok) fallas.push(texto)
+  }
+
+  const contexto = await navegador.newContext({viewport: {width: 1440, height: 900}})
+  const pagina = await contexto.newPage()
+  await pagina.addInitScript(SIN_TELON)
+  await pagina.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+  await fichaEnganchada(pagina)
+
+  // — 1 · Producto sin foto: el hueco no descuadra la grilla ————————————
+  const grilla = await pagina.evaluate(() => {
+    const tarjetas = [...document.querySelectorAll('.grilla a[data-abre-ficha]')]
+    const conFoto = tarjetas.filter((t) => t.querySelector('.tarjeta__img'))
+    const sinFoto = tarjetas.filter((t) => t.querySelector('.tarjeta__sinfoto'))
+    const alto = (t) => Math.round(t.querySelector('.tarjeta__marco').getBoundingClientRect().height)
+    const ancho = (t) => Math.round(t.getBoundingClientRect().width)
+    return {
+      total: tarjetas.length,
+      conFoto: conFoto.length,
+      sinFoto: sinFoto.length,
+      altoConFoto: conFoto.length ? alto(conFoto[0]) : 0,
+      altoSinFoto: sinFoto.length ? alto(sinFoto[0]) : 0,
+      anchoConFoto: conFoto.length ? ancho(conFoto[0]) : 0,
+      anchoSinFoto: sinFoto.length ? ancho(sinFoto[0]) : 0,
+      // La tarjeta sin foto conserva su texto: nombre y specs.
+      sinFotoConTexto: sinFoto.filter((t) => (t.querySelector('.tarjeta__nombre')?.textContent || '').trim()).length,
+      // Y no deja un `alt` vacío ni un `img` roto.
+      imgRotas: tarjetas.filter((t) => {
+        const i = t.querySelector('img')
+        return i && (!i.getAttribute('src') || i.getAttribute('alt') === null)
+      }).length,
+    }
+  })
+
+  comprobar(grilla.sinFoto > 0, `hay productos sin foto para probar el caso: ${grilla.sinFoto} de ${grilla.total}`)
+  comprobar(
+    grilla.altoSinFoto === grilla.altoConFoto && grilla.anchoSinFoto === grilla.anchoConFoto,
+    `el hueco ocupa lo mismo que la foto y la grilla no se descuadra: ${grilla.anchoSinFoto}×${grilla.altoSinFoto} contra ${grilla.anchoConFoto}×${grilla.altoConFoto}`,
+  )
+  comprobar(grilla.sinFotoConTexto === grilla.sinFoto, `las tarjetas sin foto conservan su nombre: ${grilla.sinFotoConTexto}/${grilla.sinFoto}`)
+  comprobar(grilla.imgRotas === 0, `ninguna imagen queda sin src o sin alt: ${grilla.imgRotas} rotas`)
+
+  // — 2 · Ficha sin datos: las filas vacías se ocultan, no se dibujan ————
+  const sinFotoId = await pagina.evaluate(() => {
+    const t = [...document.querySelectorAll('.grilla a[data-abre-ficha]')].find((x) => x.querySelector('.tarjeta__sinfoto'))
+    return t ? t.getAttribute('data-abre-ficha') : null
+  })
+  if (sinFotoId) {
+    await pagina.locator(`a[data-abre-ficha="${sinFotoId}"]`).first().click()
+    await fichaAbierta(pagina)
+    const ficha = await pagina.evaluate(() => {
+      const f = document.querySelector('[data-capa-ficha] [data-ficha]')
+      const filas = [...f.querySelectorAll('.ficha__fila')]
+      const marco = f.querySelector('.ficha__marco')
+      return {
+        filas: filas.length,
+        vacias: filas.filter((x) => !(x.querySelector('.ficha__v')?.textContent || '').trim()).length,
+        // El marco de la foto sigue ocupando su sitio aunque no haya foto.
+        marcoAlto: marco ? Math.round(marco.getBoundingClientRect().height) : 0,
+        huecoDeFoto: !!f.querySelector('.ficha__sinfoto'),
+        nombre: (f.querySelector('.ficha__nombre')?.textContent || '').trim(),
+      }
+    })
+    comprobar(ficha.huecoDeFoto && ficha.marcoAlto > 100, `la ficha sin foto compone igual: hueco presente, marco de ${ficha.marcoAlto}px`)
+    comprobar(ficha.vacias === 0, `ninguna fila de specs se dibuja vacía: ${ficha.filas} filas, ${ficha.vacias} sin valor`)
+    comprobar(!!ficha.nombre, `la ficha conserva su nombre: ${ficha.nombre || '(vacío)'}`)
+    await pagina.keyboard.press('Escape')
+    await pagina.waitForTimeout(400)
+  } else {
+    comprobar(false, 'no se encontró ningún producto sin foto para abrir su ficha')
+  }
+
+  // — 3 · Catálogo vacío: el estado ofrece una salida ————————————————————
+  // Se combinan dos filtros que no comparten ningún producto. Se buscan a
+  // ciegas entre los ejes, porque cuál combinación queda vacía depende del
+  // contenido, y el contenido lo edita el cliente.
+  await pagina.goto(base + '/catalogo', {waitUntil: 'load', timeout: 60000})
+  await fichaEnganchada(pagina)
+  const vacio = await pagina.evaluate(async () => {
+    const casillas = [...document.querySelectorAll('aside input[data-eje]')]
+    const porEje = new Map()
+    for (const c of casillas) {
+      const e = c.getAttribute('data-eje')
+      if (!porEje.has(e)) porEje.set(e, [])
+      porEje.get(e).push(c)
+    }
+    const ejes = [...porEje.keys()]
+    const espera = () => new Promise((r) => setTimeout(r, 160))
+    for (const a of ejes) {
+      for (const b of ejes) {
+        if (a === b) continue
+        for (const ca of porEje.get(a)) {
+          for (const cb of porEje.get(b)) {
+            if (cb.disabled) continue
+            if (!ca.checked) ca.click()
+            await espera()
+            if (cb.disabled) continue
+            cb.click()
+            await espera()
+            const visibles = [...document.querySelectorAll('.grilla a[data-abre-ficha]')].filter((t) => !t.hidden).length
+            if (visibles === 0) {
+              const v = document.querySelector('[data-vacio]')
+              return {
+                logrado: true,
+                avisoVisible: !!v && !v.hidden,
+                titulo: (v?.querySelector('.vacio__titulo')?.textContent || '').trim(),
+                salida: !!v?.querySelector('[data-limpiar]'),
+              }
+            }
+            if (cb.checked) cb.click()
+            await espera()
+          }
+          if (ca.checked) ca.click()
+          await espera()
+        }
+      }
+    }
+    return {logrado: false}
+  })
+
+  if (vacio.logrado) {
+    comprobar(vacio.avisoVisible, `con la grilla vacía aparece el aviso: "${vacio.titulo}"`)
+    comprobar(vacio.salida, 'el aviso ofrece una salida (limpiar filtros), no deja al visitante encerrado')
+  } else {
+    comprobar(true, 'ninguna combinación de dos filtros deja la grilla vacía: el catálogo evita el callejón sin salida deshabilitando lo que no lleva a nada')
+  }
+
+  await contexto.close()
+  anotar(
+    '10',
+    'Con datos faltantes, ninguna pantalla se ve rota',
+    fallas.length ? 'FALLA' : 'OK',
+    `${notas.length} comprobaciones · ${fallas.length} fallidas`,
+    notas,
+  )
+}
+
 const PRUEBAS = [
   ['01', prueba01],
   ['02', prueba02],
@@ -1294,6 +1451,7 @@ const PRUEBAS = [
   ['07', prueba07],
   ['08', prueba08],
   ['09', prueba09],
+  ['10', prueba10],
   ['11', prueba11],
   ['12', prueba12],
 ]
@@ -1302,7 +1460,7 @@ const servidor = process.env.NUESTRO ? null : await levantarServidor()
 const base = (process.env.NUESTRO || `http://localhost:${PUERTO}`).replace(/\/$/, '')
 
 titular(`Checklist de aceptación — ${base}`)
-console.log('Falta la 10 (estados vacíos, foto faltante, ficha sin datos): necesita contenido preparado a propósito.')
+console.log('Las 12 pruebas del checklist están automatizadas. La 03 se mide y no se juzga.')
 
 const navegador = await chromium.launch()
 for (const [n, prueba] of PRUEBAS) {

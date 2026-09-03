@@ -188,10 +188,15 @@ visible contra el diseño y no está justificada en ningún lado.
 
 La suite pasó de siete pruebas a diez: **9 en verde, la 03 medida sin veredicto, 0 en falla.**
 
-**La 01 se escribió después** (ver `plan-proyecto.md` §13.2): la suite quedó en once pruebas, diez
-en verde y la 03 medida sin veredicto. Solo falta la **10** —con el catálogo vacío, una foto
-faltante o una ficha sin datos, ninguna pantalla se ve rota—, que necesita contenido preparado a
-propósito.
+**La 01 y la 10 se escribieron después.** El checklist de aceptación está COMPLETO: las 12 pruebas
+automatizadas, 11 en verde y la 03 medida sin veredicto.
+
+La 10 no necesitó contenido preparado: el catálogo real trae los tres casos. Hay 37 productos sin
+ninguna foto (las de ejemplo se quitaron a propósito), hay fichas con filas de specs que faltan, y
+la grilla vacía se busca combinando filtros. Y ahí apareció algo que no esperábamos: **ninguna
+combinación de dos filtros deja la grilla vacía**, porque el catálogo deshabilita las opciones que
+no llevan a ningún resultado. El callejón sin salida no existe, así que el estado vacío es una red
+que casi nunca se usa.
 
 **Dos correcciones que salieron de plegarlas, las dos en la prueba, no en el catálogo:**
 

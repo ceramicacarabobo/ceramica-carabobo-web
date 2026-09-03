@@ -92,9 +92,8 @@ const hayMegamenu = materias.length >= 4
           <div class="megamenu__indice">
             <p class="overline megamenu__titulo">Catálogo</p>
             {
-              /* El prototipo (panel taxonómico, `index.html`) lleva estos cuatro
-                 enlaces —y los dos que no reproducimos, "Por tipo" y "Ficha
-                 técnica"— al catálogo general SIN filtrar: los seis repiten el
+              /* El prototipo (panel taxonómico, `index.html`) lleva sus SEIS
+                 enlaces al catálogo general SIN filtrar: todos repiten el
                  mismo `href="catalogo-c5.dc.html"`. No filtran nada porque no hay
                  un único valor de eje que represente "por uso" o "acabados"
                  (son categorías, no valores); el `#uso`/`#formato`/`#brillo`
@@ -111,10 +110,16 @@ const hayMegamenu = materias.length >= 4
                 <a href="/catalogo">Por uso</a>
               </li>
               <li>
+                <a href="/catalogo">Por tipo</a>
+              </li>
+              <li>
                 <a href="/catalogo">Formatos</a>
               </li>
               <li>
                 <a href="/catalogo">Acabados</a>
+              </li>
+              <li>
+                <a href="/catalogo">Ficha técnica</a>
               </li>
             </ul>
           </div>
