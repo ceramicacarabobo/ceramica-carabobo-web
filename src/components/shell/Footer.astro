@@ -56,9 +56,17 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
 </footer>
 
 <style>
+  /* El pie va sobre NEUTRO CÁLIDO, no sobre #2E2E2E. Lo dice la regla de la
+     propuesta A —"brand como acento, nunca como superficie de sección; cierres
+     y footer sobre neutro cálido; #2E2E2E tampoco es fondo de sección salvo
+     debajo de imagery, p.ej. hero"— y lo confirma el prototipo, cuyo <footer>
+     declara `background:#F5F3F0; border-top:1px solid #D9D9D9`.
+     Estaba invertido: fondo oscuro con el juego de tokens `on-dark`. Los seis
+     colores del prototipo ya existían como tokens; no se inventó ninguno. */
   .pie {
-    background: var(--color-surface-inverse);
-    color: var(--color-text-on-dark);
+    background: var(--color-surface-base);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+    color: var(--color-text-secondary);
     padding: var(--space-section) var(--space-gutter-page) var(--space-10);
     padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
   }
@@ -76,18 +84,18 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
 
   .pie__lockup {
     display: inline-flex;
-    color: var(--color-neutral-0);
+    color: var(--color-brand-900);
   }
 
   .pie__texto {
     margin-top: var(--space-6);
     max-width: 52ch;
     font: var(--text-body-15);
-    color: var(--color-text-on-dark-secondary);
+    color: var(--color-text-muted);
   }
 
   .pie__titulo {
-    color: var(--color-text-on-dark-secondary);
+    color: var(--color-text-muted);
     margin-bottom: var(--space-4);
   }
 
@@ -100,23 +108,23 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
     display: flex;
     align-items: center;
     min-height: 44px;
-    color: var(--color-text-on-dark);
+    color: var(--color-text-secondary);
     font: var(--text-body-base);
   }
 
   .pie__dato {
-    color: var(--color-text-on-dark-secondary);
+    color: var(--color-text-muted);
   }
 
   .pie__enlace:hover {
-    color: var(--color-text-link-on-dark);
+    color: var(--color-text-link);
   }
 
   .pie__legal {
     margin-top: var(--space-16);
     padding-top: var(--space-6);
-    border-top: var(--border-width) solid var(--color-border-on-dark);
-    color: var(--color-text-on-dark-secondary);
+    border-top: var(--border-width) solid var(--color-border-hairline);
+    color: var(--color-text-muted);
     font: var(--text-caption);
   }
 

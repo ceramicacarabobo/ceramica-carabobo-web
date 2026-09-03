@@ -34,6 +34,19 @@ const {variante = 'horizontal', class: clase} = Astro.props
     gap: 8px;
   }
 
+  /* El wordmark tiene proporción 3.17 y su caja apilada pide 6.6 (132×20), así
+     que `contain` lo ajusta al ALTO y lo deja de ~63px de ancho. Centrado, eso
+     son 34px de aire a la izquierda y las letras se ven corridas respecto al
+     isotipo, que sí llena su caja. Se alinea a la izquierda para que los dos
+     compartan el borde.
+     Es un defecto del handoff, no nuestro: el prototipo trae la misma caja y el
+     mismo `center`, y se ve igual de descuadrado. La variante horizontal no lo
+     sufre porque su caja (86×27 = 3.185) sí coincide con el asset. */
+  .lockup--apilada .lockup__wordmark {
+    -webkit-mask-position: left center;
+    mask-position: left center;
+  }
+
   .lockup__iso,
   .lockup__wordmark {
     display: block;
