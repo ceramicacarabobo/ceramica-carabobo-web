@@ -261,3 +261,37 @@ dirección `#estado=…`, y el filtro no los alcanza) y el orden tolera nulos.
 enlace. Los buscadores no lo indexan —`robots.txt` con `Disallow: /` y `noindex, nofollow`,
 verificados— pero cualquiera con la dirección entra, y se acepta a propósito. El admin sigue
 protegido por el inicio de sesión de Sanity, que es lo que importa para editar.
+
+## 15. Registro de ejecución — las fotos del home (2026-09-03)
+
+El catálogo quedó sin una sola foto de ejemplo; el home se revisó con el mismo criterio, y ahí el
+schema **no tiene marca `esEjemplo`**, así que no se podía saber por el dato cuál era prestada. Se
+resolvió por procedencia: comprobar si la foto del home **es la misma que una foto real de su
+producto**. De las 15 fichas de Ambientes, 10 lo eran; 5 no venían de ningún producto.
+
+1. **Las pestañas de Ambientes son por espacio** (Baños, Salas, Cocinas, Exteriores), así que la
+   foto tiene que coincidir con la pestaña, no solo con el producto. Al aplicarlo, 3 de las 5 se
+   pudieron reemplazar con un ambiente real del propio producto y del espacio correcto (Cubiro Gris
+   → baño, Samán Gris → sala, Catatumbo → el patio de 5060px). Las otras dos no tenían foto de su
+   espacio, así que **se cambió el producto de la casilla**, que es una decisión editorial y no
+   técnica: entra Livorno Avorio en Baños y Gran Sabana en Exteriores. Sin esto se habría puesto una
+   habitación en la pestaña de Baños y un comedor en la de Exteriores.
+2. **Los `alt` nombran el espacio.** Los diez que venían del PDF decían "Ambiente con X" y ahora
+   dicen "Baño con X", "Cocina con X". El dato estaba en la pestaña y se perdía para quien usa
+   lector de pantalla.
+3. **Efecto de fondo: el home ya no es solo Serie Venezuela.** Las 15 fichas lo eran; ahora entran
+   dos de la Regular. El home muestra el portafolio, no una serie, así que es correcto — pero es un
+   cambio de criterio que conviene saber.
+4. **El hero NO se toca** (decisión del usuario). Sus tres capas usan productos de la Serie
+   Venezuela, justo donde las fotos nuevas del cliente son de MENOR resolución que las que ya
+   había: sustituirlas empeoraría lo primero que se ve. Quedan a la espera de que el cliente
+   entregue esas tres en alta y horizontales.
+5. **Historia queda pendiente** (decisión del usuario). Sus cinco imágenes son de ejemplo y ninguna
+   viene de un producto. Solo dos hitos admiten sustituto honesto —2015 "Gran formato", porque el
+   texto habla de 60×120 y tenemos ambientes de ese formato, y 2026 "El portafolio hoy"—. Los de
+   1978 y 1996 hablan de hornos de rodillos y líneas de producción: poner una baldosa ahí engañaría
+   en vez de ilustrar. Son material de fábrica que solo tiene el cliente.
+6. **Encuéntranos NO era una foto prestada**: sale de Adícora Beige. Lo que estaba mal era su texto
+   alternativo, que decía "Ambiente con porcelanato de la red de distribuidores" cuando no es la
+   sala de exhibición de ningún distribuidor. Corregido a "Ambiente con Adícora Beige". Lo que falta
+   ahí sigue siendo lo que ya anotaba el diseño: una foto de tienda real.
