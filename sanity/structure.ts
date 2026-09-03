@@ -2,6 +2,21 @@ import type {StructureResolver} from 'sanity/structure'
 import {SINGLETONS} from './schemas'
 import {ESTADOS} from './lib/listas'
 
+/**
+ * Id seguro para los nodos del menú: Sanity NO admite tildes ni espacios ahí, y
+ * los nombres de estado los traen ("Anzoátegui", "Nueva Esparta"). Usar el
+ * nombre tal cual rompía el Studio entero con "Structure node id cannot contain
+ * character á" — el error se lanza al construir el árbol, así que no falla solo
+ * esa rama: no carga ninguna.
+ */
+const idSeguro = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
 const TITULOS: Record<string, string> = {
   home: 'Home',
   catalogo: 'Catálogo',
@@ -66,7 +81,7 @@ export const structure: StructureResolver = (S) =>
                       ['Regular', 'Venezuela'].map((serie) =>
                         S.listItem()
                           .title(serie)
-                          .id(`serie-${serie}`)
+                          .id(`serie-${idSeguro(serie)}`)
                           .child(
                             S.documentTypeList('producto')
                               .title(`Serie ${serie}`)
@@ -127,7 +142,7 @@ export const structure: StructureResolver = (S) =>
                       ESTADOS.map((estado) =>
                         S.listItem()
                           .title(estado)
-                          .id(`estado-${estado}`)
+                          .id(`estado-${idSeguro(estado)}`)
                           .child(
                             S.documentTypeList('distribuidor')
                               .title(estado)
