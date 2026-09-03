@@ -122,10 +122,24 @@ for (const f of inventario) {
   if (!porProducto.has(k)) porProducto.set(k, [])
   porProducto.get(k).push(f)
 }
-// La tarjeta del catálogo usa la PRIMERA foto: va un ambiente, que es lo que
-// vende. Dentro de cada grupo, la de mayor resolución primero.
+/**
+ * ORDEN: una macro primero, después los ambientes, y al final las macros que
+ * sobren. Lo manda `modelo-de-contenido.md` ("foto 1 = macro de la baldosa;
+ * 2+ = ambientes") y tiene su razón: la ficha muestra solo las CUATRO
+ * primeras, y en una grilla de 126 tarjetas pequeñas la macro deja ver el
+ * material mientras el ambiente se vuelve una foto de decoración donde el
+ * producto casi no se distingue.
+ *
+ * Con este orden los cuatro huecos quedan en 1 macro + 3 ambientes: ningún
+ * ambiente se pierde y lo que cae fuera son macros casi idénticas entre sí —
+ * hay productos que trajeron hasta cinco de la misma baldosa.
+ */
 for (const [, fs] of porProducto) {
-  fs.sort((a, b) => (a.tipo === b.tipo ? b.w - a.w : a.tipo === 'ambiente' ? -1 : 1))
+  const porAncho = (a, b) => b.w - a.w
+  const macros = fs.filter((f) => f.tipo === 'pieza').sort(porAncho)
+  const ambientes = fs.filter((f) => f.tipo !== 'pieza').sort(porAncho)
+  fs.length = 0
+  fs.push(...macros.slice(0, 1), ...ambientes, ...macros.slice(1))
 }
 
 const ambienteDe = (f) => {
