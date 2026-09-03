@@ -44,7 +44,7 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
           <li><a class="pie__enlace" href={`tel:${telefonoEnlace}`}>{ajustes.telefono}</a></li>
         )}
         {ajustes.correo && (
-          <li><a class="pie__enlace" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>
+          <li><a class="pie__enlace pie__enlace--correo" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>
         )}
       </ul>
     </div>
@@ -117,6 +117,13 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
   }
 
   .pie__enlace:hover {
+    color: var(--color-text-link);
+  }
+
+  /* El correo va en vinotinto SIEMPRE, no solo al pasar el cursor: es el único
+     elemento del pie que el prototipo pinta con el color de marca, y encaja con
+     la regla de "brand como acento". Sin esto el pie no tiene ningún acento. */
+  .pie__enlace--correo {
     color: var(--color-text-link);
   }
 
