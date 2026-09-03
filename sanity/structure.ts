@@ -76,6 +76,7 @@ export const structure: StructureResolver = (S) =>
                 .id('producto-serie')
                 .child(
                   S.list()
+                    .id('lista-por-serie')
                     .title('Por serie')
                     .items(
                       ['Regular', 'Venezuela'].map((serie) =>
@@ -84,6 +85,7 @@ export const structure: StructureResolver = (S) =>
                           .id(`serie-${idSeguro(serie)}`)
                           .child(
                             S.documentTypeList('producto')
+                              .id(`lista-serie-${idSeguro(serie)}`)
                               .title(`Serie ${serie}`)
                               .filter('_type == "producto" && serie == $serie')
                               .params({serie}),
@@ -137,6 +139,7 @@ export const structure: StructureResolver = (S) =>
                 .id('distribuidor-estado')
                 .child(
                   S.list()
+                    .id('lista-por-estado')
                     .title('Por estado')
                     .items(
                       ESTADOS.map((estado) =>
@@ -144,7 +147,10 @@ export const structure: StructureResolver = (S) =>
                           .title(estado)
                           .id(`estado-${idSeguro(estado)}`)
                           .child(
+                            // La hija TAMBIÉN necesita id propio: sin él Sanity lo
+                            // deriva del título, y ahí vuelven las tildes.
                             S.documentTypeList('distribuidor')
+                              .id(`lista-estado-${idSeguro(estado)}`)
                               .title(estado)
                               .filter('_type == "distribuidor" && estado == $estado')
                               .params({estado}),
