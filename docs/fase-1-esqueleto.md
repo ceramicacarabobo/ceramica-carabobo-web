@@ -34,6 +34,19 @@ Verificado en local: `npm run build` (6 páginas, 0 errores), `npm run check` (0
 | Cuenta de Cloudflare | `ad857af1656d828f42c5bc88253e8cd4` |
 | Worker del sitio (QA) | `qa` → https://qa.ceramica-carabobo.workers.dev |
 | Worker de preview | `preview` → https://preview.ceramica-carabobo.workers.dev |
+
+**El preview se conecta a Workers Builds igual que el `qa`, pero con otra configuración** (2026-09-04):
+comando de build `npm run build:preview`, despliegue
+`npx wrangler deploy -c dist/server/wrangler.json --name preview`, y la variable
+`SANITY_API_READ_TOKEN` como **secreto de BUILD** — no como variable del Worker: el token se
+inyecta al compilar (`astro.config.mjs`, `vite.define`), así que en tiempo de ejecución ya está
+dentro del bundle. Si se pone en el sitio equivocado, el preview se despliega sin borradores y sin
+click-to-edit, **sin dar ningún error**.
+
+Cloudflare avisa de que `wrangler.jsonc` dice `"name": "qa"` y ofrece un PR para cambiarlo a
+`"preview"`. **Ese PR NO se fusiona**: el archivo es compartido por los dos workers y renombrarlo
+rompería el despliegue del `qa`, que es el que ve el cliente. El `--name preview` del comando ya
+manda sobre el archivo.
 | Orígenes CORS con credenciales | `localhost:4321`, worker de producción, worker de preview |
 | Token de lectura | etiqueta `preview-visual-editing`, rol *viewer* (guardado solo en `.env`) |
 
