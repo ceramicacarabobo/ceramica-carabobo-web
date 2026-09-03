@@ -42,7 +42,7 @@
  * el del archivo. Si mañana se sube el techo de resolución, se regenera sin
  * volver a pedirle nada al cliente.
  */
-import {readFileSync} from 'node:fs'
+import {readFileSync, existsSync} from 'node:fs'
 import {basename} from 'node:path'
 
 const INVENTARIO = '/root/fotos-cliente/inventario.json'
@@ -141,7 +141,9 @@ const ambienteDe = (f) => {
   return ''
 }
 const altBase = (f, nombre) => {
-  if (f.tipo === 'macro') return `Detalle de la baldosa ${nombre}`
+  // El inventario dice `pieza`; `macro` es el nombre que usa el CMS. Comparar
+  // contra el del CMS acá dejaba todas las macros con el alt de ambiente.
+  if (f.tipo === 'pieza') return `Detalle de la baldosa ${nombre}`
   const a = ambienteDe(f)
   return a ? `${a} con ${nombre}` : `Ambiente con ${nombre}`
 }
@@ -212,6 +214,20 @@ if (ENSAYO) {
 }
 
 // --- Ejecutar --------------------------------------------------------------
+// Se comprueba que TODO el material exista antes de subir el primer archivo.
+// Una ruta muerta a mitad de camino dejaba medio lote subido y ningún producto
+// actualizado: es peor que no empezar. Pasó con una foto renombrada a mano cuyo
+// nombre viejo seguía en el inventario.
+const faltantes = [...new Set(cargar.flatMap((c) => c.nuevas.map((f) => f.rel)))].filter(
+  (rel) => !existsSync(`${RAIZ}/${rel}`),
+)
+if (faltantes.length) {
+  console.error(`\n${faltantes.length} archivos del inventario no existen en el disco:`)
+  for (const f of faltantes.slice(0, 10)) console.error(`   ${f}`)
+  console.error('\nActualizá el inventario antes de cargar. No se subió nada.')
+  process.exit(1)
+}
+
 // Un archivo puede servir a dos productos (los 13 diseños con dos formatos):
 // se sube UNA vez y se referencia las veces que haga falta.
 const assets = new Map()
