@@ -35,6 +35,32 @@ Verificado en local: `npm run build` (6 páginas, 0 errores), `npm run check` (0
 | Worker del sitio (QA) | `qa` → https://qa.ceramica-carabobo.workers.dev |
 | Worker de preview | `preview` → https://preview.ceramica-carabobo.workers.dev |
 
+**Si el build sale verde pero el despliegue falla** (2026-09-04). Workers Builds separa las dos
+etapas y el panel las junta bajo un mismo "latest build failed", así que el rótulo engaña. Pasó con
+un `504 Gateway Timeout` de la propia API de Cloudflare en el paso de subida:
+
+```
+[build] 132 page(s) built in 1m 33s
+Success: Build command completed
+Executing user deploy command: npx wrangler deploy…
+✘ ERROR: Received a malformed response from the API
+  GET /accounts/…/workers/services/qa -> 504 Gateway Timeout
+```
+
+No es del repositorio ni de recursos. Se resuelve desplegando el artefacto ya construido a mano:
+
+```
+npm run build && npx wrangler deploy -c dist/client/wrangler.json
+```
+
+Y **antes de diagnosticar, leer el log del build en el panel**: el mensaje que muestra la lista de
+builds es el TÍTULO DEL COMMIT, no el error. Confundirlos cuesta un rato de hipótesis inútiles.
+
+**El caché de build de Cloudflare está activo desde el 2026-09-03** y el efecto es grande: el build
+pasó de 35 minutos a **1m 33s** con las 2.211 imágenes en `reused cache entry`. Con eso se cumple la
+expectativa de "publicar tarda 2 a 4 minutos" que se le comunicó al cliente, ya con el catálogo
+completo cargado.
+
 **El preview se conecta a Workers Builds igual que el `qa`, pero con otra configuración** (2026-09-04):
 comando de build `npm run build:preview`, despliegue
 `npx wrangler deploy -c dist/server/wrangler.json --name preview`, y la variable
