@@ -1260,7 +1260,10 @@ async function prueba07(navegador, base) {
     comprobar(limpiar(enPagina) === limpiar(enOverlay), 'el overlay muestra la misma ficha que la página propia')
 
     const ancho = await pagina.locator('.capa-ficha__caja').evaluate((el) => el.getBoundingClientRect().width)
-    comprobar(Math.round(ancho) === 880, `el diálogo de escritorio mide 880px: ${Math.round(ancho)}px`)
+    // 882 = los 880px de contenido que declara el diseño MÁS su filete de 1px a
+    // cada lado. La cifra estaba en 880 porque nuestro diálogo no tenía borde;
+    // se le puso en la tanda 2 de la auditoría de estados (plan-proyecto §20).
+    comprobar(Math.round(ancho) === 882, `el diálogo de escritorio mide 882px (880 + filete): ${Math.round(ancho)}px`)
 
     await pagina.mouse.click(8, 8)
     await pagina.waitForTimeout(500)

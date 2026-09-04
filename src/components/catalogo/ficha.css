@@ -589,7 +589,12 @@
   .capa-ficha__caja {
     inset: auto;
     position: relative;
-    width: min(100%, 880px);
+    /* El diálogo lleva su filete alrededor: sin él la caja blanca flotaba sin
+       borde contra el velo. El prototipo declara 880px de CONTENIDO más 1px de
+       borde a cada lado; acá la caja es border-box, así que los 882 se piden
+       enteros — con `min(100%, …)` no puede desbordar en pantallas angostas. */
+    width: min(100%, 882px);
+    border: var(--border-width) solid var(--color-border-hairline);
     max-height: 88dvh;
     margin: auto;
     overflow-y: auto;

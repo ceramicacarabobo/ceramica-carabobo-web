@@ -647,9 +647,22 @@ tolerancias declaradas. Levanta los dos servidores solo. Hoy: **26 comprobacione
 
 Es lo que faltaba en el arnés y la razón por la que nada de esto saltó antes.
 
-### Pendiente: tanda 2
+### Tanda 2 (aplicada)
 
-Filete entre filas de Encuéntranos (`#E4E1DC`, hoy `#ECE9E4`) y el panel de ficha del catálogo
-(880 contra 882px, `box-sizing` del borde). Decidido dejar unificado el alto de cabecera de las
-páginas internas (85px), contra los 63/56/56 del prototipo: una sola cáscara es condición del
-proyecto y el prototipo tiene un archivo por página.
+- **Filete entre filas de Encuéntranos**: `#E4E1DC` literal y marcado. Estaba
+  `--color-surface-sunken` (`#ECE9E4`), un token de SUPERFICIE usado como color de borde — el mismo
+  antipatrón nº1, elegido por parecido de valor y no por su papel. La primera fila ya coincidía
+  (`--color-border-hairline`).
+- **Diálogo de ficha del catálogo**: le faltaba el filete. El prototipo lo declara
+  `border: 1px solid #D9D9D9` alrededor de 880px de contenido; nuestra caja blanca flotaba sin
+  borde contra el velo. Con el filete puesto mide los 882px del prototipo. Se pidieron enteros
+  (`min(100%, 882px)` en border-box) en vez de usar `content-box`, que a anchos justos habría
+  desbordado 2px; comprobado a 800px: cero desborde.
+  **La prueba 07 del checklist afirmaba 880px** — el número que teníamos nosotros, no el del
+  diseño. Se corrigió a 882 con la explicación al lado.
+
+Decidido por el usuario: el alto de cabecera de las páginas internas queda **unificado en 85px**,
+contra los 63/56/56 del prototipo. Una sola cáscara es condición del proyecto y el prototipo tiene
+un archivo por página, así que lo más probable es que sea artefacto de la herramienta.
+
+`estados.mjs` cubre ahora las dos: **30 comprobaciones, 0 en falla**.

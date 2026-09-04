@@ -192,6 +192,42 @@ const COMPROBACIONES = [
       },
     },
   },
+  {
+    nombre: 'encuéntranos · filete entre filas',
+    ancho: 1440,
+    medir: {
+      proto: () => {
+        const filas = [...document.querySelectorAll('[data-enc-fila]')]
+        return {primera: getComputedStyle(filas[0]).borderTopColor, resto: getComputedStyle(filas[1]).borderTopColor}
+      },
+      nuestro: () => {
+        const filas = [...document.querySelectorAll('.fila')]
+        return {primera: getComputedStyle(filas[0]).borderTopColor, resto: getComputedStyle(filas[1]).borderTopColor}
+      },
+    },
+  },
+  {
+    nombre: 'catálogo · diálogo de ficha',
+    ancho: 1440,
+    pagina: {proto: '/catalogo-c5.dc.html', nuestro: '/catalogo'},
+    preparar: async (pagina, proto) => {
+      await pagina.locator(proto ? '[data-card]' : '[data-abre-ficha]').first().click()
+      await pagina.waitForTimeout(1000)
+    },
+    medir: {
+      proto: () => {
+        // El borde lo lleva el propio [role=dialog]; sus hijos son las dos columnas.
+        const d = document.querySelector('[role="dialog"]')
+        const cs = getComputedStyle(d)
+        return {ancho: Math.round(d.getBoundingClientRect().width), borde: `${cs.borderTopWidth} ${cs.borderTopColor}`}
+      },
+      nuestro: () => {
+        const d = document.querySelector('.capa-ficha__caja')
+        const cs = getComputedStyle(d)
+        return {ancho: Math.round(d.getBoundingClientRect().width), borde: `${cs.borderTopWidth} ${cs.borderTopColor}`}
+      },
+    },
+  },
   /**
    * El pie. A 390 NO se compara el alto total y es a propósito: nuestros
    * enlaces miden 44px de área tocable —lo exige la prueba 11 del checklist de
@@ -250,7 +286,12 @@ async function correr(comprobacion, proto) {
     hasTouch: comprobacion.ancho < 760,
   })
   const pagina = await contexto.newPage()
-  await pagina.goto(proto ? URL_PROTO : URL_NUESTRO, {waitUntil: proto ? 'networkidle' : 'load', timeout: 60000})
+  const url = comprobacion.pagina
+    ? `http://localhost:${proto ? PUERTO_PROTO : PUERTO_NUESTRO}${proto ? comprobacion.pagina.proto : comprobacion.pagina.nuestro}`
+    : proto
+      ? URL_PROTO
+      : URL_NUESTRO
+  await pagina.goto(url, {waitUntil: proto ? 'networkidle' : 'load', timeout: 60000})
   await pagina.waitForTimeout(proto ? 3400 : 700)
   await asentar(pagina)
   if (comprobacion.preparar) await comprobacion.preparar(pagina, proto)

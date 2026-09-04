@@ -237,7 +237,11 @@ const panelCtaBase = 'Dónde comprar'
     padding: 16px 0 16px 12px;
     background: transparent;
     border: 0;
-    border-top: var(--border-width) solid var(--color-surface-sunken);
+    /* `#E4E1DC` va literal: es el separador entre filas del prototipo y no tiene
+       token propio (el de la primera fila sí: `--color-border-hairline`).
+       Estaba `--color-surface-sunken`, que es un token de SUPERFICIE usado como
+       color de borde — se eligió por parecido de valor y no por su papel. */
+    border-top: var(--border-width) solid #e4e1dc;
     border-left: 2px solid transparent;
     cursor: pointer;
     text-align: left;
