@@ -84,6 +84,16 @@ export interface HeroCapa {
   imagen?: Imagen
 }
 
+/** Un lado del comparador: lo del producto se lee, la foto de ambiente se carga por par. */
+export interface LadoComparado {
+  nombre?: string
+  slug?: string
+  /** "60×60 · Mate", compuesta con formato y brillo del producto. */
+  spec?: string
+  macro?: Imagen
+  ambiente?: Imagen
+}
+
 export interface Home {
   hero: {
     eyebrow?: string
@@ -98,13 +108,35 @@ export interface Home {
     pestanas: {label: string; fichas: {nombre?: string; slug?: string; spec?: string; foto?: Imagen}[]}[]
   }
   cita?: string
+  /**
+   * 02 · Compara. Cada par superpone DOS fotos del mismo ambiente, una por
+   * diseño: por eso las fotos van en el par y no en el producto. El nombre, la
+   * spec y la macro sí se leen del producto (regla del handoff: las
+   * especificaciones no se redactan). Un par al que le falte cualquiera de las
+   * dos fotos no se puede componer y se descarta.
+   */
+  comparador: {
+    etiqueta?: string
+    titulo?: string
+    intro?: string
+    pares: {encima: LadoComparado; base: LadoComparado}[]
+  }
+  /**
+   * Banda de obra: la franja a sangre entre Compara e Historia. Sin macro no
+   * hay banda — la sección desaparece entera.
+   */
+  banda: {nombre?: string; spec?: string; macro?: Imagen}
+  /**
+   * Proyectos ya NO se muestra en el home (tramo v2, 2026-09-04). El dato se
+   * conserva: la sección salió por falta de material de obra, no porque sobre.
+   */
   proyectos: {
     etiqueta?: string
     titulo?: string
     bajada?: string
     obras: {nombre: string; ciudad?: string; credito?: string; diseno?: string; disenoSlug?: string; formato?: string; foto?: Imagen}[]
   }
-  historia: {titulo?: string; hitos: {anio: number; titulo: string; texto?: string; imagen?: Imagen}[]}
+  historia: {etiqueta?: string; titulo?: string; hitos: {anio: number; titulo: string; texto?: string; imagen?: Imagen}[]}
   profesionales: {
     etiqueta?: string
     titulo?: string

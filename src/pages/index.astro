@@ -3,12 +3,20 @@
  * Home. La composición y el orden de las secciones son FIJOS (no editables);
  * el contenido de cada una viene del CMS y cada sección se oculta sola si no
  * llega a su mínimo — regla de contenido defensivo del handoff.
+ *
+ * Tramo central v2 (2026-09-04, `design/handoff-p1-v2/README.md`): 01 Ambientes ·
+ * 02 Compara · 03 Historia · 04 Profesionales · 05 Encuéntranos, con la banda de
+ * obra a sangre entre Compara e Historia. Proyectos salió del home por falta de
+ * material fotográfico de obra; su contenido se conserva en el CMS y el
+ * componente sigue en `components/home/Proyectos.astro` para volver a colgarlo
+ * cuando el material llegue.
  */
 import Base from '~/layouts/Base.astro'
 import Hero from '~/components/home/Hero.astro'
 import Ambientes from '~/components/home/Ambientes.astro'
 import Cita from '~/components/home/Cita.astro'
-import Proyectos from '~/components/home/Proyectos.astro'
+import Compara from '~/components/home/Compara.astro'
+import BandaObra from '~/components/home/BandaObra.astro'
 import Historia from '~/components/home/Historia.astro'
 import Profesionales from '~/components/home/Profesionales.astro'
 import Encuentranos from '~/components/home/Encuentranos.astro'
@@ -24,7 +32,8 @@ const hayHero = Boolean(home.hero.titular || home.hero.videoUrl || home.hero.cap
 
   <Ambientes ambientes={home.ambientes} />
   <Cita cita={home.cita} />
-  <Proyectos proyectos={home.proyectos} />
+  <Compara comparador={home.comparador} />
+  <BandaObra banda={home.banda} />
   <Historia historia={home.historia} />
   <Profesionales profesionales={home.profesionales} />
   <Encuentranos encuentranos={home.encuentranos} distribuidores={distribuidores} />

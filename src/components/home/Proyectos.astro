@@ -17,10 +17,10 @@
  * alternando qué lado lleva la foto.
  *
  * Ojo con el scope de Astro: `Reveal` no reenvía el atributo de scope del
- * padre a su raíz, así que las reglas que caen sobre un elemento producido
- * por `Reveal` (`.proyectos__cabecera`, `.proyectos__obra`) van con
- * `:global()` colgando de `.proyectos`, que sí lleva el scope. Sin esto las
- * grillas no se aplicaban y la sección se veía apilada a ancho completo.
+ * padre a su raíz, así que las reglas que caen sobre la cabecera —que sí es un
+ * `Reveal`— van con `:global()` colgando de `.proyectos`, que lleva el scope.
+ * Sin esto la grilla no se aplicaba y la cabecera se veía apilada a ancho
+ * completo. Las filas ya no pasan por `Reveal` y no lo necesitan.
  *
  * Contenido defensivo: con menos de 2 obras no hay "proyectos" (plural) que
  * mostrar y la sección entera desaparece (modelo-de-contenido.md §1: mínimo
@@ -75,9 +75,11 @@ const obras = proyectos.obras.map((obra, indice) => {
 
       <div class="proyectos__lista">
         {obras.map((obra) => (
-          <Reveal como="article" indice={obra.indice} class={obra.clase}>
+          /* Contenido repetido: la fila entra ya visible y conserva solo el
+             filete que se dibuja; la máscara va en el marco de la foto. */
+          <article class={obra.clase} data-filete>
             {obra.foto && (
-              <div class="proyectos__marco">
+              <div class="proyectos__marco" data-mascara>
                 <Imagen
                   imagen={obra.foto}
                   ratio="16 / 9"
@@ -115,7 +117,7 @@ const obras = proyectos.obras.map((obra, indice) => {
                 )}
               </dl>
             </div>
-          </Reveal>
+          </article>
         ))}
       </div>
     </Seccion>
@@ -173,17 +175,19 @@ const obras = proyectos.obras.map((obra, indice) => {
     gap: clamp(40px, 5vw, 72px);
   }
 
-  .proyectos :global(.proyectos__obra) {
+  .proyectos__obra {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: 'imagen' 'datos';
     align-items: start;
     gap: clamp(20px, 3vw, 48px);
     padding-top: clamp(20px, 2.5vw, 32px);
-    border-top: var(--border-width) solid var(--color-border-hairline);
+    /* El filete NO es un `border-top`: se dibuja de izquierda a derecha al
+       entrar la fila (`data-filete`, en `theme/base.css`), y un borde no se
+       puede animar así. Mismo grosor y mismo color. */
   }
 
-  .proyectos :global(.proyectos__obra--sin-foto) {
+  .proyectos__obra--sin-foto {
     grid-template-areas: 'datos';
   }
 
@@ -253,17 +257,17 @@ const obras = proyectos.obras.map((obra, indice) => {
       grid-template-columns: 1fr 44ch;
     }
 
-    .proyectos :global(.proyectos__obra) {
+    .proyectos__obra {
       grid-template-columns: 1.6fr 1fr;
       grid-template-areas: 'imagen datos';
     }
 
-    .proyectos :global(.proyectos__obra--par) {
+    .proyectos__obra--par {
       grid-template-columns: 1fr 1.6fr;
       grid-template-areas: 'datos imagen';
     }
 
-    .proyectos :global(.proyectos__obra--sin-foto) {
+    .proyectos__obra--sin-foto {
       grid-template-columns: 1fr;
       grid-template-areas: 'datos';
     }

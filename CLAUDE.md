@@ -33,8 +33,9 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - **El prototipo del diseño se ejecuta**: `cd design/publicar && python3 -m http.server 4500`. Es la referencia de fidelidad; se compara con `scripts/qa/diff.mjs` y `scripts/qa/medir.mjs`.
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.
-- **`docs/pendientes.md` es el punto de entrada para retomar**: qué falta, en qué orden y por qué. Lo hecho vive en `plan-proyecto.md` §10-§16.
+- **`docs/pendientes.md` es el punto de entrada para retomar**: qué falta, en qué orden y por qué. Lo hecho vive en `plan-proyecto.md` §10-§19.
 - El **preview se retiró** (§16): se pasa del límite de CPU del plan gratuito. El Studio ya no trae Presentation Tool.
+- **Tramo central del home rehecho (Propuesta 1 v2, 2026-09-04)**: sale Proyectos, entra 02 · Compara (comparador de arrastre), entra la banda de obra a sangre y Historia pasa de scroll anclado a riel de miniaturas. Renumeración 01-05. Referencia: `design/handoff-p1-v2/README.md` y `design/publicar/Propuesta 1 v2.dc.html` (la v1 sigue vigente para lo que no cambia). Detalle en `plan-proyecto.md` §19.
 - El **caché de build de Cloudflare está activo**: el build pasó de 35 min a 1m33s. Si el panel dice "latest build failed", leer el log: puede ser el DESPLIEGUE y no la construcción — se rescata con `npx wrangler deploy -c dist/client/wrangler.json`.
 
 ## Convenciones del código (Fase 1)

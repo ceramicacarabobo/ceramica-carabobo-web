@@ -46,9 +46,11 @@
  * Proyectos y Encuéntranos, no el de 1024.
  *
  * Ojo con el scope de Astro: `Reveal` no reenvía el atributo de scope del
- * padre a su raíz, así que lo que estiliza sus elementos (`.profesionales__marco`,
- * `.profesionales__texto`) va con `:global()` colgando de `.profesionales`,
- * que sí lo lleva. Sin eso el texto se quedaba sin padding ni centrado.
+ * padre a su raíz, así que lo que estiliza el elemento que produce
+ * (`.profesionales__texto`) va con `:global()` colgando de `.profesionales`,
+ * que sí lo lleva. Sin eso el texto se quedaba sin padding ni centrado. El
+ * marco ya no pasa por `Reveal`, pero conserva `:global()` porque las reglas
+ * que lo nombran alcanzan también a la foto, que la produce `Imagen`.
  *
  * Contenido defensivo: sin título ni texto no hay nada que editorializar y la
  * sección entera se oculta. Sin foto de sección ni portada de video, el bloque
@@ -117,7 +119,8 @@ const etiquetaBoton = video?.titulo
     >
       <div class:list={['profesionales__grid', !hayImagen && 'profesionales__grid--sin-imagen']}>
         {portada && (
-          <Reveal como="div" class="profesionales__marco" data-portada={esPortadaDeVideo ? 'video' : undefined}>
+          /* Contenido repetido: entra ya visible y conserva solo la máscara. */
+          <div class="profesionales__marco" data-mascara data-portada={esPortadaDeVideo ? 'video' : undefined}>
             {
               esPortadaDeVideo && (
                 <div class="profesionales__relleno" aria-hidden="true">
@@ -145,12 +148,12 @@ const etiquetaBoton = video?.titulo
                 {video.etiqueta && <span class="profesionales__videoetiqueta">{video.etiqueta}</span>}
               </button>
             )}
-          </Reveal>
+          </div>
         )}
         <Reveal como="div" indice={hayImagen ? 1 : 0} class="profesionales__texto">
           {profesionales.etiqueta && (
             <p class="profesionales__eyebrow">
-              <span class="profesionales__numero">03</span> · {profesionales.etiqueta}
+              <span class="profesionales__numero">04</span> · {profesionales.etiqueta}
             </p>
           )}
           {profesionales.titulo && (

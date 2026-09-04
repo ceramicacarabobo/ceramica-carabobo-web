@@ -14,15 +14,69 @@
 
    - Entrada del hero: 700ms, curva simétrica, desplazamiento de 10px.
    - Aparición al entrar en pantalla: 660ms, misma curva.
+   - Fundido entre capas del carrusel del hero: 1200ms, misma curva.
    - Respuesta a una acción (pestañas, tiles): 180ms con curva de interfaz.
    --------------------------------------------------------------------------- */
 :root {
   --ease-editorial: cubic-bezier(0.37, 0, 0.63, 1);
   --dur-entrada: 700ms;
   --dur-aparicion: 660ms;
+  --dur-hero-fundido: 1200ms;
   --desplazamiento-entrada: 10px;
+  --retardo-filete: 120ms;
   --dur-respuesta: 180ms;
   --ease-respuesta: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Primitivas de movimiento de entrada.
+
+   El diseño pide TRES capas distintas, cada una con sus propios valores, y no
+   una sola (auditoría de movimiento 2026-09-04). Van como atributos porque las
+   lleva el elemento propio de cada componente, no un envoltorio común:
+
+   - `data-reveal`  fundido + desplazamiento. SOLO los cinco encabezados de
+                    apertura del home (`revealsAlcance: intermedio` del
+                    prototipo): lo repetido entra ya visible. Vive en
+                    `base/Reveal.astro`.
+   - `data-mascara` la imagen se descubre de arriba hacia abajo, 660ms.
+                    EXCEPCIÓN declarada a "solo opacity/transform", limitada a
+                    reveals de imagen.
+   - `data-filete`  el hairline se dibuja de izquierda a derecha, 660ms, 120ms
+                    después de la máscara.
+
+   Las tres las abre el mismo observador (el de `base/Reveal.astro`) escribiendo
+   `data-abierta` cuando el elemento entra de verdad en pantalla.
+
+   Arrancan cerradas SOLO con `html[data-movimiento]`, que prende el head de
+   `layouts/Base.astro`: sin JavaScript —o con movimiento reducido— el contenido
+   nace en su estado final y no queda nada recortado ni invisible.
+   --------------------------------------------------------------------------- */
+html[data-movimiento] [data-mascara] {
+  clip-path: inset(0 0 14% 0);
+  transition: clip-path var(--dur-aparicion) var(--ease-editorial);
+}
+
+html[data-movimiento] [data-mascara][data-abierta] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* El filete es un fondo, no un borde: un borde no se puede dibujar de izquierda
+   a derecha. Fuera de la bandera queda pintado entero, que es el estado final. */
+[data-filete] {
+  background-image: linear-gradient(var(--color-border-hairline), var(--color-border-hairline));
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 100% var(--border-width);
+}
+
+html[data-movimiento] [data-filete] {
+  background-size: 0 var(--border-width);
+  transition: background-size var(--dur-aparicion) var(--ease-editorial) var(--retardo-filete);
+}
+
+html[data-movimiento] [data-filete][data-abierta] {
+  background-size: 100% var(--border-width);
 }
 
 /* ---------------------------------------------------------------------------

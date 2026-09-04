@@ -96,7 +96,7 @@ const panelCtaBase = 'Dónde comprar'
       <Reveal como="div" class="encuentranos__cabecera">
         {encuentranos.etiqueta && (
           <p class="encuentranos__eyebrow">
-            <span class="encuentranos__numero">04</span> · {encuentranos.etiqueta}
+            <span class="encuentranos__numero">05</span> · {encuentranos.etiqueta}
           </p>
         )}
         {encuentranos.titulo && (
@@ -133,40 +133,40 @@ const panelCtaBase = 'Dónde comprar'
             ))}
           </ul>
 
-          <Reveal como="div" indice={1} class="encuentranos__panel-envoltorio">
-            <div class="panel">
-              {encuentranos.foto && (
-                <Imagen
-                  imagen={encuentranos.foto}
-                  class="panel__foto"
-                  sizes="(min-width: 760px) 45vw, 100vw"
-                  ancho={1200}
-                />
-              )}
-              <div class="panel__cuerpo" data-panel aria-live="polite">
-                <p class="panel__etiqueta" data-panel-etiqueta>
-                  {panelEtiquetaBase}
-                </p>
-                <p class="panel__titulo" data-panel-titulo>
-                  {panelTituloBase}
-                </p>
-                <div class="panel__dato">
-                  <span class="panel__numero" data-panel-dato>
-                    {panelDatoBase}
-                  </span>
-                  <span class="panel__unidad" data-panel-unidad>
-                    {panelUnidadBase}
-                  </span>
-                </div>
-                <p class="panel__ciudades" data-panel-ciudades>
-                  {panelCiudadesBase}
-                </p>
-                <Boton href="/donde-comprar" class="panel__cta">
-                  <span data-panel-cta>{panelCtaBase}</span>
-                </Boton>
+          {/* Contenido repetido: entra ya visible y conserva solo la máscara.
+              El envoltorio que traía el `Reveal` no tenía estilos propios. */}
+          <div class="panel" data-mascara>
+            {encuentranos.foto && (
+              <Imagen
+                imagen={encuentranos.foto}
+                class="panel__foto"
+                sizes="(min-width: 760px) 45vw, 100vw"
+                ancho={1200}
+              />
+            )}
+            <div class="panel__cuerpo" data-panel aria-live="polite">
+              <p class="panel__etiqueta" data-panel-etiqueta>
+                {panelEtiquetaBase}
+              </p>
+              <p class="panel__titulo" data-panel-titulo>
+                {panelTituloBase}
+              </p>
+              <div class="panel__dato">
+                <span class="panel__numero" data-panel-dato>
+                  {panelDatoBase}
+                </span>
+                <span class="panel__unidad" data-panel-unidad>
+                  {panelUnidadBase}
+                </span>
               </div>
+              <p class="panel__ciudades" data-panel-ciudades>
+                {panelCiudadesBase}
+              </p>
+              <Boton href="/donde-comprar" class="panel__cta">
+                <span data-panel-cta>{panelCtaBase}</span>
+              </Boton>
             </div>
-          </Reveal>
+          </div>
         </div>
       )}
     </Seccion>

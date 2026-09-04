@@ -13,10 +13,11 @@ export default defineType({
   groups: [
     {name: 'hero', title: 'Hero', default: true},
     {name: 'ambientes', title: '01 · Ambientes'},
-    {name: 'proyectos', title: '02 · Proyectos'},
-    {name: 'historia', title: 'Historia'},
-    {name: 'profesionales', title: '03 · Profesionales'},
-    {name: 'encuentranos', title: '04 · Encuéntranos'},
+    {name: 'compara', title: '02 · Compara'},
+    {name: 'historia', title: '03 · Historia'},
+    {name: 'profesionales', title: '04 · Profesionales'},
+    {name: 'encuentranos', title: '05 · Encuéntranos'},
+    {name: 'proyectos', title: 'Proyectos (no se muestra)'},
   ],
   fields: [
     defineField({
@@ -73,9 +74,62 @@ export default defineType({
       fields: [defineField({name: 'texto', title: 'Texto', type: 'text', rows: 2})],
     }),
 
+    /**
+     * Compara — 02. Dos pares de diseños sobre el mismo ambiente, comparables
+     * por arrastre. Con menos de un par la sección entera se oculta.
+     */
+    defineField({
+      name: 'comparador',
+      title: 'Compara',
+      type: 'object',
+      group: 'compara',
+      fields: [
+        defineField({name: 'etiqueta', title: 'Etiqueta', type: 'string', description: 'Ej.: "Compara". Va detrás del numeral 02.'}),
+        defineField({name: 'titulo', title: 'Título', type: 'string'}),
+        defineField({name: 'intro', title: 'Introducción', type: 'text', rows: 2}),
+        defineField({
+          name: 'pares',
+          title: 'Pares',
+          type: 'array',
+          of: [{type: 'comparacion'}],
+          description: 'El diseño usa dos. Sin ninguno, la sección se oculta.',
+          validation: (rule) => rule.max(4).warning('Más de cuatro pares alargan mucho la sección.'),
+        }),
+      ],
+    }),
+
+    /**
+     * Banda de obra — la franja a sangre entre Compara e Historia. Es una
+     * macro de baldosa que se REPITE a lo ancho (no se estira): así se ven las
+     * juntas, que es lo que la hace leer como un piso y no como una textura.
+     * Sin producto no hay banda: la sección desaparece entera.
+     */
+    defineField({
+      name: 'banda',
+      title: 'Banda de obra',
+      type: 'object',
+      group: 'compara',
+      description: 'La franja a sangre entre Compara e Historia.',
+      fields: [
+        defineField({
+          name: 'producto',
+          title: 'Diseño de la banda',
+          type: 'reference',
+          to: [{type: 'producto'}],
+          description: 'Se usa su macro de baldosa. El rótulo (nombre y specs) se lee del producto, no se escribe.',
+        }),
+      ],
+    }),
+
+    /**
+     * Proyectos — FUERA DEL HOME desde el tramo v2 (2026-09-04). El contenido se
+     * conserva a propósito: la sección salió por falta de material fotográfico de
+     * obra, no porque sobre. Si el material llega, se vuelve a colgar sin recargar
+     * nada. Ver `docs/plan-proyecto.md` §19.
+     */
     defineField({
       name: 'proyectos',
-      title: 'Proyectos',
+      title: 'Proyectos (hoy no se muestra en el sitio)',
       type: 'object',
       group: 'proyectos',
       fields: [
@@ -99,6 +153,7 @@ export default defineType({
       type: 'object',
       group: 'historia',
       fields: [
+        defineField({name: 'etiqueta', title: 'Etiqueta', type: 'string', description: 'Ej.: "Historia". Va detrás del numeral 03.'}),
         defineField({name: 'titulo', title: 'Título', type: 'string'}),
         defineField({
           name: 'hitos',

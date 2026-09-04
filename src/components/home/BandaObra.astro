@@ -1,0 +1,163 @@
+---
+/**
+ * Banda de obra — la franja a sangre entre Compara e Historia
+ * (`design/handoff-p1-v2/README.md` §Banda obra).
+ *
+ * Su trabajo es PUNTUAR: cerrar Compara y abrir Historia. Por eso el aire va
+ * desbalanceado a propósito — todo el ritmo arriba, y el padding superior de
+ * Historia baja a la mitad.
+ *
+ * La macro se REPITE a lo ancho, no se estira: la fuente es un cuadrado de unos
+ * 450px y estirada a 1600 queda blanda. Repetida se mantiene nítida y aparecen
+ * las juntas — textura, diseño y formato, que es lo que hace un piso real.
+ *
+ * Va por `background-image` y no por `<img>` porque `repeat-x` no existe para
+ * imágenes: es la única forma de repetir la pieza. Por eso pide la URL
+ * procesada a `astro:assets` a mano en vez de usar `base/Imagen.astro`.
+ *
+ * La capa sobresale 5% arriba y abajo para que el recorrido del parallax no
+ * descubra el borde.
+ *
+ * Contenido defensivo: sin macro no hay banda y la sección desaparece entera.
+ */
+import {getImage} from 'astro:assets'
+import type {Home} from '~/lib/data'
+import {urlOrigen} from '~/lib/imagenes'
+
+interface Props {
+  banda: Home['banda']
+}
+
+const {banda} = Astro.props
+
+// La banda repite una pieza: no necesita más ancho que la pieza misma.
+const macro = banda.macro
+  ? await getImage({src: urlOrigen(banda.macro, 900), width: 900, height: 900, format: 'webp', quality: 78})
+  : null
+
+const rotulo = [banda.nombre, banda.spec].filter(Boolean).join(' · ')
+---
+
+{
+  macro && (
+    <section
+      class="banda"
+      data-mascara
+      data-banda
+      role="img"
+      aria-label={banda.macro?.alt || `Superficie de la baldosa ${rotulo}`}
+    >
+      <span class="banda__superficie" data-parallax aria-hidden="true" style={`background-image: url('${macro.src}')`} />
+      {rotulo && <span class="banda__rotulo">{rotulo}</span>}
+    </section>
+  )
+}
+
+<style>
+  .banda {
+    position: relative;
+    margin-top: var(--space-section);
+    height: clamp(300px, 32vh, 360px);
+    overflow: hidden;
+    background: var(--color-surface-inverse);
+  }
+
+  .banda__superficie {
+    position: absolute;
+    left: 0;
+    /* 110% de alto anclado 5% arriba: el parallax recorre ±4.5% y nunca llega
+       a descubrir el borde de la capa. */
+    top: -5%;
+    width: 100%;
+    height: 110%;
+    display: block;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: center;
+    will-change: transform;
+  }
+
+  .banda__rotulo {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 14px var(--space-gutter-page);
+    background: linear-gradient(0deg, rgba(31, 31, 31, 0.62) 0%, rgba(31, 31, 31, 0) 100%);
+    text-align: right;
+    font: 400 0.75rem/normal var(--font-body);
+    color: var(--color-neutral-0);
+  }
+</style>
+
+<script>
+  /**
+   * Parallax ligero, ±4.5% del alto de la banda. Regla revisada del handoff:
+   * SOLO en banda a sangre, `transform` puro, apagado en móvil y con movimiento
+   * reducido.
+   *
+   * Se coalesce con `requestAnimationFrame`: el scroll dispara muchas más veces
+   * de las que el compositor pinta, y escribir el transform en cada evento es
+   * trabajo tirado. (El prototipo lo escribe directo en el handler porque en su
+   * entorno de previsualización rAF no ejecuta sus callbacks — es fontanería de
+   * ese entorno, no diseño.)
+   */
+  const MOVIL = '(max-width: 759px)'
+  const RECORRIDO = 0.045
+
+  function iniciarParallax() {
+    const capas = [...document.querySelectorAll<HTMLElement>('[data-parallax]')]
+    if (capas.length === 0) return
+
+    const movil = window.matchMedia(MOVIL)
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let pedido = 0
+
+    const pintar = () => {
+      pedido = 0
+      const alto = window.innerHeight
+      capas.forEach((capa) => {
+        const marco = capa.parentElement
+        if (!marco) return
+        const caja = marco.getBoundingClientRect()
+        // Fuera de pantalla no se toca: nadie lo ve y el transform ya quedó
+        // donde el último fotograma visible lo dejó.
+        if (caja.bottom < 0 || caja.top > alto) return
+        const avance = (caja.top + caja.height / 2 - alto / 2) / (alto / 2 + caja.height / 2)
+        capa.style.transform = `translateY(${(avance * -caja.height * RECORRIDO).toFixed(1)}px)`
+      })
+    }
+
+    const apagar = () => capas.forEach((capa) => capa.style.removeProperty('transform'))
+
+    const alScroll = () => {
+      if (movil.matches || reducido.matches) return
+      if (pedido) return
+      pedido = requestAnimationFrame(pintar)
+    }
+
+    const revisar = () => {
+      if (movil.matches || reducido.matches) apagar()
+      else alScroll()
+    }
+
+    window.addEventListener('scroll', alScroll, {passive: true})
+    window.addEventListener('resize', revisar, {passive: true})
+    movil.addEventListener('change', revisar)
+    reducido.addEventListener('change', revisar)
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        window.removeEventListener('scroll', alScroll)
+        window.removeEventListener('resize', revisar)
+        movil.removeEventListener('change', revisar)
+        reducido.removeEventListener('change', revisar)
+        if (pedido) cancelAnimationFrame(pedido)
+      },
+      {once: true},
+    )
+
+    revisar()
+  }
+
+  iniciarParallax()
+  document.addEventListener('astro:page-load', iniciarParallax)
+</script>

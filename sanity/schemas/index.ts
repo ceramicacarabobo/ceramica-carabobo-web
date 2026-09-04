@@ -14,6 +14,7 @@ import fotoProducto from './objects/fotoProducto'
 import heroCapa from './objects/heroCapa'
 import {ambienteFicha, ambientePestana} from './objects/ambiente'
 import proyecto from './objects/proyecto'
+import comparacion from './objects/comparacion'
 import red from './objects/red'
 import hito from './objects/hito'
 import sede from './objects/sede'
@@ -38,6 +39,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   ambienteFicha,
   ambientePestana,
   proyecto,
+  comparacion,
   red,
   hito,
   sede,

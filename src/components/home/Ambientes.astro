@@ -87,42 +87,41 @@ const pestanas = ambientes.pestanas
         </div>
       </Reveal>
 
-      <Reveal como="div" indice={1}>
-        <div class="ambientes__pistas">
-          {pestanas.map((pestana, indice) => (
-            <div
-              class="ambientes__panel"
-              id={`ambientes-panel-${indice}`}
-              role="tabpanel"
-              aria-labelledby={`ambientes-tab-${indice}`}
-              hidden={indice !== 0}
-              data-amb-panel
-            >
-              <div class="ambientes__track" data-amb-track>
-                {pestana.fichas.map((ficha) => {
-                  // El prototipo dibuja cada ficha como <a> al catálogo (tag `data-tile`).
-                  // Sin producto enlazado (referencia rota o despublicada) no hay a dónde
-                  // llevar: se deja como div, con los mismos datos, en vez de un enlace roto.
-                  const Envoltura = ficha.slug ? 'a' : 'div'
-                  const props = ficha.slug ? {href: `/catalogo/${ficha.slug}`} : {}
-                  return (
-                    <Envoltura class="ambientes__ficha" {...props}>
-                      <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
-                      <span class="ambientes__velo" aria-hidden="true" />
-                      {(ficha.nombre || ficha.spec) && (
-                        <span class="ambientes__datos">
-                          {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
-                          {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
-                        </span>
-                      )}
-                    </Envoltura>
-                  )
-                })}
-              </div>
+      {/* Contenido repetido: entra ya visible (`revealsAlcance: intermedio`). */}
+      <div class="ambientes__pistas">
+        {pestanas.map((pestana, indice) => (
+          <div
+            class="ambientes__panel"
+            id={`ambientes-panel-${indice}`}
+            role="tabpanel"
+            aria-labelledby={`ambientes-tab-${indice}`}
+            hidden={indice !== 0}
+            data-amb-panel
+          >
+            <div class="ambientes__track" data-amb-track>
+              {pestana.fichas.map((ficha) => {
+                // El prototipo dibuja cada ficha como <a> al catálogo (tag `data-tile`).
+                // Sin producto enlazado (referencia rota o despublicada) no hay a dónde
+                // llevar: se deja como div, con los mismos datos, en vez de un enlace roto.
+                const Envoltura = ficha.slug ? 'a' : 'div'
+                const props = ficha.slug ? {href: `/catalogo/${ficha.slug}`} : {}
+                return (
+                  <Envoltura class="ambientes__ficha" {...props}>
+                    <Imagen imagen={ficha.foto} ratio="var(--ratio-portrait)" sizes="(min-width: 760px) 27vw, 78vw" class="ambientes__foto" />
+                    <span class="ambientes__velo" aria-hidden="true" />
+                    {(ficha.nombre || ficha.spec) && (
+                      <span class="ambientes__datos">
+                        {ficha.nombre && <span class="ambientes__nombre">{ficha.nombre}</span>}
+                        {ficha.spec && <span class="ambientes__spec">{ficha.spec}</span>}
+                      </span>
+                    )}
+                  </Envoltura>
+                )
+              })}
             </div>
-          ))}
-        </div>
-      </Reveal>
+          </div>
+        ))}
+      </div>
     </Seccion>
   )
 }

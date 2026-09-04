@@ -327,3 +327,242 @@ publicar es reversible.
 **Si algún día se quiere recuperar**, las salidas son el plan de pago de Workers (~5 USD/mes, sube el
 límite de CPU) o limitar el preview a las páginas ligeras. Ambas contradicen la premisa de
 presupuesto cero, así que la decisión es del cliente, no técnica.
+
+---
+
+## 17. Registro de ejecución — marcador de carga de imagen (2026-09-04)
+
+Primer punto de la auditoría de movimiento (`docs/pendientes.md`, prioridad 1). Lo que faltaba no
+era calibración: el marco y la foto son **dos animaciones separadas** y solo estaba construida la
+del marco. Con `loading="lazy"` el navegador decide cuándo pedir la foto, así que el marco entraba
+visible mientras la imagen todavía bajaba y se la veía materializándose dentro de una caja opaca.
+
+**Qué se hizo.** Tres piezas:
+
+- `src/components/base/Imagen.astro` marca con `data-img` las fotos **diferidas** (no las de
+  `prioridad`: los cuatro heroes son `eager` y tienen su propia entrada). Arrancan en opacidad 0 y
+  se funden a 1 en 320ms con `--ease-out` cuando termina la descarga; hasta entonces se ve la
+  superficie neutra del marco (`#ECE9E4`).
+- El script del mismo componente marca `data-lista`. Comprueba `complete && naturalWidth` **antes**
+  de escuchar `load`: si la foto viene de caché ese evento no llega y la imagen quedaría en 0 para
+  siempre. Si la descarga falla, marca `data-falla` y la oculta — queda la superficie del marco, no
+  el icono de imagen rota.
+- La bandera `html[data-fundido]` se prende en el `<head>` de `src/layouts/Base.astro`, **síncrona**.
+  Tuvo que ir ahí y no en el script del componente: los scripts de Astro son diferidos y el navegador
+  ya habría pintado las fotos, que se verían apagarse. Se vuelve a poner en `astro:after-swap` porque
+  el cambio de página con View Transitions copia los atributos de `<html>` del documento nuevo y
+  borra este. Con `prefers-reduced-motion` no se prende: sin bandera no hay regla y las fotos se ven
+  de una — igual que sin JavaScript.
+
+Es la misma bandera que ya usaba la grilla del catálogo (`Catalogo.astro` + `Tarjeta.astro`), que
+conserva su propio marcado porque arma el `<picture>` aparte y usa la curva editorial del prototipo
+del catálogo. La curva de `Imagen.astro` es `--ease-out` porque esa es la del `[data-img]` del
+prototipo del **home**, que es donde se midió la auditoría.
+
+**Verificado** sobre el build, con el servidor local: 32 fotos diferidas en el home, ninguna de las
+`eager` marcada; con la red frenada la primera está en opacidad 0 con `opacity .32s
+cubic-bezier(.2,0,0,1)`; recorrida la página, las 16 que llegaron a cargar quedan marcadas y en
+opacidad 1; abortando las descargas, las 13 rotas quedan en `display:none` sobre el marco
+`rgb(236,233,228)`; la bandera sobrevive a navegar a `/catalogo` con el enrutador; y con movimiento
+reducido no hay bandera y la foto nace visible. El checklist de aceptación sigue en **11 en verde y
+la 03 medida sin veredicto** (la 09, "con movimiento reducido nada se anima", incluida).
+
+Quedan los puntos 2 a 6 de la auditoría: alcance de los reveals, carrusel apilado del hero, máscara
+y filete, parallax y la regla global de movimiento reducido.
+
+---
+
+## 18. Registro de ejecución — las cuatro capas de movimiento (2026-09-04)
+
+Puntos 2 a 6 de la auditoría de movimiento. El diagnóstico de fondo era correcto: estaba construida
+una sola capa —el fundido— y el diseño pide cuatro, cada una con sus propios valores.
+
+### Una bandera para todo el movimiento
+
+`html[data-movimiento]`, que prende el `<head>` de `Base.astro` de forma síncrona, significa "hay
+JavaScript y el visitante no pidió menos movimiento". De ella cuelgan **los estados iniciales** —los
+que dejan algo invisible o recortado— de las cuatro capas. Sin JavaScript, o con movimiento
+reducido, no existe la bandera y todo nace en su estado final: nada queda invisible ni recortado por
+un script que no llegó. Reemplaza a la `data-fundido` que había puesto el marcador de imagen (§17);
+la grilla del catálogo conserva la suya, que es local y ya tenía su propia guarda.
+
+### Punto 2 — alcance de los reveals (`revealsAlcance: intermedio`)
+
+Se funden **solo los cinco encabezados de apertura** del home: Ambientes, Cita, Proyectos,
+Profesionales y Encuéntranos. Los otros cuatro usos de `Reveal` eran contenido repetido —el track de
+Ambientes, las filas de Proyectos, el tile de video y el panel de la red— y ahora entran ya visibles,
+conservando únicamente máscara y filete. Envolver listas enteras en un fundido es lo que hacía que
+la página se leyera como una sola capa de movimiento.
+
+Dos de esos cuatro envoltorios no tenían estilos propios (el de Ambientes y el de Encuéntranos):
+desaparecieron. Eso permitió, además, quitar tres `:global()` de `Proyectos.astro` que existían solo
+porque `Reveal` no reenvía el scope de Astro.
+
+### Punto 3 — carrusel del hero, apilado
+
+La capa saliente se queda **opaca debajo** (`data-previa`, z-index 1, sin transición) y solo la
+entrante sube 0→1 en **1200ms** con la curva editorial. Con el cruzado el navegador promedia dos
+luminancias y el punto medio pasaba por gris.
+
+Probándolo aparecieron **dos defectos propios**, ninguno de movimiento:
+
+- **El recorrido automático pasaba por un estado inexistente.** Avanzaba con `capas.length`, que
+  cuenta ELEMENTOS y no estados: el estado 0 lo pintan dos (el póster y el video encima). Con cuatro
+  estados y cinco elementos, el ciclo iba 0→1→2→3→**4**, donde ninguna capa queda activa: el hero se
+  quedaba en el gris del fondo una vuelta entera de nueve segundos. Ahora cuenta valores distintos de
+  `data-capa`. Verificado: 0 → 1 → 2 → 3 → 0 en 42 s de observación.
+- **Repetir el estado actual rompía el relevo.** En escritorio el puntero entra al indicador (que ya
+  cambia el estado) y después hace clic: la segunda llamada borraba la marca de capa saliente en
+  mitad del fundido y la de abajo desaparecía de golpe. `mostrar()` ahora descarta el estado repetido.
+
+### Punto 4 — máscara y filete
+
+No existían. Van como primitivas globales en `theme/base.css`, porque las lleva el elemento propio de
+cada componente y no un envoltorio común:
+
+- `data-mascara` — `clip-path: inset(0 0 14% 0)` → `inset(0)`, 660ms, curva editorial. Excepción
+  declarada a "solo opacity/transform", limitada a reveals de imagen. La llevan la foto de cada obra
+  de Proyectos, el tile de video de Profesionales y el panel de la red de Encuéntranos.
+- `data-filete` — `background-size: 0 1px` → `100% 1px`, 660ms, misma curva, **120ms de retardo**. Lo
+  llevan las filas de Proyectos. **Reemplaza al `border-top`**: un borde no se puede dibujar de
+  izquierda a derecha, y además ocupaba 1px de caja que el prototipo no gasta — por eso la sección
+  pasó de medir 2px de más a **coincidir exacto** con el prototipo (1289px las dos).
+
+Las abre el mismo observador de `Reveal.astro`, con el mismo umbral (−14%) y una sola vez. Es el
+único observador de entrada del sitio.
+
+### Punto 6 — reduced-motion global: ya estaba
+
+**El auditor se equivocó.** La regla global a 1ms existe desde el principio en `theme/tokens.css`
+§ final (`*,*::before,*::after { animation-duration:1ms; animation-iteration-count:1;
+transition-duration:1ms }`), que es copia literal del documento de diseño. No estaba "solo en Reveal
+y 7 componentes": esos son guardas adicionales de cada componente. Medido en el navegador: con
+`prefers-reduced-motion` la duración computada de las transiciones es 0.001s.
+
+### Punto 5 — parallax: no está en el prototipo tampoco
+
+**Hay que decidirlo, no implementarlo a ciegas.** El prototipo declara el parallax (`parallaxActivo`
+por defecto en `true`, el método `queueParallax` con el ±4,5%, transform puro, apagado en móvil y con
+reduced-motion) pero **nunca lo conecta**: `parallaxRef` se expone en `renderVals` y no aparece en
+ningún elemento del markup, así que `this.parEl` queda `undefined` y el método sale en la primera
+línea en cada scroll. Es decir: **el prototipo servido, que es la referencia de fidelidad, no hace
+parallax en ninguna banda**.
+
+Implementarlo sería apartarse de la referencia, no acercarse. Y la regla del handoff no dice cuál de
+las bandas a sangre lo lleva. Queda como decisión del usuario: o se descarta (el diseño en marcha
+nunca lo mostró) o se elige la banda y se implementa contra la regla escrita, no contra el prototipo.
+
+### Verificación
+
+Checklist de aceptación: **11 en verde, la 03 medida sin veredicto** — sin cambios. Medido además en
+el navegador sobre el build: cinco aperturas fundiendo y los cinco bloques repetidos en opacidad 1 y
+sin desplazamiento; máscara `inset(0 0 14%)` → `inset(0)` con `clip-path 0.66s cubic-bezier(.37,0,
+.63,1)`; filete `0px 1px` → `100% 1px` con 0.12s de retardo y `linear-gradient(#D9D9D9,#D9D9D9)`;
+`border-top` de las filas en 0px; capa saliente del hero en opacidad 1 y z-index 1 mientras la
+entrante sube con `1.2s cubic-bezier(.37,0,.63,1)`. Sin JavaScript y con movimiento reducido: todo en
+su estado final (`clip-path: none`, filete entero, aperturas visibles).
+
+---
+
+## 19. Registro de ejecución — tramo central del home, Propuesta 1 v2 (2026-09-04)
+
+Importado del proyecto de diseño con el MCP de Claude Design. El paquete vive en
+`design/handoff-p1-v2/README.md` y la referencia servible en
+`design/publicar/Propuesta 1 v2.dc.html`, al lado de la v1, que **sigue vigente** para todo lo que
+no cambia. Comprobado: la v1 del paquete es byte a byte igual a la que ya teníamos, así que el diff
+entre las dos delimita exactamente el alcance y la línea base de fidelidad de la Fase 2 sigue valiendo.
+
+### Alcance
+
+No es un rediseño. **Sale 02 · Proyectos, entra 02 · Compara, entra una banda a sangre nueva y
+Historia cambia de mecanismo.** Renumeración 01 Ambientes · 02 Compara · 03 Historia ·
+04 Profesionales · 05 Encuéntranos. Todo lo demás —telón, headers, megamenú, menú móvil, hero,
+Ambientes, la cita, Profesionales, Encuéntranos, pie, cromo y tokens— queda idéntico.
+
+### 02 · Compara (`components/home/Compara.astro`)
+
+Comparador de arrastre, dos filas, la segunda espejada en desktop. La capa de encima se recorta con
+`clip-path` desde la derecha y ocupa el lado izquierdo. Mientras se arrastra no hay transición (con
+ella la imagen va 180ms por detrás del dedo); al soltar vuelven los 180ms de la curva de interfaz.
+Teclado ←/→ 2%, Shift 10%, Home/End a los extremos, `role="slider"` con `aria-valuenow`.
+
+**Estado degradado por instancia**: si una capa no carga, esa fila pierde el mecanismo y queda como
+foto legible —`role="img"`, fuera del tabulador, sin `touch-action`— y el pie pasa a nombrar el
+diseño que quedó con su spec leída del catálogo. La otra fila sigue viva.
+
+### Banda de obra (`components/home/BandaObra.astro`)
+
+Franja a sangre entre Compara e Historia. La macro **se repite a lo ancho** (`repeat-x`,
+`background-size: auto 100%`), no se estira: estirada queda blanda y sin juntas. Va por
+`background-image` y no por `<img>` porque `repeat-x` no existe para imágenes; por eso pide la URL
+procesada a `astro:assets` a mano. La capa sobresale 5% arriba y abajo para que el parallax no
+descubra el borde.
+
+**Acá se resuelve la decisión D1 del parallax**: el mecanismo no tenía consumidor porque la banda a
+sangre a la que servía había desaparecido en una recomposición. Esta banda lo revive. Implementado
+con `requestAnimationFrame` (el prototipo escribe en el handler de scroll porque en su entorno rAF
+no ejecuta callbacks — fontanería de ese entorno, no diseño), ±4,5% del alto, transform puro,
+apagado en móvil y con movimiento reducido.
+
+### 03 · Historia (`components/home/Historia.astro`, reescrito)
+
+Sale el hilo conducido por scroll (100vh + 5×40vh) y entra un índice con riel de cinco miniaturas.
+El hito cambia al pasar el cursor y al enfocar, sin clic; clic y Enter/Espacio hacen lo mismo. No
+hay auto-avance (decisión del cliente). **Con esto el sitio ya no tiene ninguna sección que fije el
+scroll**: se cierra la única excepción de movimiento que quedaba.
+
+Las cinco fotos se relevan con el **fundido apilado del hero** y van por `background-image`: con
+`<img>` el marcador de carga (§17) pelearía con la opacidad del fundido. Por lo mismo, las
+miniaturas inactivas se atenúan con un velo encima y no bajándole la opacidad a la foto.
+
+### Modelo de contenido
+
+- **`comparacion`** (objeto nuevo) — cada par referencia DOS productos y lleva DOS fotos de ambiente.
+  El nombre, la spec (`formato` + `brillo`) y la macro **se leen del producto**: el editor carga dos
+  fotos por par, no cuatro, y no puede desincronizar una spec del catálogo. Las fotos de ambiente sí
+  van por par porque el comparador exige el MISMO ENCUADRE entre las dos, y la que cada producto
+  trae en su ficha está tomada desde otro ángulo.
+- **`banda`** — un `reference` a producto. Su macro y su rótulo salen de ahí.
+- **`historia.etiqueta`** — la sección estrena numeral: el viejo `titulo` ("Historia") pasa a
+  etiqueta y el título toma el h2 del diseño.
+- **`proyectos` se conserva** con su contenido y pasa a llamarse "Proyectos (no se muestra)" en el
+  Studio. Decisión del usuario: se borra cuando la versión definitiva esté confirmada. Salió por
+  falta de material fotográfico de obra, no porque sobre.
+- Carga con `scripts/importar-tramo-v2.mjs`, que hace `patch().set()` de los tres campos y **no
+  toca el resto del singleton** — `importar-contenido.mjs` hace `createOrReplace` del documento
+  entero y acá borraría todo lo cargado después.
+
+### Dos hallazgos de la implementación
+
+1. **El estado degradado del comparador entra en bucle infinito en un navegador real.** En el
+   prototipo el `onError` vuelve a marcar la fila en cada render y el ref se recrea con él: React
+   aborta con "Maximum update depth exceeded" y la página queda en blanco. Se disparó solo, por una
+   foto que falta. Acá la marca es idempotente (el propio atributo hace de guarda). **Conviene
+   avisarle al lado de diseño.**
+2. **`avila-geometrico-cliente-espejo.jpg` no se pudo importar por el MCP**: pasa de 256 KiB y la
+   lectura se corta ahí. Mientras faltó, el cargador la tuvo en una lista `SUSTITUTOS` que **impide
+   subir al CMS** cualquier archivo que no sea material del cliente, y el par Ávila Gris / Ávila
+   Geométrico quedó sin cargar en vez de subir una foto fabricada. **El usuario la subió a mano el
+   mismo día** (2384×1760, misma proporción que su par) y el par entró: la lista quedó vacía y la
+   sección muestra las dos filas.
+
+Descartado por el usuario el aviso del handoff sobre "Sanare Marrón": el nombre sí corresponde a su
+foto y la banda usa esa macro.
+
+### Verificación
+
+**Fidelidad al píxel contra el prototipo v2, a 1504, 1024 y 390** — Compara entera (1366px a 1504,
+el número del handoff), su cabecera, las dos filas, los dos comparadores, las columnas de macros, la
+baldosa, la manija, el pie de figura, la banda, Historia entera, su cabecera, su grilla y su riel:
+**todos coinciden exactamente en los tres anchos**. La segunda fila queda espejada en desktop
+(comparador en x=560, macros en x=72) y los dos comparadores se arrastran independientes. Dos diferencias de 2px
+aparecieron y se corrigieron: el pie de figura declara `line-height: 1.5` y el token está
+redefinido a `normal` en `base.css` (manda la página, `Tokens v0` §10), y la manija mide 40px más su
+borde porque en el prototipo la caja es content-box.
+
+Checklist de aceptación: **11 en verde, la 03 medida sin veredicto**. El recorrido con teclado pasó
+de 33 a **44 paradas** (los dos comparadores, las cinco miniaturas y las cuatro macros). Medido además: el
+divisor y el borde del recorte coinciden dentro de 1px en todas las posiciones; el relevo de
+Historia deja la capa saliente opaca en z-index 1 mientras la entrante sube; el parallax da −8,2px
+entrando y +6,7px saliendo sobre un tope de ±13,5px, y no corre ni en móvil ni con movimiento
+reducido; y los dos casos de capa caída nombran el diseño correcto sin tumbar la página.

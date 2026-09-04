@@ -21,6 +21,9 @@ interface Props {
   cierre?: boolean
   id?: string
   class?: string
+  /** El `<section>` lo produce este componente, así que no lleva el scope del
+      que lo usa: redefinir un token acá es la forma de ajustarle el ritmo. */
+  style?: string
   'aria-labelledby'?: string
 }
 

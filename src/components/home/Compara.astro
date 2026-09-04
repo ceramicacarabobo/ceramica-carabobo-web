@@ -1,0 +1,537 @@
+---
+/**
+ * 02 · Compara — el mismo ambiente con dos revestimientos, comparables por
+ * arrastre (`design/handoff-p1-v2/README.md` §02).
+ *
+ * Dos filas con el mismo mecanismo. Cada una: comparador grande + columna con
+ * las dos macros del par. La SEGUNDA va espejada en desktop (columnas
+ * invertidas), no en móvil, donde todo se apila.
+ *
+ * El comparador: dos fotos superpuestas; la capa de encima se recorta con
+ * `clip-path: inset(0 <100−pos>% 0 0)`, así que ocupa el lado IZQUIERDO y la
+ * base queda a la derecha. Mientras se arrastra no hay transición; al soltar,
+ * 180ms con la curva de interfaz.
+ *
+ * Reflow (`Responsividad v0` §03): bajo 760px se apila, el comparador toma
+ * `aspect-ratio 4/5` y las macros pasan a dos columnas — la manija crece a 48px
+ * para cumplir el objetivo táctil.
+ *
+ * Contenido defensivo: un par sin sus dos fotos de ambiente no se puede
+ * componer y se descarta; sin ningún par, la sección entera desaparece. Una
+ * macro que falta (hay 9 productos así en el catálogo) deja su baldosa fuera
+ * sin romper la fila.
+ */
+import Seccion from '~/components/base/Seccion.astro'
+import Reveal from '~/components/base/Reveal.astro'
+import Imagen from '~/components/base/Imagen.astro'
+import type {Home} from '~/lib/data'
+
+interface Props {
+  comparador: Home['comparador']
+}
+
+const {comparador} = Astro.props
+
+// Sin las dos fotos de ambiente no hay nada que comparar: la fila se descarta.
+const pares = comparador.pares.filter((par) => par.encima.ambiente && par.base.ambiente)
+const hayPares = pares.length > 0
+---
+
+{
+  hayPares && (
+    <Seccion
+      como="section"
+      id="compara"
+      class="compara"
+      fondo="base"
+      aria-labelledby={comparador.titulo ? 'compara-titulo' : undefined}
+    >
+      <Reveal como="div" class="compara__cabecera">
+        <div class="compara__intro">
+          {comparador.etiqueta && (
+            <p class="compara__eyebrow">
+              <span class="compara__numero">02</span> · {comparador.etiqueta}
+            </p>
+          )}
+          {comparador.titulo && (
+            <h2 id="compara-titulo" class="compara__titulo">
+              {comparador.titulo}
+            </h2>
+          )}
+        </div>
+        {comparador.intro && <p class="compara__bajada">{comparador.intro}</p>}
+      </Reveal>
+
+      <div class="compara__lista">
+        {pares.map((par, indice) => (
+          /* Contenido repetido: la fila entra ya visible y conserva solo el filete. */
+          <figure class:list={['compara__fila', indice % 2 === 1 && 'compara__fila--espejada']} data-filete>
+            <div class="compara__caja">
+              <div
+                class="cotejo"
+                data-cotejo
+                role="slider"
+                tabindex="0"
+                aria-label={`Comparar ${par.encima.nombre} y ${par.base.nombre} en el mismo ambiente — arrastra o usa las flechas`}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="50"
+                data-mascara
+                style="--pos: 50%"
+                data-pie-encima={[par.encima.nombre, par.encima.spec].filter(Boolean).join(' · ')}
+                data-pie-base={[par.base.nombre, par.base.spec].filter(Boolean).join(' · ')}
+              >
+                <Imagen
+                  imagen={par.base.ambiente}
+                  ratio="auto"
+                  sizes="(min-width: 760px) 60vw, 100vw"
+                  class="cotejo__foto"
+                />
+                <div class="cotejo__capa" data-cotejo-capa>
+                  <Imagen
+                    imagen={par.encima.ambiente}
+                    ratio="auto"
+                    sizes="(min-width: 760px) 60vw, 100vw"
+                    class="cotejo__foto"
+                  />
+                </div>
+
+                <div class="cotejo__mecanismo" aria-hidden="true" data-cotejo-mecanismo>
+                  <div class="cotejo__divisor">
+                    <span class="cotejo__manija">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m15 18-6-6 6-6" />
+                      </svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </span>
+                  </div>
+                  <span class="cotejo__rotulo cotejo__rotulo--izq">{par.encima.nombre}</span>
+                  <span class="cotejo__rotulo cotejo__rotulo--der">{par.base.nombre}</span>
+                </div>
+              </div>
+
+              <div class="compara__macros">
+                {[par.encima, par.base].map((lado) =>
+                  lado.macro ? (
+                    <a class="baldosa" data-mascara href={lado.slug ? `/catalogo#${lado.slug}` : '/catalogo'}>
+                      <Imagen
+                        imagen={lado.macro}
+                        ratio="auto"
+                        sizes="(min-width: 760px) 22vw, 45vw"
+                        ancho={900}
+                        class="baldosa__foto"
+                      />
+                      <span class="baldosa__datos">
+                        <span class="baldosa__nombre">{lado.nombre}</span>
+                        {lado.spec && <span class="baldosa__spec">{lado.spec}</span>}
+                      </span>
+                    </a>
+                  ) : null,
+                )}
+              </div>
+            </div>
+
+            {/* Única pista del gesto para teclado y lector de pantalla: no se quita. */}
+            <figcaption class="compara__pie" data-cotejo-pie>Arrastra para comparar.</figcaption>
+          </figure>
+        ))}
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .compara__cabecera {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 4vw, 64px);
+    align-items: end;
+    margin-bottom: clamp(28px, 3vw, 44px);
+  }
+
+  .compara__intro {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .compara__eyebrow {
+    font: var(--text-overline);
+    letter-spacing: var(--tracking-uppercase-lg);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .compara__numero {
+    color: var(--color-brand-700);
+  }
+
+  .compara__titulo {
+    font: var(--text-display);
+    color: var(--color-text-primary);
+  }
+
+  .compara__bajada {
+    font: var(--text-body-15);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .compara__lista {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 3.2vw, 44px);
+  }
+
+  .compara__fila {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: clamp(20px, 2.5vw, 32px);
+  }
+
+  .compara__caja {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .compara__macros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* El interlineado va literal y no por token: `base.css` redefine
+     `--text-caption-lg` a `normal` porque las páginas del diseño no lo declaran
+     en captions… pero ESTA sí lo declara (1.5). Manda la página, que es la regla
+     de `Tokens v0` §10 — y son los 2px que le faltaban a la fila. */
+  .compara__pie {
+    font: 400 0.8125rem/1.5 var(--font-body);
+    color: var(--color-text-muted);
+  }
+
+  /* ── El comparador ───────────────────────────────────────────────────────
+     `--pos` es la posición del divisor. La capa de encima se recorta desde la
+     derecha, así que ocupa el lado izquierdo. `--tr` la escribe el script: es
+     `none` mientras se arrastra (si no, el dedo va por delante de la imagen) y
+     la respuesta de 180ms al soltar. */
+  .cotejo {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+    user-select: none;
+    aspect-ratio: 4 / 5;
+    cursor: ew-resize;
+    touch-action: none;
+    /* Blanco al 92%: el valor del handoff para el divisor, la manija y los
+       rótulos del comparador. No está en la paleta —el token de borde sobre
+       imagen es 0.65— así que queda LOCAL y marcado, como manda `Tokens v0` §10
+       hasta que aparezca un segundo consumidor. */
+    --blanco-cotejo: rgba(255, 255, 255, 0.92);
+    /* La duración del seguimiento. El script la pone en 0s mientras se arrastra:
+       con transición, la imagen va 180ms por detrás del dedo y se siente pegajosa. */
+    --tr: var(--dur-respuesta) var(--ease-respuesta);
+  }
+
+  .cotejo :global(.cotejo__foto) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    background: none;
+  }
+
+  .cotejo :global(.cotejo__foto img) {
+    -webkit-user-drag: none;
+  }
+
+  .cotejo__capa {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+    transition: clip-path var(--tr);
+  }
+
+  .cotejo__mecanismo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .cotejo__divisor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 1px;
+    margin-left: -0.5px;
+    background: var(--blanco-cotejo);
+    transition: left var(--tr);
+  }
+
+  /* 48px de círculo MÁS el borde de 1px, que es como mide en el prototipo: allá
+     la caja es content-box y acá el reset la pone en border-box, así que sin
+     esto el control salía 2px más chico (medido). */
+  .cotejo__manija {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: content-box;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: var(--border-width) solid var(--blanco-cotejo);
+    background: rgba(31, 31, 31, 0.16);
+    color: var(--color-neutral-0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .cotejo__rotulo {
+    position: absolute;
+    bottom: 0;
+    padding: 14px 16px;
+    font: 500 0.6875rem/normal var(--font-heading);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blanco-cotejo);
+    text-shadow: 0 1px 2px rgba(31, 31, 31, 0.4);
+  }
+
+  .cotejo__rotulo--izq {
+    left: 0;
+  }
+
+  .cotejo__rotulo--der {
+    right: 0;
+  }
+
+  /* Capa caída: se descarta la foto rota y la fila queda como una foto legible.
+     Sin divisor, sin manija, sin rótulos y sin gesto que anunciar. */
+  .cotejo[data-roto='encima'] .cotejo__capa,
+  .cotejo[data-roto] .cotejo__mecanismo {
+    display: none;
+  }
+
+  .cotejo[data-roto] {
+    cursor: default;
+    touch-action: auto;
+  }
+
+  .cotejo[data-roto='base'] .cotejo__capa {
+    clip-path: none;
+  }
+
+  /* ── Las macros ──────────────────────────────────────────────────────────── */
+  .baldosa {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+    text-decoration: none;
+    aspect-ratio: 4 / 3;
+  }
+
+  .baldosa :global(.baldosa__foto) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .baldosa:hover :global(.baldosa__foto) {
+      transform: scale(var(--hover-image-scale));
+    }
+  }
+
+  .baldosa__datos {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 14px 16px;
+    background: linear-gradient(0deg, rgba(31, 31, 31, 0.62) 0%, rgba(31, 31, 31, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .baldosa__nombre {
+    font: 500 0.875rem/normal var(--font-heading);
+    color: var(--color-neutral-0);
+  }
+
+  .baldosa__spec {
+    font: 400 0.75rem/normal var(--font-body);
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  @media (min-width: 760px) {
+    .compara__cabecera {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    }
+
+    .compara__caja {
+      display: grid;
+      grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+      gap: 16px;
+      height: clamp(280px, 29vw, 460px);
+    }
+
+    /* La segunda fila va espejada: la columna de macros pasa a la izquierda. */
+    .compara__fila--espejada .compara__caja {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr);
+    }
+
+    .compara__fila--espejada .cotejo {
+      order: 2;
+    }
+
+    .compara__fila--espejada .compara__macros {
+      order: 1;
+    }
+
+    .cotejo {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+
+    .cotejo__manija {
+      width: 40px;
+      height: 40px;
+    }
+
+    .compara__macros {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .baldosa {
+      flex: 1 1 0;
+      min-height: 0;
+      aspect-ratio: auto;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Mecanismo del comparador. Uno por fila y con su propio estado: si una fila
+   * pierde una foto, la otra sigue viva.
+   *
+   * El teclado es parte del mecanismo, no un extra: ←/→ mueven 2%, con Shift
+   * 10%, Home y End van a los extremos. Es lo único, junto al pie de figura,
+   * que hace la comparación accesible sin puntero.
+   */
+  const PASO = 2
+  const PASO_LARGO = 10
+
+  function iniciarCompara() {
+    document.querySelectorAll<HTMLElement>('[data-cotejo]').forEach((cotejo) => {
+      if (cotejo.dataset.vivo) return
+      cotejo.dataset.vivo = '1'
+
+      const capa = cotejo.querySelector<HTMLElement>('[data-cotejo-capa]')
+      const pie = cotejo.closest('figure')?.querySelector<HTMLElement>('[data-cotejo-pie]')
+      // Las dos capas por separado, no por índice: la de encima vive dentro del
+      // recorte y la base es la que queda suelta en la caja.
+      const fotoEncima = capa?.querySelector<HTMLImageElement>('img') ?? null
+      const fotoBase = [...cotejo.querySelectorAll<HTMLImageElement>('img')].find((foto) => !capa?.contains(foto)) ?? null
+
+      const mover = (valor: number) => {
+        if (cotejo.dataset.roto) return
+        const pos = Math.max(0, Math.min(100, valor))
+        cotejo.style.setProperty('--pos', `${pos}%`)
+        cotejo.setAttribute('aria-valuenow', String(Math.round(pos)))
+      }
+
+      const desdeX = (x: number) => {
+        const caja = cotejo.getBoundingClientRect()
+        mover(((x - caja.left) / caja.width) * 100)
+      }
+
+      // ── Estado degradado ────────────────────────────────────────────────
+      // Se marca UNA sola vez. El prototipo vuelve a marcar en cada render y en
+      // un navegador de verdad eso entra en bucle: la página se cae entera con
+      // "Maximum update depth exceeded" (comprobado). Acá la guarda es el
+      // propio atributo.
+      const romper = (lado: 'encima' | 'base') => {
+        if (cotejo.dataset.roto) return
+        cotejo.dataset.roto = lado
+        // Cae la de encima → queda la base, y al revés.
+        const sana = lado === 'encima' ? fotoBase : fotoEncima
+        cotejo.setAttribute('role', 'img')
+        cotejo.setAttribute('aria-label', sana?.alt || 'Ambiente con revestimiento cerámico')
+        cotejo.setAttribute('tabindex', '-1')
+        cotejo.removeAttribute('aria-valuemin')
+        cotejo.removeAttribute('aria-valuemax')
+        cotejo.removeAttribute('aria-valuenow')
+        // Con el mecanismo caído no se anuncia un gesto que ya no hace nada: el
+        // pie pasa a nombrar el diseño que quedó a la vista.
+        const rotulo = lado === 'encima' ? cotejo.dataset.pieBase : cotejo.dataset.pieEncima
+        if (pie && rotulo) pie.textContent = rotulo
+      }
+
+      const vigilar = (foto: HTMLImageElement | null, lado: 'encima' | 'base') => {
+        if (!foto) return
+        if (foto.complete && foto.naturalWidth === 0) romper(lado)
+        else foto.addEventListener('error', () => romper(lado), {once: true})
+      }
+
+      vigilar(fotoEncima, 'encima')
+      vigilar(fotoBase, 'base')
+
+      // ── Arrastre ────────────────────────────────────────────────────────
+      let arrastrando = false
+      cotejo.addEventListener('pointerdown', (evento) => {
+        if (cotejo.dataset.roto) return
+        evento.preventDefault()
+        cotejo.setPointerCapture(evento.pointerId)
+        arrastrando = true
+        // Mientras se arrastra no hay transición: con ella la imagen va 180ms
+        // por detrás del dedo y se siente pegajosa.
+        cotejo.style.setProperty('--tr', '0s')
+        desdeX(evento.clientX)
+      })
+
+      cotejo.addEventListener('pointermove', (evento) => {
+        if (arrastrando) desdeX(evento.clientX)
+      })
+
+      const soltar = () => {
+        if (!arrastrando) return
+        arrastrando = false
+        cotejo.style.removeProperty('--tr')
+      }
+
+      cotejo.addEventListener('pointerup', soltar)
+      cotejo.addEventListener('pointercancel', soltar)
+
+      // ── Teclado ─────────────────────────────────────────────────────────
+      cotejo.addEventListener('keydown', (evento) => {
+        if (cotejo.dataset.roto) return
+        const actual = Number(cotejo.getAttribute('aria-valuenow') ?? 50)
+        const paso = evento.shiftKey ? PASO_LARGO : PASO
+        let destino: number | null = null
+        if (evento.key === 'ArrowLeft') destino = actual - paso
+        else if (evento.key === 'ArrowRight') destino = actual + paso
+        else if (evento.key === 'Home') destino = 0
+        else if (evento.key === 'End') destino = 100
+        if (destino === null) return
+        evento.preventDefault()
+        mover(destino)
+      })
+    })
+  }
+
+  iniciarCompara()
+  document.addEventListener('astro:page-load', iniciarCompara)
+</script>

@@ -82,6 +82,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
     <link rel="icon" href="/assets/logo-iso.svg" type="image/svg+xml" />
 
     <ClientRouter />
+
+    <script is:inline>
+      // Bandera única del movimiento de entrada: "hay JavaScript y el visitante no pidió menos
+      // movimiento". De ella cuelgan los estados INICIALES —los que dejan algo invisible o
+      // recortado— del marcador de carga de imagen (`base/Imagen.astro`), del fundido de los
+      // encabezados (`base/Reveal.astro`) y de la máscara y el filete (`theme/base.css`).
+      //
+      // Se prende acá, SÍNCRONO y en el head, y no en el script del componente: los scripts de
+      // Astro son diferidos y el navegador ya habría pintado el contenido, que se vería
+      // apagarse. Sin JavaScript la bandera no existe y todo nace en su estado final.
+      ;(function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+        var prender = function () {
+          document.documentElement.setAttribute('data-movimiento', '')
+        }
+
+        prender()
+        // El cambio de página con View Transitions copia los atributos de <html> del documento
+        // nuevo, o sea que borra este. `astro:after-swap` corre antes de pintar.
+        document.addEventListener('astro:after-swap', prender)
+      })()
+    </script>
   </head>
 
   <body>

@@ -1,7 +1,16 @@
 ---
 /**
- * Aparición al entrar en pantalla: opacity 0→1 + translateY(--reveal-offset),
- * una sola vez. Solo opacity y transform (Tokens v0 §07).
+ * Fundido de apertura: opacity 0→1 + translateY(--desplazamiento-entrada), una
+ * sola vez. Solo opacity y transform (Tokens v0 §07).
+ *
+ * ALCANCE (`revealsAlcance: intermedio`, el valor con el que corre el prototipo):
+ * se funden SOLO los cinco encabezados de apertura del home — Ambientes, Cita,
+ * Proyectos, Profesionales y Encuéntranos. El contenido repetido (el track de
+ * Ambientes, las filas de Proyectos, el tile de video, el panel de la red) entra
+ * ya visible y conserva únicamente `data-mascara` y `data-filete`, que son los
+ * dos efectos que no dependen de la opacidad y por eso siguen leyendo como
+ * material y no como interfaz. Envolver una lista entera en un fundido es lo que
+ * hacía que la página se sintiera una sola capa de movimiento.
  *
  * Valores MEDIDOS sobre el prototipo en marcha (que corre con su calibración
  * editorial activada): 660ms, curva simétrica `cubic-bezier(.37,0,.63,1)` y
@@ -9,7 +18,9 @@
  * pantalla (top < 86% del alto de ventana) y la cascada, 60 + i×70ms.
  * La curva simétrica es deliberada: el ease-out fuerte queda para las respuestas
  * a una acción del usuario, no para las entradas de contenido.
- * Con `prefers-reduced-motion` el contenido nace visible y no se anima nada.
+ *
+ * El observador de este componente es el ÚNICO del sitio: abre también las
+ * máscaras y los filetes (`theme/base.css`), que viven en otros componentes.
  */
 interface Props {
   /** Cualquier otro atributo (incluido el scope de estilos del padre) se reenvía. */
@@ -38,7 +49,10 @@ const Etiqueta = como as 'div'
 </Etiqueta>
 
 <style>
-  .reveal {
+  /* Solo con la bandera de movimiento (`html[data-movimiento]`, la prende el head
+     de `layouts/Base.astro`) el encabezado arranca invisible: sin JavaScript, o
+     con movimiento reducido, nace en su sitio y no se anima nada. */
+  :global(html[data-movimiento]) .reveal {
     opacity: 0;
     transform: translateY(var(--desplazamiento-entrada));
     transition:
@@ -46,29 +60,29 @@ const Etiqueta = como as 'div'
       transform var(--dur-aparicion) var(--ease-editorial) var(--reveal-delay, 0ms);
   }
 
-  .reveal[data-visible] {
+  :global(html[data-movimiento]) .reveal[data-abierta] {
     opacity: 1;
     transform: none;
-  }
-
-  /* Sin JS (o con movimiento reducido) el contenido tiene que verse igual. */
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
   }
 </style>
 
 <script>
+  /**
+   * Observador único de las entradas del sitio. Abre las tres capas de
+   * movimiento con el mismo atributo y el mismo umbral: el fundido de los
+   * encabezados (`data-reveal`), la máscara de imagen (`data-mascara`) y el
+   * filete que se dibuja (`data-filete`). Una sola vez por elemento.
+   */
+  const MARCAS = ['data-reveal', 'data-mascara', 'data-filete']
+  const SIN_ABRIR = MARCAS.map((marca) => `[${marca}]:not([data-abierta])`).join(',')
+
   const activar = () => {
-    const elementos = document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-visible])')
+    const elementos = document.querySelectorAll<HTMLElement>(SIN_ABRIR)
     if (elementos.length === 0) return
 
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducido || !('IntersectionObserver' in window)) {
-      elementos.forEach((el) => el.setAttribute('data-visible', ''))
+      elementos.forEach((el) => el.setAttribute('data-abierta', ''))
       return
     }
 
@@ -76,7 +90,7 @@ const Etiqueta = como as 'div'
       (entradas) => {
         for (const entrada of entradas) {
           if (!entrada.isIntersecting) continue
-          entrada.target.setAttribute('data-visible', '')
+          entrada.target.setAttribute('data-abierta', '')
           observador.unobserve(entrada.target)
         }
       },

@@ -83,6 +83,7 @@ function srcset(resultado: GetImageResult): string {
           loading={prioridad ? 'eager' : 'lazy'}
           fetchpriority={prioridad ? 'high' : 'auto'}
           decoding={prioridad ? 'sync' : 'async'}
+          data-img={prioridad ? undefined : ''}
         />
       </picture>
     </figure>
@@ -103,4 +104,62 @@ function srcset(resultado: GetImageResult): string {
     object-fit: cover;
     object-position: var(--focal);
   }
+
+  /* ── Marcador de carga (Estados v0) ─────────────────────────────────────
+     Marco y foto son DOS animaciones separadas: el marco entra con lo suyo
+     (reveal, máscara) y la foto se funde aparte, 320ms, cuando termina de
+     descargar. Hasta entonces se ve la superficie neutra del marco.
+
+     Sin esto el marco entra visible mientras la foto todavía baja y la imagen
+     se ve materializándose dentro de una caja opaca. Con `loading="lazy"` el
+     navegador decide cuándo pedirla, así que el orden queda al azar: por eso el
+     marcador va SOLO en las diferidas. Las de `prioridad` (los cuatro heroes)
+     son `eager` y tienen su propia entrada.
+
+     Curva `--ease-out`: es la del `[data-img]` del prototipo del home, que es
+     donde se midió. (`Tarjeta.astro` usa la editorial porque esa es la del
+     prototipo del catálogo, recalibrado aparte.)
+
+     Se arma solo con la bandera de movimiento (`html[data-movimiento]`, la
+     prende el head de `layouts/Base.astro`): sin JavaScript, o con movimiento
+     reducido, las fotos se ven de una. */
+  :global(html[data-movimiento]) .imagen :global(img[data-img]) {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-out);
+  }
+
+  :global(html[data-movimiento]) .imagen :global(img[data-img][data-lista]) {
+    opacity: 1;
+  }
+
+  /* Si la foto falla se descarta y queda la superficie neutra del marco, nunca
+     el icono de imagen rota. Va fuera de la bandera: aplica también sin fundido. */
+  .imagen :global(img[data-falla]) {
+    display: none;
+  }
 </style>
+
+<script>
+  /**
+   * Marca cada foto diferida en cuanto está disponible. El evento `load` no
+   * llega si la imagen viene de caché, así que primero se comprueba
+   * `complete && naturalWidth`; si falla la descarga se descarta y el marco se
+   * queda con su superficie neutra.
+   */
+  const marcar = () => {
+    const fotos = document.querySelectorAll<HTMLImageElement>('img[data-img]:not([data-lista]):not([data-falla])')
+
+    fotos.forEach((foto) => {
+      if (foto.complete && foto.naturalWidth) {
+        foto.setAttribute('data-lista', '')
+        return
+      }
+
+      foto.addEventListener('load', () => foto.setAttribute('data-lista', ''), {once: true})
+      foto.addEventListener('error', () => foto.setAttribute('data-falla', ''), {once: true})
+    })
+  }
+
+  marcar()
+  document.addEventListener('astro:page-load', marcar)
+</script>

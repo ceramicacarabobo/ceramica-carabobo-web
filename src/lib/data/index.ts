@@ -15,6 +15,8 @@ export {sanityConfigurado, visualEditingHabilitado} from './cliente'
 const HOME_VACIA: HomeCruda = {
   hero: {capas: []},
   ambientes: {pestanas: []},
+  comparador: {pares: []},
+  banda: {},
   proyectos: {obras: []},
   historia: {hitos: []},
   profesionales: {},

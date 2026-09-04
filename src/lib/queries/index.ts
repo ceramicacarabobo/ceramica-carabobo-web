@@ -77,6 +77,32 @@ export const HOME = /* groq */ `
     }, [])
   },
   "cita": cita.texto,
+  "comparador": {
+    "etiqueta": comparador.etiqueta,
+    "titulo": comparador.titulo,
+    "intro": comparador.intro,
+    "pares": coalesce(comparador.pares[]{
+      "encima": {
+        "nombre": productoEncima->nombre,
+        "slug": productoEncima->slug.current,
+        "spec": array::join([productoEncima->formato, ...coalesce(productoEncima->brillo, [])][@ != null], " · "),
+        "macro": productoEncima->fotos[coalesce(tipo, "ambiente") == "macro"][0]${IMAGEN},
+        "ambiente": fotoEncima${IMAGEN}
+      },
+      "base": {
+        "nombre": productoBase->nombre,
+        "slug": productoBase->slug.current,
+        "spec": array::join([productoBase->formato, ...coalesce(productoBase->brillo, [])][@ != null], " · "),
+        "macro": productoBase->fotos[coalesce(tipo, "ambiente") == "macro"][0]${IMAGEN},
+        "ambiente": fotoBase${IMAGEN}
+      }
+    }, [])
+  },
+  "banda": {
+    "nombre": banda.producto->nombre,
+    "spec": array::join([banda.producto->formato, ...coalesce(banda.producto->brillo, [])][@ != null], " · "),
+    "macro": banda.producto->fotos[coalesce(tipo, "ambiente") == "macro"][0]${IMAGEN}
+  },
   "proyectos": {
     "etiqueta": proyectos.etiqueta,
     "titulo": proyectos.titulo,
@@ -95,6 +121,7 @@ export const HOME = /* groq */ `
     }, [])
   },
   "historia": {
+    "etiqueta": historia.etiqueta,
     "titulo": historia.titulo,
     "hitos": coalesce(historia.hitos[]{anio, titulo, texto, "imagen": imagen${IMAGEN}}, [])
   },

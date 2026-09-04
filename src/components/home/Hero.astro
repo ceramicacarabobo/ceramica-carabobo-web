@@ -1,7 +1,12 @@
 ---
 /**
  * Hero de la home. Carrusel a sangre: el video de ambiente es el primer estado y
- * las capas siguientes son fotos de diseños, en fundido cruzado de 900ms.
+ * las capas siguientes son fotos de diseños.
+ *
+ * El fundido es APILADO, no cruzado (`heroTransicion: apilado` del prototipo):
+ * la capa que sale se queda opaca DEBAJO y sin transición, y solo la entrante
+ * sube 0→1 en 1200ms con la curva editorial. Con el cruzado el navegador
+ * promedia dos luminancias y el punto medio del fundido pasa por gris.
  *
  * Reflow (`Responsividad v0` §03): desktop pone titular abajo-izquierda e
  * indicadores abajo-derecha en una fila; móvil apila —titular arriba,
@@ -127,17 +132,30 @@ const hayCarrusel = estados.length > 1
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 900ms ease;
+    /* Sin transición: fuera del relevo una capa aparece y desaparece tapada por
+       las de arriba, y animarla sería justamente el cruce que se quiere evitar. */
+    z-index: 0;
   }
 
   .hero__video {
     object-fit: cover;
   }
 
+  /* La capa saliente: opaca, quieta y por debajo de la entrante hasta que esta
+     termina de subir. Es lo que impide que se promedien dos opacidades. */
+  .hero__video[data-previa],
+  .hero__poster[data-previa],
+  .hero__capa[data-previa] {
+    opacity: 1;
+    z-index: 1;
+  }
+
   .hero__video[data-activa],
   .hero__poster[data-activa],
   .hero__capa[data-activa] {
     opacity: 1;
+    z-index: 2;
+    transition: opacity var(--dur-hero-fundido) var(--ease-editorial);
   }
 
   /* Con el video en marcha el póster sobra: se funde y no queda una imagen
@@ -418,12 +436,27 @@ const hayCarrusel = estados.length > 1
 
     if (capas.length === 0) return
 
-    let activa = 0
+    // Cuántos ESTADOS hay, que no es cuántas capas: el estado 0 lo pintan dos
+    // elementos (el póster y el video encima). Contar capas hacía que el
+    // recorrido automático pasara por un estado inexistente y el hero se
+    // quedara en negro una vuelta entera.
+    const estados = new Set(capas.map((capa) => Number(capa.dataset.capa))).size
+
+    // Arranca en -1 para que el primer `mostrar(0)` no se descarte por repetido.
+    let activa = -1
     const mostrar = (indice: number) => {
+      // Repetir el estado actual borraría la marca de capa saliente en mitad del
+      // fundido y la de abajo desaparecería de golpe. Pasa de verdad: en escritorio
+      // el puntero entra al indicador (que ya cambia el estado) y después hace clic.
+      if (indice === activa) return
+      const anterior = activa
       activa = indice
       capas.forEach((capa) => {
-        const suya = Number(capa.dataset.capa) === indice
+        const propia = Number(capa.dataset.capa)
+        const suya = propia === indice
         capa.toggleAttribute('data-activa', suya)
+        // Apilado: la que se va queda marcada como saliente hasta el próximo relevo.
+        capa.toggleAttribute('data-previa', !suya && propia === anterior)
       })
       indicadores.forEach((boton, i) => boton.setAttribute('aria-current', i === indice ? 'true' : 'false'))
       // El video solo corre en su propia capa: fuera de ella se pausa para no
@@ -466,8 +499,8 @@ const hayCarrusel = estados.length > 1
       // El carrusel no autoavanza en móvil ni con movimiento reducido.
       const movil = window.matchMedia('(max-width: 759px)').matches
       const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      if (movil || reducido || capas.length < 2 || reloj) return
-      reloj = window.setInterval(() => mostrar((activa + 1) % capas.length), INTERVALO)
+      if (movil || reducido || estados < 2 || reloj) return
+      reloj = window.setInterval(() => mostrar((activa + 1) % estados), INTERVALO)
     }
 
     hero.addEventListener('mouseenter', detener)
