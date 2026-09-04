@@ -156,8 +156,11 @@ const hayMegamenu = materias.length >= 4
   transition:persist="menu-movil"
 >
   <div class="menu-movil__cabecera">
+    {/* Horizontal y no apilado: excepción declarada del diseño (2026-08-18) a la
+        regla que asigna la apilada a pie y menú móvil. Apilada, el wordmark
+        —tres veces más ancho que el iso— queda descuadrado en una barra de 44px. */}
     <a class="menu-movil__marca" href="/" aria-label="Cerámica Carabobo — inicio">
-      <Lockup variante="apilada" />
+      <Lockup variante="horizontal" />
     </a>
     <button class="menu-movil__cerrar" type="button" data-cierra-menu>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -479,7 +482,6 @@ const hayMegamenu = materias.length >= 4
     z-index: var(--z-modal);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     background: var(--color-surface-brand);
     color: var(--color-text-on-dark);
     padding: var(--space-6) var(--space-gutter-page);
@@ -507,7 +509,14 @@ const hayMegamenu = materias.length >= 4
     justify-content: space-between;
   }
 
+  /* La cabecera del menú es una barra de 44px (el diseño la define así al
+     cambiar el lockup a la variante horizontal). El lockup mide 38 de alto, así
+     que el enlace declara el alto: sin esto el área tocable quedaba bajo el
+     mínimo de 44px y lo cazaba la prueba 11 del checklist. */
   .menu-movil__marca {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height-md);
     color: var(--color-neutral-0);
   }
 
@@ -521,6 +530,14 @@ const hayMegamenu = materias.length >= 4
     border: 0;
     color: inherit;
     cursor: pointer;
+  }
+
+  /* Las tres opciones arrancan 40px bajo la cabecera. Antes el panel repartía
+     con `space-between` y las mandaba al pie, que era el planteamiento viejo:
+     el diseño lo corrigió el 2026-08-18 porque dejaba un hueco enorme entre el
+     logo y los enlaces (`NOTAS-SESION-DISENO.md`). */
+  .menu-movil__nav {
+    margin-top: 40px;
   }
 
   .menu-movil__nav ul {

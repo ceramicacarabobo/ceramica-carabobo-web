@@ -19,7 +19,7 @@ Fuentes de verdad, en orden de autoridad ante una duda visual:
 | # | Bloque | Estado |
 |---|---|---|
 | 2.1 | Fundaciones: `<Imagen>` (Sanity → assets en build), `<Seccion>`, `<Reveal>`, `<Boton>` | ✅ |
-| 2.2 | Cáscara: telón de entrada, header (transparente sobre hero → sólido), megamenú, menú móvil anclado al pie, footer de 3 columnas | ✅ |
+| 2.2 | Cáscara: telón de entrada, header (transparente sobre hero → sólido), megamenú, menú móvil (opciones 40px bajo la cabecera; el anclado al pie era el planteamiento viejo, corregido por el diseño el 2026-08-18), footer de 3 columnas | ✅ |
 | 2.3 | Contenido de referencia: `scripts/importar-contenido.mjs` (idempotente) — 69 assets, 6 materias, 29 productos de Serie Venezuela, home y ajustes | ✅ |
 | 2.4 | Secciones de la home: hero, ambientes, cita, proyectos, historia, profesionales, encuéntranos | ✅ |
 | 2.5 | QA de la fase: comparación lado a lado por rango + reglas duras de `Responsividad v0` §04 | pendiente |

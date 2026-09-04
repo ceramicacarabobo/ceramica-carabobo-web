@@ -261,11 +261,19 @@ const etiquetaBoton = video?.titulo
     filter: blur(28px) saturate(1.1) brightness(0.62);
   }
 
+  /* La portada del video casi nunca tiene la proporción del tile, así que se
+     encaja entera (`object-fit: contain`) y el sobrante lo rellena la capa
+     borrosa de atrás. Tiene que quedar CENTRADA en los dos ejes: con
+     `align-items` sola centraba en vertical y en horizontal se pegaba al borde
+     izquierdo, así que el marco borroso aparecía solo del lado derecho. No se
+     nota con una portada 16:9 —llena el ancho y solo sobra alto— pero sí con
+     cualquier otra que suba el cliente. */
   .profesionales :global(.profesionales__marco[data-portada='video'] .profesionales__foto) {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     /* El wrapper de imagen trae superficie propia para reservar la proporción;
        acá estorba: taparía el fondo oscuro de las bandas. */
     background: transparent;
