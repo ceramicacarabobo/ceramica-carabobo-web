@@ -21,10 +21,24 @@ import Historia from '~/components/home/Historia.astro'
 import Profesionales from '~/components/home/Profesionales.astro'
 import Encuentranos from '~/components/home/Encuentranos.astro'
 import {getAjustes, getDistribuidores, getHome} from '~/lib/data'
+import {empresa} from '~/lib/estructurados'
 
 const [ajustes, home, distribuidores] = await Promise.all([getAjustes(), getHome(), getDistribuidores()])
 
 const hayHero = Boolean(home.hero.titular || home.hero.videoUrl || home.hero.capas.length > 0)
+
+// Datos estructurados de la empresa. Van solo acá: se declaran una vez por sitio.
+const sitio = (Astro.site ?? new URL(Astro.url.origin)).href
+const datosEmpresa = empresa({
+  nombre: ajustes.titulo,
+  sitio,
+  descripcion: ajustes.descripcion,
+  direccion: ajustes.direccion,
+  telefono: ajustes.telefono,
+  correo: ajustes.correo,
+  anioFundacion: ajustes.anioFundacion,
+  redes: ajustes.redes.map((red) => red.url).filter(Boolean),
+})
 ---
 
 <Base titulo={ajustes.titulo} descripcion={ajustes.descripcion} sobreHero={hayHero}>
@@ -37,6 +51,8 @@ const hayHero = Boolean(home.hero.titular || home.hero.videoUrl || home.hero.cap
   <Historia historia={home.historia} />
   <Profesionales profesionales={home.profesionales} />
   <Encuentranos encuentranos={home.encuentranos} distribuidores={distribuidores} />
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(datosEmpresa)} />
 
   {
     !hayHero && (

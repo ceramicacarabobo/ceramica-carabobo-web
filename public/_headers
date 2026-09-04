@@ -1,0 +1,24 @@
+# Cabeceras del sitio. Cloudflare las aplica por ruta; el adaptador de Astro
+# añade a este archivo, en el build, el Cache-Control inmutable de /_astro/*.
+#
+# Acá van SOLO las que no cambian ningún comportamiento de la web:
+#   - nosniff        el navegador deja de adivinar el tipo de un archivo y
+#                    respeta el Content-Type que mandamos.
+#   - Referrer-Policy  al salir a un sitio externo (Instagram, YouTube) se manda
+#                    el origen, no la dirección completa de la página.
+#   - Permissions-Policy  se apagan cámara, micrófono y geolocalización. El sitio
+#                    no usa ninguna: comprobado, no hay una sola llamada a esas
+#                    API en el código.
+#
+# PENDIENTES A PROPÓSITO, por evaluar antes de ponerlas (`docs/pendientes.md`):
+#   - Strict-Transport-Security: obliga HTTPS y no se puede revertir hasta que
+#     expire. Va con `max-age` corto primero, y nunca con `preload`.
+#   - Content-Security-Policy: es la única que puede romper cosas, y en silencio.
+#     Hay que resolver tres puntos —los dos scripts en línea (bandera de
+#     movimiento y telón), el iframe de YouTube, y el Studio de /admin, que
+#     necesita su propia política— y montarla primero en Report-Only.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()

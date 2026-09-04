@@ -36,17 +36,63 @@ transform puro con `requestAnimationFrame`, apagado en móvil y con movimiento r
 
 ## Prioridad 2 — SEO
 
-- **No hay sitemap.** `/sitemap.xml` da 404 con 132 páginas, 126 de ellas fichas de producto.
-  Es lo más rentable del lote.
-- **No hay datos estructurados** (`ld+json`): producto y negocio local.
+- ~~**Sitemap**~~ **HECHO el 2026-09-04**: `src/pages/sitemap.xml.ts`, 130 direcciones (todas
+  verificadas contra el build; `/admin` queda fuera a propósito). Sin `lastmod`, `changefreq` ni
+  `priority` — los dos últimos los ignora Google y el primero sería falso, porque el sitio se
+  construye entero de una vez. `robots.txt` ya lo apuntaba.
+- ~~**Datos estructurados**~~ **HECHOS los que el dato permite**, el 2026-09-04
+  (`src/lib/estructurados.ts`): la empresa en el inicio (`Organization`) y cada diseño en su página
+  (`Product`, con la ficha técnica entera como `additionalProperty`). Los distribuidores ya los
+  tenían desde la Fase 5.
 - Correcto ya: título único, descripción de 118-174 caracteres, un solo `h1`, canonical, 5 etiquetas
   Open Graph, textos alternativos y los 575 redirects 301.
 
+### Datos estructurados — verificar antes de producción
+
+Cosas que se dejaron FUERA a propósito, porque publicar un dato estructurado equivocado es peor que
+no publicarlo: el buscador lo toma por bueno y lo muestra.
+
+1. **Coordenadas de las plantas** (`geo`). El handoff las marca como APROXIMADAS y están pendientes
+   del cliente. Por eso la empresa se declara `Organization` y no `LocalBusiness`: `LocalBusiness`
+   espera coordenadas y horario en formato cerrado, y no tenemos ni lo uno ni lo otro. Cuando
+   lleguen: agregar `geo` y evaluar el cambio de tipo.
+2. **Horario de atención.** En el CMS es texto libre; `openingHours` exige un formato cerrado.
+   Mismo criterio: o se estructura el campo, o no se publica.
+3. **La dirección de la empresa es UN campo de texto libre.** `estructurados.ts` la parte a mano
+   (salto de línea → calle; coma → ciudad / estado) y hoy sale bien, pero si el editor cambia el
+   formato el dato se desarma en silencio. **Lo correcto es separar ciudad y estado en el schema
+   del CMS.**
+4. **Sin `offers` en producto**, y es decisión: Cerámica Carabobo no vende en línea, así que no hay
+   precio ni disponibilidad. Consecuencia a tener presente: **Google normalmente NO muestra la ficha
+   enriquecida de producto sin precio**, así que el beneficio de este bloque es que entienda el
+   catálogo, no que salgan estrellas ni precios.
+5. **Logo.** No se emite `logo`: los dos que tenemos son SVG y Google pide un raster para ese campo.
+   Hace falta un PNG de 112px o más.
+6. **Correo.** `ajustes.correo` dice `ventas@ceramicacarabobo.com` y el singleton de contacto usa
+   `lapieldetuhogar@ceramica-carabobo.com` (ojo: distinto dominio). El dato estructurado publica el
+   primero. **Confirmar cuál es el bueno.**
+
 ## Prioridad 3 — seguridad
 
-- **Ninguna cabecera de seguridad.** Faltan `Content-Security-Policy`,
-  `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`.
-  Se declaran en `_headers`, que ya existe. La CSP encaja con la regla de autosuficiencia.
+- ~~**Cabeceras sin riesgo**~~ **HECHAS el 2026-09-04** en `public/_headers`:
+  `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` y
+  `Permissions-Policy` apagando cámara, micrófono, geolocalización, pago y USB — comprobado que el
+  sitio no usa ninguna de esas API.
+- **`Strict-Transport-Security` — por evaluar.** Obliga HTTPS y **no se puede revertir** hasta que
+  expire en cada navegador que ya la recibió. Plan: `max-age` de un día primero, subirlo tras el
+  lanzamiento, y **nunca `preload`**, que es prácticamente irreversible.
+- **`Content-Security-Policy` — por evaluar.** Es la única que puede romper cosas, y falla en
+  silencio: el navegador bloquea y no se ve nada raro. Encaja muy bien con la regla de
+  autosuficiencia (ningún CDN externo), pero hay tres puntos que resolver antes:
+  1. **Dos scripts en línea** — la bandera de movimiento (`layouts/Base.astro`) y el telón
+     (`shell/Telon.astro`). Necesitan su hash, y hay que automatizarlo o se rompe cada vez que se
+     los toque.
+  2. **El iframe de YouTube**, que solo aparece al pulsar play: `frame-src youtube-nocookie.com`.
+  3. **El `/admin`**: el Studio de Sanity se sirve del mismo dominio, habla con la API de Sanity y
+     usa código dinámico. Una política pensada para el sitio público muy probablemente lo rompa —
+     necesita la suya, por ruta.
+  Plan: montarla en `Report-Only`, pasarle el arnés por las cinco páginas y por el admin, y activarla
+  después.
 - Verificado que está bien: cero secretos en el bundle público, cero peticiones a `cdn.sanity.io`,
   sitio estático sin servidor ni base de datos, y el admin tras el inicio de sesión de Sanity.
 
