@@ -482,8 +482,10 @@ const hayMegamenu = materias.length >= 4
     z-index: var(--z-modal);
     display: flex;
     flex-direction: column;
-    background: var(--color-surface-brand);
-    color: var(--color-text-on-dark);
+    /* Crema con tinta, como el prototipo. Estuvo en burdeos sin que ninguna
+       decisión lo respaldara. */
+    background: var(--color-surface-base);
+    color: var(--color-text-primary);
     padding: var(--space-6) var(--space-gutter-page);
     padding-top: max(var(--space-6), env(safe-area-inset-top));
     padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
@@ -517,7 +519,7 @@ const hayMegamenu = materias.length >= 4
     display: inline-flex;
     align-items: center;
     min-height: var(--control-height-md);
-    color: var(--color-neutral-0);
+    color: var(--color-brand-900);
   }
 
   .menu-movil__cerrar {
@@ -549,12 +551,13 @@ const hayMegamenu = materias.length >= 4
     align-items: center;
     min-height: 44px;
     padding-block: var(--space-3);
-    color: var(--color-text-on-dark);
+    color: var(--color-text-primary);
     font: var(--text-title-sm);
   }
 
-  .menu-movil__nav a[aria-current='page'] {
-    color: var(--color-brand-300);
+  .menu-movil__nav a[aria-current='page'],
+  .menu-movil__nav a:hover {
+    color: var(--color-brand-700);
   }
 
   @media (min-width: 760px) {
@@ -611,13 +614,23 @@ const hayMegamenu = materias.length >= 4
     const abreMenu = cabecera.querySelector<HTMLButtonElement>('[data-abre-menu]')
     const cierraMenu = menuMovil?.querySelector<HTMLButtonElement>('[data-cierra-menu]')
 
-    // Banda sólida al scrollear. El umbral es la altura de la propia banda.
+    // Banda sólida al scrollear. El umbral es el 75% del alto del HERO, no unos
+    // píxeles: la cabecera transparente es parte de la primera pantalla y tiene
+    // que aguantar ahí hasta que el hero se está yendo de verdad. Con 8px se
+    // volvía sólida al primer gesto, todavía sobre la foto. Sin hero (páginas
+    // internas y home sin contenido) manda el 60% de la ventana, que es el
+    // respaldo del prototipo.
+    const umbral = () => {
+      const hero = document.querySelector<HTMLElement>('[data-hero]')
+      return hero ? hero.offsetHeight * 0.75 : window.innerHeight * 0.6
+    }
     const alScrollear = () => {
-      if (window.scrollY > 8) cabecera.setAttribute('data-scrolled', '')
+      if (window.scrollY > umbral()) cabecera.setAttribute('data-scrolled', '')
       else cabecera.removeAttribute('data-scrolled')
     }
     alScrollear()
     window.addEventListener('scroll', alScrollear, {passive: true})
+    window.addEventListener('resize', alScrollear, {passive: true})
 
     const cerrarMega = () => {
       if (!megamenu || !disparadorMega) return
