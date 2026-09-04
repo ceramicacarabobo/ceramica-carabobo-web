@@ -20,7 +20,7 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - El checklist de aceptación (12 pruebas, en `design/Requisitos tecnicos v0.dc.html`) es el criterio de cierre de QA.
 - `design/NOTAS-SESION-DISENO.md` es la bitácora de la sesión de diseño — contexto histórico, no instrucciones.
 
-## Estado (2026-09-02)
+## Estado (2026-09-04)
 
 - Fase 0 (modelo de contenido) ✅. Bundle de diseño completo en `design/` (107 archivos, texto + fotos + video) ✅.
 - **Fase 1 (esqueleto) cerrada** — QA en línea: https://qa.ceramica-carabobo.workers.dev (preview en https://preview.ceramica-carabobo.workers.dev). Sanity `egpui9al`; publicar reconstruye el sitio solo (webhook → Workers Builds). Datos del entorno en `docs/fase-1-esqueleto.md` §1.bis.
@@ -33,6 +33,9 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - **El prototipo del diseño se ejecuta**: `cd design/publicar && python3 -m http.server 4500`. Es la referencia de fidelidad; se compara con `scripts/qa/diff.mjs` y `scripts/qa/medir.mjs`.
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.
+- **`docs/pendientes.md` es el punto de entrada para retomar**: qué falta, en qué orden y por qué. Lo hecho vive en `plan-proyecto.md` §10-§16.
+- El **preview se retiró** (§16): se pasa del límite de CPU del plan gratuito. El Studio ya no trae Presentation Tool.
+- El **caché de build de Cloudflare está activo**: el build pasó de 35 min a 1m33s. Si el panel dice "latest build failed", leer el log: puede ser el DESPLIEGUE y no la construcción — se rescata con `npx wrangler deploy -c dist/client/wrangler.json`.
 
 ## Convenciones del código (Fase 1)
 
