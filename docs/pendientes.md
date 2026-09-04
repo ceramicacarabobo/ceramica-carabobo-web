@@ -1,6 +1,6 @@
 # Pendientes — estado al 2026-09-04
 
-Punto de entrada para retomar. Lo que está hecho vive en `plan-proyecto.md` §10-§19;
+Punto de entrada para retomar. Lo que está hecho vive en `plan-proyecto.md` §10-§20;
 acá solo lo que falta, ordenado por prioridad.
 
 ## Decisiones pendientes — no son trabajo, son un sí o un no tuyo
@@ -10,12 +10,19 @@ acá solo lo que falta, ordenado por prioridad.
 | D1 | Parallax del home | ~~Pendiente~~ **RESUELTA por el tramo v2**: el mecanismo no tenía consumidor porque la banda a sangre a la que servía había desaparecido en una recomposición. La banda de obra nueva lo revive. Implementado. |
 | D2 | **Borrar Proyectos del CMS** | Esperando que confirmes la versión definitiva del home. Hoy el contenido se conserva y la sección no se muestra. |
 
-## Para avisarle al lado de diseño
+## Tanda 2 de la auditoría de estados — pendiente
 
-El **estado degradado del comparador entra en bucle infinito** en un navegador real y tumba la
-página entera (React, "Maximum update depth exceeded"): el `onError` vuelve a marcar la fila en cada
-render y el ref se recrea con él. Se disparó solo mientras faltaba una foto. Detalle en
-`plan-proyecto.md` §19. **No afecta a nuestra implementación**, que marca el fallo una sola vez.
+De la auditoría del 2026-09-04 (`plan-proyecto.md` §20). La tanda 1 está aplicada y verificada;
+queda lo fino:
+
+- **Filete entre filas de Encuéntranos**: usamos `--color-surface-sunken` (`#ECE9E4`), un token de
+  superficie, como color de borde; el prototipo usa `#E4E1DC`, que no tiene token y va como valor
+  local marcado. La primera fila sí coincide (`#D9D9D9`).
+- **Panel de ficha del catálogo**: 880 contra 882px, por el `box-sizing` del borde.
+
+Cerradas y no reabrir: el header sólido en móvil es correcto (`Responsividad v0` lo fija por
+escrito), y el alto de cabecera de las páginas internas queda unificado en 85px por decisión del
+usuario.
 
 ## Prioridad 1 — movimiento del home (auditoría del agente de diseño, 2026-09-04)
 

@@ -566,3 +566,90 @@ divisor y el borde del recorte coinciden dentro de 1px en todas las posiciones; 
 Historia deja la capa saliente opaca en z-index 1 mientras la entrante sube; el parallax da −8,2px
 entrando y +6,7px saliendo sobre un tope de ±13,5px, y no corre ni en móvil ni con movimiento
 reducido; y los dos casos de capa caída nombran el diseño correcto sin tumbar la página.
+
+---
+
+## 20. Auditoría de estados y tanda 1 de correcciones (2026-09-04)
+
+### Por qué
+
+Seis defectos aparecidos el mismo día —menú móvil anclado al pie y en burdeos, portada del video sin
+centrar, umbral del header en 8px, banda que aparece de golpe— compartían una causa. La Fase 2 midió
+la fidelidad **por sección y en capturas quietas**, y por eso las secciones dan al píxel. Lo que
+depende de una **acción** (bajar, abrir un panel, cambiar de ancho) se verificó de forma funcional
+—¿abre?, ¿cierra?, ¿mide 44px?— pero **nunca se comparó contra el prototipo**. Ahí se coló todo.
+
+### La auditoría
+
+Tres subagentes en paralelo, por zonas que no se pisan (cabecera · capas y pie · estados
+interactivos de las secciones), midiendo contra el prototipo a 1440, 1024 y 390. Se les pidió
+**medir, no juzgar**: reportar el número de los dos lados, clasificar cada diferencia en (a)
+implementación, (b) selectores que no apuntan a lo mismo, (c) contenido distinto, y buscar si había
+decisión registrada. El juicio quedó del lado de la coordinación.
+
+**109 comprobaciones, 21 diferencias reales.** Repartidas de forma muy desigual:
+
+| Zona | Comprobaciones | Diferencias |
+|---|---|---|
+| Secciones y sus estados interactivos | ~25 | **2** |
+| Cáscara (cabecera, megamenú, menú móvil, pie) | ~84 | **19** |
+
+### Los tres antipatrones, con evidencia
+
+1. **Token elegido por NOMBRE y no por VALOR.** Los enlaces del menú móvil usaban
+   `--text-title-sm` ("título light de card", 300). El que correspondía es `--text-heading-lg`, que
+   es calco carácter por carácter de lo que declara el prototipo. Mismo patrón en Encuéntranos:
+   `--color-surface-sunken` —token de superficie— usado como color de borde. `Tokens v0` §10 tiene
+   la regla escrita: "auditar por VALOR y no por nombre". En las secciones se aplicó; en la cáscara
+   no.
+2. **Tokens generales de espaciado donde el diseño pone `clamp()` propios.** El pie usaba
+   `--space-section`, `--space-12/16`, `--space-10`. En escritorio los valores coincidían por
+   casualidad y en móvil el pie salía **19% más alto**.
+3. **Mecanismos simplificados**: `auto-fit` en vez de repartir por cantidad de materias, dos listas
+   en `grid` sin `gap`, y la banda del header cambiando de estado en vez de deslizarse.
+
+### Un hallazgo que corrige el método
+
+Reporté como defecto que la cabecera fuera sólida en móvil, midiendo el prototipo en marcha, que a
+390 la muestra transparente. **Estaba mal**: `design/Responsividad v0.dc.html`, fila "Header y nav",
+lo fija por escrito — *"La banda sólida es siempre sólida: no hay header transparente en móvil"*. El
+que no cumple su propia especificación es el prototipo. **Cuando el documento escrito y el prototipo
+en marcha discrepan, manda el documento.**
+
+### Tanda 1 (aplicada)
+
+- **Menú móvil**: tipografía al token correcto (500/22px), `gap: 4px` entre enlaces, padding 20px
+  uniforme.
+- **Pie**: `clamp()` propios en padding, gap de columnas y separación de la franja legal; `gap: 12px`
+  en las listas; el párrafo y la dirección al gris secundario; el teléfono con Work Sans y
+  `tabular-nums`; el correo subrayado.
+- **Megamenú**: las columnas salen de la CANTIDAD de materias (`repeat(var(--materias), 1fr)` desde
+  1024). Con `auto-fit` entraban 3 a 1024px, envolvía a dos filas y el panel pasaba de 394 a 628px.
+  Miniaturas a 4:3, que estaban cuadradas.
+- **Cabecera**: la banda crema ya no aparece, **baja**. El fondo vive en su propia capa
+  (`.cabecera__fondo`) que se desliza 240ms con la curva del prototipo, en los dos sentidos. Se dejó
+  de alternar `fixed`/`sticky`, que reservaba 63px en el flujo al cruzar el umbral y empujaba la
+  página entera de golpe; y el alto de banda (84→63) ahora transiciona.
+
+Se eligió una sola cabecera con el fondo deslizante en vez de portar las dos piezas del prototipo:
+dos barras significan dos `<nav>` landmarks y el doble de paradas de teclado, y hay que sostener
+`aria-hidden` + `inert` en la inactiva. El resultado visible es el mismo.
+
+**Divergencia justificada, anotada:** el pie es ~115px más alto que el prototipo en teléfono porque
+nuestros enlaces miden 44px de área tocable (prueba 11 del checklist) y los del prototipo 21. Manda
+el checklist.
+
+### El arnés que faltaba: `scripts/qa/estados.mjs`
+
+`diff.mjs` compara secciones en capturas quietas. `estados.mjs` compara **estados**: prepara la
+página (scroll, panel abierto), mide lo mismo en los dos lados y compara clave por clave, con
+tolerancias declaradas. Levanta los dos servidores solo. Hoy: **26 comprobaciones, 0 en falla**.
+
+Es lo que faltaba en el arnés y la razón por la que nada de esto saltó antes.
+
+### Pendiente: tanda 2
+
+Filete entre filas de Encuéntranos (`#E4E1DC`, hoy `#ECE9E4`) y el panel de ficha del catálogo
+(880 contra 882px, `box-sizing` del borde). Decidido dejar unificado el alto de cabecera de las
+páginas internas (85px), contra los 63/56/56 del prototipo: una sola cáscara es condición del
+proyecto y el prototipo tiene un archivo por página.

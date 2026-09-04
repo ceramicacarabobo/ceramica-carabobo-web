@@ -41,7 +41,7 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
       <ul class="pie__lista">
         {ajustes.direccion && <li class="pie__dato">{ajustes.direccion}</li>}
         {telefonoEnlace && (
-          <li><a class="pie__enlace" href={`tel:${telefonoEnlace}`}>{ajustes.telefono}</a></li>
+          <li><a class="pie__enlace pie__enlace--telefono" href={`tel:${telefonoEnlace}`}>{ajustes.telefono}</a></li>
         )}
         {ajustes.correo && (
           <li><a class="pie__enlace pie__enlace--correo" href={`mailto:${ajustes.correo}`}>{ajustes.correo}</a></li>
@@ -63,12 +63,15 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
      declara `background:#F5F3F0; border-top:1px solid #D9D9D9`.
      Estaba invertido: fondo oscuro con el juego de tokens `on-dark`. Los seis
      colores del prototipo ya existían como tokens; no se inventó ninguno. */
+  /* El pie declara su propio ritmo con `clamp()` y NO con los tokens generales
+     de espaciado: son curvas distintas y en móvil la diferencia se acumula (el
+     pie salía 19% más alto, medido). Valores literales del prototipo. */
   .pie {
     background: var(--color-surface-base);
     border-top: var(--border-width) solid var(--color-border-hairline);
     color: var(--color-text-secondary);
-    padding: var(--space-section) var(--space-gutter-page) var(--space-10);
-    padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
+    padding: clamp(56px, 8vw, 104px) clamp(20px, 5vw, 72px) 32px;
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
   }
 
   .pie__interior,
@@ -79,7 +82,8 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
 
   .pie__interior {
     display: grid;
-    gap: var(--space-12);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
   }
 
   .pie__lockup {
@@ -88,10 +92,10 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
   }
 
   .pie__texto {
-    margin-top: var(--space-6);
-    max-width: 52ch;
+    margin-top: 24px;
+    max-width: 38ch;
     font: var(--text-body-15);
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
   }
 
   .pie__titulo {
@@ -99,8 +103,11 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
     margin-bottom: var(--space-4);
   }
 
+  /* 12px entre enlaces. Estaba en `grid` sin `gap`, así que quedaban pegados y
+     solo los separaba su propio alto mínimo. */
   .pie__lista {
     display: grid;
+    gap: 12px;
   }
 
   .pie__enlace,
@@ -112,8 +119,12 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
     font: var(--text-body-base);
   }
 
-  .pie__dato {
-    color: var(--color-text-muted);
+  /* El teléfono lleva tratamiento propio en el diseño: es el único dato del pie
+     que se lee como cifra y no como texto. */
+  .pie__enlace--telefono {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 
   .pie__enlace:hover {
@@ -125,10 +136,12 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
      la regla de "brand como acento". Sin esto el pie no tiene ningún acento. */
   .pie__enlace--correo {
     color: var(--color-text-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .pie__legal {
-    margin-top: var(--space-16);
+    margin-top: clamp(48px, 6vw, 72px);
     padding-top: var(--space-6);
     border-top: var(--border-width) solid var(--color-border-hairline);
     color: var(--color-text-muted);
@@ -148,7 +161,6 @@ const telefonoEnlace = ajustes.telefono?.replace(/[^\d+]/g, '')
   @media (min-width: 1024px) {
     .pie__interior {
       grid-template-columns: 2fr 1fr 1fr;
-      gap: var(--space-16);
     }
 
     .pie__marca {

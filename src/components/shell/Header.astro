@@ -44,6 +44,9 @@ const hayMegamenu = materias.length >= 4
 
 <header class="cabecera" data-cabecera data-sobre-hero={sobreHero ? '' : undefined} transition:persist="cabecera">
   <div class="cabecera__banda">
+    {/* El fondo va en su propia capa para poder BAJAR. Ver el bloque
+        `.cabecera__fondo` en los estilos. */}
+    <span class="cabecera__fondo" aria-hidden="true"></span>
     <a class="cabecera__marca" href="/" aria-label="Cerámica Carabobo — inicio">
       <Lockup variante="horizontal" />
     </a>
@@ -124,12 +127,15 @@ const hayMegamenu = materias.length >= 4
             </ul>
           </div>
 
-          <ul class="megamenu__materias">
+          {/* Las columnas salen de CUÁNTAS materias hay, no de cuántas quepan:
+              `auto-fit` no conoce la cantidad y a 1024px dejaba 3 por fila,
+              envolvía a dos y el panel casi duplicaba su alto. */}
+          <ul class="megamenu__materias" style={`--materias: ${materias.length}`}>
             {materias.map((materia) => (
               <li>
                 <a class="materia" href={`/catalogo#materia-${encodeURIComponent(materia.nombre.toLowerCase())}`}>
                   <span class="materia__foto">
-                    <Imagen imagen={materia.fotoTextura} ratio="1 / 1" sizes="200px" ancho={400} />
+                    <Imagen imagen={materia.fotoTextura} ratio="4 / 3" sizes="200px" ancho={400} />
                   </span>
                   <span class="materia__nombre">{materia.nombre}</span>
                   <span class="materia__detalle">
@@ -203,22 +209,37 @@ const hayMegamenu = materias.length >= 4
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
-    background: var(--color-surface-base);
     color: var(--color-text-primary);
+    transition: color var(--dur-base) var(--ease-out);
+  }
+
+  /* La banda crema no aparece: BAJA. En el prototipo son dos piezas —una
+     cabecera transparente que se va con la página y una banda fija que entra
+     deslizando en 240ms—; acá es una sola cabecera y el que se desliza es su
+     fondo, que da el mismo movimiento en los dos sentidos sin duplicar la nav
+     (dos <nav> serían dos landmarks y el doble de paradas de teclado).
+     Antes el fondo era del propio <header> y solo fundía de color: la banda
+     aparecía de golpe. */
+  .cabecera__fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-surface-base);
     border-bottom: var(--border-width) solid var(--color-border-hairline);
-    transition:
-      background-color var(--dur-base) var(--ease-out),
-      border-color var(--dur-base) var(--ease-out),
-      color var(--dur-base) var(--ease-out);
+    transition: transform var(--dur-base) var(--ease-out);
   }
 
   /* Alto de banda: 63px la banda compacta (la que baja al scrollear) y 84px
      cuando la cabecera va transparente sobre el hero. Valores del prototipo. */
   .cabecera__banda {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--space-6);
     min-height: 63px;
+    /* El alto también transiciona: sobre el hero la banda mide 84 y compacta
+       63, y ese salto de 21px era la otra mitad del corte. */
+    transition: min-height var(--dur-base) var(--ease-out);
     padding-inline: var(--space-gutter-page);
     padding-top: env(safe-area-inset-top);
   }
@@ -338,11 +359,19 @@ const hayMegamenu = materias.length >= 4
       min-height: 84px;
     }
 
-    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) {
+    /* Fija en los DOS estados: alternar `fixed` y `sticky` reservaba 63px en el
+       flujo justo al cruzar el umbral y empujaba la página entera hacia abajo
+       de golpe. */
+    .cabecera[data-sobre-hero] {
       position: fixed;
       inset-inline: 0;
-      background: transparent;
-      border-bottom-color: transparent;
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) .cabecera__fondo {
+      transform: translateY(-100%);
+    }
+
+    .cabecera[data-sobre-hero]:not([data-scrolled]):not([data-panel-abierto]) {
       color: var(--color-text-on-dark);
     }
 
@@ -444,7 +473,8 @@ const hayMegamenu = materias.length >= 4
 
   .megamenu__materias {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    /* Dos columnas hasta tablet; desde 1024, una fila con todas (ver abajo). */
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
   }
 
@@ -454,9 +484,15 @@ const hayMegamenu = materias.length >= 4
     color: var(--color-text-primary);
   }
 
+  @media (min-width: 1024px) {
+    .megamenu__materias {
+      grid-template-columns: repeat(var(--materias, 5), minmax(0, 1fr));
+    }
+  }
+
   .materia__foto {
     display: block;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     background: var(--color-surface-sunken);
   }
@@ -486,9 +522,10 @@ const hayMegamenu = materias.length >= 4
        decisión lo respaldara. */
     background: var(--color-surface-base);
     color: var(--color-text-primary);
-    padding: var(--space-6) var(--space-gutter-page);
-    padding-top: max(var(--space-6), env(safe-area-inset-top));
-    padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
+    /* 20px en las cuatro direcciones, como el prototipo. */
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
     animation: menu-entra var(--dur-base) var(--ease-out) both;
   }
 
@@ -542,17 +579,23 @@ const hayMegamenu = materias.length >= 4
     margin-top: 40px;
   }
 
+  /* 4px entre enlaces. Estaba en `grid` sin `gap` y quedaban pegados. */
   .menu-movil__nav ul {
     display: grid;
+    gap: 4px;
   }
 
   .menu-movil__nav a {
     display: flex;
     align-items: center;
     min-height: 44px;
-    padding-block: var(--space-3);
+    padding-block: 12px;
     color: var(--color-text-primary);
-    font: var(--text-title-sm);
+    /* `--text-heading-lg` es el calco exacto de lo que declara el prototipo para
+       estos enlaces (500, mismo clamp, 1.2). Estaba `--text-title-sm`, que es el
+       título de card: 300 y dos píxeles más chico. Se eligió por nombre y no por
+       valor, que es justo lo que `Tokens v0` §10 manda no hacer. */
+    font: var(--text-heading-lg);
   }
 
   .menu-movil__nav a[aria-current='page'],
