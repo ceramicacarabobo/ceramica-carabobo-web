@@ -17,9 +17,16 @@
  *
  * Fuente: `design/publicar/contacto.html`, la misma que el resto.
  *
+ * ── La foto del hero ───────────────────────────────────────────────────────
+ * El prototipo usa `uploads/ambiente-piedra.png`, que es foto de EJEMPLO (ver
+ * `design/publicar/LEEME.md`). En su lugar va `baruta-gris-2.webp`: material
+ * real del cliente —Serie Venezuela—, y la única foto de ambiente apaisada en
+ * 16:9, que es la proporción que pide un hero a sangre (el resto del set es
+ * vertical y se recortaría entero). El asset ya está en el dataset porque es
+ * la foto de ambiente del producto Baruta Gris; su `_id` es el hash del
+ * archivo, así que referenciarlo no duplica el binario.
+ *
  * ── Lo que NO trae ─────────────────────────────────────────────────────────
- * La imagen del hero: el prototipo usa una foto de ambiente que el cliente
- * reemplaza. Se deja vacía a propósito y la sección compone igual.
  *
  * Las coordenadas de las dos plantas son las del prototipo y él mismo avisa
  * que son APROXIMADAS: la nota bajo el mapa lo dice en pantalla, y pedirlas es
@@ -52,6 +59,12 @@ const doc = {
     titular: 'Hablemos',
     bajada:
       'Ven a la planta a ver el material, escríbenos o llámanos. Atendemos obra residencial, arquitectos y distribuidores.',
+    imagen: {
+      _type: 'image',
+      // Ambiente de Baruta Gris, 2560×1440. El id es el hash del archivo.
+      asset: {_type: 'reference', _ref: 'image-19faed34ba3d3328c861a6f4acb7ad07703d97d0-2560x1440-webp'},
+      alt: 'Sala con piso de porcelanato Baruta Gris, formato 60×60',
+    },
   },
   visitaTitulo: 'Para reservar una visita',
   // Dos líneas, como el prototipo: el componente respeta el salto.
