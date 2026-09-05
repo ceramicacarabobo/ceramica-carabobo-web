@@ -78,21 +78,30 @@ no publicarlo: el buscador lo toma por bueno y lo muestra.
   `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` y
   `Permissions-Policy` apagando cámara, micrófono, geolocalización, pago y USB — comprobado que el
   sitio no usa ninguna de esas API.
-- **`Strict-Transport-Security` — por evaluar.** Obliga HTTPS y **no se puede revertir** hasta que
-  expire en cada navegador que ya la recibió. Plan: `max-age` de un día primero, subirlo tras el
-  lanzamiento, y **nunca `preload`**, que es prácticamente irreversible.
-- **`Content-Security-Policy` — por evaluar.** Es la única que puede romper cosas, y falla en
-  silencio: el navegador bloquea y no se ve nada raro. Encaja muy bien con la regla de
-  autosuficiencia (ningún CDN externo), pero hay tres puntos que resolver antes:
-  1. **Dos scripts en línea** — la bandera de movimiento (`layouts/Base.astro`) y el telón
-     (`shell/Telon.astro`). Necesitan su hash, y hay que automatizarlo o se rompe cada vez que se
-     los toque.
-  2. **El iframe de YouTube**, que solo aparece al pulsar play: `frame-src youtube-nocookie.com`.
-  3. **El `/admin`**: el Studio de Sanity se sirve del mismo dominio, habla con la API de Sanity y
-     usa código dinámico. Una política pensada para el sitio público muy probablemente lo rompa —
-     necesita la suya, por ruta.
-  Plan: montarla en `Report-Only`, pasarle el arnés por las cinco páginas y por el admin, y activarla
-  después.
+- **`Strict-Transport-Security` — preparada, se activa EL DÍA DEL LANZAMIENTO.** No se pone en el
+  QA por dos razones: `qa.ceramica-carabobo.workers.dev` cuelga de `workers.dev`, que es un dominio
+  compartido por todos los Workers de Cloudflare y no nuestro; y no probaría nada, porque
+  producción va en otro dominio. La línea ya está escrita y comentada en `public/_headers` con su
+  escalera (1 día → 1 semana → 1 año, **nunca `preload`**). Verificado el 2026-09-05, y hay que
+  volver a comprobarlo antes de activarla: **el build no carga ni un recurso por `http://`**.
+- ~~**`Content-Security-Policy`**~~ **EN MODO REPORTE desde el 2026-09-05.** La genera
+  `scripts/generar-csp.mjs` al final de cada build y sale como
+  `Content-Security-Policy-Report-Only`: el navegador anota lo que bloquearía y **no bloquea nada**.
+  Para activarla de verdad: `CSP_MODO=bloqueo npm run build`.
+  - **Se genera, no se escribe**, porque lleva el hash de cada script en línea y varios cambian
+    cuando el cliente publica. Una lista escrita a mano se rompería en la primera edición.
+  - **Dos políticas**: el sitio público aguanta uno estricto; el Studio de `/admin` es una
+    aplicación que habla con Sanity y necesita la suya. `_headers` permite separarlas por ruta.
+  - **Los `application/ld+json` quedan fuera de los hashes** y está comprobado que no hace falta
+    incluirlos: son datos, el navegador no ejecuta su contenido, siguen en el DOM y no generan
+    violación. Hashearlos metía 129 hashes contra 17 — **6,8 KB de cabecera en cada respuesta**.
+  - **El modo reporte ya pagó su costo**: encontró dos cosas que ninguna documentación decía. El
+    bundler incrusta Open Sans como `data:` dentro del CSS (sin `font-src data:` el sitio caía a la
+    fuente del sistema) y el Studio trae su tipografía de `design-system-static.sanity.io`.
+  - Medido con el navegador en las cinco páginas, la 404 y el Studio, incluyendo abrir el megamenú
+    y recorrer la página: **0 violaciones**.
+  - **Antes de pasarla a bloqueo**, volver a correr esa medición. Es lo único que la valida: una CSP
+    falla en silencio.
 - Verificado que está bien: cero secretos en el bundle público, cero peticiones a `cdn.sanity.io`,
   sitio estático sin servidor ni base de datos, y el admin tras el inicio de sesión de Sanity.
 
@@ -106,6 +115,10 @@ no publicarlo: el buscador lo toma por bueno y lo muestra.
 - `SITE_URL` apunta al QA: los `canonical` y `og:url` dirían la dirección equivocada.
 - `PUBLIC_ENTORNO` bloquea la indexación (`robots.txt` con `Disallow: /` y `noindex`). Quitarlo.
 - Las tres cuentas a nombre del cliente. Sin eso no arranca la fase.
+- **Activar `Strict-Transport-Security`**: descomentar la línea de `public/_headers` con
+  `max-age=86400`. Subir a una semana y después a un año solo si no dio problemas. Nunca `preload`.
+- **Pasar la CSP a bloqueo** (`CSP_MODO=bloqueo npm run build`) después de comprobar que sigue
+  reportando limpio en el dominio de producción.
 
 ## Bloqueado por el cliente
 
