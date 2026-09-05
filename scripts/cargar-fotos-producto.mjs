@@ -45,8 +45,13 @@
 import {readFileSync, existsSync} from 'node:fs'
 import {basename} from 'node:path'
 
-const INVENTARIO = '/root/fotos-cliente/inventario.json'
-const RAIZ = '/root/fotos-cliente/extraido'
+// Segunda entrega del cliente (2026-09-05): 82 archivos nuevos, todos de Serie
+// Regular, que dan macro a 17 productos que solo tenían ambiente. Venezuela no
+// aportó material nuevo y perdió las 3 fotos sueltas de nombre ilegible, que el
+// cliente pidió descartar — el script ya las excluía por `tipo: 'suelta'`.
+// Las rutas se pueden apuntar a otra entrega con variables de entorno.
+const INVENTARIO = process.env.INVENTARIO || '/root/fotos-cliente/inventario-nuevo.json'
+const RAIZ = process.env.RAIZ_FOTOS || '/root/fotos-cliente/extraido-nuevo'
 const ENSAYO = process.argv.includes('--ensayo')
 
 const env = Object.fromEntries(
@@ -115,13 +120,28 @@ const clave = (s) => {
 // --- El material -----------------------------------------------------------
 const inventario = JSON.parse(readFileSync(INVENTARIO, 'utf8'))
 const porProducto = new Map()
+// El mismo archivo puede llegar dos veces con nombres distintos: la segunda
+// entrega trae `GUAPARO-PZA-2.jpg` y `GUAPARO-PZA-2-1.jpg`, idénticos byte a
+// byte. Sanity los deduplica como asset —el `_id` sale del hash— pero SIN esta
+// guarda el producto termina con la misma foto repetida en su galería.
+// Se compara por hash cuando el inventario lo trae; si no, por (ancho, alto,
+// bytes), que para un archivo idéntico coincide igual.
+const vistos = new Map()
+let repetidos = 0
 for (const f of inventario) {
-  if (f.tipo !== 'pieza' && f.tipo !== 'ambiente') continue // las 3 sueltas quedan fuera
+  if (f.tipo !== 'pieza' && f.tipo !== 'ambiente') continue // las sueltas quedan fuera
   if (!f.w) continue
   const k = clave(f.producto)
+  const huella = `${k}|${f.hash ?? `${f.w}x${f.h}x${f.bytes}`}`
+  if (vistos.has(huella)) {
+    repetidos++
+    continue
+  }
+  vistos.set(huella, f.rel)
   if (!porProducto.has(k)) porProducto.set(k, [])
   porProducto.get(k).push(f)
 }
+if (repetidos) console.log(`  (${repetidos} archivo(s) repetido(s) en la entrega, descartados)`)
 /**
  * ORDEN: una macro primero, después los ambientes, y al final las macros que
  * sobren. Lo manda `modelo-de-contenido.md` ("foto 1 = macro de la baldosa;
@@ -133,13 +153,21 @@ for (const f of inventario) {
  * Con este orden los cuatro huecos quedan en 1 macro + 3 ambientes: ningún
  * ambiente se pierde y lo que cae fuera son macros casi idénticas entre sí —
  * hay productos que trajeron hasta cinco de la misma baldosa.
+ *
+ * TOPE: el schema declara 8 por producto, así que acá se corta en 8. Lo que se
+ * descarta es siempre la cola de macros sobrantes —nunca un ambiente, que va
+ * antes en el orden— y son las menos útiles: la novena foto de un producto que
+ * ya tiene seis macros casi iguales. Si el dato no respetara su propio schema,
+ * el editor vería un aviso permanente en el Studio y aprendería a ignorarlos.
  */
+const TOPE_FOTOS = 8
 for (const [, fs] of porProducto) {
   const porAncho = (a, b) => b.w - a.w
   const macros = fs.filter((f) => f.tipo === 'pieza').sort(porAncho)
   const ambientes = fs.filter((f) => f.tipo !== 'pieza').sort(porAncho)
+  const ordenadas = [...macros.slice(0, 1), ...ambientes, ...macros.slice(1)]
   fs.length = 0
-  fs.push(...macros.slice(0, 1), ...ambientes, ...macros.slice(1))
+  fs.push(...ordenadas.slice(0, TOPE_FOTOS))
 }
 
 const ambienteDe = (f) => {

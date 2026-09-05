@@ -143,9 +143,15 @@ export default defineType({
       type: 'array',
       group: 'fotos',
       of: [{type: 'fotoProducto'}],
-      description: 'Hasta 4. La primera debe ser la macro de la baldosa; el resto, ambientes.',
+      description:
+        'La primera debe ser la macro de la baldosa; el resto, ambientes. La ficha del sitio muestra las CUATRO primeras: las demás quedan guardadas, disponibles para el home o para una galería futura.',
       validation: (rule) => [
-        rule.max(4),
+        // 8, no 4: la segunda entrega del cliente (2026-09-05) trae hasta nueve
+        // fotos de un mismo diseño y el material no cuesta nada guardarlo. Con
+        // el tope en 4, sesenta de los 126 productos mostraban aviso en el
+        // Studio, que es la forma más rápida de enseñarle a un editor a ignorar
+        // los avisos.
+        rule.max(8),
         // Si hay macro, va primera. Si el producto no tiene ninguna macro —hay 9
         // así en el catálogo del cliente, solo con foto de ambiente— es un hueco
         // de material, no un error de carga: se avisa, no se bloquea.
