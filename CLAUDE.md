@@ -35,6 +35,7 @@ Sitio para cliente que migra desde WordPress. **La planificación está cerrada 
 - **Los tokens se eligen por VALOR, no por nombre** (`Tokens v0` §10). Los tres antipatrones que costaron la auditoría del 2026-09-04 están en §20.
 - Node **22.12+** obligatorio (Astro 7). `npm run dev` levanta sitio y admin juntos.
 - Cambios de arquitectura durante la ejecución se registran en `docs/plan-proyecto.md`, no solo en el chat.
+- **Producción vive en las cuentas del cliente** desde el 2026-09-07: Sanity `dnjm4k7p`, repo `ceramicacarabobo/ceramica-carabobo-web`, worker `prd` en https://prd.ceramicacarabobo.workers.dev. Cuentas, IDs, cómo se conecta todo y las recetas para incidencias: **`docs/infraestructura-produccion.md`**. El QA sigue en la cuenta personal y los dos repos divergen a propósito en un commit (el nombre del worker).
 - **`docs/pendientes.md` es el punto de entrada para retomar**: qué falta, en qué orden y por qué. Lo hecho vive en `plan-proyecto.md` §10-§20.
 - El **preview se retiró** (§16): se pasa del límite de CPU del plan gratuito. El Studio ya no trae Presentation Tool.
 - **Tramo central del home rehecho (Propuesta 1 v2, 2026-09-04)**: sale Proyectos, entra 02 · Compara (comparador de arrastre), entra la banda de obra a sangre y Historia pasa de scroll anclado a riel de miniaturas. Renumeración 01-05. Referencia: `design/handoff-p1-v2/README.md` y `design/publicar/Propuesta 1 v2.dc.html` (la v1 sigue vigente para lo que no cambia). Detalle en `plan-proyecto.md` §19.
