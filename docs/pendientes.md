@@ -1,7 +1,22 @@
-# Pendientes — estado al 2026-09-04
+# Pendientes — estado al 2026-09-07
 
 Punto de entrada para retomar. Lo que está hecho vive en `plan-proyecto.md` §10-§20;
 acá solo lo que falta, ordenado por prioridad.
+
+## Dónde está el proyecto hoy (2026-09-07)
+
+**Producción montada en las cuentas del cliente y verificada.**
+https://prd.ceramicacarabobo.workers.dev · checklist **11 en verde** contra el sitio real.
+
+Comparado contra el QA: contenido idéntico en las 9 métricas (363 documentos, 126 productos,
+226 distribuidores, 478 fotos, 426 imágenes), mismas cabeceras, misma CSP en modo reporte,
+mismo sitemap. La única diferencia es el canonical, que apunta al dominio de cada uno.
+
+Cuentas, identificadores y recetas para incidencias: **`docs/infraestructura-produccion.md`**.
+
+**Lo siguiente es el cambio de dominio**, que es una operación aparte con su propia lista
+(§5 de ese documento). Hasta entonces el sitio vive en la dirección temporal y con la
+indexación bloqueada, a propósito.
 
 ## Decisiones pendientes — no son trabajo, son un sí o un no tuyo
 
