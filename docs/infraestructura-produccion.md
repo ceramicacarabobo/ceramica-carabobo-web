@@ -132,9 +132,30 @@ npx sanity cors list -p dnjm4k7p
 El dominio del cliente todavía apunta a su sitio anterior. **Ese cambio es una operación aparte**,
 y hasta que ocurra este sitio vive en la dirección temporal.
 
-En orden:
+### Antes del día: dos preparativos que evitan los dos errores clásicos
 
-1. Apuntar los DNS del dominio a Cloudflare (hoy están en Hostinger).
+**1. Copiar los registros de CORREO.** Si el cliente usa `algo@ceramicacarabobo.com`, esos
+registros (MX, y los SPF/DKIM que suelen ir en TXT) viven hoy en Hostinger. Al mover los DNS a
+Cloudflare **hay que recrearlos ahí antes de cambiar nada**. Cloudflare intenta importarlos solo,
+pero se verifica uno por uno. Si se omiten, **el correo del cliente deja de llegar** — es el error
+más común y más doloroso de esta operación.
+
+**2. Bajar el TTL a 300 segundos** en Hostinger, uno o dos días antes. El TTL es cuánto tiempo
+guardan los proveedores de internet la respuesta anterior. Con el valor por defecto la ventana de
+propagación puede durar hasta 48 horas; con 300 se reduce a minutos.
+
+### La ventana de propagación
+
+Cambiar los servidores de nombres **no es instantáneo**. Durante un rato, unos visitantes ven el
+sitio nuevo y otros el viejo. No se puede evitar: es cómo funciona el DNS.
+
+Por eso **el WordPress de Hostinger no se cancela hasta el final**: mientras siga en pie, quien
+caiga en la respuesta antigua ve un sitio funcionando y no un error.
+
+### En orden
+
+1. Apuntar los DNS del dominio a Cloudflare (hoy están en Hostinger). Se hace poniendo en el panel
+   de Hostinger los dos servidores de nombres que da Cloudflare al agregar el dominio.
 2. Agregar el dominio al worker `prd` en Cloudflare.
 3. En `.env.production`: `SITE_URL` y `PUBLIC_SANITY_STUDIO_URL` al dominio real.
 4. **`PUBLIC_ENTORNO="produccion"`** — es lo único que levanta el bloqueo de indexación.
