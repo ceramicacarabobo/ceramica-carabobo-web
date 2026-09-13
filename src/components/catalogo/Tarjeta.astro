@@ -46,7 +46,7 @@ if (foto) juego = await juegoDeFoto(foto, ANCHOS, SIZES)
 
 // Las dos líneas de spec del diseño: formato y "Serie · brillo · textura".
 const lineaFormato = `${producto.formato} cm`
-const lineaSpec = [`Serie ${producto.serie}`, ...producto.brillo, ...(producto.textura ? [producto.textura] : [])].join(' · ')
+const lineaSpec = [`Serie ${producto.serie}`, ...producto.brillo, ...(producto.textura ?? [])].join(' · ')
 const alt = foto?.alt || `${producto.nombre} ${producto.formato}`
 ---
 

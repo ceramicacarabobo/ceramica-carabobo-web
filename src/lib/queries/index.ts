@@ -10,10 +10,12 @@ const PRODUCTO_CAMPOS = /* groq */ `
   formato,
   formatoReal,
   "brillo": coalesce(brillo, []),
-  textura,
+  "textura": coalesce(textura, []),
   uso,
   pei,
   mohs,
+  rectificado,
+  absorcionAgua,
   mtsCaja,
   "fotos": coalesce(fotos[]${FOTO_PRODUCTO}, [])
 `

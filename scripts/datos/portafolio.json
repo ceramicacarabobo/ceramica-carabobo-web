@@ -1,0 +1,2144 @@
+[
+ {
+  "item": 1,
+  "serie": "Regular",
+  "nombre": "AGATA NACAR",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 2,
+  "serie": "Regular",
+  "nombre": "BLANCO BRILLANTE",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 3,
+  "serie": "Regular",
+  "nombre": "CAPRI",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 4,
+  "serie": "Regular",
+  "nombre": "CARRARA BRILLANTE",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 5,
+  "serie": "Regular",
+  "nombre": "CARRARA GOLD",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 6,
+  "serie": "Regular",
+  "nombre": "ENIGMA WHITE",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 7,
+  "serie": "Regular",
+  "nombre": "ELBA",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 8,
+  "serie": "Regular",
+  "nombre": "GRANITE STONE BEIGE",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 9,
+  "serie": "Regular",
+  "nombre": "GRANITE STONE GRAY",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 10,
+  "serie": "Regular",
+  "nombre": "GUAPARO",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 11,
+  "serie": "Regular",
+  "nombre": "HYDRA",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 12,
+  "serie": "Regular",
+  "nombre": "KOS",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 13,
+  "serie": "Regular",
+  "nombre": "LIVORNO AVORIO",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 14,
+  "serie": "Regular",
+  "nombre": "MILOS GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 15,
+  "serie": "Regular",
+  "nombre": "MYKONOS",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 16,
+  "serie": "Regular",
+  "nombre": "MOSAICO AZUL-BLANCO",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 17,
+  "serie": "Regular",
+  "nombre": "POMPEYA",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 18,
+  "serie": "Regular",
+  "nombre": "PREBO",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 19,
+  "serie": "Regular",
+  "nombre": "TRIGAL",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 20,
+  "serie": "Regular",
+  "nombre": "RODAS",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 21,
+  "serie": "Regular",
+  "nombre": "SANTORINI",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 22,
+  "serie": "Regular",
+  "nombre": "VENATO GRAY",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 23,
+  "serie": "Regular",
+  "nombre": "VIÑEDO",
+  "formato": "60 X 60",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 24,
+  "serie": "Regular",
+  "nombre": "BLANCO MATE",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 25,
+  "serie": "Regular",
+  "nombre": "CEMENTO BEIGE",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 26,
+  "serie": "Regular",
+  "nombre": "CEMENTO GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 27,
+  "serie": "Regular",
+  "nombre": "ILUSION CAMEL",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 28,
+  "serie": "Regular",
+  "nombre": "ILUSION GRAPHITE",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 29,
+  "serie": "Regular",
+  "nombre": "ILUSION GREY",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 30,
+  "serie": "Regular",
+  "nombre": "PARK CAMEL",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 31,
+  "serie": "Regular",
+  "nombre": "PARK GRAPHITE",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 32,
+  "serie": "Regular",
+  "nombre": "PARK GREY",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 33,
+  "serie": "Regular",
+  "nombre": "SANTA MARTA GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 34,
+  "serie": "Regular",
+  "nombre": "AMAZONIA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 35,
+  "serie": "Regular",
+  "nombre": "ARCE GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 36,
+  "serie": "Regular",
+  "nombre": "ARAGON BLANCO",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 37,
+  "serie": "Regular",
+  "nombre": "ARAGON COTTO",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 38,
+  "serie": "Regular",
+  "nombre": "ARAGON GRIGIO",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 39,
+  "serie": "Regular",
+  "nombre": "ARAGON MUSGO",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 40,
+  "serie": "Regular",
+  "nombre": "CORDILLERA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 41,
+  "serie": "Regular",
+  "nombre": "DUNA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 42,
+  "serie": "Regular",
+  "nombre": "DUNA CREMA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 43,
+  "serie": "Regular",
+  "nombre": "DUNA GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 44,
+  "serie": "Regular",
+  "nombre": "GRAN SABANA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 45,
+  "serie": "Regular",
+  "nombre": "MALLORCA BEIGE",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 46,
+  "serie": "Regular",
+  "nombre": "MALLORCA GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 47,
+  "serie": "Regular",
+  "nombre": "MALLORCA PERLA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 48,
+  "serie": "Regular",
+  "nombre": "MERIDA CENIZA",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 49,
+  "serie": "Regular",
+  "nombre": "MERIDA CIENO",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 50,
+  "serie": "Regular",
+  "nombre": "SALTO ANGEL",
+  "formato": "60 X 60",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 63,
+  "serie": "Regular",
+  "nombre": "ABEDUL",
+  "formato": "25 X 120",
+  "tipologia": "Mate / Estructurado",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 64,
+  "serie": "Regular",
+  "nombre": "BAHIA CREMA",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 65,
+  "serie": "Regular",
+  "nombre": "BAHIA CREMA CANAL",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 66,
+  "serie": "Regular",
+  "nombre": "BAHIA GRIS CANAL",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 67,
+  "serie": "Regular",
+  "nombre": "CAVA",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 68,
+  "serie": "Regular",
+  "nombre": "CIPRÉS GRIS",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 69,
+  "serie": "Regular",
+  "nombre": "CIPRÉS MOKA",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 70,
+  "serie": "Regular",
+  "nombre": "CORTEZA",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 71,
+  "serie": "Regular",
+  "nombre": "FOREST CARAMEL",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 72,
+  "serie": "Regular",
+  "nombre": "FOREST FRESNO",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 73,
+  "serie": "Regular",
+  "nombre": "FOREST GREY",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 74,
+  "serie": "Regular",
+  "nombre": "FOREST SAND",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 75,
+  "serie": "Regular",
+  "nombre": "FOREST SMOKE",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 76,
+  "serie": "Regular",
+  "nombre": "NOGAL",
+  "formato": "25 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 77,
+  "serie": "Regular",
+  "nombre": "NOGAL SG",
+  "formato": "25 X 120",
+  "tipologia": "Mate / Estructurado",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 78,
+  "serie": "Regular",
+  "nombre": "OLMO",
+  "formato": "25 X 120",
+  "tipologia": "Mate / Estructurado",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 79,
+  "serie": "Regular",
+  "nombre": "TECA",
+  "formato": "25 X 120",
+  "tipologia": "Mate / Estructurado",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,46 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 80,
+  "serie": "Regular",
+  "nombre": "ABUDABI",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 81,
+  "serie": "Regular",
+  "nombre": "APOLO",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 82,
+  "serie": "Regular",
+  "nombre": "ATENEA",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 83,
+  "serie": "Regular",
+  "nombre": "DUBAI",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 84,
+  "serie": "Regular",
+  "nombre": "ENIGMA WHITE",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 85,
+  "serie": "Regular",
+  "nombre": "EROS BRILLANTE",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 86,
+  "serie": "Regular",
+  "nombre": "HYDRA",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 87,
+  "serie": "Regular",
+  "nombre": "KOS",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 88,
+  "serie": "Regular",
+  "nombre": "MYKONOS",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 89,
+  "serie": "Regular",
+  "nombre": "POMPEYA",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 90,
+  "serie": "Regular",
+  "nombre": "SANTORINI",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 91,
+  "serie": "Regular",
+  "nombre": "TRAVERTINO BRILLANTE",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 92,
+  "serie": "Regular",
+  "nombre": "SARJA",
+  "formato": "60 X 120",
+  "tipologia": "Brillante / Liso",
+  "pei": "III",
+  "dureza": 7,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 93,
+  "serie": "Regular",
+  "nombre": "BARI",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 94,
+  "serie": "Regular",
+  "nombre": "CEMENTO GRIS MATE",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 95,
+  "serie": "Regular",
+  "nombre": "CITY GREY",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 96,
+  "serie": "Regular",
+  "nombre": "CONCRETO",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 97,
+  "serie": "Regular",
+  "nombre": "MANHATTAN",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 98,
+  "serie": "Regular",
+  "nombre": "MILAN",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 99,
+  "serie": "Regular",
+  "nombre": "SANTA MARTA GRIS",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 100,
+  "serie": "Regular",
+  "nombre": "TRAVERTINO MATE",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 101,
+  "serie": "Regular",
+  "nombre": "TOKIO",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 102,
+  "serie": "Regular",
+  "nombre": "VENECIA",
+  "formato": "60 X 120",
+  "tipologia": "Mate / Liso",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 103,
+  "serie": "Regular",
+  "nombre": "DUNA",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 104,
+  "serie": "Regular",
+  "nombre": "DUNA CREMA",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 105,
+  "serie": "Regular",
+  "nombre": "DUNA GRIS",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 106,
+  "serie": "Regular",
+  "nombre": "GRAN SABANA",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 107,
+  "serie": "Regular",
+  "nombre": "MALLORCA GRIS",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 108,
+  "serie": "Regular",
+  "nombre": "MALLORCA BEIGE",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 109,
+  "serie": "Regular",
+  "nombre": "VENECIA RUSTICO",
+  "formato": "60 X 120",
+  "tipologia": "Rustico / Estructurado",
+  "pei": "IV",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3 - 6",
+  "rendimiento": "1,42 MT2/CAJA",
+  "aMano": {
+   "dureza": false,
+   "rectificado": false,
+   "absorcion": false
+  }
+ },
+ {
+  "item": 1,
+  "serie": "Venezuela",
+  "nombre": "SANARE PERLA",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 2,
+  "serie": "Venezuela",
+  "nombre": "SANARE BEIGE",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 3,
+  "serie": "Venezuela",
+  "nombre": "SANARE MARRÓN",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 4,
+  "serie": "Venezuela",
+  "nombre": "SAMÁN BEIGE",
+  "formato": "60 x 60",
+  "tipologia": "Madera",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 5,
+  "serie": "Venezuela",
+  "nombre": "SAMÁN GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Madera",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 6,
+  "serie": "Venezuela",
+  "nombre": "SAMÁN MARRÓN",
+  "formato": "60 x 60",
+  "tipologia": "Madera",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 7,
+  "serie": "Venezuela",
+  "nombre": "PÁRAMO GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 8,
+  "serie": "Venezuela",
+  "nombre": "PÁRAMO BEIGE",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 9,
+  "serie": "Venezuela",
+  "nombre": "PÁRAMO PERLA",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 10,
+  "serie": "Venezuela",
+  "nombre": "MACUTO ARENA",
+  "formato": "60 x 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 11,
+  "serie": "Venezuela",
+  "nombre": "MACUTO BOREAL",
+  "formato": "60 x 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 12,
+  "serie": "Venezuela",
+  "nombre": "GALIPAN GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 13,
+  "serie": "Venezuela",
+  "nombre": "GALIPAN TAUPE",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 14,
+  "serie": "Venezuela",
+  "nombre": "CUBIRO GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 15,
+  "serie": "Venezuela",
+  "nombre": "CUBIRO MARRÓN",
+  "formato": "60 x 60",
+  "tipologia": "Marmol Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 16,
+  "serie": "Venezuela",
+  "nombre": "CATA AZUL",
+  "formato": "60 x 60",
+  "tipologia": "Terrazo Mate/Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 17,
+  "serie": "Venezuela",
+  "nombre": "CATA MARRÓN",
+  "formato": "60 x 60",
+  "tipologia": "Terrazo Mate/Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 18,
+  "serie": "Venezuela",
+  "nombre": "CATA HUMO",
+  "formato": "60 x 60",
+  "tipologia": "Terrazo Mate/Satinado",
+  "pei": "III",
+  "dureza": 8,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 19,
+  "serie": "Venezuela",
+  "nombre": "ÁVILA GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 20,
+  "serie": "Venezuela",
+  "nombre": "ÁVILA GEOMÉTRICO",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 21,
+  "serie": "Venezuela",
+  "nombre": "ÁVILA GRIS OSCURO",
+  "formato": "60 x 60",
+  "tipologia": "Cemento Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 22,
+  "serie": "Venezuela",
+  "nombre": "ADÍCORA BEIGE",
+  "formato": "60 x 60",
+  "tipologia": "Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 23,
+  "serie": "Venezuela",
+  "nombre": "ADÍCORA GRIS",
+  "formato": "60 x 60",
+  "tipologia": "Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "SI",
+  "absorcion": "3-6",
+  "rendimiento": "1,77 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 24,
+  "serie": "Venezuela",
+  "nombre": "CHORONÍ",
+  "formato": "60 X 60",
+  "tipologia": "Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 25,
+  "serie": "Venezuela",
+  "nombre": "BARUTA BEIGE",
+  "formato": "60 X 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 26,
+  "serie": "Venezuela",
+  "nombre": "BARUTA GRIS",
+  "formato": "60 X 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 27,
+  "serie": "Venezuela",
+  "nombre": "BARUTA TERRA",
+  "formato": "60 X 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 28,
+  "serie": "Venezuela",
+  "nombre": "BARUTA SILVER",
+  "formato": "60 X 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ },
+ {
+  "item": 29,
+  "serie": "Venezuela",
+  "nombre": "CATATUMBO",
+  "formato": "60 X 60",
+  "tipologia": "Piedra Mate",
+  "pei": "III",
+  "dureza": 9,
+  "rectificado": "NO",
+  "absorcion": "3-6",
+  "rendimiento": "1,8 MT2/CAJA",
+  "aMano": {
+   "dureza": true,
+   "rectificado": true,
+   "absorcion": true
+  }
+ }
+]

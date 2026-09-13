@@ -94,9 +94,23 @@ type HomeCruda = Omit<Home, 'profesionales'> & {
   profesionales: Omit<Home['profesionales'], 'video'> & {video?: VideoCrudo | null}
 }
 
-export const getProductos = () => consultar<Producto[]>(Q.PRODUCTOS, {}, [])
+/**
+ * `textura` pasó de valor único a multivalor (un diseño puede ser «Rústico y
+ * Estructurado», como el cliente lo clasifica). El código nuevo la trata como
+ * lista; este normalizador tolera el dato viejo —cuando el CMS aún guarda el
+ * string— para que no haya ventana de catálogo roto entre desplegar y migrar.
+ */
+const aLista = (v: unknown): string[] =>
+  Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : typeof v === 'string' && v ? [v] : []
 
-export const getProducto = (slug: string) => consultar<Producto | null>(Q.PRODUCTO_POR_SLUG, {slug}, null)
+const normalizarProducto = (p: Producto): Producto => ({...p, textura: aLista(p.textura)})
+
+export const getProductos = async () => (await consultar<Producto[]>(Q.PRODUCTOS, {}, [])).map(normalizarProducto)
+
+export const getProducto = async (slug: string) => {
+  const p = await consultar<Producto | null>(Q.PRODUCTO_POR_SLUG, {slug}, null)
+  return p ? normalizarProducto(p) : null
+}
 
 export const getDistribuidores = () => consultar<Distribuidor[]>(Q.DISTRIBUIDORES, {}, [])
 

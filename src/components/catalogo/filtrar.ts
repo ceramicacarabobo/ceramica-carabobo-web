@@ -21,7 +21,7 @@ export interface ProductoFiltrable {
   materia?: string
   formato: string
   uso?: string
-  textura?: string
+  textura: string[]
   brillo: string[]
 }
 
@@ -36,7 +36,7 @@ export type Orden = 'materia' | 'az' | 'formato'
  *
  * La serie NO es un eje: es la barra de navegación de arriba, porque las dos
  * series traen metadatos distintos (Venezuela declara materia y no textura,
- * Regular al revés) y mezclarlas como faceta daría cruces vacíos.
+ * Regular textura y no materia) y mezclarlas como faceta daría cruces vacíos.
  */
 export const EJES: {key: Eje; label: string; opciones: readonly string[]}[] = [
   {key: 'materia', label: 'Materia', opciones: MATERIAS},
@@ -69,15 +69,16 @@ export const normalizar = (v: string) =>
 
 /**
  * Un producto SIN dato en un eje no coincide con ese filtro: queda fuera, en vez
- * de aparecer como si cumpliera (29 productos no tienen materia todavía).
- * `brillo` es el único eje multivalor.
+ * de aparecer como si cumpliera (muchos productos no tienen textura o materia).
+ * `brillo` y `textura` son los dos ejes multivalor: un diseño «Rústico y
+ * Estructurado» aparece al filtrar por cualquiera de las dos.
  */
 export function coincide(p: ProductoFiltrable, f: Seleccion): boolean {
   return (
     (!f.materia.length || (!!p.materia && f.materia.includes(p.materia))) &&
     (!f.formato.length || f.formato.includes(p.formato)) &&
     (!f.uso.length || (!!p.uso && f.uso.includes(p.uso))) &&
-    (!f.textura.length || (!!p.textura && f.textura.includes(p.textura))) &&
+    (!f.textura.length || f.textura.some((t) => (p.textura || []).includes(t))) &&
     (!f.brillo.length || f.brillo.some((b) => (p.brillo || []).includes(b)))
   )
 }

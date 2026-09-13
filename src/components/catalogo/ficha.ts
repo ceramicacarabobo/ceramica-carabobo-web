@@ -52,7 +52,9 @@ export function filasDeFicha(producto: Producto): FilaFicha[] {
   agregar('Uso', producto.uso)
   agregar('Resistencia PEI', producto.pei)
   agregar('Dureza MOHS', producto.mohs)
-  agregar('Rendimiento', producto.mtsCaja ? `${metros.format(producto.mtsCaja)} m²` : undefined)
+  agregar('Rectificado', typeof producto.rectificado === 'boolean' ? (producto.rectificado ? 'Sí' : 'No') : undefined)
+  agregar('Absorción de agua', producto.absorcionAgua)
+  agregar('Rendimiento por caja', producto.mtsCaja ? `${metros.format(producto.mtsCaja)} m²` : undefined)
 
   return filas
 }

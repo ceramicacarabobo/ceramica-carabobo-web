@@ -27,10 +27,12 @@ export interface Producto {
   formato: string
   formatoReal?: string
   brillo: string[]
-  textura?: string
+  textura?: string[]
   uso?: string
   pei?: string
   mohs?: number
+  rectificado?: boolean
+  absorcionAgua?: string
   mtsCaja?: number
   fotos: FotoProducto[]
 }

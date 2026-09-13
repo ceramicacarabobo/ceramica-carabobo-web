@@ -49,7 +49,7 @@ const datos: ProductoFiltrable[] = productos.map((p) => ({
   ...(p.materia ? {materia: p.materia} : {}),
   formato: p.formato,
   ...(p.uso ? {uso: p.uso} : {}),
-  ...(p.textura ? {textura: p.textura} : {}),
+  textura: p.textura ?? [],
   brillo: p.brillo,
 }))
 
