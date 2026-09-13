@@ -666,3 +666,34 @@ contra los 63/56/56 del prototipo. Una sola cáscara es condición del proyecto 
 un archivo por página, así que lo más probable es que sea artefacto de la herramienta.
 
 `estados.mjs` cubre ahora las dos: **30 comprobaciones, 0 en falla**.
+
+## 21. Registro de ejecución — actualización de productos contra el «Portafolio REVISADO» (2026-09-13)
+
+El cliente entregó el portafolio definitivo (`.xlsx`, dos pestañas). Cuadra 1:1 con los 126 del
+CMS por nombre + formato: **sin altas ni bajas, solo datos y clasificación**. Decisión del usuario:
+**la clasificación del cliente manda; no se cuestiona ni se deduce lo que él no declara.**
+
+**Desviación de modelo (registrada aquí porque cambia una decisión cerrada):**
+- **`textura` pasa de valor único a multivalor** (array), como `brillo`. Motivo: la tipología
+  «Rústico / Estructurado» son DOS texturas y el modelo cerrado solo admitía una. El handoff
+  (`design/publicar/data/catalogo.json` → `ejesSeparados`) asumió textura de un valor; esto lo
+  supera. El filtro ya soportaba multivalor; ahora `textura` y `brillo` son los dos ejes de lista.
+- **`brillo` y `textura` dejan de ser obligatorios**: lo que la tipología no dice, queda vacío.
+- **Campos nuevos en la ficha técnica**: `rectificado` (bool → Sí/No) y `absorcionAgua` (string,
+  rango). Entran solos a los datos estructurados (salen de `filasDeFicha`).
+- **Rendimiento**: el label pasa a «Rendimiento por caja» (unidad fija; el valor sigue numérico).
+
+**Regla de clasificación aplicada (materia/brillo/textura SOLO desde la tipología):**
+- Regular: tipología = «brillo / textura» (nunca materia) → materia queda **«Otros»/`pendiente`**
+  en los 97 (filtrables para completar). Venezuela: tipología = «materia + acabado» (nunca textura).
+- `«Otros»` es el único cajón de "sin clasificar" (materia lo tiene; brillo y textura quedan vacíos).
+
+**Cómo se hizo** (código = Fase A; datos = script por entorno):
+- Código: commit `09835f1`. A QA por **cherry-pick** sobre `origin/main` (para NO arrastrar el
+  commit del worker `prd`); a PRD por push directo a `cliente/main`.
+- Datos: `scripts/extraer-portafolio.py` (xlsx → `scripts/datos/portafolio.json`) +
+  `scripts/actualizar-productos-portafolio.mjs` (mapeo + mutación, idempotente, con `--ensayo`).
+  Se aplicó a QA (`ENV_FILE=.env.bak-qa`) y a PRD (`.env`), verificado en vivo en ambos.
+- **Respaldo previo**: `backups/clasificacion-productos-{qa,prd}-2026-09-13.json` (gitignored).
+- **Pendientes del cliente**: `docs/pendientes-cliente-clasificacion.md` (100 materias por
+  clasificar + 29 datos de Venezuela completados a mano, a confirmar).

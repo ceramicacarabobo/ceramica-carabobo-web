@@ -24,18 +24,20 @@ Unidad: **una fila del archivo del cliente = un producto** (la agrupación por d
 | `materiaOrigen` | select (solo lectura para admins normales): cliente · tipología · formato · nombre · supuesto · pendiente | auditoría de dato deducido; al editar materia un admin, pasa a `cliente` |
 | `formato` | select: 60×60 · 60×120 · 25×120 | **lista cerrada** (30×60 no existe — no reintroducir) |
 | `formatoReal` | string opcional | medida real de fábrica si difiere |
-| `brillo` | array de select: Mate · Brillante · Satinado | **multivalor** (ej. "Mate · Satinado") |
-| `textura` | select: Liso · Estructurado · Rústico | |
+| `brillo` | array de select opcional: Mate · Brillante · Satinado | **multivalor** (ej. "Mate · Satinado"); vacío si el cliente no lo declara |
+| `textura` | array de select opcional: Liso · Estructurado · Rústico | **multivalor desde 2026-09-13** (ej. "Rústico · Estructurado"); vacío → fila oculta y fuera del filtro |
 | `uso` | select: Interiores · Alto tránsito | |
 | `pei` | select: I–V | fila oculta si vacío |
 | `mohs` | number opcional | fila oculta si vacío |
-| `mtsCaja` | number opcional | fila oculta si vacío |
+| `rectificado` | boolean opcional | se muestra "Sí/No"; sin definir, fila oculta |
+| `absorcionAgua` | string opcional (rango, ej. "3–6 %") | fila oculta si vacío |
+| `mtsCaja` | number opcional | fila "Rendimiento por caja"; fila oculta si vacío |
 | `fotos` | array de image **con hotspot** (máx 4) | foto 1 = macro de la baldosa (obligatoria si hay fotos); 2+ = ambientes. Hotspot de Sanity = el "punto focal" que exige Requisitos técnicos. Cada foto lleva flag `esEjemplo` (bool) → badge visible SOLO en preview de admin, nunca en producción |
 | publicado/despublicado | drafts nativos de Sanity | |
 
 Reglas duras del diseño: **los valores de filtro son listas cerradas** (un valor inventado deja al producto fuera de los filtros — por eso todos son `select`, nunca texto libre); **la fila sin dato desaparece** de la ficha (ni en blanco ni "no especificado").
 
-Estado del dato (LEEME): materia declarada por cliente solo en 26; 71 deducidas; **29 sin materia**. Fotos reales solo 31 productos; 66 con foto de ejemplo ajena; 29 sin foto. *"Pedir la columna de materia es el único pedido que detiene el catálogo."*
+Estado del dato (LEEME, actualizado 2026-09-13 tras cargar el «Portafolio REVISADO»): la clasificación es ahora la del cliente **tal cual** — materia/brillo/textura salen SOLO de la columna TIPOLOGÍA; lo que no aparece, queda vacío (no se deduce). Consecuencia: **materia declarada por cliente en 26** (Serie Venezuela); los **100 restantes** quedan en «Otros»/`pendiente` (la tipología de Regular no trae materia) — filtrables por «Otros» para completarlos. Textura poblada en los 97 de Regular (37 con dos valores), vacía en los 29 de Venezuela. Rectificado, absorción y rendimiento cargados en los 126; dureza de los 29 de Venezuela venía a mano (a confirmar). Lo pendiente del cliente vive en `docs/pendientes-cliente-clasificacion.md`; el respaldo del estado previo, en `backups/clasificacion-productos-*.json`.
 
 ### 1.2 `distribuidor` — ~24 documentos (hoy 100% placeholder)
 
