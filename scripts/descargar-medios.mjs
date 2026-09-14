@@ -11,9 +11,16 @@
  */
 import {mkdir, writeFile, readFile, access} from 'node:fs/promises'
 import {join} from 'node:path'
+import {loadEnv} from 'vite'
 
-const projectId = process.env.PUBLIC_SANITY_PROJECT_ID
-const dataset = process.env.PUBLIC_SANITY_DATASET || 'production'
+// Se lee el entorno EXACTAMENTE como astro.config.mjs (loadEnv de Vite: archivos
+// .env* + process.env). Si se usara solo process.env, en Workers Builds —donde no
+// hay `.env` y el projectId llega por `.env.production`— el script no lo vería y
+// el manifiesto saldría vacío, dejando los videos servidos desde cdn.sanity.io
+// (rompía la autosuficiencia §3.3). Verificado el 2026-09-14.
+const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '')
+const projectId = env.PUBLIC_SANITY_PROJECT_ID
+const dataset = env.PUBLIC_SANITY_DATASET || 'production'
 
 const DESTINO = 'public/medios'
 const MANIFIESTO = 'src/lib/medios.json'
