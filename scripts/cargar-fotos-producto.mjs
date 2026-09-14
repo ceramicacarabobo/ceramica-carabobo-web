@@ -53,9 +53,14 @@ import {basename} from 'node:path'
 const INVENTARIO = process.env.INVENTARIO || '/root/fotos-cliente/inventario-nuevo.json'
 const RAIZ = process.env.RAIZ_FOTOS || '/root/fotos-cliente/extraido-nuevo'
 const ENSAYO = process.argv.includes('--ensayo')
+// Con `--todo`: la entrega es el contenido DEFINITIVO. Se carga siempre lo que
+// llega, sin la regla de "conservar si la nueva es peor" — aunque baje la
+// resolución (ej. las macros del PDF de Venezuela ceden a los renders nuevos).
+// Decisión del 2026-09-14: apegarse a lo que envió el cliente, como con los datos.
+const CARGA_TOTAL = process.argv.includes('--todo')
 
 const env = Object.fromEntries(
-  readFileSync('.env', 'utf8')
+  readFileSync(process.env.ENV_FILE || '.env', 'utf8')
     .split('\n')
     .filter((l) => l.trim() && !l.trim().startsWith('#') && l.includes('='))
     .map((l) => {
@@ -111,14 +116,25 @@ const ALIAS = {
   'aragon griggio': 'aragon grigio',
   'granite stone grey': 'granite stone gray',
   catabumbo: 'catatumbo',
+  // Erratas de carpeta de la 4ta entrega (2026-09-14).
+  'cripres gris': 'cipres gris',
+  'venecia rust': 'venecia rustico',
 }
 const clave = (s) => {
   const k = norm(s)
   return ALIAS[k] ?? k
 }
+// Formato normalizado a "60x60" / "60x120" / "25x120" (el inventario trae × y el CMS también).
+const fmtKey = (s = '') => s.toLowerCase().replace(/×/g, 'x').replace(/[^0-9x]/g, '')
 
 // --- El material -----------------------------------------------------------
 const inventario = JSON.parse(readFileSync(INVENTARIO, 'utf8'))
+// Regla nueva (2026-09-14): cada FORMATO tiene su propia foto. Si el inventario
+// trae `formato`, se agrupa por nombre+formato (un diseño en dos formatos no
+// comparte fotos). Sin `formato` (entregas viejas) se mantiene el agrupamiento
+// por nombre, para no romper la retrocompatibilidad.
+const PORFORMATO = inventario.some((f) => f.formato)
+const claveDe = (nombre, formato) => (PORFORMATO ? `${clave(nombre)}|${fmtKey(formato)}` : clave(nombre))
 const porProducto = new Map()
 // El mismo archivo puede llegar dos veces con nombres distintos: la segunda
 // entrega trae `GUAPARO-PZA-2.jpg` y `GUAPARO-PZA-2-1.jpg`, idénticos byte a
@@ -131,7 +147,7 @@ let repetidos = 0
 for (const f of inventario) {
   if (f.tipo !== 'pieza' && f.tipo !== 'ambiente') continue // las sueltas quedan fuera
   if (!f.w) continue
-  const k = clave(f.producto)
+  const k = claveDe(f.producto, f.formato)
   const huella = `${k}|${f.hash ?? `${f.w}x${f.h}x${f.bytes}`}`
   if (vistos.has(huella)) {
     repetidos++
@@ -223,7 +239,7 @@ const cargar = []
 const vaciar = []
 const conservar = {pdf: 0, real: 0, vacio: 0}
 for (const p of productos) {
-  const k = clave(p.nombre)
+  const k = claveDe(p.nombre, p.formato)
   const nuevas = porProducto.get(k)
   const dummy = p.n > 0 && p.ej === p.n
   if (!nuevas) {
@@ -234,6 +250,7 @@ for (const p of productos) {
   }
   const mejor = Math.max(...nuevas.map((f) => f.w))
   if (p.n === 0 || dummy) cargar.push({p, nuevas, motivo: p.n === 0 ? 'no tenía' : 'era dummy'})
+  else if (CARGA_TOTAL) cargar.push({p, nuevas, motivo: 'entrega definitiva'})
   else if (mejor >= anchoDe(p.refs)) cargar.push({p, nuevas, motivo: 'nueva mejor o igual'})
   else conservar.pdf++
 }
@@ -242,7 +259,20 @@ console.log(`productos: ${productos.length}`)
 console.log(`  CARGAR   : ${cargar.length}`)
 console.log(`  VACIAR   : ${vaciar.length}`)
 console.log(`  conservar: ${conservar.pdf} del PDF (la nueva es peor) · ${conservar.real} reales sin reemplazo · ${conservar.vacio} ya vacíos`)
-console.log(`  archivos a subir: ${new Set(cargar.flatMap((c) => c.nuevas.map((f) => f.rel))).size} distintos`)
+
+// Assets que YA están en el CMS: se reutilizan por su hash (sha1), no se re-suben.
+// El _id del asset lo deduplica Sanity por hash, pero así ni siquiera se hace el
+// POST: de una entrega que repite material, solo suben los archivos nuevos.
+const assetsExistentes = new Map(
+  (await consultar('*[_type=="sanity.imageAsset"]{_id,sha1hash}'))
+    .filter((a) => a.sha1hash)
+    .map((a) => [a.sha1hash, a._id]),
+)
+const archivosUnicos = [...new Map(cargar.flatMap((c) => c.nuevas).map((f) => [f.rel, f])).values()]
+const porSubir = archivosUnicos.filter((f) => !(f.hash && assetsExistentes.has(f.hash)))
+console.log(
+  `  archivos distintos: ${archivosUnicos.length} · ya en el CMS (se reutilizan): ${archivosUnicos.length - porSubir.length} · nuevos a subir: ${porSubir.length}`,
+)
 
 if (ENSAYO) {
   console.log('\n--ensayo: no se escribió nada. Muestra:\n')
@@ -274,13 +304,17 @@ if (faltantes.length) {
 // se sube UNA vez y se referencia las veces que haga falta.
 const assets = new Map()
 let subidas = 0
-const total = new Set(cargar.flatMap((c) => c.nuevas.map((f) => f.rel))).size
 for (const {nuevas} of cargar) {
   for (const f of nuevas) {
     if (assets.has(f.rel)) continue
+    const yaId = f.hash && assetsExistentes.get(f.hash)
+    if (yaId) {
+      assets.set(f.rel, yaId) // ya está en el CMS: se reutiliza, no se re-sube
+      continue
+    }
     assets.set(f.rel, await subir(`${RAIZ}/${f.rel}`))
     subidas++
-    if (subidas % 25 === 0 || subidas === total) console.log(`  subidas ${subidas}/${total}`)
+    if (subidas % 25 === 0 || subidas === porSubir.length) console.log(`  subidas ${subidas}/${porSubir.length}`)
   }
 }
 
