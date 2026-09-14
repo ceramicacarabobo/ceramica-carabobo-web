@@ -95,10 +95,26 @@ corresponda, y se entra con la cuenta del cliente.
    curl -s "https://api.sanity.io/v2021-10-04/hooks/projects/dnjm4k7p/xvE1lz6wxH235nID/attempts" \
      -H "Authorization: Bearer $TOK" | head -c 400
    ```
-   Un intento con `resultCode: 200` significa que Cloudflare lo recibió.
-2. **¿El build corrió?** `Workers & Pages → prd → Builds`.
+   Un intento con `resultCode: 200` significa que Cloudflare lo recibió y encoló el build
+   (el `resultBody` trae el `build_uuid`). El webhook dispara igual con contenido publicado
+   desde el Studio o cargado por API (mutación al dataset `production`).
+2. **¿El build corrió, o sigue en cola?** `Workers & Pages → prd → Builds`, o por API con el
+   `build_uuid` del paso 1:
+   ```bash
+   export $(grep -v '^#' .env.cliente | xargs)
+   curl -s "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/builds/builds/<build_uuid>" \
+     -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" | python3 -m json.tool | grep -E 'status|outcome|_on'
+   ```
+   **OJO — la cola de Workers Builds puede tardar ~20 min antes de INICIAR** (`created_on` vs
+   `initializing_on`). Eso NO es un fallo: el build luego corre y despliega bien. Verificado el
+   2026-09-13 — un build encolado a las 18:32 empezó a las 18:52 y terminó `success`. Si urge que
+   el sitio esté al día antes, desplegar a mano (§5) es más rápido que esperar la cola.
 3. Si el panel dice *"latest build failed"*, **leer el log**: puede ser el DESPLIEGUE y no la
    construcción. Se rescata a mano con el comando de §5.
+4. **Caché de build:** el trigger de `prd` tiene el caché de build **apagado**
+   (`build_caching_enabled: false`), lo que alarga cada construcción. Activarlo en
+   `Workers & Pages → prd → Settings → Build → Build cache` acelera los builds (en QA bajó de
+   ~35 min a ~1m30s). No es configurable por la API pública de Workers Builds; se hace en el panel.
 
 ### Desplegar a mano, sin esperar al webhook
 
