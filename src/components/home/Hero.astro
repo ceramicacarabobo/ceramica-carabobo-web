@@ -170,14 +170,17 @@ const hayCarrusel = estados.length > 1
     aspect-ratio: auto;
   }
 
-  /* Velo general de legibilidad + rampa superior para la nav transparente. */
+  /* Velo #1 (plano global): recupera brillo del centro sin función de contraste
+     —el titular lo sostiene el scrim z-index 5 y la nav la rampa z-index 4—.
+     Calibrado a 0.5 (2026-09-14, handoff Claude Design): el titular mide 6.31:1
+     en el fotograma más claro, muy por encima del mínimo 4.5:1. */
   .hero__velo {
     position: absolute;
     inset: 0;
     z-index: 3;
     pointer-events: none;
     background: rgba(31, 31, 31, 0.32);
-    opacity: 0.8;
+    opacity: 0.5;
   }
 
   .hero__velo-superior {
