@@ -3,6 +3,17 @@
 Punto de entrada para retomar. Lo que está hecho vive en `plan-proyecto.md` §10-§20;
 acá solo lo que falta, ordenado por prioridad.
 
+## ⭐ RETOMAR AQUÍ (2026-09-15) — consolidar a PRD
+
+Sesión de fotos + home + hero: todo validado en **QA**, falta **replicar a PRD**.
+Registro completo y receta de consolidación: **`docs/fase-6-fotos-home-hero-2026-09-14.md`**.
+
+- **Ya en QA y PRD** (cerrado): productos (portafolio REVISADO), fotos 126/126 (entregas 3/4/5), fichas de ambiente curadas.
+- **Solo en QA, falta consolidar a PRD:** reorden de pestañas (Salas 1º), video nuevo del hero, velo hero a 0.5, y 3 commits de código (`352368d` fotos, `d6eeb9a` fix medios, `7f2ba5d` velo) — `cliente/PRD` está en `4c1534e`.
+- **Cómo:** `git push cliente main` + subir `hero-web.mp4` a PRD + patches (reorden pestañas, hero.video) + **deploy manual PRD**. Pasos exactos en el registro §4.
+- Decisiones nuevas: clasificación del cliente manda; **foto-por-formato** (textura multivalor); velo hero 0.5.
+- Limpieza de `/root/fotos-cliente/` pendiente (no urgente).
+
 ## Dónde está el proyecto hoy (2026-09-07)
 
 **Producción montada en las cuentas del cliente y verificada.**
